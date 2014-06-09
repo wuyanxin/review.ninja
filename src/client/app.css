@@ -1,0 +1,34 @@
+.addition {
+	background-color: #dfd;
+}
+
+.addition.dark {
+	background-color: #ceffce !important;
+}
+
+.deletion {
+	background-color: #ffdddd;
+}
+
+.deletion.dark {
+	background-color: #f7c8c8 !important;
+}
+
+tr.highlight:hover td.highlight {
+	background-color: #f8eec7 !important;
+}
+
+tr:hover td.comment {
+	display: block !important;
+}
+
+.meta pre {
+	color:#aaa;
+}
+
+pre {
+	padding:0; 
+	margin:0; 
+	background:none; 
+	border:none;
+}

@@ -1,0 +1,14 @@
+<div style="width:100%; overflow-x:scroll;">
+	<table style="width:100%; font-size:13px; font-family: Consolas, 'Liberation Mono', Monaco, Courier, monospace;">
+		<tbody>
+			<tr ng-repeat="line in lines track by $index">
+				<td style="width:45px; position:absolute; background:#fff; padding:5px 8px; text-align:right; color:#aaa; border-right:1px solid; height:28px;">
+					{{ $index+1 }}
+				</td>
+				<td style="padding:5px 10px 5px 55px;">
+					<pre style="padding:0; margin:0; background:none; border:none;">{{ line || ' ' }}</pre>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

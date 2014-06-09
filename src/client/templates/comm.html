@@ -1,0 +1,142 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading" style="height:55px;">
+					<h3 class="panel-title" style="float:left; padding:8px 0;">
+						{{ comm.value.commit.message }}
+					</h3>
+					<span class="pull-right">
+						<div ng-show="vote.value" style="padding:8px 0;">
+							{{ vote.value.vote }}
+						</div>
+						<div ng-show="!vote.value">
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									Not yet approved
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li ng-repeat="vote in ninja.value.config.votes"><a href ng-click="castVote(vote.value)">{{ vote.label }}</a></li>
+								</ul>
+							</div>
+						</div>
+					</span>
+			</div>
+			<div class="panel-body">
+				<span>
+					<img ng-src="{{ comm.value.author.avatar_url }}" width="18px" />
+					{{comm.value.author.login}} <small moment="comm.value.commit.committer.date"></small>
+				</span>
+				<span class="pull-right" style="text-align:right;">
+					<small><strong>commit</strong> {{ comm.value.sha }}</small><br />
+					<small><strong>{{ comm.value.parents.length | pluralize:'parent' }}</strong></small>
+					<small ng-repeat="parent in comm.value.parents">
+						<a href="" ng-click="compComm(parent.sha)">{{ parent.sha | limitTo:7 }}</a>
+					</small>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+
+		<tabset>
+			<tab heading="Stats">
+				<!--
+				<div class="text-center" style="margin-top:60px">
+					<svg width="930px" height="350" id="js-features-branch-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+						<path d="M66.2711864,5.96363636 C135.523206,5.96363636 143.460673,112 191.02837,112 C238.596067,112 681.049887,112 725.83852,112 C770.627152,112 786.056674,5.95721244 855.110732,5.96363636" id="js-branch-diagram-branch" stroke="#4182C4" stroke-width="4" fill="none"></path>
+						<path d="M0,7 L766,7 L920,7" id="js-branch-diagram-master" stroke="#c6d9ed" stroke-width="8"></path>
+						<path id="js-branch-diagram-arrow" d="M907.2,10 C910.98,8.95 915.22,8.05 918,7 C914.22,5.95 910.98,5.05 907.2,4" stroke="#c6d9ed" stroke-width="8" fill="none"></path>
+						<desc>Created with Snap</desc><defs></defs><line x1="88" x2="88" y1="20" y2="227" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><g><circle cx="88" cy="227" r="7" fill="#4183c4"></circle><circle cx="88" cy="227" r="5" fill="#4183c4" stroke="#ffffff" style="stroke-width: 2px;"></circle></g><line x1="232.5" x2="345.5" y1="170" y2="170" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><line x1="232.5" x2="232.5" y1="140" y2="170" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><line x1="345.5" x2="345.5" y1="140" y2="170" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><line x1="289" x2="289" y1="170" y2="226" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><g><circle cx="289" cy="226" r="7" fill="#4183c4"></circle><circle cx="289" cy="226" r="5" fill="#4183c4" stroke="#ffffff" style="stroke-width: 2px;"></circle></g><line x1="423" x2="423" y1="137" y2="226" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><g><circle cx="423" cy="226" r="7" fill="#4183c4"></circle><circle cx="423" cy="226" r="5" fill="#4183c4" stroke="#ffffff" style="stroke-width: 2px;"></circle></g><line x1="470" x2="710" y1="170" y2="170" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><line x1="470" x2="470" y1="140" y2="170" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><line x1="710" x2="710" y1="140" y2="170" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><line x1="590" x2="590" y1="170" y2="226" stroke="#d4d4d4" style="stroke-width: 1px; stroke-dasharray: 3px;"></line><g><circle cx="590" cy="226" r="7" fill="#4183c4"></circle><circle cx="590" cy="226" r="5" fill="#4183c4" stroke="#ffffff" style="stroke-width: 2px;"></circle></g><line x1="840" x2="840" y1="20" y2="266" stroke="#932d70" style="stroke-width: 1px; stroke-dasharray: none;"></line><g><circle cx="840" cy="266" r="14" fill="#932d70"></circle><circle cx="840" cy="266" r="10" fill="#932d70" stroke="#ffffff" style="stroke-width: 2px;"></circle></g>
+					</svg>
+				</div>
+				-->
+				<h3>Commit</h3>
+				<ul>
+					<li>
+						{{ comm.value.sha }}
+					</li>
+				</ul>
+				<h3>Parents</h3>				
+				<ul>
+					<li ng-repeat="comm in comm.value.parents">
+						{{ comm.sha }}
+					</li>
+				</ul>
+				<h3>Files</h3>				
+				<ul>
+					<li ng-repeat="file in comm.value.files">
+						{{ file.filename }} ({{ file.status }}, additions: {{ file.additions}}, deletions: {{ file.deletions }})
+					</li>
+				</ul>
+				<h3>Status</h3>				
+				<ul>
+					<li ng-repeat="stat in stat.value">
+						{{ stat.context }} {{ stat.description }} {{ stat.state }}
+					</li>
+				</ul>
+				<h3>Votes</h3>				
+				<ul>
+					<li ng-repeat="vote in votes.value">
+						{{ vote.vote }} {{ vote.user }}
+					</li>
+				</ul>
+			</tab>
+			<tab heading="Diffs" ng-show="comp">
+				<!-- {{ comp.value }} -->
+
+				<div ng-repeat="file in comp.value.files" class="panel panel-default" style="margin-top:20px;">
+					<div class="panel-heading">
+						<strong>
+							{{ file.filename }}
+						</strong>
+						<span class="pull-right">
+							<small>status: {{ file.status }} | {{ file.additions }} additions | {{ file.deletions }} deletions | {{ file.changes }} changes</small>
+						</span>
+					</div>
+
+					<div class="panel-body" ng-show="file.status=='renamed'">
+						This file was renamed.
+					</div>
+
+					<div class="panel-body" ng-show="file.status=='modified' || file.status=='added' || file.status=='removed'" style="padding:0;">
+						<diff content="file.patch"></diff>
+					</div>
+				</div>
+
+			</tab>
+			<tab heading="Files">
+				<!-- <file ng-repeat="file in files" path="file.path" content="file.content.value.content"></file> -->
+				<browser data="tree"></browser>
+			</tab>
+			<tab heading="Issues">
+				<ul class="media-list" ng-repeat="issue in issue.value">
+  					<li class="media">
+						<a class="pull-left" href="#">
+							<img class="media-object" ng-src="{{ issue.user.avatar_url }}" alt="{{ issue.user.login }}" style="width:48px;height:48px">
+    					</a>
+    					<div class="media-body">
+      						<h4 class="media-heading">{{ issue.title }}</h4>
+      						<p></p>
+      						<div class="media" ng-repeat="comment in issue.fetchedComments.value">
+            					<a class="pull-left" href="#">
+              						<img class="media-object" ng-src="{{ comment.user.avatar_url }}" alt="{{ comment.user.login }}"  style="width: 48px; height: 48px;">
+            					</a>
+            					<div class="media-body">
+              						{{ comment.body }}
+              					</div>
+            				</div>
+    					</div>
+  					</li>
+				</ul>
+			</tab>
+			<tab heading="Ninja">
+				<file path="'.ninja'" content="ninja.value.content "></file>
+			</tab>
+		</tabset>
+		
+	</div>
+</div>
