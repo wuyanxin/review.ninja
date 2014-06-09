@@ -1,6 +1,10 @@
 {
   "name": "review.ninja",
   "version": "0.0.1-1",
+  "domains": [
+    "review.ninja",
+    "www.review.ninja"
+  ],
   "subdomain": "dtornow-reviewninja",
   "dependencies": {
     "async": "^0.9.0",
