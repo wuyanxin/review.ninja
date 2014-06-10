@@ -1,4 +1,4 @@
-module = angular.module('app', ['ngRoute', 'ui.bootstrap', 'truncate', 'pluralize']);
+module = angular.module('app', ['ui.router', 'ui.bootstrap', 'truncate', 'pluralize']);
 
 // *************************************************************
 // Delay start 
@@ -12,51 +12,51 @@ angular.element(document).ready(function() {
 // Routes
 // *************************************************************
 
-module.config(['$routeProvider', '$locationProvider', function($route, $location) {
+module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-	$route.when('/', {
-		templateUrl: '/templates/home.html',
-		controller: 'HomeCtrl'
-	});
+	$stateProvider
+		.state('home', {
+			url:'/',
+			templateUrl: '/templates/home.html',
+			controller: 'HomeCtrl'
+		})
+		.state('repo', {
+			url: '/:user/:repo',
+			templateUrl: '/templates/repo.html',
+			controller: 'RepoCtrl',
+			resolve: {
+				repo: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
+					return $HUBService.call('repos', 'get', {
+						user: $stateParams.user,
+						repo: $stateParams.repo
+					});
+				}]
+			}
+		})
+		.state('comm', {
+			url: '/:user/:repo/:sha',
+			templateUrl: '/templates/comm.html',
+			controller: 'CommCtrl',
+			resolve: {
+				repo: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
+					return $HUBService.call('repos', 'get', {
+						user: $stateParams.user,
+						repo: $stateParams.repo
+					});
+				}],
 
-	$route.when('/:user/:repo', {
-		templateUrl: '/templates/repo.html',
-		controller: 'RepoCtrl',
-		resolve: {
-			repo: ['$route', '$HUBService', function($route, $HUBService) {
-				return $HUBService.call('repos', 'get', {
-					user: $route.current.params.user,
-					repo: $route.current.params.repo
-				});
-			}]
-		}
-	});
+				comm: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
+					return $HUBService.call('repos', 'getCommit', {
+						user: $stateParams.user,
+						repo: $stateParams.repo,
+						sha: $stateParams.sha
+					});
+				}]
+			}
+		});
 
-	$route.when('/:user/:repo/:sha', {
-		templateUrl: '/templates/comm.html',
-		controller: 'CommCtrl',
-		resolve: {
-			repo: ['$route', '$HUBService', function($route, $HUBService) {
-				return $HUBService.call('repos', 'get', {
-					user: $route.current.params.user,
-					repo: $route.current.params.repo
-				});
-			}],
+	$urlRouterProvider.otherwise('/');
 
-			comm: ['$route', '$HUBService', function($route, $HUBService) {
-				return $HUBService.call('repos', 'getCommit', {
-					user: $route.current.params.user,
-					repo: $route.current.params.repo,
-					sha: $route.current.params.sha
-				});
-			}]
-		}
-	});
-
-	$route.otherwise({
-		redirectTo: '/'
-	});
-
-	//$location.html5Mode(true);
+	// $location.html5Mode(true);
 
 }]);

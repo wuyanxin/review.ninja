@@ -1,4 +1,4 @@
-module.directive('browser', ['$routeParams', '$HUB', '$RPC', function($routeParams, $HUB, $RPC) {
+module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($stateParams, $HUB, $RPC) {
 	return {
 		restrict: 'E',
 		templateUrl: '/directives/templates/browser.html',
@@ -24,8 +24,8 @@ module.directive('browser', ['$routeParams', '$HUB', '$RPC', function($routePara
 
 				if(tree) {
 					scope.data = $HUB.call('gitdata', 'getTree', {
-						user: $routeParams.user,
-						repo: $routeParams.repo,
+						user: $stateParams.user,
+						repo: $stateParams.repo,
 						sha: tree.sha,
 					});
 				}
@@ -38,16 +38,16 @@ module.directive('browser', ['$routeParams', '$HUB', '$RPC', function($routePara
 				if(node.type == 'tree') {
 
 					scope.data = $HUB.call('gitdata', 'getTree', {
-						user: $routeParams.user,
-						repo: $routeParams.repo,
+						user: $stateParams.user,
+						repo: $stateParams.repo,
 						sha: node.sha,
 					});
 				}
 				else if(node.type == 'blob') {
 
 					scope.file = $RPC.call('comm', 'file', {
-						user: $routeParams.user,
-						repo: $routeParams.repo,
+						user: $stateParams.user,
+						repo: $stateParams.repo,
 						sha: node.sha
 					});
 				}
