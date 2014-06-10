@@ -1,45 +1,45 @@
-module.controller('CommCtrl', ['$scope', '$routeParams', '$HUB', '$RPC', 'repo', 'comm', function($scope, $routeParams, $HUB, $RPC, repo, comm) {
+module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', 'comm', function($scope, $stateParams, $HUB, $RPC, repo, comm) {
 
 	$scope.repo = repo;
 
 	$scope.comm = comm;
 
 	$scope.stat = $HUB.call('statuses', 'get', {
-		user: $routeParams.user,
-		repo: $routeParams.repo,
-		sha: $routeParams.sha,
+		user: $stateParams.user,
+		repo: $stateParams.repo,
+		sha: $stateParams.sha,
 	});
 
 	$scope.tree = $HUB.call('gitdata', 'getTree', {
-		user: $routeParams.user,
-		repo: $routeParams.repo,
-		sha: $routeParams.sha,
+		user: $stateParams.user,
+		repo: $stateParams.repo,
+		sha: $stateParams.sha,
 	});
 
 	$scope.vote = $RPC.call('vote', 'get', {
 		// repo uuid
 		repo: $scope.repo.value.id,
 		// comm uuid
-		comm: $routeParams.sha,
+		comm: $stateParams.sha,
 	});
 
 	$scope.votes = $RPC.call('vote', 'all', {
 		// repo uuid
 		repo: $scope.repo.value.id,
 		// comm uuid
-		comm: $routeParams.sha,
+		comm: $stateParams.sha,
 	});
 
 	$scope.issue = $HUB.call('issues', 'repoIssues', {
-		user: $routeParams.user,
-		repo: $routeParams.repo,
+		user: $stateParams.user,
+		repo: $stateParams.repo,
 		state: "open",
 		labels: "review.ninja"
 	}, function() {
 		$scope.issue.value.forEach(function(c) {
 			$HUB.call('issues', 'getComments', {
-				user: $routeParams.user,
-				repo: $routeParams.repo,
+				user: $stateParams.user,
+				repo: $stateParams.repo,
 				number: c.number
 			}, function(err, com) {
 				c.fetchedComments = com;
@@ -48,9 +48,9 @@ module.controller('CommCtrl', ['$scope', '$routeParams', '$HUB', '$RPC', 'repo',
 	});
 
 	$scope.ninja = $RPC.call('comm', 'ninja', {
-		user: $routeParams.user,
-		repo: $routeParams.repo,
-		comm: $routeParams.sha
+		user: $stateParams.user,
+		repo: $stateParams.repo,
+		comm: $stateParams.sha
 	}, function() {
 		$scope.ninjaObject = JSON.parse($scope.ninja.value.content);
 	});
@@ -64,7 +64,7 @@ module.controller('CommCtrl', ['$scope', '$routeParams', '$HUB', '$RPC', 'repo',
 			// repo uuid
 			repo: $scope.repo.value.id,
 			// comm uuid
-			comm: $routeParams.sha,
+			comm: $stateParams.sha,
 			// vote
 			vote: value
 		});
@@ -72,10 +72,10 @@ module.controller('CommCtrl', ['$scope', '$routeParams', '$HUB', '$RPC', 'repo',
 
 	$scope.compComm = function(commit) {
 		$scope.comp = $HUB.call('repos', 'compareCommits', {
-			user: $routeParams.user,
-			repo: $routeParams.repo,
+			user: $stateParams.user,
+			repo: $stateParams.repo,
 			// head sha
-			head: $routeParams.sha,
+			head: $stateParams.sha,
 			// base sha
 			base: commit
 		});

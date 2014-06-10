@@ -4,7 +4,8 @@
 			<tbody>
 				<tr ng-repeat="repo in repo.value">
 					<td>
-						<a ng-href="#/{{ repo.full_name }}">{{ repo.name }}</a>
+						<!-- <a ng-href="#/{{ repo.full_name }}">{{ repo.name }}</a> -->
+						<a ui-sref="repo({ user:repo.owner.login, repo:repo.name })">{{ repo.name }}</a>
 					</td>
 				</tr>
 			</tbody>

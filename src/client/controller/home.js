@@ -1,5 +1,5 @@
-module.controller('HomeCtrl', ['$scope', '$routeParams', '$HUB', '$RPC', function($scope, $routeParams, $HUB, $RPC) {
+module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', function($scope, $stateParams, $HUB, $RPC) {
 
-	$scope.repo = $HUB.call("repos", "getAll");
+	$scope.repo = $HUB.call('repos', 'getAll');
 
 }]);
