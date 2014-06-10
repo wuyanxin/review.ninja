@@ -159,7 +159,7 @@ app.all('/api/:obj/:fun', function(req, res) {
 		if (err) {
 			console.log(('✖ ' + req.params.obj + ":" +  req.params.fun).bold.red);
 			console.log(err);
-			res.send(500, JSON.stringify(err));
+			res.send(err.code || 500, JSON.stringify(err.text || err));
 		}
 		else {
 			console.log(('✓ ' + req.params.obj + ":" +  req.params.fun).bold.green);
