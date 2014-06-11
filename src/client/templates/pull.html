@@ -48,9 +48,16 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="commit in commits.value">
+						<tr ng-repeat="commit in commits.value | orderBy:'commit.committer.date':true">
 							<td>
-								<a ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">{{ commit.sha | characters:10 }}</a>
+								<span ng-show="$index===0">
+									<a ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">
+										{{ commit.sha | characters:10 }}
+									</a>
+								</span>
+								<span ng-show="$index!==0">
+									{{ commit.sha | characters:10 }}
+								</span>
 							</td>
 							<td>{{ commit.commit.message }}</td>
 							<td>{{ commit.author.login }}</td>
@@ -80,6 +87,10 @@
 						<diff content="file.patch"></diff>
 					</div>
 				</div>
+			</tab>
+
+			<tab heading="Files">
+				<browser data="tree"></browser>
 			</tab>
 		</tabset>
 
