@@ -1,24 +1,26 @@
-module.controller('RepoCtrl', ['$scope', '$routeParams', '$HUB', '$RPC', 'repo', function($scope, $routeParams, $HUB, $RPC, repo) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', function($scope, $stateParams, $HUB, $RPC, repo) {
+
+	console.log($stateParams);
 
 	// get the repo
 	$scope.repo = repo;
 
 	// get the branches
 	$scope.branches = $HUB.call('repos', 'getBranches', {
-		user:$routeParams.user, 
-		repo:$routeParams.repo
+		user:$stateParams.user, 
+		repo:$stateParams.repo
 	});
 
 	// get the commits
 	$scope.commits = $HUB.call('repos', 'getCommits', {
-		user:$routeParams.user, 
-		repo:$routeParams.repo
+		user:$stateParams.user, 
+		repo:$stateParams.repo
 	});
 
 	// get the pull requests
 	$scope.pulls = $HUB.call('pullRequests', 'getAll', {
-		user:$routeParams.user, 
-		repo:$routeParams.repo
+		user:$stateParams.user, 
+		repo:$stateParams.repo
 	});
 
 }]);
