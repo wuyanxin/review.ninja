@@ -1,38 +1,45 @@
 
 var github = require("../services/github");
 
+var Comm = require('mongoose').model('Comm');
+
 module.exports = {
 
-	ninja: function(req, done) {
+	get: function(req, done) {
 
+		var uuid = req.args.uuid;
 		var user = req.args.user;
 		var repo = req.args.repo;
 		var comm = req.args.comm;
 
-		github({obj: "repos", fun: "getContent", arg: {user: user, repo: repo, ref: comm, path: ".ninja.json"}, token: req.user.token}, function(err, obj) {
-			
-			var content;
+		Comm.findOne({repo: uuid, uuid: comm}, function(err, obj) {
 
-			try {
-				content = new Buffer(obj.content, 'base64').toString();
-			} catch(ex) {
-				content = null;
+			if(obj) {
+				return done(null, obj);
 			}
 
-			var config;
+			else {
 
-			try {
-				config = JSON.parse(content);
-			} catch(ex) {
-				config = null;
+				github({obj: "repos", fun: "getContent", arg: {user: user, repo: repo, ref: comm, path: ".ninja.json"}, token: req.user.token}, function(err, obj) {
+					
+					var content;
+
+					try {
+						content = new Buffer(obj.content, 'base64').toString();
+					} catch(ex) {
+						content = null;
+					}
+
+					Comm.findOneAndUpdate({repo: uuid, uuid: comm}, {repo: uuid, uuid: comm, ninja: content}, {upsert: true}, function(err, obj) {
+						return done(null, obj);
+					});
+
+				});
+
 			}
-
-			return done(null, {
-				content: content,
-				config: config
-			});
 
 		});
+
 	},
 
 	file: function(req, done) {

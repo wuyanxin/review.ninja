@@ -4,10 +4,10 @@ module.exports = function(config, votes, done) {
 	var sum = 0;
 	
 	votes.forEach(function(v) {
-		sum += v;
+		sum += parseInt(v.value, 10);
 	});
 
-	var approval = "";
+	var approval = "pending";
 
 	if(sum >= config.approval.approved) {
 		approval = "approved";
@@ -17,6 +17,6 @@ module.exports = function(config, votes, done) {
 		approval = "rejected";
 	}
 
-	done(null, sum, approval);
+	done(null, approval);
 
 };

@@ -2,9 +2,11 @@
 var mongoose = require('mongoose');
 
 var CommSchema = mongoose.Schema({
-    uuid: Number,
+    uuid: String,
+    user: String,
     repo: String,
-    status: String
+    ninja: String,
+    approval: Object
 });
 
 var Comm = mongoose.model('Comm', CommSchema);

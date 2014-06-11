@@ -8,6 +8,7 @@ var VoteSchema = mongoose.Schema({
 	vote: String
 });
 
+
 VoteSchema.index({
 	repo: 1,
 	comm: 1,
@@ -16,7 +17,20 @@ VoteSchema.index({
 	unique: true
 });
 
+
+VoteSchema.post('save', function () {
+
+	var approval = require('../services/approval');
+
+	approval(this.comm, function() {
+
+	});
+
+});
+
+
 var Vote = mongoose.model('Vote', VoteSchema);
+
 
 module.exports = {
 	Vote: Vote

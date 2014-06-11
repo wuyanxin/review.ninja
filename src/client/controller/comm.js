@@ -47,12 +47,13 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		});
 	});
 
-	$scope.ninja = $RPC.call('comm', 'ninja', {
+	$scope.ninja = $RPC.call('comm', 'get', {
+		uuid: $scope.repo.value.id,
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		comm: $stateParams.sha
 	}, function() {
-		$scope.ninjaObject = JSON.parse($scope.ninja.value.content);
+		$scope.ninja.value.config = JSON.parse($scope.ninja.value.ninja);
 	});
 
 	//
