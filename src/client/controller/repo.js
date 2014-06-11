@@ -31,9 +31,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 			var closed = $scope.closedPulls.value || [];
 
 			$scope.pulls = open.concat(closed);
-
-			console.log($scope.pulls);
-		})
+		});
 	});
 
 }]);
