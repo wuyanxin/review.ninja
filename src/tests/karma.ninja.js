@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: '../../',
 
 
     // frameworks to use
@@ -16,13 +16,18 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // Testing libs
+      // TODO: CDN
       'src/bower/should/should.js',
 
       // Angular
-      'src/bower/angular/angular.js',
-      'src/bower/angular-resource/angular-resource.js',
-      'src/bower/angular-route/angular-route.js',
-      'src/bower/angular-bootstrap/ui-bootstrap.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular-route.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js',
+      // TODO: CDN
       'src/bower/angular-mocks/angular-mocks.js',
 
       // Client code

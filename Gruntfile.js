@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 		// Client tests
 		karma: {
 			unit: {
-				configFile: 'karma.conf.js',
+				configFile: 'src/tests/karma.ninja.js'
 			}
 		},
 
@@ -41,6 +41,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
-	grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
+	grunt.registerTask('default', ['karma', 'jshint', 'mochaTest']);
 
 };
