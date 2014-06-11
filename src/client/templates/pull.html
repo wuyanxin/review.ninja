@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<span>
+						{{ repo.value.full_name }}
+					</span>
+					<span class="pull-right">
+						<small>{{ comm.value.sha }}</small>
+					</span>
+				</h3>
+			</div>
+			<div class="panel-body">
+				<span>
+					<img ng-src="{{ comm.value.author.avatar_url}}" width="18px" />
+					{{comm.value.author.login}} <small moment="comm.value.commit.committer.date"></small>
+				</span>
+				<span class="pull-right">
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							Not yet approved
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li ng-repeat="vote in ninjaObject.votes"><a href="#">{{ vote.label }}</a></li>
+						</ul>
+					</div>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
