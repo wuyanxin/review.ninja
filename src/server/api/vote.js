@@ -69,9 +69,9 @@ module.exports = {
 
 	status: function(req, done) {
 
-		Comm.findOne({repo: req.args.repo}, function(err, comm) {
+		Comm.with({repo: req.args.repo, uuid: req.args.comm}, function(err, comm) {
 
-			var status = comm && comm.status ? comm.status : "pending";
+			var status = comm ? comm.status : "pending";
 			
 			done(err, status);
 		

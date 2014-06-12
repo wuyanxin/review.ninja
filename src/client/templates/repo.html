@@ -55,7 +55,7 @@
 							<td>{{ commit.commit.message }}</td>
 							<td>{{ commit.author.login }}</td>
 							<td moment="commit.commit.committer.date"></td>
-							<td style="text-align:right">+1</td>
+							<td style="text-align:right">{{ commit.rnstatus }}</td>
 						</tr>
 					</tbody>
 				</table>
