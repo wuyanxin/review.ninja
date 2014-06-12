@@ -11,16 +11,15 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 
 	// get the commits
 	$scope.commits = $HUB.call('repos', 'getCommits', {
-		user: $stateParams.user, 
+		user: $stateParams.user,
 		repo: $stateParams.repo
 	}, function() {
-		$scope.commits.value.forEach(function(commit) {
-			$RPC.call('vote', 'all', {
+		$scope.commits.value.forEach(function(comm) {
+			$RPC.call("vote", "status", {
 				repo: $scope.repo.value.id,
-				comm: commit.sha
-			}, function(err, votes){
-				commit.votes = votes.value || null;
-				// how are we going to sum these votes ??
+				comm: comm.sha
+			}, function(err, vote) {
+				comm.rnstatus = vote.value;
 			});
 		});
 	});
