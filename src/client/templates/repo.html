@@ -66,16 +66,16 @@
 					<thead>
 						<tr>
 							<th>title</th>
-							<th>body</th>
 							<th>author</th>
 							<th>date</th>
 							<th>state</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="pull in pulls.value">
-							<td>{{ pull.title }}</td>
-							<td>{{ pull.body }}</td>
+						<tr ng-repeat="pull in pulls">
+							<td>
+								<a ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">{{ pull.title }}</a>
+							</td>
 							<td>{{ pull.user.login }}</td>
 							<td moment="pull.created_at"></td>
 							<td>{{ pull.state }}</td>
