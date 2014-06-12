@@ -1,33 +1,49 @@
 <div style="overflow-x:scroll;">
 	<table class="table" style="margin-bottom:0; font-size:13px;">
-		<tbody>
-			<tr ng-repeat="line in lines track by $index" class="highlight" ng-class="{meta:line.type=='meta'}">
-				<td class="comment" style="display:none; position:absolute; width:30px; margin-left:-30px; padding:5px 8px; border-top:none;">
+		<tbody ng-repeat="line in lines track by $index" style="border:none;">
+			<tr class="highlight" ng-class="{meta:line.type=='meta'}">
+				<td class="comment" style="display:none; position:absolute; width:30px; margin-left:-30px; padding:5px 8px; border:none;">
 					<a href=""><i ng-click="$parent.comment=$index" ng-show="line.type!='meta'" class="fa fa-comments"></i></a>
 				</td>
-				<td class="dark" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="width:45px; position:absolute; background:#fff; padding:5px 8px; text-align:right; color:#aaa; border-right:1px solid; border-top:none;">
+				<td class="dark" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="width:45px; position:absolute; background:#fff; padding:5px 8px; text-align:right; color:#aaa; border:none; border-right:1px solid;">
 					<pre style="color:#aaa;">{{ line.base || ' ' }}</pre>
 				</td>
-				<td class="dark" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="width:45px; position:absolute; background:#fff; padding:5px 8px; margin-left:45px; text-align:right; color:#aaa; border-right:1px solid; border-top:none;">
+				<td class="dark" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="width:45px; position:absolute; background:#fff; padding:5px 8px; margin-left:45px; text-align:right; color:#aaa; border:none; border-right:1px solid;">
 					<pre style="color:#aaa;">{{ line.head || ' ' }}</pre>
 				</td>
-				<td ng-hide="comment==$index" class="light" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="padding:5px 10px 5px 100px; border-top:none;">
-					<pre ng-show="!comment">{{ line.line }}</pre>
-					<pre ng-show="comment" style="color:#aaa;">{{ line.line }}</pre>
-				</td>
-				<td ng-show="comment==$index" class="light" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="padding:5px 10px 5px 100px; border-top:none;">
+				<td class="light" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="padding:5px 10px 5px 100px; border:none;">
 					<pre>{{ line.line }}</pre>
-					<div style="position:absolute;">
-						<form role="form" style="margin:10px 0; ">
-							<textarea style="width:500px;" class="form-control" rows="3"></textarea>
-							<div style="width:500px; margin:10px 0;">
-								<span class="pull-right">
-									<i class="fa fa-2x fa-comments" style="vertical-align:top;"></i>
-									<button ng-click="$parent.comment=null" type="button" class="btn btn-default">Cancel</button>
-									<button type="button" class="btn btn-primary">Comment</button>
-								</span>
-							</div>
-						</form>
+				</td>
+			</tr>
+			<tr ng-show="comment===$index || comments[$index]">
+			<!-- <tr> -->
+				<td colspan="4" style="border-top:1px solid #aaa; border-bottom:1px solid #aaa; padding:10px 10px 10px 100px;">
+					<div ng-repeat="comment in comments[$index]" class="panel panel-default" style="max-width:600px; margin-bottom:10px;">
+						<div class="panel-heading">
+							<img ng-src="{{ comment.user.avatar_url }}" width="14px" />
+							{{ comment.user.login }} <small moment="comment.created_at"></small>
+						</div>
+						<div class="panel-body">
+							{{ comment.body }}
+						</div>
+					</div>
+
+					<button ng-show="comment!==$index" ng-click="$parent.comment=$index" type="button" class="btn btn-default btn-sm">Add a line note</button>
+
+					<div ng-show="comment===$index" class="panel panel-default" style="max-width:600px; margin-bottom:10px;">
+						<div class="panel-heading">
+							Comment
+							<i class="fa fa-lg fa-comments pull-right"></i>
+						</div>
+						<div class="panel-body">
+							<textarea class="form-control" rows="3" ng-model="body"></textarea>
+						</div>
+						<div class="panel-footer" style="height:50px;">
+							<span class="pull-right">
+								<button ng-click="$parent.comment=null" type="button" class="btn btn-default btn-sm">Cancel</button>
+								<button ng-click="addComment(body, path, $index, line.base||line.head)" type="button" class="btn btn-primary btn-sm">Comment</button>
+							</span>
+						</div>
 					</div>
 				</td>
 			</tr>

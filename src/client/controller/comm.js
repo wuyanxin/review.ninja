@@ -4,6 +4,8 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 
 	$scope.comm = comm;
 
+	$scope.user = $HUB.call('user', 'get');
+
 	$scope.stat = $HUB.call('statuses', 'get', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
@@ -28,6 +30,28 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		repo: $scope.repo.value.id,
 		// comm uuid
 		comm: $stateParams.sha,
+	});
+
+	$scope.comments = $HUB.call('repos', 'getCommitComments', {
+		user: $stateParams.user,
+		repo: $stateParams.repo,
+		sha: $stateParams.sha
+	}, function() {
+		$scope.comments.value.forEach(function(comment) {
+
+			// we need to match these comments to files
+			for(var i=0; i<$scope.comm.value.files.length; i++) {
+				if(comment.path === $scope.comm.value.files[i].filename) {
+					if(!$scope.comm.value.files[i].comments) {
+						$scope.comm.value.files[i].comments = {};
+					}
+					if(!$scope.comm.value.files[i].comments[comment.position]) {
+						$scope.comm.value.files[i].comments[comment.position] = [];
+					}
+					$scope.comm.value.files[i].comments[comment.position].push(comment);
+				}
+			}
+		});
 	});
 
 	$scope.issue = $HUB.call('issues', 'repoIssues', {
@@ -70,19 +94,19 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		});
 	};
 
-	$scope.compComm = function(commit) {
-		$scope.comp = $HUB.call('repos', 'compareCommits', {
-			user: $stateParams.user,
-			repo: $stateParams.repo,
-			// head sha
-			head: $stateParams.sha,
-			// base sha
-			base: commit
-		});
-	};
+	// $scope.compComm = function(commit) {
+	// 	$scope.comp = $HUB.call('repos', 'compareCommits', {
+	// 		user: $stateParams.user,
+	// 		repo: $stateParams.repo,
+	// 		// head sha
+	// 		head: $stateParams.sha,
+	// 		// base sha
+	// 		base: commit
+	// 	});
+	// };
 
-	if($scope.comm.value.parents.length > 0) {
-		$scope.compComm($scope.comm.value.parents[0].sha);
-	}
+	// if($scope.comm.value.parents.length > 0) {
+	// 	$scope.compComm($scope.comm.value.parents[0].sha);
+	// }
 
 }]);

@@ -31,7 +31,8 @@
 					<small><strong>commit</strong> {{ comm.value.sha }}</small><br />
 					<small><strong>{{ comm.value.parents.length | pluralize:'parent' }}</strong></small>
 					<small ng-repeat="parent in comm.value.parents">
-						<a href="" ng-click="compComm(parent.sha)">{{ parent.sha | limitTo:7 }}</a>
+						<!-- <a href="" ng-click="compComm(parent.sha)">{{ parent.sha | limitTo:7 }}</a> -->
+						{{ parent.sha | limitTo:7 }}
 					</small>
 				</span>
 			</div>
@@ -85,10 +86,8 @@
 					</li>
 				</ul>
 			</tab>
-			<tab heading="Diffs" ng-show="comp">
-				<!-- {{ comp.value }} -->
-
-				<div ng-repeat="file in comp.value.files" class="panel panel-default" style="margin-top:20px;">
+			<tab heading="Diffs">
+				<div ng-repeat="file in comm.value.files" class="panel panel-default" style="margin-top:20px;">
 					<div class="panel-heading">
 						<strong>
 							{{ file.filename }}
@@ -103,13 +102,11 @@
 					</div>
 
 					<div class="panel-body" ng-show="file.status=='modified' || file.status=='added' || file.status=='removed'" style="padding:0;">
-						<diff content="file.patch"></diff>
+						<diff path="file.filename" content="file.patch" comments="file.comments"></diff>
 					</div>
 				</div>
-
 			</tab>
 			<tab heading="Files">
-				<!-- <file ng-repeat="file in files" path="file.path" content="file.content.value.content"></file> -->
 				<browser data="tree"></browser>
 			</tab>
 			<tab heading="Issues">

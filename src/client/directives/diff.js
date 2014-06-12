@@ -1,9 +1,11 @@
-module.directive('diff', function() {
+module.directive('diff', ['$stateParams', '$HUB', function($stateParams, $HUB) {
 	return {
 		restrict: 'E',
 		templateUrl: '/directives/templates/diff.html',
 		scope: {
-			content: '='
+			path: '=',
+			content: '=',
+			comments: '='
 		},
 		link: function(scope, elem, attrs) {
 
@@ -26,8 +28,6 @@ module.directive('diff', function() {
 
 								var meta = lines[i].match(/@@(.*?)@@/g)[0];
 
-								var line = lines[i].substring(meta.length+1, lines[i].length) || ' ';
-
 								var range = meta.substring(3, meta.length-3);
 
 								var baseRange = range.split(' ')[0];
@@ -44,26 +44,18 @@ module.directive('diff', function() {
 									line: meta
 								});
 
-								scope.lines.push({
-									line: line,
-									head: head++,
-									base: base++
-								});
-
 								break;
 							case '+':
 								scope.lines.push({
 									type: 'addition',
 									line: line,
-									head: head++,
-									base: null
+									head: head++
 								});
 								break;
 							case '-':
 								scope.lines.push({
 									type: 'deletion',
 									line: line,
-									head: null,
 									base: base++
 								});
 								break;
@@ -80,6 +72,38 @@ module.directive('diff', function() {
 					}
 				}
 			});
+
+			//
+			// Actions
+			//
+
+			scope.addComment = function(body, path, position, line) {
+
+				if(body) {
+					$HUB.call('repos', 'createCommitComment', {
+						user: $stateParams.user,
+						repo: $stateParams.repo,
+						sha: $stateParams.sha,
+						commit_id: $stateParams.sha,
+						body: body,
+						path: path,
+						position: position,
+						line: line
+					}, function(err, comment) {
+						if(!err) {
+							if(!scope.comments) {
+								scope.comments = {};
+							}
+							if(!scope.comments[position]) {
+								scope.comments[position] = [];
+							}
+							scope.comments[position].push(comment.value);
+						}
+
+						scope.comment = null;
+					});
+				}
+			};
 		}
 	}
-});
+}]);

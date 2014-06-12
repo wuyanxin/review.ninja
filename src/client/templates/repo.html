@@ -55,7 +55,7 @@
 							<td>{{ commit.commit.message }}</td>
 							<td>{{ commit.author.login }}</td>
 							<td moment="commit.commit.committer.date"></td>
-							<td style="text-align:right">+1</td>
+							<td style="text-align:right">{{ commit.votes[0].vote || '&mdash;' }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -69,6 +69,7 @@
 							<th>author</th>
 							<th>date</th>
 							<th>state</th>
+							<th style="text-align:right">vote</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -79,6 +80,7 @@
 							<td>{{ pull.user.login }}</td>
 							<td moment="pull.created_at"></td>
 							<td>{{ pull.state }}</td>
+							<td style="text-align:right">{{ pull.votes[0].vote || '&mdash;' }}</td>
 						</tr>
 					</tbody>
 				</table>
