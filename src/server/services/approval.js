@@ -1,22 +1,29 @@
-
+var assert = require('assert');
+// module
 var approval = require('../approval/default');
-
+// models
 var Comm = require('mongoose').model('Comm');
 var Vote = require('mongoose').model('Vote');
 
-module.exports = function(comm, done) {
+module.exports = function(uuid, done) {
 
-	Comm.findOne({uuid: comm}, function(err, comm) {
+	Comm.findOne({uuid: uuid}, function(err, comm) {
 
-		var config = JSON.parse(comm.ninja);
+		Vote.find({comm: uuid}, function(err, vote) {
 
-		Vote.find({comm: comm}, function(err, vote) {
+			if( !(comm && vote) ) {
+				return done(null, "pending");
+			}
 
-			approval(config, vote, function(err, approval) {
+			approval(comm.config, vote, function(err, approval) {
 
-				Comm.update({uuid: comm.uuid}, {approval: approval}, function(err, count) {
+				if(err) {
+					return done(null, "pending");
+				}
 
+				Comm.update({uuid: uuid}, {approval: approval}, function(err, count) {
 
+					done(err, approval);
 
 				});
 

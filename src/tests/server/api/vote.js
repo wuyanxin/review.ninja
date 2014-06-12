@@ -1,6 +1,4 @@
-
 require('./../../trace.ninja.js');
-
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
