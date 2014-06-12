@@ -34,7 +34,7 @@ module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
 			}
 		})
 		.state('comm', {
-			url: '/:user/:repo/:sha',
+			url: '/:user/:repo/commit/:sha',
 			templateUrl: '/templates/comm.html',
 			controller: 'CommCtrl',
 			resolve: {
@@ -50,6 +50,27 @@ module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
 						user: $stateParams.user,
 						repo: $stateParams.repo,
 						sha: $stateParams.sha
+					});
+				}]
+			}
+		})
+		.state('pull', {
+			url: '/:user/:repo/pull/:number',
+			templateUrl: '/templates/pull.html',
+			controller: 'PullCtrl',
+			resolve: {
+				repo: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
+					return $HUBService.call('repos', 'get', {
+						user: $stateParams.user,
+						repo: $stateParams.repo
+					});
+				}],
+				
+				pull: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
+					return $HUBService.call('pullRequests', 'get', {
+						user: $stateParams.user,
+						repo: $stateParams.repo,
+						number: $stateParams.number
 					});
 				}]
 			}
