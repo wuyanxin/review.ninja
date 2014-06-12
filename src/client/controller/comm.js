@@ -4,8 +4,6 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 
 	$scope.comm = comm;
 
-	$scope.user = $HUB.call('user', 'get');
-
 	$scope.stat = $HUB.call('statuses', 'get', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
