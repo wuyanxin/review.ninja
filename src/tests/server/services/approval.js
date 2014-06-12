@@ -10,17 +10,22 @@ var Vote = require("../../../server/documents/vote").Vote;
 
 describe('approval', function () {
 
-	it('yields not found for unknown com', function (done) {
+	it('should yield "pending" for unknown comm', function (done) {
 
 		var stubComm = sinon.stub(Comm, "findOne", function(args, done) {
 			done(null, null);
 		});
 
+		var stubVote = sinon.stub(Vote, "find", function(args, done) {
+			done(null, null);
+		});
+
 		approval('123456789', function(err, approval) {
 
-			assert.equal(err, "Not found");
+			assert.equal(approval, "pending");
 
 			stubComm.restore();
+			stubVote.restore();
 
 			done();
 
@@ -28,7 +33,7 @@ describe('approval', function () {
 
 	});
 
-	it('yields pending for unknown vote', function (done) {
+	it('should yield "pending" for unknown vote', function (done) {
 
 		var stubComm1 = sinon.stub(Comm, "findOne", function(args, done) {
 			done(null, {
@@ -48,9 +53,11 @@ describe('approval', function () {
 
 		approval('123456789', function(err, approval) {
 
-			assert.equal(err, "Not found");
+			assert.equal(approval, "pending");
 
 			stubComm1.restore();
+			stubComm2.restore();
+			stubVote.restore();
 
 			done();
 
