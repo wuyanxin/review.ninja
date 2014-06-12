@@ -85,6 +85,18 @@
 						{{ vote.vote }} {{ vote.user }}
 					</li>
 				</ul>
+				<h3>Comments</h3>				
+				<ul>
+					<li ng-repeat="comment in comments.value">
+						{{ comment.user.login }}, {{ comment.body }}
+					</li>
+				</ul>
+				<h3>Issues</h3>				
+				<ul>
+					<li ng-repeat="issue in issue.value">
+						{{ issue.user.login }}, {{ issue.title }}
+					</li>
+				</ul>
 			</tab>
 			<tab heading="Diffs">
 				<div ng-repeat="file in comm.value.files" class="panel panel-default" style="margin-top:20px;">
