@@ -30,24 +30,36 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		comm: $stateParams.sha,
 	});
 
-	$scope.comments = $HUB.call('repos', 'getCommitComments', {
+	$scope.comments = {
+		diff: {},
+		file: {}
+	};
+
+	$HUB.call('repos', 'getCommitComments', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		sha: $stateParams.sha
-	}, function() {
-		$scope.comments.value.forEach(function(comment) {
+	}, function(err, comments) {
+		comments.value.forEach(function(comment) {
 
-			// we need to match these comments to files
-			for(var i=0; i<$scope.comm.value.files.length; i++) {
-				if(comment.path === $scope.comm.value.files[i].filename) {
-					if(!$scope.comm.value.files[i].comments) {
-						$scope.comm.value.files[i].comments = {};
-					}
-					if(!$scope.comm.value.files[i].comments[comment.position]) {
-						$scope.comm.value.files[i].comments[comment.position] = [];
-					}
-					$scope.comm.value.files[i].comments[comment.position].push(comment);
+			if(comment.position) {
+				if(!$scope.comments.diff[comment.path]) {
+					$scope.comments.diff[comment.path] = {};
 				}
+				if(!$scope.comments.diff[comment.path][comment.position]) {
+					$scope.comments.diff[comment.path][comment.position] = [];
+				}
+				$scope.comments.diff[comment.path][comment.position].push(comment);
+			}
+
+			if(comment.line) {
+				if(!$scope.comments.file[comment.path]) {
+					$scope.comments.file[comment.path] = {};
+				}
+				if(!$scope.comments.file[comment.path][comment.line]) {
+					$scope.comments.file[comment.path][comment.line] = [];
+				}
+				$scope.comments.file[comment.path][comment.line].push(comment);
 			}
 		});
 	});

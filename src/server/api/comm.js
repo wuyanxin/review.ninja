@@ -50,5 +50,45 @@ module.exports = {
 
 		});
 
+	},
+
+	file: function(req, done) {
+
+		var user = req.args.user;
+		var repo = req.args.repo;
+		var sha = req.args.sha;
+
+		github({
+			obj: 'gitdata',
+			fun: 'getBlob',
+			arg: {
+				user: user,
+				repo: repo,
+				sha: sha
+			},
+			token: req.user.token
+		}, function(err, obj) {
+
+			var json;
+
+			try {
+				switch(obj.encoding) {
+					case 'base64':
+						json = (new Buffer(obj.content, 'base64')).toString();
+						break;
+					default:
+						json = '';
+						break;
+				}
+			} catch(ex) {
+				json = '';
+			}
+
+			done(null, {
+				content: json
+			});
+
+		});
+
 	}
 };
