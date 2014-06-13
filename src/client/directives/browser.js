@@ -3,11 +3,14 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($statePara
 		restrict: 'E',
 		templateUrl: '/directives/templates/browser.html',
 		scope: {
-			data: '='
+			data: '=',
+			comments: '='
 		},
 		link: function(scope, elem, attrs) {
 
 			scope.stack = [];
+
+			scope.path = [];
 
 			scope.$watch('data.value', function(newVal, oldVal) {
 
@@ -19,6 +22,8 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($statePara
 			scope.up = function() {
 
 				scope.file = null;
+
+				scope.path.pop();
 
 				var tree = scope.stack.pop();
 
@@ -32,6 +37,8 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($statePara
 			};
 
 			scope.down = function(node) {
+
+				scope.path.push(node.path);
 
 				scope.stack.push(scope.tree);
 
