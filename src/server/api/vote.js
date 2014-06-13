@@ -1,4 +1,6 @@
-
+// module
+var approval = require('../services/approval');
+// models
 var Comm = require("../documents/comm.js").Comm;
 var Vote = require("../documents/vote.js").Vote;
 
@@ -87,7 +89,13 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	option: function(req, done) {
+	calculate: function(req, done) {
+
+		approval(req.args.comm, function(err, approval) {
+
+			done(null, approval);
+
+		});
 
 	}
 

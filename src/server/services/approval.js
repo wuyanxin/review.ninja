@@ -9,9 +9,13 @@ module.exports = function(uuid, done) {
 
 	Comm.with({uuid: uuid}, function(err, comm) {
 
+		if(!comm) {
+			return done(null, "pending");
+		}
+
 		Vote.find({comm: uuid}, function(err, vote) {
 
-			if( !(comm && vote) ) {
+			if(!vote) {
 				return done(null, "pending");
 			}
 
@@ -21,11 +25,7 @@ module.exports = function(uuid, done) {
 					return done(null, "pending");
 				}
 
-				Comm.update({uuid: uuid}, {approval: approval}, function(err, count) {
-
-					done(err, approval);
-
-				});
+				done(err, approval);
 
 			});
 
