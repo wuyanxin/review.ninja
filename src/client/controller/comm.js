@@ -113,7 +113,7 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		});
 	};
 
-	$scope.addComment = function(body) {
+	$scope.addComment = function(body, issue) {
 
 		if(body) {
 			$HUB.call('repos', 'createCommitComment', {
@@ -127,6 +127,16 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 					$scope.commitComments.value.push(comment.value);
 				}
 			});
+
+			if(issue) {
+				$RPC.call('issue', 'add', {
+					user: $stateParams.user,
+					repo: $stateParams.repo,
+					comm: $stateParams.sha,
+					title: 'Issue with commit ' + $stateParams.sha,
+					body: body
+				});
+			}
 		}
 	};
 
