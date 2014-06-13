@@ -30,11 +30,11 @@ describe('vote::status', function () {
 	it('should yield "pending" if comm::status is not set', function (done) {
 
 		var stub = sinon.stub(Comm, "findOne", function(args, done) {
-			done(null, {
+			done(null, new Comm({
 				id: "id",
 				uuid: "uuid",
-				status: undefined
-			});
+				approval: undefined
+			}));
 		});
 
 		vote.status({args: {uuid: "uuid"}}, function(err, obj) {
@@ -52,11 +52,11 @@ describe('vote::status', function () {
 	it('should yield comm::status if comm::status is set', function (done) {
 
 		var stub = sinon.stub(Comm, "findOne", function(args, done) {
-			done(null, {
+			done(null, new Comm({
 				id: "id",
 				uuid: "uuid",
-				status: "approved"
-			});
+				approval: "approved"
+			}));
 		});
 
 		vote.status({args: {uuid: "uuid"}}, function(err, obj) {

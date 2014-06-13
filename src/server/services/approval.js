@@ -7,7 +7,7 @@ var Vote = require('mongoose').model('Vote');
 
 module.exports = function(uuid, done) {
 
-	Comm.findOne({uuid: uuid}, function(err, comm) {
+	Comm.with({uuid: uuid}, function(err, comm) {
 
 		Vote.find({comm: uuid}, function(err, vote) {
 
