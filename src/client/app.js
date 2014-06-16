@@ -1,4 +1,4 @@
-module = angular.module('app', ['ui.router', 'ui.bootstrap', 'truncate', 'pluralize']);
+module = angular.module('app', ['ui.router', 'ui.bootstrap', 'filters']);
 
 // *************************************************************
 // Delay start 

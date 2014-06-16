@@ -1,4 +1,4 @@
-module.directive('diff', ['$stateParams', '$HUB', function($stateParams, $HUB) {
+module.directive('diff', ['$stateParams', '$HUB', 'CommitCommentService', function($stateParams, $HUB, CommitCommentService) {
 	return {
 		restrict: 'E',
 		templateUrl: '/directives/templates/diff.html',
