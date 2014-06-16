@@ -44,7 +44,8 @@
 							<th>message</th>
 							<th>author</th>
 							<th>date</th>
-							<th style="text-align:right">vote</th>
+							<th>votes</th>
+							<th>approval</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -55,7 +56,8 @@
 							<td>{{ commit.commit.message }}</td>
 							<td>{{ commit.author.login }}</td>
 							<td moment="commit.commit.committer.date"></td>
-							<td style="text-align:right">{{ commit.rnstatus }}</td>
+							<td>{{ commit.rnvotes.length }}</td>
+							<td>{{ commit.rnstatus }}</td>
 						</tr>
 					</tbody>
 				</table>
