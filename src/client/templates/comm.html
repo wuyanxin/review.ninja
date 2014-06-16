@@ -142,6 +142,36 @@
   					</li>
 				</ul>
 			</tab>
+			<tab heading="Comments">
+				<div style="margin-top:20px;">
+					<div ng-repeat="comment in commitComments.value" class="panel panel-default">
+						<div class="panel-heading">
+							<img ng-src="{{ comment.user.avatar_url }}" width="14px" />
+							{{ comment.user.login }} <small moment="comment.created_at"></small>
+						</div>
+						<div class="panel-body">
+							{{ comment.body }}
+						</div>
+					</div>
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Comment
+							<i class="fa fa-lg fa-comments pull-right"></i>
+						</div>
+						<div class="panel-body">
+							<textarea class="form-control" rows="3" ng-model="comment_body"></textarea>
+						</div>
+						<div class="panel-footer" style="height:50px;">
+							<input type="checkbox" ng-model="comment_issue"> Also create an issue
+							<span class="pull-right">
+								<button ng-click="$parent.comment=null" type="button" class="btn btn-default btn-sm">Cancel</button>
+								<button ng-click="addComment(comment_body, comment_issue)" type="button" class="btn btn-primary btn-sm">Comment</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</tab>
 			<tab heading="Ninja">
 				<file path="'.ninja'" content="ninja.value.ninja"></file>
 			</tab>

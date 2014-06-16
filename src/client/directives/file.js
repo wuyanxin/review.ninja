@@ -1,4 +1,4 @@
-module.directive('file', ['$stateParams', '$HUB', function($stateParams, $HUB) {
+module.directive('file', ['$stateParams', '$HUB', '$RPC', function($stateParams, $HUB, $RPC) {
 	return {
 		restrict: 'E',
 		templateUrl: '/directives/templates/file.html',
@@ -19,7 +19,7 @@ module.directive('file', ['$stateParams', '$HUB', function($stateParams, $HUB) {
 			// Actions
 			//
 
-			scope.addComment = function(body, path, position, line) {
+			scope.addComment = function(body, issue, path, position, line) {
 
 				if(body) {
 					$HUB.call('repos', 'createCommitComment', {
@@ -44,6 +44,25 @@ module.directive('file', ['$stateParams', '$HUB', function($stateParams, $HUB) {
 
 						scope.comment = null;
 					});
+
+					if(issue) {
+
+						var title = 'Issue with commit ' + $stateParams.sha + ' ' + path
+
+						if(line) {
+							title = title + ':' + line
+						}
+
+						$RPC.call('issue', 'add', {
+							user: $stateParams.user,
+							repo: $stateParams.repo,
+							comm: $stateParams.sha,
+							title: title,
+							body: body,
+							path: path,
+							line: line
+						});
+					}
 				}
 			};
 		}

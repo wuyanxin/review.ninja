@@ -35,12 +35,20 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		file: {}
 	};
 
-	$HUB.call('repos', 'getCommitComments', {
+	$scope.commitComments = $HUB.call('repos', 'getCommitComments', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		sha: $stateParams.sha
 	}, function(err, comments) {
 		comments.value.forEach(function(comment) {
+
+			//
+			// In the future we will have to do one of the following:
+			//
+			// 1) map all line comments to line numbers (preferred)
+			// 2) map all line comments to patch positions
+			//    - not preferred but may be necessary due to line #s being deprecated
+			//
 
 			if(comment.position) {
 				if(!$scope.comments.diff[comment.path]) {
@@ -103,6 +111,33 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 			// vote
 			vote: value
 		});
+	};
+
+	$scope.addComment = function(body, issue) {
+
+		if(body) {
+			$HUB.call('repos', 'createCommitComment', {
+				user: $stateParams.user,
+				repo: $stateParams.repo,
+				sha: $stateParams.sha,
+				commit_id: $stateParams.sha,
+				body: body
+			}, function(err, comment) {
+				if(!err) {
+					$scope.commitComments.value.push(comment.value);
+				}
+			});
+
+			if(issue) {
+				$RPC.call('issue', 'add', {
+					user: $stateParams.user,
+					repo: $stateParams.repo,
+					comm: $stateParams.sha,
+					title: 'Issue with commit ' + $stateParams.sha,
+					body: body
+				});
+			}
+		}
 	};
 
 	// $scope.compComm = function(commit) {
