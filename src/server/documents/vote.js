@@ -1,5 +1,7 @@
 
+
 var mongoose = require('mongoose');
+
 
 var VoteSchema = mongoose.Schema({
 	repo: Number,
@@ -20,17 +22,7 @@ VoteSchema.index({
 
 VoteSchema.post('save', function () {
 
-	var comm = this.comm;
-
-	var approval = require('../services/approval');
-
-	approval(this.comm, function(err, approval) {
-
-		mongoose.model('Comm').update({uuid: comm}, {approval: approval}, function(err, count) {
-
-		});
-
-	});
+	require('../bus').emit('vote:add', this);
 
 });
 

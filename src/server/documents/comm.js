@@ -11,6 +11,7 @@ var CommSchema = mongoose.Schema({
     approval: Object
 });
 
+
 CommSchema.statics.with = function () {
 
 	var keys;
@@ -38,6 +39,7 @@ CommSchema.statics.with = function () {
 	
 };
 
+
 CommSchema.virtual('status').get(function () {
 	return (this.approval === 'approved' || this.approval === 'rejected') ? this.approval : "pending";
 });
@@ -49,7 +51,6 @@ CommSchema.virtual('config').get(function () {
 		return null;
 	}
 });
-
 
 var Comm = mongoose.model('Comm', CommSchema);
 
