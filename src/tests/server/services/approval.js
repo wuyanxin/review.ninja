@@ -2,11 +2,11 @@ require('./../../trace.ninja.js');
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
-// services
-var approval = require("../../../server/services/approval");
 // models
 var Comm = require("../../../server/documents/comm").Comm;
 var Vote = require("../../../server/documents/vote").Vote;
+// services
+var approval = require("../../../server/services/approval");
 
 describe('approval', function () {
 
