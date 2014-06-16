@@ -1,11 +1,12 @@
 var assert = require('assert');
 // module
 var approval = require('../approval/default');
-// models
-var Comm = require('mongoose').model('Comm');
-var Vote = require('mongoose').model('Vote');
 
 module.exports = function(uuid, done) {
+
+	// models
+	var Comm = require('mongoose').model('Comm');
+	var Vote = require('mongoose').model('Vote');
 
 	Comm.with({uuid: uuid}, function(err, comm) {
 

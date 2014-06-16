@@ -1,6 +1,9 @@
 require('./../../trace.ninja.js');
 // unit test
 var assert = require('assert');
+// models
+var Comm = require("../../../server/documents/comm").Comm;
+var Vote = require("../../../server/documents/vote").Vote;
 // approval
 var approval = require('../../../server/approval/default');
 

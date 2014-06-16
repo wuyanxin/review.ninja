@@ -2,10 +2,10 @@ require('./../../trace.ninja.js');
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
-// api
-var vote = require("../../../server/api/vote");
 // models
 var Comm = require("../../../server/documents/comm").Comm;
+// api
+var vote = require("../../../server/api/vote");
 
 describe('vote::status', function () {
 
