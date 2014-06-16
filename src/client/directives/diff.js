@@ -1,4 +1,4 @@
-module.directive('diff', ['$stateParams', '$HUB', 'CommitCommentService', function($stateParams, $HUB, CommitCommentService) {
+module.directive('diff', ['$stateParams', '$HUB', '$RPC', function($stateParams, $HUB, $RPC) {
 	return {
 		restrict: 'E',
 		templateUrl: '/directives/templates/diff.html',
@@ -77,7 +77,7 @@ module.directive('diff', ['$stateParams', '$HUB', 'CommitCommentService', functi
 			// Actions
 			//
 
-			scope.addComment = function(body, path, position, line) {
+			scope.addComment = function(body, issue, path, position, line) {
 
 				if(body) {
 					$HUB.call('repos', 'createCommitComment', {
@@ -102,6 +102,25 @@ module.directive('diff', ['$stateParams', '$HUB', 'CommitCommentService', functi
 
 						scope.comment = null;
 					});
+
+					if(issue) {
+
+						var title = 'Issue with commit ' + $stateParams.sha + ' ' + path
+
+						if(line) {
+							title = title + ':' + line
+						}
+
+						$RPC.call('issue', 'add', {
+							user: $stateParams.user,
+							repo: $stateParams.repo,
+							comm: $stateParams.sha,
+							title: title,
+							body: body,
+							path: path,
+							line: line
+						});
+					}
 				}
 			};
 		}
