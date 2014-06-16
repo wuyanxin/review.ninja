@@ -1,7 +1,7 @@
 <div class="panel panel-default" style="margin-top:20px;">
 	<div class="panel-heading">
 		<strong>
-			<a href="" ng-show="file" ng-click="up()"><i class="fa fa-chevron-left"></i></a> Browse Code
+			<a href="" ng-show="stack.length>0" ng-click="up()"><i class="fa fa-chevron-left"></i></a> /{{ path.join('/') }}
 		</strong>
 	</div>
 	<div class="panel-body" style="padding:0;">
@@ -25,7 +25,7 @@
 			</tbody>
 		</table>
 
-		<file ng-show="file" path="path.join('/')" content="file.value.content" comments="comments[path.join('/')]"></file>
+		<file ng-show="file" path="path.join('/')" content="file.value.content" comments="comments[path.join('/')]" comment="comment({body:body, issue:issue, path:path, position:position, line:line})"></file>
 
 	</div>
 </div>

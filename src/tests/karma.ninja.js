@@ -35,9 +35,9 @@ module.exports = function(config) {
       // Client code
       'src/client/app.js',
       'src/client/api.js',
+      'src/client/app.filters.js',
       'src/client/controller/**/*.js',
       'src/client/directives/**/*.js',
-      'src/client/filters/**/*.js',
       'src/client/interceptors/**/*.js',
 
       // Tests
