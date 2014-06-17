@@ -1,6 +1,7 @@
 
 var passport = require('passport');
 var express = require('express');
+var path = require('path');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // User controller
@@ -9,6 +10,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res) {
+
 	if(req.user) {
 		return res.redirect('/home.html');
 	}
