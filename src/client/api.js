@@ -3,62 +3,67 @@
 // API
 // *****************************************************
 
+function ResultSet() {
 
-module.factory("$RPC", ['$http', '$q', function($http) {
+	this.loaded = false;
+	this.loading = true;
+
+}
+
+ResultSet.prototype.set = function(error, value, meta) {
+
+	this.loaded = true;
+	this.loading = false;
+
+	this.error = error;
+	this.value = value;
+	this.meta = meta;
+
+};
+
+
+module.factory("$RAW", ['$http', function($http) {
 	return {
 		call: function(m, f, d, c) {
-			var res = {value: null, error: null, loaded: false, loading: true};
-			$http.post("/api/"+m+"/"+f, d)
-				.success(function(value) {
-					res.value = value;
-					res.loaded = true;
-					res.loading = false;
-					console.log("[success]", m, f, d, res);
-					if(typeof c === 'function') {
-						c(null, res);
-					}
+			return $http.post("/api/"+m+"/"+f, d)
+				.success(function(res) {
+					c(null, res);
 				})
-				.error(function(value) {
-					res.error = value;
-					res.loaded = true;
-					res.loading = false;
-					console.log("[error]", m, f, d, res);
-					if(typeof c === 'function') {
-						c(res.error, res);
-					}
+				.error(function(res) {
+					c(res, null);
 				});
+		}
+	};
+}]);
+
+
+module.factory("$RPC", ['$RAW', function($RAW) {
+	return {
+		call: function(m, f, d, c) {
+			var res = new ResultSet();
+			$RAW.call(m, f, d, function(error, value) {
+				res.set(error, value);
+				if(typeof c === 'function') {
+					c(res.error, res);
+				}
+			});
 			return res;
 		}
 	};
 }]);
 
 
-module.factory("$HUB", ['$http', function($http) {
+module.factory("$HUB", ['$RAW', function($RAW) {
 	return {
 		call: function(o, f, d, c) {
-			var res = {value: null, error: null, loaded: false, loading: true};
-			$http.post("/api/github/call", {obj: o, fun: f, arg: d})
-				.success(function(value) {
-					res.value = value.data;
-					res.meta = value.meta;
-					res.loaded = true;
-					res.loading = false;
-					console.log("[success]", o, f, d, res);
-					if(typeof c === 'function') {
-						c(null, res);
-					}
-				})
-				.error(function(value) {
-					res.error = value;
-					res.loaded = true;
-					res.loading = false;
-					console.log("[error]", o, f, d, res);
-					if(typeof c === 'function') {
-						c(res.error, res);
-					}
-				});
+			var res = new ResultSet();
+			$RAW.call("github", "call", {obj: o, fun: f, arg: d}, function(error, value) {
+				res.set(error, value.data, value.meta);
+				if(typeof c === 'function') {
+					c(res.error, res);
+				}
+			});
 			return res;
-
 		}
 	};
 }]);
@@ -85,49 +90,6 @@ module.factory('$HUBService', ['$q', '$HUB', function($q, $HUB) {
 		}
 	};
 }]);
-
-
-// module.factory("$RepoService", ['$q', '$HUB', function($q, $HUB) {
-// 	return {
-// 		repo: function(user, repo) {
-// 			var deferred = $q.defer();
-// 			$HUB.call('repos', 'get', {
-// 				user: user,
-// 				repo: repo
-// 			}, function(err, obj) {
-// 				if(err) {
-// 					deferred.reject();
-// 				}
-// 				else {
-// 					deferred.resolve(obj);
-// 				}
-// 			});
-// 			return deferred.promise;
-// 		}
-// 	};
-// }]);
-
-
-// module.factory("$CommService", ['$q', '$HUB', function($q, $HUB) {
-// 	return {
-// 		comm: function(user, repo, sha) {
-// 			var deferred = $q.defer();
-// 			$HUB.call('repos', 'get', {
-// 				user: user,
-// 				repo: repo,
-// 				sha: sha
-// 			}, function(err, obj) {
-// 				if(err) {
-// 					deferred.reject();
-// 				}
-// 				else {
-// 					deferred.resolve(obj);
-// 				}
-// 			});
-// 			return deferred.promise;
-// 		}
-// 	};
-// }]);
 
 
 // *****************************************************
