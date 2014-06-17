@@ -1,3 +1,7 @@
+// *****************************************************
+// Diff File Directive
+// *****************************************************
+
 module.directive('diff', ['$stateParams', '$HUB', '$RPC', function($stateParams, $HUB, $RPC) {
 	return {
 		restrict: 'E',

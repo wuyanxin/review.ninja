@@ -10,10 +10,10 @@ var router = express.Router();
 router.all('/*', function(req, res) {
 
 	if(req.user) {
-		return res.sendfile('home.html', {root: __dirname + '/../client'});
+		return res.sendfile('index.html', {root: __dirname + '/../client'});
 	}
 	else {
-		return res.redirect('/login.html');
+		return res.sendfile('login.html', {root: __dirname + '/../client'});
 	}
 });
 
