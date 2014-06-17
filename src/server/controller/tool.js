@@ -1,5 +1,5 @@
 
-var async = require("async");
+var async = require('async');
 var express = require('express');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,10 +25,10 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 		}
 
 		if(!tool) {
-			return res.send(404, "Tool not found");
+			return res.send(404, 'Tool not found');
 		}
 
-		Vote.findOne({repo: tool.repo, comm: comm, user: "tool/" + tool.name}, function(err, previousVote) {
+		Vote.findOne({repo: tool.repo, comm: comm, user: 'tool/' + tool.name}, function(err, previousVote) {
 
 			if (err) {
 				return res.send(500);
@@ -41,11 +41,11 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 			Repo.findOne({'uuid': tool.repo}, function(err, repo) {
 
 				if (err || !repo) {
-					return res.send(404, "Repo not found");
+					return res.send(404, 'Repo not found');
 				}
 
 				req.github.authenticate({
-					type: "oauth",
+					type: 'oauth',
 					token: tool.token
 				});
 
@@ -82,11 +82,11 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 								repo: repo.name,
 								sha: comm.sha,
 								commit_id: comm.sha,
-								body: vote.vote + "\n\n" + "On behalf of " + tool.name
+								body: vote.vote + '\n\n' + 'On behalf of ' + tool.name
 							}, done);
 						});
 						queue.push(function(done) {
-							Vote.update({repo: repo.uuid, comm: comm.sha, user: "tool/" + tool.name}, {vote: vote.vote}, {upsert: true}, done);
+							Vote.update({repo: repo.uuid, comm: comm.sha, user: 'tool/' + tool.name}, {vote: vote.vote}, {upsert: true}, done);
 						});
 					}
 

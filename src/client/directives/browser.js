@@ -65,5 +65,5 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($statePara
 				}
 			};
 		}
-	}
+	};
 }]);

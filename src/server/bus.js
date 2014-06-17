@@ -25,6 +25,6 @@ module.exports.on('vote:add', function(vote) {
 
 module.exports.on('comm:approval', function(vote) {
 
-	console.log("new approval", vote);
+	console.log('new approval', vote);
 
 });

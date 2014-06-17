@@ -11,10 +11,10 @@ if(process.env.NODE_ENV === 'production') {
 
 		console.log(err);
 
-		var github = new (require('github'))({version: "3.0.0"});
+		var github = new (require('github'))({version: '3.0.0'});
 
 		github.authenticate({
-			type: "oauth",
+			type: 'oauth',
 			token: process.env.ADMIN_TOKEN
 		});
 

@@ -52,5 +52,5 @@ module.factory('$CommitCommentService', ['$q', '$HUB', '$RPC', function($q, $HUB
 			
 			return deferred.promise;
 		}
-	}
+	};
 }]);

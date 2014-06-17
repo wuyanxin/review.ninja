@@ -20,5 +20,5 @@ module.directive('file', ['$stateParams', '$HUB', '$RPC', function($stateParams,
 				}
 			});
 		}
-	}
+	};
 }]);

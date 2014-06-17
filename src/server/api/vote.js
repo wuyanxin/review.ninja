@@ -1,8 +1,8 @@
 // module
 var approval = require('../services/approval');
 // models
-var Comm = require("../documents/comm.js").Comm;
-var Vote = require("../documents/vote.js").Vote;
+var Comm = require('../documents/comm.js').Comm;
+var Vote = require('../documents/vote.js').Vote;
 
 module.exports = {
 
@@ -73,7 +73,7 @@ module.exports = {
 
 		Comm.with({repo: req.args.repo, uuid: req.args.comm}, function(err, comm) {
 
-			var status = comm ? comm.status : "pending";
+			var status = comm ? comm.status : 'pending';
 			
 			done(err, status);
 		

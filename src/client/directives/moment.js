@@ -11,12 +11,12 @@ module.directive('moment', function ($timeout) {
                     var refresh = function() {
                         element.html(moment(newValue)[fun]());
                         $timeout(refresh, 60000);
-                    }
+                    };
                     refresh();
                 } else {
-                    element.html("");
+                    element.html('');
                 }
             });
         }
-    }
+    };
 });
