@@ -51,7 +51,7 @@
 					<tbody>
 						<tr ng-repeat="commit in commits.value">
 							<td>
-								<a ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">{{ commit.sha | characters:10 }}</a>
+								<a ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">{{ commit.sha | limitTo:10 }}</a>
 							</td>
 							<td>{{ commit.commit.message }}</td>
 							<td>{{ commit.author.login }}</td>

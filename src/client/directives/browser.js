@@ -4,6 +4,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($statePara
 		templateUrl: '/directives/templates/browser.html',
 		scope: {
 			data: '=',
+			comment: '&',
 			comments: '='
 		},
 		link: function(scope, elem, attrs) {

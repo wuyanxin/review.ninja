@@ -1,4 +1,4 @@
-module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', 'comm', function($scope, $stateParams, $HUB, $RPC, repo, comm) {
+module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', 'repo', 'comm', function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, repo, comm) {
 
 	$scope.repo = repo;
 
@@ -113,29 +113,39 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		});
 	};
 
-	$scope.addComment = function(body, issue) {
+	$scope.comment = function(body, issue, path, position, line) {
+
+		console.log("Creating a comment", body);
 
 		if(body) {
-			$HUB.call('repos', 'createCommitComment', {
-				user: $stateParams.user,
-				repo: $stateParams.repo,
-				sha: $stateParams.sha,
-				commit_id: $stateParams.sha,
-				body: body
-			}, function(err, comment) {
-				if(!err) {
-					$scope.commitComments.value.push(comment.value);
-				}
-			});
+			$CommitCommentService.comment($stateParams.user, $stateParams.repo, $stateParams.sha, body, path, position, line)
+				.then(function(comment) {
+
+					$scope.commitComments.value.push(comment);
+
+					if(comment.position) {
+						if(!$scope.comments.diff[comment.path]) {
+							$scope.comments.diff[comment.path] = {};
+						}
+						if(!$scope.comments.diff[comment.path][comment.position]) {
+							$scope.comments.diff[comment.path][comment.position] = [];
+						}
+						$scope.comments.diff[comment.path][comment.position].push(comment);
+					}
+
+					if(comment.line) {
+						if(!$scope.comments.file[comment.path]) {
+							$scope.comments.file[comment.path] = {};
+						}
+						if(!$scope.comments.file[comment.path][comment.line]) {
+							$scope.comments.file[comment.path][comment.line] = [];
+						}
+						$scope.comments.file[comment.path][comment.line].push(comment);
+					}
+				});
 
 			if(issue) {
-				$RPC.call('issue', 'add', {
-					user: $stateParams.user,
-					repo: $stateParams.repo,
-					comm: $stateParams.sha,
-					title: 'Issue with commit ' + $stateParams.sha,
-					body: body
-				});
+				$CommitCommentService.issue($stateParams.user, $stateParams.repo, $stateParams.sha, body, path, line);
 			}
 		}
 	};

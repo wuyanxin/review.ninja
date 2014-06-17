@@ -38,7 +38,7 @@
 							<input type="checkbox" ng-model="comment_issue"> Also create an issue
 							<span class="pull-right">
 								<button ng-click="$parent.comment=null" type="button" class="btn btn-default btn-sm">Cancel</button>
-								<button ng-click="addComment(comment_body, comment_issue, path, null, $index+1)" type="button" class="btn btn-primary btn-sm">Comment</button>
+								<button ng-click="onComment({body:comment_body, issue:comment_issue, path:path, position:$index, line:$index+1})" type="button" class="btn btn-primary btn-sm">Comment</button>
 							</span>
 						</div>
 					</div>
