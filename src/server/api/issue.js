@@ -1,5 +1,5 @@
 
-var github = require("../services/github.js");
+var github = require('../services/github.js');
 
 module.exports = {
 
@@ -14,22 +14,22 @@ module.exports = {
 
 		if(req.args.comm) {
 
-			body += "\n\n";
+			body += '\n\n';
 
-			body += "| Commit |" + req.args.comm + " |\n";
-			body += "| ------ | -------------------- |\n";
+			body += '| Commit |' + req.args.comm + ' |\n';
+			body += '| ------ | -------------------- |\n';
 
 			if(req.args.path) {
-				body += "| File | " + req.args.path + " |\n";
+				body += '| File | ' + req.args.path + ' |\n';
 			}
 
 			if(req.args.line) {
-				body += "| Line | " + req.args.line + " |\n";
+				body += '| Line | ' + req.args.line + ' |\n';
 			}
 
 		}
 
-		github({obj: "issues", fun: "create", arg: {
+		github({obj: 'issues', fun: 'create', arg: {
 			user: req.args.user,
 			repo: req.args.repo,
 			body: body,

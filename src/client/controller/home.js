@@ -1,11 +1,22 @@
+// *****************************************************
+// Home Controller
+//
+// tmpl: home.html
+// path: /
+// *****************************************************
+
 module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', function($scope, $stateParams, $HUB, $RPC) {
 
+	// get the user
 	$scope.user = $HUB.call('user', 'get');
 
+	// get all user repos
 	$scope.repos = $HUB.call('repos', 'getAll', {
 		type: 'all'
 	}, function(err, repos) {
 		$scope.repos.value.forEach(function(repo) {
+
+			// get ninja repo
 			$RPC.call('repo', 'get', {
 				user: repo.owner.login,
 				repo: repo.name,

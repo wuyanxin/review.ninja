@@ -1,3 +1,11 @@
+// *****************************************************
+// Pull Request Controller
+//
+// tmpl: pull.html
+// path: /:user/:repo/pull/:number
+// resolve: repo, pull 
+// *****************************************************
+
 module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', function($scope, $stateParams, $HUB, $RPC, repo, pull) {
 
 	// get the repo
@@ -13,19 +21,21 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		number: $stateParams.number,
 	});
 
-	// get the files
+	// get the files (for the diff)
 	$scope.files = $HUB.call('pullRequests', 'getFiles', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		number: $stateParams.number
 	});
 
+	// get the tree (for the file browser)
 	$scope.tree = $HUB.call('gitdata', 'getTree', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		sha: $scope.pull.value.head.sha
 	});
 
+	// ger your vote
 	$scope.vote = $RPC.call('vote', 'get', {
 		// repo uuid
 		repo: $scope.repo.value.id,
@@ -33,6 +43,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		comm: $scope.pull.value.head.sha,
 	});
 
+	// get the ninja config file
 	$scope.ninja = $RPC.call('comm', 'ninja', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
@@ -46,7 +57,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 	//
 
 	$scope.castVote = function(value) {
-		$scope.vote = $RPC.call("vote", "set", {
+		$scope.vote = $RPC.call('vote', 'set', {
 			// repo uuid
 			repo: $scope.repo.value.id,
 			// comm uuid

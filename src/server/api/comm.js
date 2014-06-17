@@ -1,5 +1,5 @@
 // module
-var github = require("../services/github");
+var github = require('../services/github');
 // models
 var Comm = require('mongoose').model('Comm');
 
@@ -38,11 +38,11 @@ module.exports = {
 
 			else {
 
-				github({obj: "repos", fun: "getContent", arg: {
+				github({obj: 'repos', fun: 'getContent', arg: {
 					user: user,
 					repo: repo,
 					ref: comm,
-					path: ".ninja.json"
+					path: '.ninja.json'
 				}, token: req.user.token}, function(err, obj) {
 					
 					var content;

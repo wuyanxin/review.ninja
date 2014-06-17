@@ -23,7 +23,11 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// JS Hint
 		jshint: {
+			options: {
+				jshintrc: '.jshintrc'
+			},
 			server: {
 				options: {
 					reporter: (CI ? './src/tests/jshint.ninja.js' : undefined),
@@ -31,6 +35,15 @@ module.exports = function(grunt) {
 				},
 				files: {
 					src: ['app.js', 'src/server/**/*.js']
+				}
+			},
+			client: {
+				options: {
+					reporter: (CI ? './src/tests/jshint.ninja.js' : undefined),
+					reporterOutput: (CI ? './output/jshint/client.out' : undefined)
+				},
+				files: {
+					src: ['src/client/**/*.js']
 				}
 			}
 		}

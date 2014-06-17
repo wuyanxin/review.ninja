@@ -1,4 +1,3 @@
-
 // *****************************************************
 // API
 // *****************************************************
@@ -22,10 +21,10 @@ ResultSet.prototype.set = function(error, value, meta) {
 };
 
 
-module.factory("$RAW", ['$http', function($http) {
+module.factory('$RAW', ['$http', function($http) {
 	return {
 		call: function(m, f, d, c) {
-			return $http.post("/api/"+m+"/"+f, d)
+			return $http.post('/api/'+m+'/'+f, d)
 				.success(function(res) {
 					c(null, res);
 				})
@@ -37,7 +36,7 @@ module.factory("$RAW", ['$http', function($http) {
 }]);
 
 
-module.factory("$RPC", ['$RAW', function($RAW) {
+module.factory('$RPC', ['$RAW', function($RAW) {
 	return {
 		call: function(m, f, d, c) {
 			var res = new ResultSet();
@@ -53,11 +52,11 @@ module.factory("$RPC", ['$RAW', function($RAW) {
 }]);
 
 
-module.factory("$HUB", ['$RAW', function($RAW) {
+module.factory('$HUB', ['$RAW', function($RAW) {
 	return {
 		call: function(o, f, d, c) {
 			var res = new ResultSet();
-			$RAW.call("github", "call", {obj: o, fun: f, arg: d}, function(error, value) {
+			$RAW.call('github', 'call', {obj: o, fun: f, arg: d}, function(error, value) {
 				res.set(error, value.data, value.meta);
 				if(typeof c === 'function') {
 					c(res.error, res);

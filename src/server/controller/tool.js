@@ -1,5 +1,5 @@
 
-var async = require("async");
+var async = require('async');
 var express = require('express');
 
 var github = require('../services/github');
@@ -27,10 +27,10 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 		}
 
 		if(!tool) {
-			return res.send(404, "Tool not found");
+			return res.send(404, 'Tool not found');
 		}
 
-		Vote.findOne({repo: tool.repo, comm: comm, user: "tool/" + tool.name}, function(err, previousVote) {
+		Vote.findOne({repo: tool.repo, comm: comm, user: 'tool/' + tool.name}, function(err, previousVote) {
 
 			if (err) {
 				return res.send(500);
@@ -43,10 +43,10 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 			Repo.findOne({'uuid': tool.repo}, function(err, repo) {
 
 				if (err || !repo) {
-					return res.send(404, "Repo not found");
+					return res.send(404, 'Repo not found');
 				}
 
-				github({obj: "repos", fun: "getCommit", arg: {user: repo.user, repo: repo.name, sha: comm}, token: tool.token}, function(err, comm) {
+				github({obj: 'repos', fun: 'getCommit', arg: {user: repo.user, repo: repo.name, sha: comm}, token: tool.token}, function(err, comm) {
 
 					if(err) {
 						return res.send(err.code, err.message.message);
@@ -57,7 +57,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 					if(vote.comments) {
 						vote.comments.forEach(function(c) {
 							queue.push(function(done) {
-								github({obj: "repos", fun: "createCommitComment", arg: {
+								github({obj: 'repos', fun: 'createCommitComment', arg: {
 									user: repo.user,
 									repo: repo.name,
 									sha: comm.sha,
@@ -72,16 +72,16 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 
 					if(vote.vote) {
 						queue.push(function(done) {
-							github({obj: "repos", fun: "createCommitComment", arg: {
+							github({obj: 'repos', fun: 'createCommitComment', arg: {
 								user: repo.user,
 								repo: repo.name,
 								sha: comm.sha,
 								commit_id: comm.sha,
-								body: vote.vote + "\n\n" + "On behalf of " + tool.name
+								body: vote.vote + '\n\n' + 'On behalf of ' + tool.name
 							}, token: tool.token}, done);
 						});
 						queue.push(function(done) {
-							Vote.update({repo: repo.uuid, comm: comm.sha, user: "tool/" + tool.name}, {vote: vote.vote}, {upsert: true}, done);
+							Vote.update({repo: repo.uuid, comm: comm.sha, user: 'tool/' + tool.name}, {vote: vote.vote}, {upsert: true}, done);
 						});
 					}
 

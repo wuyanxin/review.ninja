@@ -1,6 +1,6 @@
-/**
- * Commit Comment Service
- **/
+// *****************************************************
+// Commit Comment Service
+// *****************************************************
 
 module.factory('$CommitCommentService', ['$q', '$HUB', '$RPC', function($q, $HUB, $RPC) {
 	return {
@@ -52,5 +52,5 @@ module.factory('$CommitCommentService', ['$q', '$HUB', '$RPC', function($q, $HUB
 			
 			return deferred.promise;
 		}
-	}
+	};
 }]);

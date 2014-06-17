@@ -10,7 +10,7 @@ module.exports = {
 	server: {
 
 		http: {
-			host: "localhost",
+			host: 'localhost',
 			port: 60000,
 		},
 
@@ -32,7 +32,8 @@ module.exports = {
 		],
 
 		controller: [
-			__dirname + '/server/controller/*.js'
+			__dirname + '/server/controller/*.js',
+			__dirname + '/server/default.js'
 		],
 
 		middleware: [

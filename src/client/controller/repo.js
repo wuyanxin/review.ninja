@@ -1,3 +1,11 @@
+// *****************************************************
+// Repository Controller
+//
+// tmpl: pull.html
+// path: /:user/:repo
+// resolve: repo 
+// *****************************************************
+
 module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', function($scope, $stateParams, $HUB, $RPC, repo) {
 
 	// get the repo
@@ -16,14 +24,15 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 	}, function() {
 		$scope.commits.value.forEach(function(comm) {
 			// vote
-			$RPC.call("vote", "all", {
+			$RPC.call('vote', 'all', {
 				repo: $scope.repo.value.id,
 				comm: comm.sha
 			}, function(err, vote) {
 				comm.rnvotes = vote.value;
 			});
+
 			// approval
-			$RPC.call("vote", "status", {
+			$RPC.call('vote', 'status', {
 				repo: $scope.repo.value.id,
 				comm: comm.sha
 			}, function(err, vote) {
@@ -32,7 +41,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		});
 	});
 
-	// get the pull requests
+	// get the pull requests (open and closed)
 	$scope.openPulls = $HUB.call('pullRequests', 'getAll', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
@@ -48,6 +57,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 
 			$scope.pulls = open.concat(closed);
 
+			// get votes for each pull request
 			$scope.pulls.forEach(function(pull) {
 				$RPC.call('vote', 'all', {
 					repo: $scope.repo.value.id,
