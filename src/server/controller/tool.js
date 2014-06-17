@@ -2,6 +2,8 @@
 var async = require("async");
 var express = require('express');
 
+var github = require('../services/github');
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Tool controller
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,14 +46,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 					return res.send(404, "Repo not found");
 				}
 
-				req.github.authenticate({
-					type: "oauth",
-					token: tool.token
-				});
-
-				req.github.repos.getCommit({user: repo.user, repo: repo.name, sha: comm}, function(err, comm) {
-
-					console.log(arguments);
+				github({obj: "repos", fun: "getCommit", arg: {user: repo.user, repo: repo.name, sha: comm}, token: tool.token}, function(err, comm) {
 
 					if(err) {
 						return res.send(err.code, err.message.message);
@@ -62,7 +57,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 					if(vote.comments) {
 						vote.comments.forEach(function(c) {
 							queue.push(function(done) {
-								req.github.repos.createCommitComment({
+								github({obj: "repos", fun: "createCommitComment", arg: {
 									user: repo.user,
 									repo: repo.name,
 									sha: comm.sha,
@@ -70,20 +65,20 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 									body: c.body,
 									path: c.path,
 									line: c.line
-								}, done);
+								}, token: tool.token}, done);
 							});
 						});
 					}
 
 					if(vote.vote) {
 						queue.push(function(done) {
-							req.github.repos.createCommitComment({
+							github({obj: "repos", fun: "createCommitComment", arg: {
 								user: repo.user,
 								repo: repo.name,
 								sha: comm.sha,
 								commit_id: comm.sha,
 								body: vote.vote + "\n\n" + "On behalf of " + tool.name
-							}, done);
+							}, token: tool.token}, done);
 						});
 						queue.push(function(done) {
 							Vote.update({repo: repo.uuid, comm: comm.sha, user: "tool/" + tool.name}, {vote: vote.vote}, {upsert: true}, done);
