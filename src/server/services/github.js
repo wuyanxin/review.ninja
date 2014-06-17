@@ -34,6 +34,12 @@ module.exports = function(args, done) {
 		});
 	}
 
-	github[obj][fun](arg, done);
+	github[obj][fun](arg, function(err, res) {
+
+		var meta = res.meta; delete res.meta;
+
+		done(err, res, meta);
+		
+	});
 
 };

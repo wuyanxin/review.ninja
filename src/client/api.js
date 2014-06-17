@@ -4,7 +4,7 @@
 // *****************************************************
 
 
-module.factory("$RPC", ['$http', '$q', function($http, $q) {
+module.factory("$RPC", ['$http', '$q', function($http) {
 	return {
 		call: function(m, f, d, c) {
 			var res = {value: null, error: null, loaded: false, loading: true};
@@ -33,10 +33,32 @@ module.factory("$RPC", ['$http', '$q', function($http, $q) {
 }]);
 
 
-module.factory("$HUB", ['$RPC', function($RPC) {
+module.factory("$HUB", ['$http', function($http) {
 	return {
 		call: function(o, f, d, c) {
-			return $RPC.call('github', 'call', {obj: o, fun: f, arg: d}, c);
+			var res = {value: null, error: null, loaded: false, loading: true};
+			$http.post("/api/github/call", {obj: o, fun: f, arg: d})
+				.success(function(value) {
+					res.value = value.data;
+					res.meta = value.meta;
+					res.loaded = true;
+					res.loading = false;
+					console.log("[success]", o, f, d, res);
+					if(typeof c === 'function') {
+						c(null, res);
+					}
+				})
+				.error(function(value) {
+					res.error = value;
+					res.loaded = true;
+					res.loading = false;
+					console.log("[error]", o, f, d, res);
+					if(typeof c === 'function') {
+						c(res.error, res);
+					}
+				});
+			return res;
+
 		}
 	};
 }]);
