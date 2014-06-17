@@ -114,12 +114,12 @@
 					</div>
 
 					<div class="panel-body" ng-show="file.status=='modified' || file.status=='added' || file.status=='removed'" style="padding:0;">
-						<diff path="file.filename" content="file.patch" comments="comments.diff[file.filename]"></diff>
+						<diff path="file.filename" content="file.patch" comments="comments.diff[file.filename]" comment="comment(body, issue, path, position, line)"></diff>
 					</div>
 				</div>
 			</tab>
 			<tab heading="Files">
-				<browser data="tree" comments="comments.file"></browser>
+				<browser data="tree" comments="comments.file" comment="comment(body, issue, path, position, line)"></browser>
 			</tab>
 			<tab heading="Issues">
 				<ul class="media-list" ng-repeat="issue in issue.value">
@@ -166,7 +166,7 @@
 							<input type="checkbox" ng-model="comment_issue"> Also create an issue
 							<span class="pull-right">
 								<button ng-click="$parent.comment=null" type="button" class="btn btn-default btn-sm">Cancel</button>
-								<button ng-click="addComment(comment_body, comment_issue)" type="button" class="btn btn-primary btn-sm">Comment</button>
+								<button ng-click="comment(comment_body, comment_issue)" type="button" class="btn btn-primary btn-sm">Comment</button>
 							</span>
 						</div>
 					</div>
