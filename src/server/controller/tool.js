@@ -10,11 +10,15 @@ var router = express.Router();
 
 router.all('/vote/:uuid/:comm', function(req, res) {
 
+	var Tool = require('mongoose').model('Tool');
+	var Repo = require('mongoose').model('Repo');
+	var Vote = require('mongoose').model('Vote');
+
 	var uuid = req.params.uuid;
 	var comm = req.params.comm;
 	var vote = req.body;
 
-	models.Tool.findOne({'uuid': uuid}, function (err, tool) {
+	Tool.findOne({'uuid': uuid}, function (err, tool) {
 
 		if (err) {
 			return res.send(500);
@@ -24,7 +28,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 			return res.send(404, "Tool not found");
 		}
 
-		models.Vote.findOne({repo: tool.repo, comm: comm, user: "tool/" + tool.name}, function(err, previousVote) {
+		Vote.findOne({repo: tool.repo, comm: comm, user: "tool/" + tool.name}, function(err, previousVote) {
 
 			if (err) {
 				return res.send(500);
@@ -34,7 +38,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 				return res.send(403);
 			}
 
-			models.Repo.findOne({'uuid': tool.repo}, function(err, repo) {
+			Repo.findOne({'uuid': tool.repo}, function(err, repo) {
 
 				if (err || !repo) {
 					return res.send(404, "Repo not found");
@@ -82,7 +86,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 							}, done);
 						});
 						queue.push(function(done) {
-							models.Vote.update({repo: repo.uuid, comm: comm.sha, user: "tool/" + tool.name}, {vote: vote.vote}, {upsert: true}, done);
+							Vote.update({repo: repo.uuid, comm: comm.sha, user: "tool/" + tool.name}, {vote: vote.vote}, {upsert: true}, done);
 						});
 					}
 
