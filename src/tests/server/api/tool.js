@@ -1,4 +1,11 @@
 require('./../../trace.ninja.js');
+
+var request = require('supertest');
+var express = require('express');
+
+var app = require('../../../../src/server/app');
+var http = require('http');
+
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
@@ -125,5 +132,24 @@ describe('tool::router.all', function () {
 				done();
 			});
 		});
+	});
+
+	it('should run supertest', function (done) {
+
+		assert.notEqual(request, null, "supertest must be installed and imported correctly");
+
+
+		// TODO: Uncaught Error: expected 200 "OK", got 401 "Unauthorized"
+
+		request(app)
+			.get('/api/repo')
+			.expect(200) 
+			.end(function (err, res) {
+				if (err) {
+					throw err;
+				}
+
+				done();
+			});
 	});
 });
