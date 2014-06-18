@@ -26,6 +26,9 @@ module.factory('$RAW', ['$http', function($http) {
 		call: function(m, f, d, c) {
 			return $http.post('/api/'+m+'/'+f, d)
 				.success(function(res) {
+					// parse result (again)
+					try { res = JSON.parse(res); } catch (ex) { }
+					// yield result
 					c(null, res);
 				})
 				.error(function(res) {
