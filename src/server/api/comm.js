@@ -38,7 +38,7 @@ module.exports = {
 
 			else {
 
-				github({obj: 'repos', fun: 'getContent', arg: {
+				github.call({obj: 'repos', fun: 'getContent', arg: {
 					user: user,
 					repo: repo,
 					ref: comm,
@@ -80,7 +80,7 @@ module.exports = {
 		var repo = req.args.repo;
 		var sha = req.args.sha;
 
-		github({
+		github.call({
 			obj: 'gitdata',
 			fun: 'getBlob',
 			arg: {

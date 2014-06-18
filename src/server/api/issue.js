@@ -29,7 +29,7 @@ module.exports = {
 
 		}
 
-		github({obj: 'issues', fun: 'create', arg: {
+		github.call({obj: 'issues', fun: 'create', arg: {
 			user: req.args.user,
 			repo: req.args.repo,
 			body: body,

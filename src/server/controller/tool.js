@@ -46,7 +46,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 					return res.send(404, 'Repo not found');
 				}
 
-				github({obj: 'repos', fun: 'getCommit', arg: {user: repo.user, repo: repo.name, sha: comm}, token: tool.token}, function(err, comm) {
+				github.call({obj: 'repos', fun: 'getCommit', arg: {user: repo.user, repo: repo.name, sha: comm}, token: tool.token}, function(err, comm) {
 
 					if(err) {
 						return res.send(err.code, err.message.message);
@@ -57,7 +57,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 					if(vote.comments) {
 						vote.comments.forEach(function(c) {
 							queue.push(function(done) {
-								github({obj: 'repos', fun: 'createCommitComment', arg: {
+								github.call({obj: 'repos', fun: 'createCommitComment', arg: {
 									user: repo.user,
 									repo: repo.name,
 									sha: comm.sha,
@@ -72,7 +72,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 
 					if(vote.vote) {
 						queue.push(function(done) {
-							github({obj: 'repos', fun: 'createCommitComment', arg: {
+							github.call({obj: 'repos', fun: 'createCommitComment', arg: {
 								user: repo.user,
 								repo: repo.name,
 								sha: comm.sha,
