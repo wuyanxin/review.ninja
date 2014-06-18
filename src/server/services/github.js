@@ -36,7 +36,7 @@ module.exports = function(args, done) {
 
 	var object = obj === 'client' ? github : github[obj];
 
-	object[fun](arg, function(err, res) {
+	object(arg, function(err, res) {
 
 		var meta = res.meta; delete res.meta;
 
