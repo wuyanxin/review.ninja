@@ -1,3 +1,4 @@
+
 module.exports = {
 
 	github: {
@@ -32,8 +33,8 @@ module.exports = {
 		],
 
 		controller: [
-			__dirname + '/server/controller/*.js',
-			__dirname + '/server/default.js'
+			__dirname + '/server/controller/!(default).js',
+			__dirname + '/server/controller/default.js',
 		],
 
 		middleware: [
