@@ -164,12 +164,12 @@ app.all('/api/:obj/:fun', function(req, res) {
 	res.set('Content-Type', 'application/json');
 	api[req.params.obj][req.params.fun](req, function(err, obj) {
 		if (err) {
-			console.log(('✖ ' + req.params.obj + ":" +  req.params.fun).bold.red);
+			console.log(('✖ ' + req.params.obj + ':' +  req.params.fun).bold.red);
 			console.log(err);
 			res.send(err.code || 500, JSON.stringify(err.text || err));
 		}
 		else {
-			console.log(('✓ ' + req.params.obj + ":" +  req.params.fun).bold.green);
+			console.log(('✓ ' + req.params.obj + ':' +  req.params.fun).bold.green);
 			return obj ? res.send(JSON.stringify(obj)) : res.send();
 		}
 	});

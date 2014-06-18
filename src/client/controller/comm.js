@@ -1,21 +1,34 @@
+// *****************************************************
+// Commit Controller
+//
+// tmpl: comm.html
+// path: /:user/:repo/commit/:sha
+// resolve: repo, comm 
+// *****************************************************
+
 module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', 'repo', 'comm', function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, repo, comm) {
 
+	// get the repo
 	$scope.repo = repo;
 
+	// get the commit
 	$scope.comm = comm;
 
+	// get the statuses
 	$scope.stat = $HUB.call('statuses', 'get', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		sha: $stateParams.sha,
 	});
 
+	// get the tree (required for the file browser)
 	$scope.tree = $HUB.call('gitdata', 'getTree', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		sha: $stateParams.sha,
 	});
 
+	// get your vote
 	$scope.vote = $RPC.call('vote', 'get', {
 		// repo uuid
 		repo: $scope.repo.value.id,
@@ -23,6 +36,7 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		comm: $stateParams.sha,
 	});
 
+	// get votes
 	$scope.votes = $RPC.call('vote', 'all', {
 		// repo uuid
 		repo: $scope.repo.value.id,
@@ -30,6 +44,7 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		comm: $stateParams.sha,
 	});
 
+	// get comments
 	$scope.comments = {
 		diff: {},
 		file: {}
@@ -42,13 +57,11 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 	}, function(err, comments) {
 		comments.value.forEach(function(comment) {
 
-			//
 			// In the future we will have to do one of the following:
 			//
 			// 1) map all line comments to line numbers (preferred)
 			// 2) map all line comments to patch positions
 			//    - not preferred but may be necessary due to line #s being deprecated
-			//
 
 			if(comment.position) {
 				if(!$scope.comments.diff[comment.path]) {
@@ -72,11 +85,12 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		});
 	});
 
+	// get issues
 	$scope.issue = $HUB.call('issues', 'repoIssues', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
-		state: "open",
-		labels: "review.ninja"
+		state: 'open',
+		labels: 'review.ninja'
 	}, function() {
 		$scope.issue.value.forEach(function(c) {
 			$HUB.call('issues', 'getComments', {
@@ -89,6 +103,7 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		});
 	});
 
+	// get ninja config file
 	$scope.ninja = $RPC.call('comm', 'get', {
 		uuid: $scope.repo.value.id,
 		user: $stateParams.user,
@@ -103,7 +118,7 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 	//
 
 	$scope.castVote = function(value) {
-		$scope.vote = $RPC.call("vote", "set", {
+		$scope.vote = $RPC.call('vote', 'set', {
 			// repo uuid
 			repo: $scope.repo.value.id,
 			// comm uuid
@@ -114,8 +129,6 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 	};
 
 	$scope.comment = function(body, issue, path, position, line) {
-
-		console.log("Creating a comment", body);
 
 		if(body) {
 			$CommitCommentService.comment($stateParams.user, $stateParams.repo, $stateParams.sha, body, path, position, line)

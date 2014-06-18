@@ -1,3 +1,7 @@
+// *****************************************************
+// Diff File Directive
+// *****************************************************
+
 module.directive('diff', ['$stateParams', '$HUB', '$RPC', function($stateParams, $HUB, $RPC) {
 	return {
 		restrict: 'E',
@@ -37,8 +41,8 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', function($stateParams,
 								baseRange = baseRange.substring(1, baseRange.length);
 								headRange = headRange.substring(1, headRange.length);
 
-								base = parseInt(baseRange.split(',')[0]);
-								head = parseInt(headRange.split(',')[0]);
+								base = parseInt(baseRange.split(',')[0], 10);
+								head = parseInt(headRange.split(',')[0], 10);
 
 								scope.lines.push({
 									type: 'meta',
@@ -74,5 +78,5 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', function($stateParams,
 				}
 			});
 		}
-	}
+	};
 }]);

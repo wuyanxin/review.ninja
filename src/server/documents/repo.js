@@ -32,7 +32,7 @@ RepoSchema.statics.with = function () {
 		return this.findOneAndUpdate(keys, args, {upsert: true}, done);
 	}
 
-	return done("Invalid arguments");
+	return done('Invalid arguments');
 	
 };
 

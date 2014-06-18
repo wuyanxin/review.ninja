@@ -35,13 +35,13 @@ CommSchema.statics.with = function () {
 		return this.findOneAndUpdate(keys, args, {upsert: true}, done);
 	}
 
-	return done("Invalid arguments");
+	return done('Invalid arguments');
 	
 };
 
 
 CommSchema.virtual('status').get(function () {
-	return (this.approval === 'approved' || this.approval === 'rejected') ? this.approval : "pending";
+	return (this.approval === 'approved' || this.approval === 'rejected') ? this.approval : 'pending';
 });
 
 CommSchema.virtual('config').get(function () {

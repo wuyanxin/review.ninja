@@ -1,3 +1,7 @@
+// *****************************************************
+// File Browser Directive
+// *****************************************************
+
 module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($stateParams, $HUB, $RPC) {
 	return {
 		restrict: 'E',
@@ -61,5 +65,5 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($statePara
 				}
 			};
 		}
-	}
+	};
 }]);

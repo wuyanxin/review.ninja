@@ -1,5 +1,5 @@
 
-var GitHubApi = require("github");
+var GitHubApi = require('github');
 
 module.exports = function(args, done) {
 
@@ -10,17 +10,17 @@ module.exports = function(args, done) {
 
 	var github = new GitHubApi({
 		// required
-		version: "3.0.0",
+		version: '3.0.0',
 		// optional
 		timeout: 5000
 	});
 
 	if(!obj || !github[obj]) {
-		return done("obj required/obj not found");
+		return done('obj required/obj not found');
 	}
 
 	if(!fun || !github[obj][fun]) {
-		return done("fun required/fun not found");
+		return done('fun required/fun not found');
 	}
 
 	if(!arg) {
@@ -29,12 +29,14 @@ module.exports = function(args, done) {
 
 	if(token) {
 		github.authenticate({
-			type: "oauth",
+			type: 'oauth',
 			token: token
 		});
 	}
 
-	github[obj][fun](arg, function(err, res) {
+	var object = obj === 'client' ? github : github[obj];
+
+	object[fun](arg, function(err, res) {
 
 		var meta = res.meta; delete res.meta;
 

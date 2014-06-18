@@ -1,18 +1,18 @@
-/* 
- * Angular Filters
- */
+// *****************************************************
+// Filters
+// *****************************************************
 
 angular.module('filters', [])
 
-	/**
-	 * Angular pluralize directive
-	 *
-	 * examples:
-	 * {{ 1 | pluralize:'guy' }} -> 1 guy
-	 * {{ 3 | pluralize:'guy' }} -> 3 guys
-	 * {{ 1 | pluralize:'person':'people' }} -> 1 person
-	 * {{ 3 | pluralize:'person':'people' }} -> 3 people
-	 **/
+	// *****************************************************
+	// Pluralize filter
+	//
+	// examples: 
+	// {{ 1 | pluralize:'guy' }} -> 1 guy
+	// {{ 3 | pluralize:'guy' }} -> 3 guys
+	// {{ 1 | pluralize:'person':'people' }} -> 1 person
+	// {{ 3 | pluralize:'person':'people' }} -> 3 people
+	// *****************************************************
 
 	.filter('pluralize', function(){
 		return function(value, singular, plural) {

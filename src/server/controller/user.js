@@ -1,6 +1,7 @@
 
 var passport = require('passport');
 var express = require('express');
+var path = require('path');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // User controller
@@ -8,14 +9,15 @@ var express = require('express');
 
 var router = express.Router();
 
-router.get('/', function(req, res) {
-	if(req.user) {
-		return res.redirect('/home.html');
-	}
-	else {
-		return res.redirect('/login.html');
-	}
-});
+// router.get('/', function(req, res) {
+
+// 	if(req.user) {
+// 		return res.sendfile('home.html', {root: __dirname + '/../../client'});
+// 	}
+// 	else {
+// 		return res.sendfile('login.html', {root: __dirname + '/../../client'});
+// 	}
+// });
 
 router.get('/auth/github',
 	function(req, res, next) {
@@ -28,10 +30,10 @@ router.get('/auth/github/callback',
 	passport.authenticate('github', { failureRedirect: '/' }),
 	function(req, res) {
 		if(req.session.next) {
-			res.redirect('/home.html#' + req.session.next);
+			res.redirect('/' + req.session.next);
 		}
 		else {
-			res.redirect('/home.html#');
+			res.redirect('/');
 		}
 		delete req.session.next;
 	}

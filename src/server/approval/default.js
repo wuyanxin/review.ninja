@@ -3,7 +3,7 @@ module.exports = function(config, votes, done) {
 
 	if(	!(config && config.approval && typeof config.approval.approved === 'number') ||
 		!(config && config.approval && typeof config.approval.rejected === 'number') ) {
-		return done("Configuration invalid");
+		return done('Configuration invalid');
 	}
 
 	var sum = 0;
@@ -12,14 +12,14 @@ module.exports = function(config, votes, done) {
 		sum += parseInt(v.vote, 10);
 	});
 
-	var approval = "pending";
+	var approval = 'pending';
 
 	if(sum >= config.approval.approved) {
-		approval = "approved";
+		approval = 'approved';
 	}
 
 	if(sum <= config.approval.rejected) {
-		approval = "rejected";
+		approval = 'rejected';
 	}
 
 	done(null, approval);

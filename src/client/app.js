@@ -9,10 +9,10 @@ angular.element(document).ready(function() {
 });
 
 // *************************************************************
-// Routes
+// States
 // *************************************************************
 
-module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 
 	$stateProvider
 		.state('home', {
@@ -44,7 +44,6 @@ module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
 						repo: $stateParams.repo
 					});
 				}],
-
 				comm: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
 					return $HUBService.call('repos', 'getCommit', {
 						user: $stateParams.user,
@@ -65,7 +64,6 @@ module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
 						repo: $stateParams.repo
 					});
 				}],
-				
 				pull: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
 					return $HUBService.call('pullRequests', 'get', {
 						user: $stateParams.user,
@@ -78,6 +76,6 @@ module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
 
 	$urlRouterProvider.otherwise('/');
 
-	// $location.html5Mode(true);
+	$locationProvider.html5Mode(true);
 
 }]);
