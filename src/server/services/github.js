@@ -86,6 +86,7 @@ module.exports = {
 			github.page = github.page || {};
 
 			github.page[f] = function(args, done) {
+
 				try {
 					github[f](args.link, done);
 				} catch(ex) {
@@ -116,7 +117,9 @@ module.exports = {
 
 		github[obj][fun](arg, function(err, res) {
 
-			var meta = res.meta; delete res.meta;
+			res = res || { meta: null };
+
+			meta = res.meta; delete res.meta;
 
 			done(err, res, meta);
 		

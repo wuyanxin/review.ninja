@@ -1,4 +1,6 @@
-module = angular.module('app', ['ui.router', 'ui.bootstrap', 'filters']);
+module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters']);
+
+filters = angular.module('ninja.filters', []);
 
 // *************************************************************
 // Delay start 
