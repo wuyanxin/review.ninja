@@ -15,7 +15,7 @@ module.exports = {
 
 	get: function(req, done) {
 
-		github({obj: 'repos', fun: 'getCollaborator', arg: {user: req.args.user, repo: req.args.repo, collabuser: req.user.login}, token: req.user.token}, function(err, repo) {
+		github.call({obj: 'repos', fun: 'getCollaborator', arg: {user: req.args.user, repo: req.args.repo, collabuser: req.user.login}, token: req.user.token}, function(err, repo) {
 
 			// missing
 			// authorisation
@@ -44,7 +44,7 @@ module.exports = {
 
 	add: function(req, done) {
 
-		github({obj: 'repos', fun: 'get', arg: {user: req.args.user, repo: req.args.repo}, token: req.user.token}, function(err, repo) {
+		github.call({obj: 'repos', fun: 'get', arg: {user: req.args.user, repo: req.args.repo}, token: req.user.token}, function(err, repo) {
 
 			if(!repo) {
 				return done({code: 404, text: 'Not found'});
@@ -72,7 +72,7 @@ module.exports = {
 
 	rmv: function(req, done) {
 
-		github({obj: 'repos', fun: 'get', arg: {user: req.args.user, repo: req.args.repo}, token: req.user.token}, function(err, repo) {
+		github.call({obj: 'repos', fun: 'get', arg: {user: req.args.user, repo: req.args.repo}, token: req.user.token}, function(err, repo) {
 
 			if(!repo) {
 				return done({code: 404, text: 'Not found'});
