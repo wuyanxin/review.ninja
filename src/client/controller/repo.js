@@ -23,14 +23,14 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		repo: $stateParams.repo
 	}, function() {
 
-		console.log($scope.commits);
+		// console.log($scope.commits);
 
-		$HUB.call('page', 'hasNextPage', {
-			link: $scope.commits.meta.link
-		}, function(err, res) {
-			console.log(err);
-			console.log(res);
-		});
+		// $HUB.call('page', 'hasNextPage', {
+		// 	link: $scope.commits.meta.link
+		// }, function(err, res) {
+		// 	console.log(err);
+		// 	console.log(res);
+		// });
 
 		$scope.commits.value.forEach(function(comm) {
 			// vote
