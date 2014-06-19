@@ -20,6 +20,10 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 	var comm = req.params.comm;
 	var vote = req.body;
 
+	if (!vote) {
+		return res.send(400, 'Bad request, no data sent');
+	}
+
 	Tool.findOne({'uuid': uuid}, function (err, tool) {
 
 		if (err) {
@@ -86,7 +90,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 					}
 
 					async.parallel(queue, function() {
-						res.send(200);
+						res.send(201);
 					});
 				
 				});
