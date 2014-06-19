@@ -22,16 +22,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		user: $stateParams.user,
 		repo: $stateParams.repo
 	}, function() {
-
-		// console.log($scope.commits);
-
-		// $HUB.call('page', 'hasNextPage', {
-		// 	link: $scope.commits.meta.link
-		// }, function(err, res) {
-		// 	console.log(err);
-		// 	console.log(res);
-		// });
-
 		$scope.commits.value.forEach(function(comm) {
 			// vote
 			$RPC.call('vote', 'all', {
