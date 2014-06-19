@@ -45,7 +45,7 @@ module.factory('$RPC', ['$RAW', function($RAW) {
 			var res = new ResultSet();
 			$RAW.call(m, f, d, function(error, value) {
 				res.set(error, value);
-				console.log('$RPC', m, f, d, res, error);
+				console.log('$RPC', m, f, d, res, res.error);
 				if(typeof c === 'function') {
 					c(res.error, res);
 				}
@@ -62,7 +62,7 @@ module.factory('$HUB', ['$RAW', function($RAW) {
 			var res = new ResultSet();
 			$RAW.call('github', 'call', {obj: o, fun: f, arg: d}, function(error, value) {
 				res.set(error, value.data, value.meta);
-				console.log('$HUB', o, f, d, res, error);
+				console.log('$HUB', o, f, d, res, res.error);
 				if(typeof c === 'function') {
 					c(res.error, res);
 				}
