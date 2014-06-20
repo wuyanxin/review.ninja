@@ -78,16 +78,8 @@
 			<tab heading="Bots">
 				<table class="table table-striped table-hover">
 					<tbody>
-						<tr>
-							<td>JSHint Bot</td>
-							<td>
-								<div class="pull-right">
-									<bs-switch type="checkbox" ng-model="blah" switch-size="small"></bs-switch>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>David's Awesome Bot</td>
+						<tr ng-repeat="bot in bots.value">
+							<td>{{ bot.name }}</td>
 							<td>
 								<div class="pull-right">
 									<bs-switch type="checkbox" ng-model="blah" switch-size="small"></bs-switch>

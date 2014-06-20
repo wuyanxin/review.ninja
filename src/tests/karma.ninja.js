@@ -28,17 +28,20 @@ module.exports = function(config) {
       'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js',
       // TODO: CDN
       'src/bower/angular-mocks/angular-mocks.js',
+      'src/bower/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
 
       // Client code
       'src/client/app.js',
       'src/client/api.js',
-      'src/client/app.filters.js',
       'src/client/controller/**/*.js',
       'src/client/directives/**/*.js',
+      'src/client/filters/**/*.js',
       'src/client/interceptors/**/*.js',
+      'src/client/services/**/*.js',
 
       // Tests
       'src/tests/client/**/*.js'

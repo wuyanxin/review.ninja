@@ -27,7 +27,6 @@ module.directive('validate', function () {
 					}
 				}
 			});
-
 		}
 	};
 });

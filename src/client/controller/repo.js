@@ -69,6 +69,16 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 		});
 	});
 
+	// get the bots
+	var bots = [];	
+	$scope.bots = $RPC.call('tool', 'all', {
+		repo: $scope.repo.value.id
+	}, function() {
+		$scope.bots.value.forEach(function(bot) {
+			bots.push(bot.name);
+		});
+	});
+
 
 	//
 	// Actions
@@ -78,17 +88,32 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 
 		var addBotModal = $modal.open({
 			templateUrl: '/templates/modals/bot.html',
-			controller: 'AddBotCtrl'
+			controller: 'AddBotCtrl',
+			resolve: {
+				bots: function() {
+					return bots;
+				}
+			}
 		});
 
 		addBotModal.result.then(function(name) {
-			console.log(name);
+			$RPC.call('tool', 'add', {
+				name: name,
+				repo: $scope.repo.value.id
+			}, function(err, bot) {
+				if(!err) {
+					$scope.bots.value.push(bot.value);
+					bots.push(bot.value.name);
+				}
+			});
 		});
 	};
 
 }]);
 
-module.controller('AddBotCtrl', ['$scope', '$stateParams', '$modalInstance', function($scope, $stateParams, $modalInstance) {
+module.controller('AddBotCtrl', ['$scope', '$stateParams', '$modalInstance', 'bots', function($scope, $stateParams, $modalInstance, bots) {
+
+	$scope.bots = bots;
 
 	$scope.add = function(name) {
 		$modalInstance.close(name);
