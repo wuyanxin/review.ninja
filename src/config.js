@@ -1,4 +1,9 @@
-
+/**
+ * Configuration Module
+ *
+ * @title config
+ * @overview Configuration Module
+ */
 module.exports = {
 
 	github: {
