@@ -20,11 +20,6 @@ describe('$EventBus test', function() {
 		Should(scope).be.ok;
 	});
 
-	// There must be a eventBus to proceed
-	it('should have a eventBus', function () {
-		Should(eventBus).be.ok;
-	});
-
 	// There must be an eventBus to proceed
 	it('should have an eventBus', function () {
 		Should(eventBus).be.ok;
