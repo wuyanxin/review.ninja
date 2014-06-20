@@ -1,6 +1,6 @@
 
 // $EventBus test
-describe('$EventBus test', function() {
+describe('$EventBus Service', function() {
 
 	// Given
 	var scope;

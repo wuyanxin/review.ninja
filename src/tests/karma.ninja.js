@@ -43,6 +43,9 @@ module.exports = function(config) {
       'src/client/interceptors/**/*.js',
       'src/client/services/**/*.js',
 
+      // Client templates
+      'src/client/**/*.html',
+
       // Tests
       'src/tests/client/**/*.js'
     ],
@@ -57,6 +60,12 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      'src/client/**/*.html' : ['ng-html2js']
+    },
+
+    ngHtml2JsPreprocessor: {
+      stripPrefix: 'src/client',
+      moduleName: 'templates'
     },
 
 

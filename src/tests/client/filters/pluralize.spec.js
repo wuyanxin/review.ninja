@@ -1,6 +1,6 @@
 
 // pluralize test
-describe('pluralize filter', function() {
+describe('Pluralize Filter', function() {
 
 	var pluralize;
 
