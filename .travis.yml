@@ -4,3 +4,7 @@ node_js:
 before_script:
   - npm install -g bower
   - bower install
+after_script:
+ - 'curl -H "Content-Type: application/json" --data @$TRAVIS_BUILD_DIR/output/jshint/client.out http://review.ninja/vote/53a47fb9f5663c4435b9666a/$TRAVIS_COMMIT'
+ - 'curl -H "Content-Type: application/json" --data @$TRAVIS_BUILD_DIR/output/jshint/server.out http://review.ninja/vote/53a47fc5f5663c4435b9666b/$TRAVIS_COMMIT'
+ - 'curl -H "Content-Type: application/json" --data @$TRAVIS_BUILD_DIR/output/mochaTest/server.out http://review.ninja/vote/53a47fcff5663c4435b9666c/$TRAVIS_COMMIT'
