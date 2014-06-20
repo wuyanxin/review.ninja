@@ -72,6 +72,8 @@ module.exports = {
 
 		github[obj][fun](arg, function(err, res) {
 
+			var meta;
+
 			try {
 				meta = res.meta; delete res.meta;
 			}

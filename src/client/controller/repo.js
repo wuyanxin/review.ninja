@@ -6,7 +6,7 @@
 // resolve: repo 
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', function($scope, $stateParams, $HUB, $RPC, repo) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
 
 	// get the repo
 	$scope.repo = repo;
@@ -22,16 +22,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		user: $stateParams.user,
 		repo: $stateParams.repo
 	}, function() {
-
-		// console.log($scope.commits);
-
-		// $HUB.call('page', 'hasNextPage', {
-		// 	link: $scope.commits.meta.link
-		// }, function(err, res) {
-		// 	console.log(err);
-		// 	console.log(res);
-		// });
-
 		$scope.commits.value.forEach(function(comm) {
 			// vote
 			$RPC.call('vote', 'all', {
@@ -79,4 +69,57 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		});
 	});
 
+	// get the bots
+	var bots = [];	
+	$scope.bots = $RPC.call('tool', 'all', {
+		repo: $scope.repo.value.id
+	}, function() {
+		$scope.bots.value.forEach(function(bot) {
+			bots.push(bot.name);
+		});
+	});
+
+
+	//
+	// Actions
+	//
+
+	$scope.addBot = function() {
+
+		var addBotModal = $modal.open({
+			templateUrl: '/templates/modals/bot.html',
+			controller: 'AddBotCtrl',
+			resolve: {
+				bots: function() {
+					return bots;
+				}
+			}
+		});
+
+		addBotModal.result.then(function(name) {
+			$RPC.call('tool', 'add', {
+				name: name,
+				repo: $scope.repo.value.id
+			}, function(err, bot) {
+				if(!err) {
+					$scope.bots.value.push(bot.value);
+					bots.push(bot.value.name);
+				}
+			});
+		});
+	};
+
+}]);
+
+module.controller('AddBotCtrl', ['$scope', '$stateParams', '$modalInstance', 'bots', function($scope, $stateParams, $modalInstance, bots) {
+
+	$scope.bots = bots;
+
+	$scope.add = function(name) {
+		$modalInstance.close(name);
+	};
+
+	$scope.cancel = function() {
+		$modalInstance.dismiss('cancel');
+	};
 }]);
