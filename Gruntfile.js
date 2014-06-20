@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 			},
 			server: {
 				options: {
-					reporter: (CI ? 'jshint.ninja' : undefined),
+					reporter: (CI ? 'node_modules/jshint.ninja/index.js' : undefined),
 					reporterOutput: (CI ? './output/jshint/server.out' : undefined)
 				},
 				files: {
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 			},
 			client: {
 				options: {
-					reporter: (CI ? 'jshint.ninja' : undefined),
+					reporter: (CI ? 'node_modules/jshint.ninja/index.js' : undefined),
 					reporterOutput: (CI ? './output/jshint/client.out' : undefined)
 				},
 				files: {
