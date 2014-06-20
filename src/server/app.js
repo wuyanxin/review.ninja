@@ -30,7 +30,7 @@ config.server.static.forEach(function(p) {
 	app.use(express.static(p));
 });
 
-app.use(require('body-parser')());
+app.use(require('body-parser').json());
 app.use(require('cookie-parser')());
 app.use(require('cookie-session')({secret: 'review.ninja!', cookie: { maxAge: 60 * 60 * 1000 }}));
 app.use(passport.initialize());
