@@ -50,8 +50,6 @@
 						</tr>
 					</tbody>
 				</table>
-
-				<button type="button" class="btn btn-primary">More</button>
 			</tab>
 
 			<tab heading="Pull Requests">
@@ -77,6 +75,30 @@
 				</table>
 			</tab>
 
+			<tab heading="Bots">
+				<table class="table table-striped table-hover">
+					<tbody>
+						<tr>
+							<td>JSHint Bot</td>
+							<td>
+								<div class="pull-right">
+									<bs-switch type="checkbox" ng-model="blah" switch-size="small"></bs-switch>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>David's Awesome Bot</td>
+							<td>
+								<div class="pull-right">
+									<bs-switch type="checkbox" ng-model="blah" switch-size="small"></bs-switch>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<button type="button" class="btn btn-primary pull-right" ng-click="addBot()">Add Bot</button>
+			</tab>
 		</tabset>
 
 	</div>

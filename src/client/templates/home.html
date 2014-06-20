@@ -18,10 +18,15 @@
 					<tbody>
 						<tr ng-repeat="repo in repos.value" ng-show="repo.owner.id===user.value.id">
 							<td>{{ repo.name }}</td>
-							<td>
+							<!-- <td>
 								<div class="btn-group">
 									<label ng-click="add(repo)" class="btn btn-primary" ng-model="repo.ninja.ninja" btn-radio="true">On</label>
 									<label ng-click="rmv(repo)" class="btn btn-default" ng-model="repo.ninja.ninja" btn-radio="false">Off</label>
+								</div>
+							</td> -->
+							<td>
+								<div class="pull-right">
+									<bs-switch type="checkbox" ng-model="repo.ninja.ninja" ng-change="toggle(repo)" switch-size="small"></bs-switch>
 								</div>
 							</td>
 						</tr>

@@ -15,7 +15,6 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', functio
 		type: 'all'
 	}, function(err, repos) {
 		$scope.repos.value.forEach(function(repo) {
-
 			// get ninja repo
 			$RPC.call('repo', 'get', {
 				user: repo.owner.login,
@@ -31,20 +30,10 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', functio
 	// Actions
 	//
 
-	$scope.add = function(repo) {
-		$RPC.call('repo', 'add', {
-			user: repo.owner.login,
-			repo: repo.name,
-			uuid: repo.id
-		}, function(err, ninja) {
-			if(!err) {
-				repo.ninja = ninja.value;
-			}
-		});
-	};
+	$scope.toggle = function(repo) {
+		var fn = repo.ninja.ninja ? 'add' : 'rmv';
 
-	$scope.rmv = function(repo) {
-		$RPC.call('repo', 'rmv', {
+		$RPC.call('repo', fn, {
 			user: repo.owner.login,
 			repo: repo.name,
 			uuid: repo.id

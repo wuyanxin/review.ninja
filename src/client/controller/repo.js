@@ -6,7 +6,7 @@
 // resolve: repo 
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', function($scope, $stateParams, $HUB, $RPC, repo) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
 
 	// get the repo
 	$scope.repo = repo;
@@ -69,4 +69,32 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 		});
 	});
 
+
+	//
+	// Actions
+	//
+
+	$scope.addBot = function() {
+
+		var addBotModal = $modal.open({
+			templateUrl: '/templates/modals/bot.html',
+			controller: 'AddBotCtrl'
+		});
+
+		addBotModal.result.then(function(name) {
+			console.log(name);
+		});
+	};
+
+}]);
+
+module.controller('AddBotCtrl', ['$scope', '$stateParams', '$modalInstance', function($scope, $stateParams, $modalInstance) {
+
+	$scope.add = function(name) {
+		$modalInstance.close(name);
+	};
+
+	$scope.cancel = function() {
+		$modalInstance.dismiss('cancel');
+	};
 }]);

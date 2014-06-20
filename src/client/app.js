@@ -1,4 +1,4 @@
-module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters']);
+module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters', 'frapontillo.bootstrap-switch']);
 
 filters = angular.module('ninja.filters', []);
 
