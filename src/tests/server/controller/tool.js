@@ -1,4 +1,4 @@
-require('./../../trace.ninja.js');
+require('trace.ninja');
 
 var request = require('supertest');
 var express = require('express');
@@ -81,7 +81,7 @@ describe('tool::router.all', function () {
 
 		// Create fake app
 		var app = express();
-		app.use(require('body-parser')());
+		app.use(require('body-parser').json());
 		app.use('/api', toolRouter);
 
 		// Create and send fake request

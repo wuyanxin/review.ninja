@@ -24,7 +24,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 		return res.send(400, 'Bad request, no data sent');
 	}
 
-	Tool.findOne({'uuid': uuid}, function (err, tool) {
+	Tool.findById(uuid, function (err, tool) {
 
 		if (err) {
 			return res.send(500);
@@ -50,7 +50,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 					return res.send(404, 'Repo not found');
 				}
 
-				github.call({obj: 'repos', fun: 'getCommit', arg: {user: repo.user, repo: repo.name, sha: comm}, token: tool.token}, function(err, comm) {
+				github.call({obj: 'repos', fun: 'getCommit', arg: {user: repo.user, repo: repo.name, sha: comm}, token: repo.token}, function(err, comm) {
 
 					if(err) {
 						return res.send(err.code, err.message.message);
@@ -69,7 +69,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 									body: c.body,
 									path: c.path,
 									line: c.line
-								}, token: tool.token}, done);
+								}, token: repo.token}, done);
 							});
 						});
 					}
@@ -82,7 +82,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 								sha: comm.sha,
 								commit_id: comm.sha,
 								body: vote.vote + '\n\n' + 'On behalf of ' + tool.name
-							}, token: tool.token}, done);
+							}, token: repo.token}, done);
 						});
 						queue.push(function(done) {
 							Vote.update({repo: repo.uuid, comm: comm.sha, user: 'tool/' + tool.name}, {vote: vote.vote}, {upsert: true}, done);

@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 		mochaTest: {
 			server: {
 				options: {
-					reporter: (CI ? require('./src/tests/mocha.ninja.js') : undefined),
+					reporter: (CI ? require('mocha.ninja') : undefined),
 					captureFile: (CI ? './output/mochaTest/server.out' : undefined)
 				},
 				src: ['src/tests/server/**/*.js']
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 			},
 			server: {
 				options: {
-					reporter: (CI ? './src/tests/jshint.ninja.js' : undefined),
+					reporter: (CI ? 'node_modules/jshint.ninja/index.js' : undefined),
 					reporterOutput: (CI ? './output/jshint/server.out' : undefined)
 				},
 				files: {
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 			},
 			client: {
 				options: {
-					reporter: (CI ? './src/tests/jshint.ninja.js' : undefined),
+					reporter: (CI ? 'node_modules/jshint.ninja/index.js' : undefined),
 					reporterOutput: (CI ? './output/jshint/client.out' : undefined)
 				},
 				files: {
@@ -47,7 +47,6 @@ module.exports = function(grunt) {
 			}
 		},
 		
-		// Documentation
 		jsdox: {
 			generate: {
 				options: {
@@ -64,7 +63,7 @@ module.exports = function(grunt) {
 					'src/tests/**/*.js'
 				],
 
-				dest: ['./docs']
+				dest: ['./doc']
 			}
 		}
 
@@ -75,6 +74,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
-	grunt.registerTask('default', ['karma', 'jshint', 'mochaTest', 'jsdox']);
+	grunt.registerTask('doc', ['jsdox']);
+	grunt.registerTask('default', ['karma', 'jshint', 'mochaTest']);
 
 };
