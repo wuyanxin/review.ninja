@@ -54,7 +54,7 @@ module.exports = {
 				return done({code: 403, text: 'Forbidden'});
 			}
 
-			Repo.findOneAndUpdate({uuid: req.args.uuid}, {uuid: req.args.uuid, name: req.args.repo, token: req.user.token, ninja: true}, {upsert: true}, function(err, vote) {
+			Repo.findOneAndUpdate({uuid: req.args.uuid}, {uuid: req.args.uuid, user: repo.owner.login, name: req.args.repo, token: req.user.token, ninja: true}, {upsert: true}, function(err, vote) {
 				done(err, vote);
 			});
 
@@ -82,7 +82,7 @@ module.exports = {
 				return done({code: 403, text: 'Forbidden'});
 			}
 
-			Repo.findOneAndUpdate({uuid: req.args.uuid}, {uuid: req.args.uuid, name: req.args.repo, token: req.user.token, ninja: false}, {upsert: true}, function(err, vote) {
+			Repo.findOneAndUpdate({uuid: req.args.uuid}, {uuid: req.args.uuid, user: repo.owner.login, name: req.args.repo, token: req.user.token, ninja: false}, {upsert: true}, function(err, vote) {
 				done(err, vote);
 			});
 
