@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 			},
 			server: {
 				options: {
-					reporter: (CI ? './src/tests/jshint.ninja.js' : undefined),
+					reporter: (CI ? 'jshint.ninja' : undefined),
 					reporterOutput: (CI ? './output/jshint/server.out' : undefined)
 				},
 				files: {
@@ -48,33 +48,33 @@ module.exports = function(grunt) {
 		},
 		
 		// Documentation
-		jsdox: {
-			generate: {
-				options: {
-					contentsEnable: true,
-					contentsTitle: 'Review.Ninja Documentation',
-					contentsFile: 'README.md'
-				},
+		// jsdox: {
+		// 	generate: {
+		// 		options: {
+		// 			contentsEnable: true,
+		// 			contentsTitle: 'Review.Ninja Documentation',
+		// 			contentsFile: 'README.md'
+		// 		},
 
-				src: [
-					'app.js', 
-					'src/config.js', 
-					'src/client/**/*.js', 
-					'src/server/**/*.js', 
-					'src/tests/**/*.js'
-				],
+		// 		src: [
+		// 			'app.js', 
+		// 			'src/config.js', 
+		// 			'src/client/**/*.js', 
+		// 			'src/server/**/*.js', 
+		// 			'src/tests/**/*.js'
+		// 		],
 
-				dest: ['./docs']
-			}
-		}
+		// 		dest: ['./docs']
+		// 	}
+		// }
 
 	});
 
-	grunt.loadNpmTasks('grunt-jsdox');
+	//grunt.loadNpmTasks('grunt-jsdox');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
-	grunt.registerTask('default', ['karma', 'jshint', 'mochaTest', 'jsdox']);
+	grunt.registerTask('default', ['karma', 'jshint', 'mochaTest', /*'jsdox'*/]);
 
 };

@@ -1,4 +1,4 @@
-require('./../../trace.ninja.js');
+require('trace.ninja');
 
 var request = require('supertest');
 var express = require('express');
