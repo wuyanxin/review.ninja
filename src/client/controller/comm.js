@@ -48,7 +48,7 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		// repo uuid
 		repo: $scope.repo.value.id,
 		// comm uuid
-		comm: comm.sha
+		comm: $stateParams.sha
 	});
 
 	// get comments
