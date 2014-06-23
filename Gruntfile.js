@@ -73,27 +73,18 @@ module.exports = function(grunt) {
 		}
 	};
 
+	var post_url = 'http://review.ninja/vote/53a47fcff5663c4435b9666c/' + TRAVIS_COMMIT;
+	console.log("Using post url " + post_url);
+
 	if (CI) {
-		config.curl = {
-			// 'post-jshint-client': {
-			// 	src: {
-			// 	  url: 'http://review.ninja/vote/53a47fb9f5663c4435b9666a/' + TRAVIS_COMMIT,
-			// 	  method: 'POST',
-			// 	  body: fs.readFileSync("output/jshint/client.out", DEFAULT_FILE_ENCODING).toString()
-			// 	}
-			// },
-			// 'post-jshint-server': {
-			// 	src: {
-			// 	  url: 'http://review.ninja/vote/53a47fc5f5663c4435b9666b/' + TRAVIS_COMMIT,
-			// 	  method: 'POST',
-			// 	  body: fs.readFileSync("output/jshint/server.out", DEFAULT_FILE_ENCODING).toString()
-			// 	}
-			// },
-			'post-mocha': {
-				src: {
-				  url: 'http://review.ninja/vote/53a47fcff5663c4435b9666c/' + TRAVIS_COMMIT,
-				  method: 'POST',
-				  body: fs.readFileSync("output/mochaTest/server.out", DEFAULT_FILE_ENCODING).toString()
+		config.http = {
+			'post-mocha-results': {
+				options: {
+				  url: post_url,
+				  method: 'POST'
+				},
+				files: {
+					'report': 'output/mochaTest/server.out'
 				}
 			}
 		};
@@ -109,7 +100,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
 	if (CI) {
-		grunt.loadNpmTasks('grunt-curl');
+		grunt.loadNpmTasks('grunt-http');
 	}
 
 	// Register tasks
@@ -121,7 +112,7 @@ module.exports = function(grunt) {
 	tasks.push('mochaTest');
 
 	if (CI) {
-		tasks.push('curl');
+		tasks.push('http');
 	}
 
 	grunt.registerTask('default', tasks);
