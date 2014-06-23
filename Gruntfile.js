@@ -75,6 +75,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
 	grunt.registerTask('doc', ['jsdox']);
-	grunt.registerTask('default', ['karma', 'jshint', 'mochaTest']);
+
+	grunt.registerTask('karma', ['karma']);
+	
+	grunt.registerTask('default', ['jshint', 'mochaTest']);
 
 };

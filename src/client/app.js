@@ -1,4 +1,5 @@
-module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters', 'frapontillo.bootstrap-switch']);
+
+module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters', 'frapontillo.bootstrap-switch', 'ngLoggly']);
 
 filters = angular.module('ninja.filters', []);
 
@@ -9,6 +10,14 @@ filters = angular.module('ninja.filters', []);
 angular.element(document).ready(function() {
 	angular.bootstrap(document, ['app']);
 });
+
+// *************************************************************
+// Logger
+// *************************************************************
+
+module.config(['LogglyLoggerProvider', function(LogglyLoggerProvider) {
+	LogglyLoggerProvider.inputToken('7e543a55-9a3c-4316-b456-335083061c84');
+}]);
 
 // *************************************************************
 // States
