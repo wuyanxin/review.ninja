@@ -30,7 +30,7 @@
     "grunt-jsdox": "0.1.5",
     "grunt-karma": "^0.8.3",
     "grunt-mocha-test": "^0.10.2",
-    "grunt-curl": "2.0.2",
+    "grunt-http": "1.4.0",
     "jshint.ninja": "git://github.com/dtornow/jshint.ninja.git",
     "karma": "^0.12.16",
     "karma-mocha": "^0.1.3",
