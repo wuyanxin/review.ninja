@@ -2,25 +2,25 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading" style="height:55px;">
-					<h3 class="panel-title" style="float:left; padding:8px 0;">
-						{{ comm.value.commit.message }}
-					</h3>
-					<span class="pull-right">
-						<div ng-show="vote.value" style="padding:8px 0;">
-							{{ vote.value.vote }}
+				<h3 class="panel-title" style="float:left; padding:8px 0;">
+					{{ comm.value.commit.message }}
+				</h3>
+				<span class="pull-right">
+					<div ng-show="vote.value" style="padding:8px 0;">
+						{{ status.value }} (you voted {{ vote.value.vote }})
+					</div>
+					<div ng-show="!vote.value">
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								{{ status.value }}
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li ng-repeat="vote in ninja.value.config.votes"><a href ng-click="castVote(vote.value)">{{ vote.label }}</a></li>
+							</ul>
 						</div>
-						<div ng-show="!vote.value">
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-									Not yet approved
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li ng-repeat="vote in ninja.value.config.votes"><a href ng-click="castVote(vote.value)">{{ vote.label }}</a></li>
-								</ul>
-							</div>
-						</div>
-					</span>
+					</div>
+				</span>
 			</div>
 			<div class="panel-body">
 				<span>
