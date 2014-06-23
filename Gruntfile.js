@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('doc', ['jsdox']);
 
-	grunt.registerTask('karma', ['karma']);
+	grunt.registerTask('client', ['karma']);
 	
 	grunt.registerTask('default', ['jshint', 'mochaTest']);
 
