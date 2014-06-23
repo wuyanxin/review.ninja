@@ -170,7 +170,15 @@ app.all('/api/:obj/:fun', function(req, res) {
 			res.send(err.code || 500, JSON.stringify(err.text || err));
 		}
 		else {
-			logger.log({api: req.params.obj, fun: req.params.fun, arg: req.args, res: obj}, ['api', req.params.obj, req.params.fun]);
+			logger.log(
+				{
+					api: req.params.obj, 
+					fun: req.params.fun, 
+					arg: req.args, 
+					res: obj
+				}, 
+				['api', req.params.obj, req.params.fun]
+			);
 			return obj ? res.send(JSON.stringify(obj)) : res.send();
 		}
 	});
