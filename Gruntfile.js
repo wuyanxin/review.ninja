@@ -1,8 +1,13 @@
 
+var TRAVIS_COMMIT = process.env.TRAVIS_COMMIT;
 var CI = process.env.CI;
+var DEFAULT_FILE_ENCODING = "utf8";
+
+var fs = require('fs');
 
 module.exports = function(grunt) {
-	grunt.initConfig({
+
+	var config = {
 
 		// Server tests
 		mochaTest: {
@@ -66,18 +71,81 @@ module.exports = function(grunt) {
 				dest: ['./doc']
 			}
 		}
+	};
 
-	});
+	// Tool IDs 
+	var MOCHA_TOOL_ID = "53a47fcff5663c4435b9666c";
+	var KARMA_TOOL_ID = "53a87bdd3df0d5ec4c4a7bd9";
+	var JSHINT_CLIENT_TOOL_ID = "53a47fb9f5663c4435b9666a";
+	var JSHINT_SERVER_TOOL_ID = "53a47fc5f5663c4435b9666b";
 
+
+	if (CI) {
+		config.http = {
+			'post-mocha-results': {
+				options: {
+				  url: 'http://review.ninja/vote/' + MOCHA_TOOL_ID + '/' + TRAVIS_COMMIT,
+				  method: 'POST'
+				},
+				files: {
+					'report': 'output/mochaTest/server.out'
+				}
+			},
+			'post-karma-results': {
+				options: {
+				  url: 'http://review.ninja/vote/' + KARMA_TOOL_ID + '/' + TRAVIS_COMMIT,
+				  method: 'POST'
+				},
+				files: {
+					'report': 'output/karma/client.out'
+				}
+			},
+			'post-jshint-client-results': {
+				options: {
+				  url: 'http://review.ninja/vote/' + JSHINT_CLIENT_TOOL_ID + '/' + TRAVIS_COMMIT,
+				  method: 'POST'
+				},
+				files: {
+					'report': 'output/jshint/client.out'
+				}
+			},
+			'post-jshint-server-results': {
+				options: {
+				  url: 'http://review.ninja/vote/' + JSHINT_SERVER_TOOL_ID + '/' + TRAVIS_COMMIT,
+				  method: 'POST'
+				},
+				files: {
+					'report': 'output/jshint/server.out'
+				}
+			}
+		};
+	}
+
+	// Initialize configuration
+	grunt.initConfig(config);
+
+	// Load NPM tasks
 	grunt.loadNpmTasks('grunt-jsdox');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
-	grunt.registerTask('doc', ['jsdox']);
+	if (CI) {
+		grunt.loadNpmTasks('grunt-http');
+	}
 
+	// Register tasks
+	grunt.registerTask('doc', ['jsdox']);
 	grunt.registerTask('client', ['karma']);
+
+	var defaultTasks = [];
+	defaultTasks.push('jshint');
+	defaultTasks.push('mochaTest');
+
+	if (CI) {
+		defaultTasks.push('http');
+	}
 	
-	grunt.registerTask('default', ['jshint', 'mochaTest']);
+	grunt.registerTask('default', defaultTasks);
 
 };
