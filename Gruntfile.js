@@ -136,11 +136,14 @@ module.exports = function(grunt) {
 
 	// Register tasks
 	grunt.registerTask('doc', ['jsdox']);
-	grunt.registerTask('client', ['karma']);
+	// Commented out, because reports won't work
+	// if there is no output/karma/client.out file
+	//grunt.registerTask('client', ['karma']);
 
 	var defaultTasks = [];
 	defaultTasks.push('jshint');
 	defaultTasks.push('mochaTest');
+	defaultTasks.push('karma');
 
 	if (CI) {
 		defaultTasks.push('http');
