@@ -136,16 +136,16 @@ module.exports = function(grunt) {
 
 	// Register tasks
 	grunt.registerTask('doc', ['jsdox']);
+	grunt.registerTask('client', ['karma']);
 
-	var tasks = [];
-	tasks.push('karma');
-	tasks.push('jshint');
-	tasks.push('mochaTest');
+	var defaultTasks = [];
+	defaultTasks.push('jshint');
+	defaultTasks.push('mochaTest');
 
 	if (CI) {
-		tasks.push('http');
+		defaultTasks.push('http');
 	}
-
-	grunt.registerTask('default', tasks);
+	
+	grunt.registerTask('default', defaultTasks);
 
 };

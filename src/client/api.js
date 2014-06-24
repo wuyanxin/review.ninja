@@ -24,28 +24,29 @@ ResultSet.prototype.set = function(error, value, meta) {
 module.factory('$RAW', ['$http', function($http) {
 	return {
 		call: function(m, f, d, c) {
+			var now = new Date();
 			return $http.post('/api/'+m+'/'+f, d)
 				.success(function(res) {
 					// parse result (again)
 					try { res = JSON.parse(res); } catch (ex) { }
 					// yield result
-					c(null, res);
+					c(null, res, new Date() - now);
 				})
 				.error(function(res) {
-					c(res, null);
+					c(res, null, new Date() - now);
 				});
 		}
 	};
 }]);
 
 
-module.factory('$RPC', ['$RAW', function($RAW) {
+module.factory('$RPC', ['$RAW', '$log', function($RAW, $log) {
 	return {
 		call: function(m, f, d, c) {
 			var res = new ResultSet();
 			$RAW.call(m, f, d, function(error, value) {
 				res.set(error, value);
-				console.log('$RPC', m, f, d, res, res.error);
+				$log.debug('$RPC', m, f, d, res, res.error);
 				if(typeof c === 'function') {
 					c(res.error, res);
 				}
@@ -56,13 +57,13 @@ module.factory('$RPC', ['$RAW', function($RAW) {
 }]);
 
 
-module.factory('$HUB', ['$RAW', function($RAW) {
+module.factory('$HUB', ['$RAW', '$log', function($RAW, $log) {
 	return {
 		call: function(o, f, d, c) {
 			var res = new ResultSet();
 			$RAW.call('github', 'call', {obj: o, fun: f, arg: d}, function(error, value) {
 				res.set(error, value.data, value.meta);
-				console.log('$HUB', o, f, d, res, res.error);
+				$log.debug('$HUB', o, f, d, res, res.error);
 				if(typeof c === 'function') {
 					c(res.error, res);
 				}

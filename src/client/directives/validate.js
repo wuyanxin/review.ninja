@@ -21,9 +21,11 @@ module.directive('validate', function () {
 
 				scope.valid = true;
 				
-				for(var i=0; i<scope.against.length; i++) {
-					if(scope.arg === scope.against[i]) {
-						scope.valid = false;
+				if(scope.against) {
+					for(var i=0; i<scope.against.length; i++) {
+						if(scope.arg === scope.against[i]) {
+							scope.valid = false;
+						}
 					}
 				}
 			});

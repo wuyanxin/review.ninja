@@ -158,10 +158,11 @@ async.series([
 // Handle api calls
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-// call
+var logger = require('./log');
 
 app.all('/api/:obj/:fun', function(req, res) {
 	res.set('Content-Type', 'application/json');
+	var now = new Date();
 	api[req.params.obj][req.params.fun](req, function(err, obj) {
 		if (err) {
 			console.log(('✖ ' + req.params.obj + ':' +  req.params.fun).bold.red);
@@ -169,27 +170,18 @@ app.all('/api/:obj/:fun', function(req, res) {
 			res.send(err.code || 500, JSON.stringify(err.text || err));
 		}
 		else {
-			console.log(('✓ ' + req.params.obj + ':' +  req.params.fun).bold.green);
+			logger.log(
+				{
+					api: req.params.obj, 
+					fun: req.params.fun, 
+					arg: req.args, 
+					res: obj
+				}, 
+				['api', req.params.obj, req.params.fun]
+			);
 			return obj ? res.send(JSON.stringify(obj)) : res.send();
 		}
 	});
-});
-
-// meta
-
-app.all('/api', function(req, res) {
-	var ref = {};
-	for (var obj in api) {
-		if (api.hasOwnProperty(obj)) {
-			ref[obj] = ref[obj] || [];
-			for (var fun in api[obj]) {
-				if (api[obj].hasOwnProperty(fun)) {
-					ref[obj].push(fun);
-				}
-			}
-		}
-	}
-	res.send(JSON.stringify(ref));
 });
 
 module.exports = app;

@@ -1,6 +1,6 @@
 
 // $EventBus test
-describe('$EventBus test', function() {
+describe('$EventBus Service', function() {
 
 	// Given
 	var scope;
@@ -18,11 +18,6 @@ describe('$EventBus test', function() {
 	// The must be a scope to proceed
 	it('should have a scope', function () {
 		Should(scope).be.ok;
-	});
-
-	// There must be a eventBus to proceed
-	it('should have a eventBus', function () {
-		Should(eventBus).be.ok;
 	});
 
 	// There must be an eventBus to proceed
