@@ -85,7 +85,17 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 							}, token: repo.token}, done);
 						});
 						queue.push(function(done) {
-							Vote.update({repo: repo.uuid, comm: comm.sha, user: 'tool/' + tool.name}, {vote: vote.vote}, {upsert: true}, done);
+							Vote.update({repo: repo.uuid, comm: comm.sha, user: 'tool/' + tool.name}, {vote: vote.vote}, {upsert: true}, function(err, vote) {
+								if(!err) {
+									require('../bus').emit('vote:add', {
+										user: repo.user,
+										repo: repo.name,
+										comm: comm,
+										token: repo.token
+									});
+								}
+								done();
+							});
 						});
 					}
 
