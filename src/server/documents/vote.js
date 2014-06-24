@@ -20,13 +20,6 @@ VoteSchema.index({
 });
 
 
-VoteSchema.post('save', function () {
-
-	require('../bus').emit('vote:add', this);
-
-});
-
-
 var Vote = mongoose.model('Vote', VoteSchema);
 
 
