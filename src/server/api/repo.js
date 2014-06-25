@@ -50,7 +50,7 @@ module.exports = {
 				return done({code: 404, text: 'Not found'});
 			}
 
-			if(repo.owner.login !== req.user.login) {
+			if(!repo.permissions.admin) {
 				return done({code: 403, text: 'Forbidden'});
 			}
 
@@ -78,7 +78,7 @@ module.exports = {
 				return done({code: 404, text: 'Not found'});
 			}
 
-			if(repo.owner.login !== req.user.login) {
+			if(!repo.permissions.admin) {
 				return done({code: 403, text: 'Forbidden'});
 			}
 

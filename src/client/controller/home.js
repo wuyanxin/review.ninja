@@ -10,11 +10,12 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', functio
 	// get the user
 	$scope.user = $HUB.call('user', 'get');
 
+	$scope.repos = [];
+
 	// get all user repos
-	$scope.repos = $HUB.call('repos', 'getAll', {
-		type: 'all'
+	$HUB.call('repos', 'getAll', {
 	}, function(err, repos) {
-		$scope.repos.value.forEach(function(repo) {
+		repos.value.forEach(function(repo) {
 			// get ninja repo
 			$RPC.call('repo', 'get', {
 				user: repo.owner.login,
@@ -22,16 +23,32 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', functio
 				uuid: repo.id
 			}, function(err, ninja) {
 				repo.ninja = ninja.value || { ninja: false };
+				$scope.repos.push(repo);
 			});
 		});
 	});
 
 	// get user orgs
-	// $HUB.call('user', 'getOrgs', {
-
-	// }, function(err, orgs){
-	// 	$scope.orgRepos
-	// });
+	$HUB.call('user', 'getOrgs', {
+	}, function(err, orgs){
+		orgs.value.forEach(function(org) {
+			$HUB.call('repos', 'getFromOrg', {
+				org: org.login
+			}, function(err, repos) {
+				repos.value.forEach(function(repo) {
+					// get ninja repo
+					$RPC.call('repo', 'get', {
+						user: repo.owner.login,
+						repo: repo.name,
+						uuid: repo.id
+					}, function(err, ninja) {
+						repo.ninja = ninja.value || { ninja: false };
+						$scope.repos.push(repo);
+					});
+				});
+			});
+		});
+	});	
 
 	//
 	// Actions
@@ -47,6 +64,9 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', functio
 		}, function(err, ninja) {
 			if(!err) {
 				repo.ninja = ninja.value;
+			}
+			else {
+				repo.ninja.ninja = !repo.ninja.ninja;
 			}
 		});
 	};
