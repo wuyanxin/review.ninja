@@ -26,6 +26,13 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', functio
 		});
 	});
 
+	// get user orgs
+	// $HUB.call('user', 'getOrgs', {
+
+	// }, function(err, orgs){
+	// 	$scope.orgRepos
+	// });
+
 	//
 	// Actions
 	//
