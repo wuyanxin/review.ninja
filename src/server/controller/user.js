@@ -9,16 +9,6 @@ var path = require('path');
 
 var router = express.Router();
 
-// router.get('/', function(req, res) {
-
-// 	if(req.user) {
-// 		return res.sendfile('home.html', {root: __dirname + '/../../client'});
-// 	}
-// 	else {
-// 		return res.sendfile('login.html', {root: __dirname + '/../../client'});
-// 	}
-// });
-
 router.get('/auth/github',
 	function(req, res, next) {
 		req.session.next = req.query.next;
@@ -36,6 +26,13 @@ router.get('/auth/github/callback',
 			res.redirect('/');
 		}
 		delete req.session.next;
+	}
+);
+
+router.get('/logout',
+	function(req, res, next) {
+		req.logout();
+		res.redirect('/');
 	}
 );
 
