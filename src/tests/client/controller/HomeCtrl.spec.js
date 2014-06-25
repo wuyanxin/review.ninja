@@ -37,7 +37,7 @@ describe('Home Controller', function() {
 			}
 		});
 
-		httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"type":"all"}}').respond({
+		httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{}}').respond({
 			data: [
 				{
 					id: 1,
@@ -49,7 +49,28 @@ describe('Home Controller', function() {
 			]
 		});
 
-		httpBackend.expect('POST', '/api/repo/get', '{"user":"me","repo":"repo-1","uuid":1}').respond({
+		httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{}}').respond({
+			data: [
+				{
+					id: 1,
+					login: 'my-org'
+				}
+			]
+		});
+
+		httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getFromOrg","arg":{"org":"my-org"}}').respond({
+			data: [
+				{
+					id: 2,
+					name: 'repo-2',
+					owner: {
+						login: 'my-org'
+					},
+				}
+			]
+		});
+
+		httpBackend.when('POST', '/api/repo/get').respond({
 			name: 'repo-1',
 			ninja: true,
 			user: 'me',
@@ -61,9 +82,9 @@ describe('Home Controller', function() {
 
 		// now toggle the repo
 
-		scope.repos.value[0].ninja.ninja = !scope.repos.value[0].ninja.ninja;
+		scope.repos[0].ninja.ninja = !scope.repos[0].ninja.ninja;
 
-		scope.toggle( scope.repos.value[0] );
+		scope.toggle( scope.repos[0] );
 
 		httpBackend.expect('POST', '/api/repo/rmv', '{"user":"me","repo":"repo-1","uuid":1}').respond({
 			name: 'repo-1',
@@ -74,7 +95,7 @@ describe('Home Controller', function() {
 
 		httpBackend.flush();
 
-		scope.repos.value[0].ninja.ninja.should.be.exactly.false;
+		scope.repos[0].ninja.ninja.should.be.exactly.false;
 	});
 
 	it('should toggle on', function() {
@@ -89,7 +110,7 @@ describe('Home Controller', function() {
 			}
 		});
 
-		httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"type":"all"}}').respond({
+		httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{}}').respond({
 			data: [
 				{
 					id: 2,
@@ -101,7 +122,28 @@ describe('Home Controller', function() {
 			]
 		});
 
-		httpBackend.expect('POST', '/api/repo/get', '{"user":"me","repo":"repo-2","uuid":2}').respond({
+		httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{}}').respond({
+			data: [
+				{
+					id: 1,
+					login: 'my-org'
+				}
+			]
+		});
+
+		httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getFromOrg","arg":{"org":"my-org"}}').respond({
+			data: [
+				{
+					id: 2,
+					name: 'repo-2',
+					owner: {
+						login: 'my-org'
+					},
+				}
+			]
+		});
+
+		httpBackend.when('POST', '/api/repo/get').respond({
 			'name': 'repo-2',
 			'ninja': false,
 			'user': 'me',
@@ -113,9 +155,9 @@ describe('Home Controller', function() {
 
 		// now toggle the repo
 
-		scope.repos.value[0].ninja.ninja = !scope.repos.value[0].ninja.ninja;
+		scope.repos[0].ninja.ninja = !scope.repos[0].ninja.ninja;
 
-		scope.toggle( scope.repos.value[0] );
+		scope.toggle( scope.repos[0] );
 
 		httpBackend.expect('POST', '/api/repo/add', '{"user":"me","repo":"repo-2","uuid":2}').respond({
 			name: 'repo-2',
@@ -126,7 +168,7 @@ describe('Home Controller', function() {
 
 		httpBackend.flush();
 
-		scope.repos.value[0].ninja.ninja.should.be.exactly.true;
+		scope.repos[0].ninja.ninja.should.be.exactly.true;
 	});
 
 
