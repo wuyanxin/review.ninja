@@ -3,6 +3,11 @@ var TRAVIS_COMMIT = process.env.TRAVIS_COMMIT;
 var CI = process.env.CI;
 var DEFAULT_FILE_ENCODING = "utf8";
 
+if (!TRAVIS_COMMIT && CI) {
+	throw Error("You need to provide TRAVIS_COMMIT in order to use CI=true");
+}
+
+
 var fs = require('fs');
 
 module.exports = function(grunt) {

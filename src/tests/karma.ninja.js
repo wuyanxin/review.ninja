@@ -30,6 +30,8 @@ module.exports = function(config) {
       'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js',
+
       // TODO: CDN
       'src/bower/angular-mocks/angular-mocks.js',
       'src/bower/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
