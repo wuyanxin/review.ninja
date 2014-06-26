@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Code Review</title>
+	<title>Review Ninja</title>
 
 	<!-- COMPONENT STYLESHEETS -->
 	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -9,27 +9,40 @@
 	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
 
 	<!-- APP STYLESHEET -->
-	<link href="/app.css" rel="stylesheet">
+	<link href="/assets/styles/app.css" rel="stylesheet">
 </head>
 <body>
 
-	<div class="container">
-
-		<div class="row">
-			<div class="col-sm-12">
-
-				<nav class="navbar navbar-default" role="navigation" style="margin-top:20px;">
-					<div class="container-fluid">
-						<div class="navbar-header">
-							<a class="navbar-brand" ui-sref="home">Review Ninja</a>
-						</div>
-					</div>
-				</nav>
-
+	<div class="navbar navbar-default navbar-static-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">Review Ninja</a>
 			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="active">
+						<a href="#">Home</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="/logout">logout</a>
+					</li>
+				</ul>
+			</div><!--/.nav-collapse -->
 		</div>
+	</div>
 
-		<section ui-view></section>
+
+	<div class="container">
+		<section ui-view>
+		</section>
 	</div>
 
 	<!-- COMPONENT SCRIPTS -->
@@ -51,6 +64,7 @@
 
 	<!-- FILTERS -->
 	<script src="/filters/pluralize.js"></script>
+	<script src="/filters/deep.js"></script>
 
 	<!-- SERVICES -->
 	<script src="/services/commitComment.js"></script>

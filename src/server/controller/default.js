@@ -9,8 +9,8 @@ var router = express.Router();
 
 router.all('/*', function(req, res) {
 
-	if(req.user) {
-		return res.sendfile('index.html', {root: __dirname + './../../client'});
+	if( req.isAuthenticated() ) {
+		return res.sendfile('home.html', {root: __dirname + './../../client'});
 	}
 	else {
 		return res.sendfile('login.html', {root: __dirname + './../../client'});

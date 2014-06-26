@@ -5,7 +5,7 @@
 			<tab heading="My Repositories">
 				<table class="table table-striped table-hover">
 					<tbody>
-						<tr ng-repeat="repo in repos.value" ng-show="repo.ninja.ninja">
+						<tr ng-repeat="repo in repos | deep:'ninja.ninja' | orderBy:'name'">
 							<td>
 								<a ui-sref="repo({ user:repo.owner.login, repo:repo.name })">{{ repo.name }}</a>
 							</td>
@@ -16,14 +16,8 @@
 			<tab heading="Add">
 				<table class="table table-striped table-hover">
 					<tbody>
-						<tr ng-repeat="repo in repos.value" ng-show="repo.owner.id===user.value.id">
+						<tr ng-repeat="repo in repos | deep:'permissions.admin' | orderBy:'name'">
 							<td>{{ repo.name }}</td>
-							<!-- <td>
-								<div class="btn-group">
-									<label ng-click="add(repo)" class="btn btn-primary" ng-model="repo.ninja.ninja" btn-radio="true">On</label>
-									<label ng-click="rmv(repo)" class="btn btn-default" ng-model="repo.ninja.ninja" btn-radio="false">Off</label>
-								</div>
-							</td> -->
 							<td>
 								<div class="pull-right">
 									<bs-switch type="checkbox" ng-model="repo.ninja.ninja" ng-change="toggle(repo)" switch-size="small"></bs-switch>

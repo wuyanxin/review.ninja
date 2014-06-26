@@ -35,6 +35,7 @@ module.exports = function(config) {
       // TODO: CDN
       'src/bower/angular-mocks/angular-mocks.js',
       'src/bower/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
+      'src/bower/angular-loggly-logger/angular-loggly-logger.js',
 
       // Client code
       'src/client/app.js',

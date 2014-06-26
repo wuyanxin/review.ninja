@@ -1,6 +1,7 @@
 // module
 var approval = require('../services/approval');
 // models
+var Repo = require('../documents/repo.js').Repo;
 var Comm = require('../documents/comm.js').Comm;
 var Vote = require('../documents/vote.js').Vote;
 
@@ -53,9 +54,23 @@ module.exports = {
 
 	set: function(req, done) {
 
-		Vote.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, vote: req.args.vote}, function(err, vote) {
+		Repo.with({uuid: req.args.repo}, function(err, repo) {
 
-			done(err, vote);
+			Vote.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, vote: req.args.vote}, function(err, vote) {
+
+				if(!err) {
+					require('../bus').emit('vote:add', {
+						user: repo.user,
+						repo: repo.name,
+						comm: req.args.comm,
+						login: req.user.login,
+						token: req.user.token
+					});
+				}
+
+				done(err, vote);
+
+			});
 
 		});
 
