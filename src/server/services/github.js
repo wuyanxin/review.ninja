@@ -14,6 +14,48 @@ module.exports = {
 
 		// augument the client
 
+		github.repos.one = function(msg, callback) {
+
+			var self = github;
+
+			self.httpSend(msg, {
+				url: '/repositories/:id', 
+				params: {'$id': null},
+				method: 'get' 
+			}, function(err, res) {
+
+				if (err) {
+					return self.sendError(err, null, msg, callback);
+				}
+
+				var ret;
+				
+				try {
+					ret = res.data && JSON.parse(res.data);
+				}
+				catch (ex) {
+					if (callback)
+						callback(new error.InternalServerError(ex.message), res);
+					return;
+				}
+
+				if (!ret)
+					ret = {};
+				if (!ret.meta)
+					ret.meta = {};
+				['x-ratelimit-limit', 'x-ratelimit-remaining', 'x-oauth-scopes', 'link', 'location', 'last-modified', 'etag', 'status'].forEach(function(header) {
+					if (res.headers[header])
+						ret.meta[header] = res.headers[header];
+				});
+
+				if (callback)
+					callback(null, ret);
+			});
+		};
+
+
+		// augument the client
+
 		['hasFirstPage', 
 		 'hasLastPage', 
 		 'hasNextPage', 

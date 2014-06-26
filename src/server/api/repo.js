@@ -15,7 +15,7 @@ module.exports = {
 
 	get: function(req, done) {
 
-		github.call({obj: 'repos', fun: 'get', arg: {user: req.args.user, repo: req.args.repo}, token: req.user.token}, function(err, repo) {
+		github.call({obj: 'repos', fun: 'one', arg: {id: req.args.uuid}, token: req.user.token}, function(err, repo) {
 
 			if(!repo) {
 				return done({code: 404, text: 'Not found'});
@@ -49,7 +49,7 @@ module.exports = {
 
 	add: function(req, done) {
 
-		github.call({obj: 'repos', fun: 'get', arg: {user: req.args.user, repo: req.args.repo}, token: req.user.token}, function(err, repo) {
+		github.call({obj: 'repos', fun: 'one', arg: {id: req.args.uuid}, token: req.user.token}, function(err, repo) {
 
 			if(!repo) {
 				return done({code: 404, text: 'Not found'});
@@ -59,7 +59,7 @@ module.exports = {
 				return done({code: 403, text: 'Forbidden'});
 			}
 
-			Repo.with({uuid: req.args.uuid}, {uuid: req.args.uuid, user: repo.owner.login, name: req.args.repo, token: req.user.token, ninja: true}, function(err, repo) {
+			Repo.with({uuid: req.args.uuid}, {token: req.user.token, ninja: true}, function(err, repo) {
 				done(err, repo);
 			});
 
@@ -71,13 +71,13 @@ module.exports = {
 
 	Models:
 
-	+ Vote, where repo=repo-uuid
+	+ Repo, where repo=repo-uuid
 
 ************************************************************************************************************/
 
 	rmv: function(req, done) {
 
-		github.call({obj: 'repos', fun: 'get', arg: {user: req.args.user, repo: req.args.repo}, token: req.user.token}, function(err, repo) {
+		github.call({obj: 'repos', fun: 'one', arg: {id: req.args.uuid}, token: req.user.token}, function(err, repo) {
 
 			if(!repo) {
 				return done({code: 404, text: 'Not found'});
@@ -87,7 +87,7 @@ module.exports = {
 				return done({code: 403, text: 'Forbidden'});
 			}
 
-			Repo.with({uuid: req.args.uuid}, {uuid: req.args.uuid, user: repo.owner.login, name: req.args.repo, token: req.user.token, ninja: false}, function(err, repo) {
+			Repo.with({uuid: req.args.uuid}, {token: req.user.token, ninja: false}, function(err, repo) {
 				done(err, repo);
 			});
 
