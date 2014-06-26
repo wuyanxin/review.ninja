@@ -15,12 +15,17 @@ module.exports = {
 
 	get: function(req, done) {
 
-		github.call({obj: 'repos', fun: 'getCollaborator', arg: {user: req.args.user, repo: req.args.repo, collabuser: req.user.login}, token: req.user.token}, function(err, repo) {
+		github.call({obj: 'repos', fun: 'get', arg: {user: req.args.user, repo: req.args.repo}, token: req.user.token}, function(err, repo) {
 
-			// missing
-			// authorisation
+			if(!repo) {
+				return done({code: 404, text: 'Not found'});
+			}
 
-			Repo.findOne({uuid: req.args.uuid}, function(err, repo) {
+			if(!repo.permissions.pull) {
+				return done({code: 403, text: 'Forbidden'});
+			}
+
+			Repo.with({uuid: req.args.uuid}, function(err, repo) {
 
 				if(!repo) {
 					return done({code: 404, text: 'Not found'});
@@ -54,8 +59,8 @@ module.exports = {
 				return done({code: 403, text: 'Forbidden'});
 			}
 
-			Repo.findOneAndUpdate({uuid: req.args.uuid}, {uuid: req.args.uuid, user: repo.owner.login, name: req.args.repo, token: req.user.token, ninja: true}, {upsert: true}, function(err, vote) {
-				done(err, vote);
+			Repo.with({uuid: req.args.uuid}, {uuid: req.args.uuid, user: repo.owner.login, name: req.args.repo, token: req.user.token, ninja: true}, function(err, repo) {
+				done(err, repo);
 			});
 
 		});
@@ -82,8 +87,8 @@ module.exports = {
 				return done({code: 403, text: 'Forbidden'});
 			}
 
-			Repo.findOneAndUpdate({uuid: req.args.uuid}, {uuid: req.args.uuid, user: repo.owner.login, name: req.args.repo, token: req.user.token, ninja: false}, {upsert: true}, function(err, vote) {
-				done(err, vote);
+			Repo.with({uuid: req.args.uuid}, {uuid: req.args.uuid, user: repo.owner.login, name: req.args.repo, token: req.user.token, ninja: false}, function(err, repo) {
+				done(err, repo);
 			});
 
 		});
