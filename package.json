@@ -37,7 +37,7 @@
     "karma-mocha": "^0.1.3",
     "karma-ng-html2js-preprocessor": "~0.1.0",
     "karma-phantomjs-launcher": "0.1.4",
-    "karma-reviewninja-reporter": "MitchK/karma-reviewninja-reporter",
+    "karma-reviewninja-reporter": "reviewninja/karma-reviewninja-reporter",
     "mkdirp": "0.5.0",
     "mocha": "^1.19.0",
     "mocha.ninja": "git://github.com/dtornow/mocha.ninja.git",
