@@ -5,8 +5,6 @@ describe('Home Controller', function() {
 
 	beforeEach(angular.mock.module('app'));
 
-	beforeEach(angular.mock.module('templates'));
-
 	beforeEach(angular.mock.inject(function ($injector, $rootScope, $controller) {
 
 		httpBackend = $injector.get('$httpBackend');
