@@ -7,10 +7,17 @@
 module.exports = {
 
 	github: {
+		host: process.env.GITHUB_HOST,
+		path: process.env.GITHUB_PATH,
 		client: process.env.GITHUB_CLIENT,
 		secret: process.env.GITHUB_SECRET,
 		scopes: [],
-		callback: process.env.GITHUB_CALLBACK
+		callback: process.env.GITHUB_CALLBACK,
+		urls: {
+			authorization: process.env.GITHUB_AUTHORIZATION_URL,
+			token: process.env.GITHUB_TOKEN_URL,
+			profile: process.env.GITHUB_PROFILE_URL
+		}
 	},
 
 	server: {

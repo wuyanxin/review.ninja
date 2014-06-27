@@ -8,6 +8,9 @@ passport.use(new Strategy({
 		clientID: config.github.client,
 		clientSecret: config.github.secret,
 		callbackURL: config.github.callback,
+		authorizationURL: config.github.urls.authorization,
+		tokenURL: config.github.urls.token,
+		userProfileURL: config.github.urls.profile,
 		scope: ['repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org']
 	},
 	function(accessToken, refreshToken, profile, done) {
