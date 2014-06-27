@@ -44,7 +44,7 @@
     "should": "^3.3.1",
     "sinon": "^1.10.2",
     "supertest": "0.13.0",
-    "trace.ninja": "git://github.com/dtornow/trace.ninja.git",
+    "trace.ninja": "git+https://git@ggithub.com/dtornow/trace.ninja.git",
     "zombie": "^2.0.0-alpha31"
   },
   "engines": {
