@@ -1,12 +1,13 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
 before_script:
-  - npm install -g bower
-  - bower install
-notifications:
-  webhooks: 
-    urls:
-      - http://webhooks.nodejitsu.com/1/deploy
-    on_success: always
-    on_failure: never
+- npm install -g bower
+- bower install
+deploy:
+  provider: nodejitsu
+  user: dtornow
+  api_key:
+    secure: Wotz0qfEh47hyLfwubbN5lS8f4XIf/fznDB/YGCuvvU62AChN/PleJRrHKylPncFin6Uq9G9Z27Cfhkf3ZfXl0Egc/uQ3Gk1/OQznTLmhmAeuBaXmctXkrqGhDDR3wbr4vN6/UIZDcUVcBTH5QBjIG9crN2n/tqykTCG/43ctXg=
+  on:
+    repo: reviewninja/review.ninja
