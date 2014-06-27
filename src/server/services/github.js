@@ -10,7 +10,11 @@ module.exports = {
 		var arg = call.arg;
 		var token = call.token;
 
-		var github = new GitHubApi({version: '3.0.0'});
+		var github = new GitHubApi({
+			version: '3.0.0',
+			host: config.github.host,
+			path: config.github.path
+		});
 
 		// augument the client
 
