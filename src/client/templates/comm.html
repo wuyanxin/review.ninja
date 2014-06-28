@@ -26,6 +26,7 @@
 				<span>
 					<img ng-src="{{ comm.value.author.avatar_url }}" width="18px" />
 					{{comm.value.author.login}} <small moment="comm.value.commit.committer.date"></small>
+					<img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ comm.value.sha }}">
 				</span>
 				<span class="pull-right" style="text-align:right;">
 					<small><strong>commit</strong> {{ comm.value.sha }}</small><br />
