@@ -1,16 +1,24 @@
 
 var loggly = require('loggly');
- 
-var client = loggly.createClient({
-    token: process.env.LOGGLY,
-	subdomain: 'reviewninja',
-	json: true
-});
+
+try { 
+	var client = loggly.createClient({
+	    token: process.env.LOGGLY,
+		subdomain: 'reviewninja',
+		json: true
+	});
+} catch(ex) {
+
+}
 
 module.exports = {
 	log: function() {
 		if(process.env.NODE_ENV === 'production') {
-			client.log.apply(client, arguments);
+			try {
+				client.log.apply(client, arguments);
+			} catch(ex) {
+				
+			}
 		}
 	}
 };
