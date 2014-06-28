@@ -10,15 +10,15 @@ var sinon = require('sinon');
 var util = require('../stubs.util');
 
 // api
-var vote = require("../../../server/api/vote");
+var vote = require('../../../server/api/vote');
 
 // Controllers
-var toolRouter = require("../../../server/controller/tool");
+var toolRouter = require('../../../server/controller/tool');
 
 // models
-var Tool = require("../../../server/documents/tool").Tool;
-var Vote = require("../../../server/documents/vote").Vote;
-var Repo = require("../../../server/documents/repo").Repo;
+var Tool = require('../../../server/documents/tool').Tool;
+var Vote = require('../../../server/documents/vote').Vote;
+var Repo = require('../../../server/documents/repo').Repo;
 
 describe('tool::router.all', function () {
 
@@ -26,15 +26,15 @@ describe('tool::router.all', function () {
 	// Stubs
 	// 
 
-	var stub_Tool_findOne = sinon.stub(Tool, "findOne", function(args, done) {
+	var stub_Tool_findOne = sinon.stub(Tool, 'findOne', function(args, done) {
 
 		// Create mock tool with the same id
 		// that was searched for
 		var tool = new Tool({
 			uuid: args.uuid,
-			name: "mockName",
-			repo: "mockRepo",
-			token: "mockToken"
+			name: 'mockName',
+			repo: 'mockRepo',
+			token: 'mockToken'
 		});
 
 		// Return no error
@@ -42,7 +42,7 @@ describe('tool::router.all', function () {
 		done(null, tool);
 	});
 
-	var stub_Vote_findOne = sinon.stub(Vote, "findOne", function(args, done) {
+	var stub_Vote_findOne = sinon.stub(Vote, 'findOne', function(args, done) {
 
 		// There will never be a previous vote, because otherwise our tests would fail
 		var vote = null;
@@ -50,22 +50,23 @@ describe('tool::router.all', function () {
 	});
 
 
-	var stub_Vote_update = sinon.stub(Vote, "update", function(a, b, c, done) {
+	var stub_Vote_update = sinon.stub(Vote, 'update', function(a, b, c, done) {
 		// Do nothing
 		done();
 	});
 
-	var stub_Repo_findOne = sinon.stub(Repo, "findOne", function(args, done) {
+	var stub_Repo_findOne = sinon.stub(Repo, 'findOne', function(args, done) {
 
 		var repo = null;
 		// Return mock tool with same id
 		repo = new Repo({
 		    uuid: args.uuid,
-		    user: "mockUser",
-		    name: "mockName",
-		    token: "mockToken",
-		    ninja: "true"
+		    user: 'mockUser',
+		    name: 'mockName',
+		    token: 'mockToken',
+		    ninja: 'true'
 		});
+		
 		done(null, repo);
 
 	});
