@@ -14,7 +14,7 @@
     "cookie-session": "^1.0.2",
     "express": "^4.3.1",
     "express-session": "^1.2.0",
-    "github": "^0.1.16",
+    "github": "^0.2.0",
     "glob": "^4.0.0",
     "loggly": "^1.0.4",
     "merge": "^1.1.3",
