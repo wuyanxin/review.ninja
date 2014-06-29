@@ -11,3 +11,5 @@ deploy:
     secure: Wotz0qfEh47hyLfwubbN5lS8f4XIf/fznDB/YGCuvvU62AChN/PleJRrHKylPncFin6Uq9G9Z27Cfhkf3ZfXl0Egc/uQ3Gk1/OQznTLmhmAeuBaXmctXkrqGhDDR3wbr4vN6/UIZDcUVcBTH5QBjIG9crN2n/tqykTCG/43ctXg=
   on:
     repo: reviewninja/review.ninja
+after_deploy:
+  - 'curl https://api.rollbar.com/api/1/deploy/ -F access_token=51d783b209fd4c24927dc5e0b1270aef environment=production revision=$TRAVIS_COMMIT'
