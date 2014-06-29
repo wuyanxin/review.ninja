@@ -102,7 +102,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 											uuid: grepo.id,
 											user: repoUser,
 											repo: repoName,
-											comm: comm,
+											comm: comm.sha,
 											token: repo.token
 										});
 									}
