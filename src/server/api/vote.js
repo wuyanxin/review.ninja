@@ -60,6 +60,7 @@ module.exports = {
 
 				if(!err) {
 					require('../bus').emit('vote:add', {
+						uuid: repo.uuid,
 						user: repo.user,
 						repo: repo.name,
 						comm: req.args.comm,

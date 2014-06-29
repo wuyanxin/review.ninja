@@ -14,9 +14,6 @@ router.all('/badge/:user/:repo/:refs?', function(req, res) {
 
 	Repo.with({user: user, repo: repo}, function(err, grepo, mrepo) {
 
-		console.log(arguments);
-
-
 		Comm.with({user: user, repo: repo, refs: refs}, function(err, gcomm, mcomm) {
 
 			console.log(arguments);

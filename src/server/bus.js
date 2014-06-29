@@ -14,7 +14,7 @@ module.exports.on('vote:add', function(vote) {
 
 	var approval = require('./services/approval');
 
-	mongoose.model('Comm').with({uuid: vote.comm}, {uuid: vote.comm.sha, repo: vote.uuid}, function(err, comm) {
+	mongoose.model('Comm').with({uuid: vote.comm}, {uuid: vote.comm, repo: vote.uuid}, function(err, comm) {
 
 		approval(vote.comm, function(err, approval) {
 			// update database
