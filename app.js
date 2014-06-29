@@ -7,9 +7,9 @@ var http = require('http');
 
 if(process.env.NODE_ENV === 'production') {
 
-	process.on('uncaughtException', function (err) {
+	// Log to github
 
-		console.log(err);
+	process.on('uncaughtException', function (err) {
 
 		var github = new (require('github'))({version: '3.0.0'});
 
@@ -29,6 +29,14 @@ if(process.env.NODE_ENV === 'production') {
 		});
 
 	});
+
+	// Log to rollbar
+
+	var rollbar = require('rollbar');
+
+	rollbar.handleUncaughtExceptions('51d783b209fd4c24927dc5e0b1270aef', {
+		exitOnUncaughtException: false
+	});	
 
 }
 
