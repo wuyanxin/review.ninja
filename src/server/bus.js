@@ -114,13 +114,13 @@ var Comm = {
 
 					});
 
-				})
+				});
 
 			}
 			else {
 				return done(err, mcomm);
 			}
 
-		})
+		});
 	}
 };
