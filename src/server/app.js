@@ -167,7 +167,6 @@ var logger = require('./log');
 
 app.all('/api/:obj/:fun', function(req, res) {
 	res.set('Content-Type', 'application/json');
-	var now = new Date();
 	api[req.params.obj][req.params.fun](req, function(err, obj) {
 		if (err) {
 			console.log(('✖ ' + req.params.obj + ':' +  req.params.fun).bold.red);
