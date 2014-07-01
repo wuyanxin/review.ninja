@@ -21,17 +21,23 @@
 		<div style="display:table; width:100%; height:100%; text-align:center;">
 			<div style="display:table-row;">
 				<div style="display:table-cell; padding:10px 0; vertical-align:bottom;">
-					<img src="/assets/images/review-ninja.png" class="img-responsive" alt="Review Ninja" />
+					<img src="/assets/images/review-ninja-500.png" class="img-responsive" alt="Review Ninja" />
 				</div>
 			</div>
 			<div style="display:table-row;">
 				<div style="display:table-cell; padding:10px 0; vertical-align:top;">
-					<div class="input-group">
-						<input ng-model="email" type="email" class="form-control" placeholder="Email me" />
-						<span class="input-group-btn">
-							<button ng-click="subscribe()" ng-disabled="call.loading" class="btn btn-primary" type="button">I'm curious</button>
-						</span>
-					</div>
+					<form name="form" ng-show="!call.loaded || call.error">
+						<div class="input-group" ng-class="{'has-error':(form.$error.email && call.error)}">
+							<input ng-model="email" type="email" class="form-control" placeholder="Email me" />
+							<span class="input-group-btn">
+								<button ng-click="subscribe()" ng-disabled="call.loading" class="btn btn-default" type="button">I'm curious</button>
+							</span>
+						</div>
+					</form>
+					<span ng-show="call.loaded && !call.error">
+						We have sent you an email to confirm you are not a robot.<br />
+						After you confirm you will be in the know!
+					</span>
 				</div>
 			</div>
 		</div>
