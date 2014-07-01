@@ -20,6 +20,10 @@ module.exports = {
 		}
 	},
 
+	mailchimp: {
+		key: process.env.MAILCHIMP
+	},
+
 	server: {
 
 		http: {
