@@ -15,8 +15,10 @@ module.controller('LoginCtrl', ['$scope', '$RPC', function($scope, $RPC) {
 
 		$scope.call = $RPC.call('chimp', 'add', {
 			email: $scope.email
-		}, function() {
-			$scope.email = null;
+		}, function(err, res) {
+			if(!err) {
+				$scope.email = null;
+			}
 		});
 	};
 
