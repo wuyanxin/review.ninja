@@ -3,4 +3,4 @@
 Review Ninja
 ===========
 
-[![Review Ninja](https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja.png)](http://review.ninja)
+[<img src="https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja.png" width="250px" alt="Review Ninja" />](http://review.ninja)
