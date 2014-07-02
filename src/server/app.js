@@ -42,7 +42,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // custom middleware
-app.use(require('./middleware/github'));
 app.use('/api', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 
