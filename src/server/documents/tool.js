@@ -1,5 +1,6 @@
 
 var mongoose = require('mongoose');
+var withHelper = require('./with');
 
 var ToolSchema = mongoose.Schema({
     uuid: String,
@@ -7,6 +8,8 @@ var ToolSchema = mongoose.Schema({
     repo: Number,
     token: String
 });
+
+ToolSchema.plugin(withHelper);
 
 var Tool = mongoose.model('Tool', ToolSchema);
 

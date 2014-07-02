@@ -1,7 +1,6 @@
 
-
 var mongoose = require('mongoose');
-
+var withHelper = require('./with');
 
 var CommSchema = mongoose.Schema({
     uuid: String,
@@ -11,34 +10,7 @@ var CommSchema = mongoose.Schema({
     approval: Object
 });
 
-
-CommSchema.statics.with = function () {
-
-	var keys;
-	var args;
-	var done;
-
-	if(arguments.length == 2) {
-		
-		keys = arguments[0];
-		done = arguments[1];
-
-		return this.findOne(keys, done);
-	}
-
-	if(arguments.length == 3) {
-		
-		keys = arguments[0];
-		args = arguments[1];
-		done = arguments[2];
-
-		return this.findOneAndUpdate(keys, args, {upsert: true}, done);
-	}
-
-	return done('Invalid arguments');
-	
-};
-
+CommSchema.plugin(withHelper);
 
 CommSchema.virtual('status').get(function () {
 	return (this.approval === 'approved' || this.approval === 'rejected') ? this.approval : 'pending';

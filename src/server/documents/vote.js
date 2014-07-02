@@ -1,7 +1,6 @@
 
-
 var mongoose = require('mongoose');
-
+var withHelper = require('./with');
 
 var VoteSchema = mongoose.Schema({
 	repo: Number,
@@ -10,6 +9,7 @@ var VoteSchema = mongoose.Schema({
 	vote: String
 });
 
+VoteSchema.plugin(withHelper);
 
 VoteSchema.index({
 	repo: 1,
@@ -19,9 +19,7 @@ VoteSchema.index({
 	unique: true
 });
 
-
 var Vote = mongoose.model('Vote', VoteSchema);
-
 
 module.exports = {
 	Vote: Vote
