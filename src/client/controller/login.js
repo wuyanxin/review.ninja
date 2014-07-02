@@ -13,7 +13,7 @@ module.controller('LoginCtrl', ['$scope', '$RPC', function($scope, $RPC) {
 
 	$scope.subscribe = function() {
 
-		$scope.call = $RPC.call('chimp', 'add', {
+		$scope.call = $RPC.call('chimp', 'news', {
 			email: $scope.email
 		}, function(err, res) {
 			if(!err) {

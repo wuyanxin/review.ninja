@@ -21,8 +21,14 @@ module.exports = {
 	},
 
 	mailchimp: {
-		key: process.env.MAILCHIMP
+		key: process.env.MAILCHIMP,
+		news: 'fefbc1ceed',
+		user: 'cee7e023eb'
 	},
+
+	whitelist: [
+		'/chimp/news',
+	],
 
 	server: {
 

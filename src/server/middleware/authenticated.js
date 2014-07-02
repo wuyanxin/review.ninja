@@ -2,11 +2,7 @@ var sugar = require('array-sugar');
 
 module.exports = function(req, res, next) {
 
-	var whitelist = [
-		'/chimp/add'
-	];
-
-	if (req.isAuthenticated() || whitelist.contains(req.url)) {
+	if (req.isAuthenticated() || config.whitelist.contains(req.url)) {
 		return next();
 	}
 
