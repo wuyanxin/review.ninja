@@ -8,7 +8,7 @@ module.exports = {
 
 	github: {
 		host: process.env.GITHUB_HOST,
-		path: process.env.GITHUB_PATH,
+		pathPrefix: process.env.GITHUB_PATH_PREFIX,
 		client: process.env.GITHUB_CLIENT,
 		secret: process.env.GITHUB_SECRET,
 		scopes: [],
