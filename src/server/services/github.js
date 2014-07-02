@@ -38,7 +38,7 @@ module.exports = {
 					ret = res.data && JSON.parse(res.data);
 				}
 				catch (ex) {
-					return callback(ex)
+					return callback(ex);
 				}
 
 				if (!ret)
