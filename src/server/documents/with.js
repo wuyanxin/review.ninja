@@ -29,4 +29,4 @@ module.exports = exports = function (schema, options) {
 	};
 
 
-}
+};
