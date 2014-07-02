@@ -17,8 +17,6 @@ module.exports = {
 
 		github.call({obj: 'repos', fun: 'one', arg: {id: req.args.uuid}, token: req.user.token}, function(err, repo) {
 
-			console.log(repo);
-
 			if(!repo) {
 				return done({code: 404, text: 'Not found'});
 			}
