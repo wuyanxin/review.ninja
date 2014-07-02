@@ -27,7 +27,7 @@ module.exports = {
 	},
 
 	whitelist: [
-		'/chimp/news',
+		'/chimp/add',
 	],
 
 	server: {
