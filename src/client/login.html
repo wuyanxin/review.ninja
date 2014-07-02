@@ -4,6 +4,8 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
+	<link rel="apple-touch-icon-precomposed" href="/assets/images/favicon-152.png">
+
 	<!-- COMPONENT STYLESHEETS -->
 	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 	<link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -26,19 +28,19 @@
 			</div>
 			<div style="display:table-row;">
 				<div style="display:table-cell; padding:10px 0; vertical-align:top;">
-					<form name="form" ng-show="!call.loaded || call.error">
+					<form name="form" ng-submit="subscribe()" ng-show="!call.loaded || call.error">
 						<div class="input-group" ng-class="{'has-error':(form.$error.email && call.error)}">
 							<input ng-model="email" type="email" class="form-control" placeholder="Email me" />
 							<span class="input-group-btn">
-								<button ng-click="subscribe()" ng-disabled="call.loading" class="btn btn-default" type="button">I'm curious</button>
+								<button type="submit" ng-disabled="call.loading" class="btn btn-default">I'm curious</button>
 							</span>
 						</div>
 					</form>
-					<span ng-show="call.loaded && !call.error && !call.value.code">
+					<span ng-show="call && call.loaded && !call.error && !call.value.code">
 						We have sent you an email to confirm you are not a robot.<br />
 						After you confirm you will be in the know!
 					</span>
-					<span ng-show="call.loaded && !call.error && call.value.code===214">
+					<span ng-show="call && call.loaded && !call.error && call.value.code===214">
 						You're already on the list silly.
 					</span>
 				</div>
