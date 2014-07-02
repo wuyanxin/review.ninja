@@ -55,6 +55,6 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "grunt --verbose"
+    "test": "grunt --gruntfile Gruntfile.travis.js --verbose"
   }
 }

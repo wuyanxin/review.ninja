@@ -31,12 +31,12 @@ describe('$EventBus Service', function() {
 		var eventCatched = false;
 
 		// Define topic
-		eventBus.on("testTopic", function (type, data) {
+		eventBus.on('testTopic', function (type, data) {
 			eventCatched = true;
 		}, scope);
 
 		// Emit event to topic
-		eventBus.emit("testTopic", "something");
+		eventBus.emit('testTopic', 'something');
 
 		// Test
 		Should(eventCatched).not.be.false;
@@ -48,15 +48,15 @@ describe('$EventBus Service', function() {
 		var correctDataReceived = false;
 
 		// Given
-		var givenData = "Hello World";
+		var givenData = 'Hello World';
 
 		// Define topic
-		eventBus.on("testTopic", function (type, receivedData) {
+		eventBus.on('testTopic', function (type, receivedData) {
 			correctDataReceived = receivedData === givenData;
 		}, scope);
 
 		// Emit event to topic
-		eventBus.emit("testTopic", givenData);
+		eventBus.emit('testTopic', givenData);
 
 		// Test
 		Should(correctDataReceived).not.be.false;

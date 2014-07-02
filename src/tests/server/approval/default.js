@@ -2,8 +2,8 @@ require('trace.ninja');
 // unit test
 var assert = require('assert');
 // models
-var Comm = require("../../../server/documents/comm").Comm;
-var Vote = require("../../../server/documents/vote").Vote;
+var Comm = require('../../../server/documents/comm').Comm;
+var Vote = require('../../../server/documents/vote').Vote;
 // approval
 var approval = require('../../../server/approval/default');
 
@@ -18,7 +18,7 @@ describe('approval::default', function () {
 			}
 		}, [ ], function(err, approval) {
 			
-			assert.equal(approval, "pending");
+			assert.equal(approval, 'pending');
 
 			done();
 		});
@@ -33,10 +33,10 @@ describe('approval::default', function () {
 				rejected: -2
 			}
 		}, [{
-			vote: "Not a number"
+			vote: 'Not a number'
 		}], function(err, approval) {
 			
-			assert.equal(approval, "pending");
+			assert.equal(approval, 'pending');
 
 			done();
 		});
@@ -54,7 +54,7 @@ describe('approval::default', function () {
 			vote: +1
 		}], function(err, approval) {
 			
-			assert.equal(approval, "pending");
+			assert.equal(approval, 'pending');
 
 			done();
 		});
@@ -72,7 +72,7 @@ describe('approval::default', function () {
 			vote: -1
 		}], function(err, approval) {
 			
-			assert.equal(approval, "pending");
+			assert.equal(approval, 'pending');
 
 			done();
 		});
@@ -93,7 +93,7 @@ describe('approval::default', function () {
 			vote: +1
 		}], function(err, approval) {
 			
-			assert.equal(approval, "approved");
+			assert.equal(approval, 'approved');
 
 			done();
 		});
@@ -113,7 +113,7 @@ describe('approval::default', function () {
 			vote: -1
 		}], function(err, approval) {
 			
-			assert.equal(approval, "rejected");
+			assert.equal(approval, 'rejected');
 
 			done();
 		});
@@ -124,12 +124,12 @@ describe('approval::default', function () {
 
 		approval({
 			approval: {
-				approved: "Not a Number",
-				rejected: "Not a Number"
+				approved: 'Not a Number',
+				rejected: 'Not a Number'
 			}
 		}, [ ], function(err, approval) {
 			
-			assert.equal(err, "Configuration invalid");
+			assert.equal(err, 'Configuration invalid');
 
 			done();
 		});

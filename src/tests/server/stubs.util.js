@@ -1,11 +1,11 @@
 
 var sinon = require('sinon');
-var github = require("../../server/services/github");
+var github = require('../../server/services/github');
 
 var fakeGithub = function () {
 
 
-	var call = sinon.stub(github, "call", function (args, done) {
+	var call = sinon.stub(github, 'call', function (args, done) {
 
 		var obj = args.obj;
 		var fun = args.fun;
@@ -13,12 +13,12 @@ var fakeGithub = function () {
 		var err = null;
 		var res = null;
 
-		if (fun == "getCommit") {
+		if (fun == 'getCommit') {
 			res = {
 				sha: args.arg.sha
 			};
 		}
-		else if (fun == "createCommitComment") {
+		else if (fun == 'createCommitComment') {
 			// Nothing
 		}
 		done(err, res);

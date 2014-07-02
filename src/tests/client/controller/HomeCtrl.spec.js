@@ -15,7 +15,7 @@ describe('Home Controller', function() {
 			return $controller('HomeCtrl', {
 				$scope: scope
 			});
-		}
+		};
 	}));
 
 	afterEach(function() {
