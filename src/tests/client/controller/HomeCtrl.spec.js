@@ -5,9 +5,17 @@ describe('Home Controller', function() {
 
 	beforeEach(angular.mock.module('app'));
 
+	beforeEach(angular.mock.module('templates'));
+
 	beforeEach(angular.mock.inject(function ($injector, $rootScope, $controller) {
 
 		httpBackend = $injector.get('$httpBackend');
+
+		httpBackend.when('GET', '/config').respond({
+			data: {
+				gacode: 'google-analytics-code'
+			}
+		});
 
 		scope = $rootScope.$new();
 

@@ -10,9 +10,15 @@ describe('Validate Directive', function() {
 
 	beforeEach(angular.mock.module('templates'));
 
-	beforeEach(angular.mock.inject(function ($injector, $rootScope, $compile) {
+	beforeEach(angular.mock.inject(function ($injector, $rootScope, $compile, $httpBackend) {
 		scope = $rootScope.$new();
 		compile = $compile;
+
+    $httpBackend.when('GET', '/config').respond({
+      data: {
+        gacode: 'google-analytics-code'
+      }
+    });
 	}));
 
 	// should be valid
