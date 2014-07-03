@@ -1,6 +1,7 @@
 bower should 3.3.1
 bower angular-mocks 1.2.17
 bower angular-bootstrap-switch ~0.3.0-alpha.2
+bower angulartics 0.15.19
 cdn //cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js
 cdn //cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js
 cdn //cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js
@@ -11,6 +12,7 @@ cdn //cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js
 cdn //cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js
 cdn //cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js
 cdn //cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js
+cdn //www.google-analytics.com/analytics.js
 npm async ^0.9.0
 npm body-parser ^1.2.0
 npm colors ^0.6.2
