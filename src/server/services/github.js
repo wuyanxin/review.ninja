@@ -1,9 +1,15 @@
 
 var GitHubApi = require('github');
+var ua = require('universal-analytics');
 
 module.exports = {
 
 	call: function(call, done) {
+
+    if(config.client.gacode) {
+      visitor = ua(config.client.gacode);
+      visitor.event('GitHub Api Call', call.obj+'/'+call.fun, call.token).send();
+    }
 
 		var obj = call.obj;
 		var fun = call.fun;

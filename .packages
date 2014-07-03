@@ -28,3 +28,4 @@ npm mongoose ^3.8.11
 npm passport ^0.2.0
 npm passport-github ^0.1.5
 npm redis ^0.10.3
+npm universal-analytics ^0.3.4
