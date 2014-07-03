@@ -5,9 +5,17 @@ describe('Home Controller', function() {
 
 	beforeEach(angular.mock.module('app'));
 
+	beforeEach(angular.mock.module('templates'));
+
 	beforeEach(angular.mock.inject(function ($injector, $rootScope, $controller) {
 
 		httpBackend = $injector.get('$httpBackend');
+
+		httpBackend.when('GET', '/config').respond({
+			data: {
+				gacode: 'google-analytics-code'
+			}
+		});
 
 		scope = $rootScope.$new();
 
@@ -28,12 +36,6 @@ describe('Home Controller', function() {
 		var ctrl = createCtrl();
 
 		// load the data
-
-		httpBackend.when('GET', '/config').respond({
-			data: {
-				gacode: 'google-analytics-code'
-			}
-		});
 
 		httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"get"}').respond({
 			data: {
