@@ -41,6 +41,7 @@ module.exports = function(config) {
       'src/bower/angular-loggly-logger/angular-loggly-logger.js',
 
       // Client code
+      'src/client/modules/config.js',
       'src/client/app.js',
       'src/client/api.js',
       'src/client/controller/**/*.js',

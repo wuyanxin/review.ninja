@@ -3,30 +3,13 @@ module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters', 'n
 
 filters = angular.module('ninja.filters', []);
 
-angular.module('ninja.config', [])
-.provider('$config', function() {
-
-  function Config($http) {
-    this.get = function(done) {
-      $http.get('/config')
-           .success(function(data, status) {
-             done(data || {}, status);
-           });
-    };
-  }
-
-  this.$get = ['$http', function($http) {
-    return new Config($http);
-  }];
-});
-
 // *************************************************************
 // Delay start 
 // *************************************************************
 
-  angular.element(document).ready(function() {
-    angular.bootstrap(document, ['app']);
-  });
+angular.element(document).ready(function() {
+  angular.bootstrap(document, ['app']);
+});
 
 // *************************************************************
 // States
