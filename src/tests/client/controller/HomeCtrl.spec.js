@@ -29,6 +29,12 @@ describe('Home Controller', function() {
 
 		// load the data
 
+		httpBackend.when('GET', '/config').respond({
+			data: {
+				gacode: 'google-analytics-code'
+			}
+		});
+
 		httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"get"}').respond({
 			data: {
 				login: 'me'
