@@ -1,21 +1,38 @@
 
-module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters', 'frapontillo.bootstrap-switch']);
+module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters', 'ninja.config', 'frapontillo.bootstrap-switch', 'angulartics', 'angulartics.google.analytics']);
 
 filters = angular.module('ninja.filters', []);
+
+angular.module('ninja.config', [])
+.provider('$config', function() {
+
+  function Config($http) {
+    this.get = function(done) {
+      $http.get('/config')
+           .success(function(data, status) {
+             done(data || {}, status);
+           });
+    };
+  }
+
+  this.$get = ['$http', function($http) {
+    return new Config($http);
+  }];
+});
 
 // *************************************************************
 // Delay start 
 // *************************************************************
 
-angular.element(document).ready(function() {
-	angular.bootstrap(document, ['app']);
-});
+  angular.element(document).ready(function() {
+    angular.bootstrap(document, ['app']);
+  });
 
 // *************************************************************
 // States
 // *************************************************************
 
-module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
+module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$analyticsProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $analyticsProvider) {
 
 	$stateProvider
 		.state('home', {
@@ -81,4 +98,13 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', func
 
 	$locationProvider.html5Mode(true);
 
+  $analyticsProvider.withAutoBase(true);  /* Records full path */
+
+}])
+.run(['$config', function($config) {
+  $config.get(function(data, status) {
+    if(data.gacode) {
+      ga('create', data.gacode, 'auto');
+    }
+  });
 }]);
