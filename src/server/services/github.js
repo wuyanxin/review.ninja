@@ -7,7 +7,7 @@ module.exports = {
 	call: function(call, done) {
 
     if(config.client.gacode) {
-      visitor = ua(config.client.gacode);
+      var visitor = ua(config.client.gacode);
       visitor.event('GitHub Api Call', call.obj+'/'+call.fun, call.token).send();
     }
 
