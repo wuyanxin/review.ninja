@@ -44,6 +44,7 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		comm: $stateParams.sha,
 	});
 
+	// get the status
 	$scope.status =	$RPC.call('vote', 'status', {
 		// repo uuid
 		repo: $scope.repo.value.id,
