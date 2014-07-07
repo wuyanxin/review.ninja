@@ -9,6 +9,8 @@ filters.filter('deep', function(){
 
 		var properties = property.split('.');
 
+		items = items instanceof Array ? items : [];
+
 		target = typeof target !== 'undefined' ? target : true;
 
 		items.forEach(function(item){
