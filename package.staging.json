@@ -1,6 +1,6 @@
 {
-  "name": "review.ninja",
-  "version": "0.0.1-100",
+  "name": "review.ninja.staging",
+  "version": "0.0.1",
   "subdomain": "review-ninja-staging",
   "dependencies": {
     "array-sugar": "^0.2.4",
