@@ -17,7 +17,9 @@ module.exports = {
 
 		User.findOne({uuid: req.args.user}, function(err, user) {
 			
-			done(err, user);
+			done(err, {
+				name: user.name
+			});
 
 		});
 
