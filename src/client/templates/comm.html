@@ -42,7 +42,7 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-8">
 
 		<tabset>
 			<tab heading="Stats">
@@ -78,12 +78,6 @@
 				<ul>
 					<li ng-repeat="stat in stat.value">
 						{{ stat.context }} {{ stat.description }} {{ stat.state }}
-					</li>
-				</ul>
-				<h3>Votes</h3>				
-				<ul>
-					<li ng-repeat="vote in votes.value">
-						{{ vote.vote }} {{ vote.user }}
 					</li>
 				</ul>
 				<h3>Comments</h3>				
@@ -178,5 +172,13 @@
 			</tab>
 		</tabset>
 		
+	</div>
+
+	<div class="col-md-4">
+		<ul class="list-group">
+			<li class="list-group-item" ng-repeat="vote in votes.value">
+				<vote user="vote.user" value="vote.vote" issues="issue.value" comments="commitComments.value"></vote>
+			</li>
+		</ul>
 	</div>
 </div>

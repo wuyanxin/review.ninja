@@ -11,7 +11,7 @@ module.exports = {
 
 	Models:
 
-	+ Vote, where repo=repo-uuid, comm=comm-uuid, user=user-uuid
+	+ Vote, where repo=repo-uuid, comm=comm-uuid
 
 ************************************************************************************************************/
 
