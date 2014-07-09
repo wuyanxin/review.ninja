@@ -1,6 +1,11 @@
-bower should 3.3.1
-bower angular-mocks 1.2.17
-bower angular-bootstrap-switch ~0.3.0-alpha.2
+bower angular 1.2.19
+bower angular-bootstrap-switch ~0.3.0
+bower angulartics ~0.15.20
+bower bootstrap ~3.2.0
+bower jquery ~2.1.1
+bower github-fork-ribbon-css ~0.1.1
+bower angular-mocks ~1.2.19
+bower should ~3.3.1
 cdn //cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js
 cdn //cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js
 cdn //cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js
