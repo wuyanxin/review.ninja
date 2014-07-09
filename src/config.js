@@ -37,6 +37,16 @@ module.exports = {
 			port: 60000,
 		},
 
+    smtp: {
+      host: process.env.SMTP_HOST,
+      secureConnection: true,
+      port: process.env.SMTP_PORT,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      }
+    },
+
 		static: [
 			__dirname + '/bower',
 			__dirname + '/client'
