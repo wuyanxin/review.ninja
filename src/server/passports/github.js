@@ -15,7 +15,7 @@ passport.use(new Strategy({
 		authorizationURL: config.github.urls.authorization,
 		tokenURL: config.github.urls.token,
 		userProfileURL: config.github.urls.profile,
-		scope: config.github.urls.scopes
+		scope: config.github.scopes
 	},
 	function(accessToken, refreshToken, profile, done) {
 		logger.log('Github OAuth Login');
