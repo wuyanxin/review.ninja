@@ -12,11 +12,14 @@ router.all('/*', function(req, res) {
 	if( req.isAuthenticated() ) {
 		return res.sendfile('home.html', {root: __dirname + './../../client'});
 	}
-	else if (process.env.INTERNAL) {
-		return res.sendfile('internal.html', {root: __dirname + './../../client'});
-	}
 	else {
-		return res.sendfile('login.html', {root: __dirname + './../../client'});
+
+		if( config.github.enterprise ) {
+			return res.sendfile('login.enterprise.html', {root: __dirname + './../../client'});
+		}
+		else {
+			return res.sendfile('login.html', {root: __dirname + './../../client'});
+		}
 	}
 });
 

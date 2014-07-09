@@ -17,8 +17,8 @@ module.exports = {
 		var token = call.token;
 
 		var github = new GitHubApi({
-			protocol: 'https',
-			version: '3.0.0',
+			protocol: config.github.protocol,
+			version: config.github.version,
 			host: config.github.host,
 			pathPrefix: config.github.pathPrefix
 		});

@@ -15,7 +15,7 @@ passport.use(new Strategy({
 		authorizationURL: config.github.urls.authorization,
 		tokenURL: config.github.urls.token,
 		userProfileURL: config.github.urls.profile,
-		scope: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org']
+		scope: config.github.urls.scopes
 	},
 	function(accessToken, refreshToken, profile, done) {
 		logger.log('Github OAuth Login');
@@ -24,7 +24,7 @@ passport.use(new Strategy({
 			done(err, merge(profile._json, {token: accessToken}));
 
 			//
-			// Add user to our mailing list
+			// Add user to our mailing list - FIX
 			//
 			if(res && !res.updatedExisting) {
 

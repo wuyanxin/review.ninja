@@ -7,12 +7,25 @@
 module.exports = {
 
 	github: {
+
+		// optional
 		host: process.env.GITHUB_HOST,
+		enterprise: !!process.env.GITHUB_HOST, // flag enterprise version
+
+		// optional
 		pathPrefix: process.env.GITHUB_PATH_PREFIX,
+		protocol: process.env.GITHUB_PROTOCOL,
+		version: process.env.GITHUB_VERSION || '3.0.0',
+
+		// required
 		client: process.env.GITHUB_CLIENT,
 		secret: process.env.GITHUB_SECRET,
-		scopes: [],
 		callback: process.env.GITHUB_CALLBACK,
+
+		// review.ninja specific
+		scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org'],
+
+		// optional urls
 		urls: {
 			authorization: process.env.GITHUB_AUTHORIZATION_URL,
 			token: process.env.GITHUB_TOKEN_URL,
