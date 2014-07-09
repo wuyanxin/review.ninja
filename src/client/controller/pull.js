@@ -14,6 +14,10 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 	// get the pull request
 	$scope.pull = pull;
 
+	// for the diff view
+	$scope.head = $scope.pull.value.head.sha;
+	$scope.base = $scope.pull.value.base.sha;
+
 	// get the commit
 	$scope.comm = $HUB.call('repos', 'getCommit', {
 		user: $stateParams.user,
@@ -35,6 +39,14 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 				comm: $scope.pull.value.head.sha
 			});
 		});
+	});
+
+	// get the base commits
+	$scope.baseCommits = $HUB.call('repos', 'getCommits', {
+		user: $stateParams.user,
+		repo: $stateParams.repo,
+		sha: $scope.pull.value.base.sha,
+		per_page: 15
 	});
 
 	// get the statuses
@@ -163,6 +175,22 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 			comm: $scope.pull.value.head.sha,
 			// vote
 			vote: value
+		});
+	};
+
+	$scope.compComm = function(base) {
+		$HUB.call('repos', 'compareCommits', {
+			user: $stateParams.user,
+			repo: $stateParams.repo,
+			// head sha
+			head: $scope.head,
+			// base sha
+			base: base
+		}, function(err, res) {
+			if(!err) {
+				$scope.base = base;
+				$scope.files.value = res.value.files;
+			}
 		});
 	};
 
