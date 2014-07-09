@@ -37,11 +37,11 @@
 							</span>
 						</div>
 					</form>
-					<span ng-show="call && call.loaded && !call.error && !call.value.code">
+					<span ng-show="call.loaded && !call.error && !call.value.code">
 						We have sent you an email to confirm you are not a robot.<br />
 						After you confirm you will be in the know!
 					</span>
-					<span ng-show="call && call.loaded && !call.error && call.value.code===214">
+					<span ng-show="call.loaded && !call.error && call.value.code===214">
 						You're already on the list silly.
 					</span>
 				</div>
