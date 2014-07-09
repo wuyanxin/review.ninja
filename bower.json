@@ -2,9 +2,15 @@
   "name": "review.ninja",
   "version": "0.0.1-1",
   "dependencies": {
-    "should": "3.3.1",
-    "angular-mocks": "1.2.17",
-    "angular-bootstrap-switch": "~0.3.0-alpha.2",
-    "angulartics": "0.15.19"
+    "angular": "~1.2.19",
+    "angular-bootstrap-switch": "~0.3.0",
+    "angulartics": "~0.15.20",
+    "bootstrap": "~3.2.0",
+    "jquery": "~2.1.1",
+    "github-fork-ribbon-css": "~0.1.1"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.2.19",
+    "should": "~3.3.1"
   }
 }
