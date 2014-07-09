@@ -37,7 +37,7 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-8">
 
 		<tabset>
 		<tab heading="Stats">
@@ -118,6 +118,23 @@
 			</tab>
 
 			<tab heading="Diff">
+
+				<form class="form-inline" role="form" style="margin-top:20px;">
+					<div class="form-group">
+						<label>Compare to:</label>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								{{ base | limitTo:10 }}&hellip; <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li ng-repeat="commit in baseCommits.value">
+									<a ng-click="compComm(commit.sha)" href="">{{ commit.sha | limitTo:15 }}&hellip;</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</form>
+
 				<div ng-repeat="file in files.value" class="panel panel-default" style="margin-top:20px;">
 					<div class="panel-heading">
 						<strong>
@@ -201,4 +218,13 @@
 		</tabset>
 
 	</div>
+
+	<div class="col-md-4">
+		<ul class="list-group">
+			<li class="list-group-item" ng-repeat="vote in votes.value">
+				<vote user="vote.user" value="vote.vote" issues="issue.value" comments="commitComments.value"></vote>
+			</li>
+		</ul>
+	</div>
+
 </div>

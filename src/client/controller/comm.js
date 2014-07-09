@@ -14,6 +14,10 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 	// get the commit
 	$scope.comm = comm;
 
+	// for the diff view
+	$scope.head = $scope.comm.value.sha;
+	$scope.base = $scope.comm.value.parents[0].sha;
+
 	// get the statuses
 	$scope.stat = $HUB.call('statuses', 'get', {
 		user: $stateParams.user,
@@ -26,6 +30,14 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		sha: $stateParams.sha,
+	});
+
+	// get the commits
+	$scope.commits = $HUB.call('repos', 'getCommits', {
+		user: $stateParams.user,
+		repo: $stateParams.repo,
+		sha: $scope.base,
+		per_page: 15
 	});
 
 	// get your vote
@@ -171,16 +183,21 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		}
 	};
 
-	// $scope.compComm = function(commit) {
-	// 	$scope.comp = $HUB.call('repos', 'compareCommits', {
-	// 		user: $stateParams.user,
-	// 		repo: $stateParams.repo,
-	// 		// head sha
-	// 		head: $stateParams.sha,
-	// 		// base sha
-	// 		base: commit
-	// 	});
-	// };
+	$scope.compComm = function(base) {
+		$HUB.call('repos', 'compareCommits', {
+			user: $stateParams.user,
+			repo: $stateParams.repo,
+			// head sha
+			head: $scope.head,
+			// base sha
+			base: base
+		}, function(err, res) {
+			if(!err) {
+				$scope.base = base;
+				$scope.comp = res;
+			}
+		});
+	};
 
 	// if($scope.comm.value.parents.length > 0) {
 	// 	$scope.compComm($scope.comm.value.parents[0].sha);
