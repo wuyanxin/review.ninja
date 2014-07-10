@@ -29,3 +29,4 @@ npm passport ^0.2.0
 npm passport-github ^0.1.5
 npm redis ^0.10.3
 npm universal-analytics ^0.3.4
+npm nodemailer ^0.7.0

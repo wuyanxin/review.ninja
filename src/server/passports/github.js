@@ -19,51 +19,40 @@ passport.use(new Strategy({
 	},
 	function(accessToken, refreshToken, profile, done) {
 		logger.log('Github OAuth Login');
-		models.User.update({uuid: profile.id}, {name: profile.username, token: accessToken}, {upsert: true}, function(err, num, res) {
+    github.call({obj: 'user', fun: 'getEmails', token: accessToken}, function(err, emails) {
+      models.User.update({uuid: profile.id}, {name: profile.username, email: emails.last, token: accessToken}, {upsert: true}, function(err, num, res) {
+        if(!err) {
+          done(err, merge(profile._json, {token: accessToken}));
 
-			done(err, merge(profile._json, {token: accessToken}));
+          //
+          // Add user to our mailing list
+          //
+          github.call({
+            obj: 'user',
+            fun: 'get',
+            token: accessToken
+          }, function(err, user) {
+            if(!err) {
+              mailchimp.call({
+                obj: 'lists',
+                fun: 'subscribe',
+                arg: {
+                  id: config.mailchimp.user,
+                  email: {
+                    email: emails.last
+                  },
+                  merge_vars: {
+                    name: user.name,
+                    login: user.login
+                  }
+                }
+              }, function(){
 
-			//
-			// Add user to our mailing list - FIX
-			//
-			if(res && !res.updatedExisting) {
-
-				github.call({
-					obj: 'user',
-					fun: 'get',
-					token: accessToken
-				}, function(err, user) {
-					if(!err) {
-
-						github.call({
-							obj: 'user',
-							fun: 'getEmails',
-							token: accessToken
-						}, function(err, emails) {
-							if(!err) {
-
-								mailchimp.call({
-									obj: 'lists',
-									fun: 'subscribe',
-									arg: {
-										id: config.mailchimp.user,
-										email: {
-											email: emails.last
-										},
-										merge_vars: {
-											name: user.name,
-											login: user.login
-										}
-									}
-								}, function(){
-
-								});
-							}
-						});
-					}
-				});
-			}
-
+              });
+            }
+          });
+        }
+      });
 		});
 	}
 ));
