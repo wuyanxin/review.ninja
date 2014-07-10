@@ -1,9 +1,15 @@
 
-module.exports = function(config, votes, done) {
+module.exports = exports = function(json) {
 
-	if(	!(config && config.approval && typeof config.approval.approved === 'number') ||
-		!(config && config.approval && typeof config.approval.rejected === 'number') ) {
-		return done('Configuration invalid');
+	this.json = json;
+
+}
+
+exports.prototype.approval = function(votes, done) {
+
+	if(	!(this.json && this.json.approval && typeof this.json.approval.approved === 'number') ||
+		!(this.json && this.json.approval && typeof this.json.approval.rejected === 'number') ) {
+		return done('this.jsonuration invalid');
 	}
 
 	var sum = 0;
@@ -14,14 +20,13 @@ module.exports = function(config, votes, done) {
 
 	var approval = 'pending';
 
-	if(sum >= config.approval.approved) {
+	if(sum >= this.json.approval.approved) {
 		approval = 'approved';
 	}
 
-	if(sum <= config.approval.rejected) {
+	if(sum <= this.json.approval.rejected) {
 		approval = 'rejected';
 	}
 
 	done(null, approval);
-
-};
+}

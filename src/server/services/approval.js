@@ -14,13 +14,17 @@ module.exports = function(uuid, done) {
 			return done(null, 'pending');
 		}
 
+		var Strategy = require('../approval/' + (comm.config.strategy || "default"));
+
 		Vote.find({comm: uuid}, function(err, vote) {
 
 			if(!vote) {
 				return done(null, 'pending');
 			}
 
-			approval(comm.config, vote, function(err, approval) {
+			var ninja = new Strategy(comm.config);
+
+			ninja.approval(comm.config, vote, function(err, approval) {
 
 				if(err) {
 					return done(null, 'pending');
