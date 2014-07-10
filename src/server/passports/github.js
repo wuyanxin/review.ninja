@@ -24,33 +24,36 @@ passport.use(new Strategy({
         if(!err) {
           done(err, merge(profile._json, {token: accessToken}));
 
-          //
-          // Add user to our mailing list
-          //
-          github.call({
-            obj: 'user',
-            fun: 'get',
-            token: accessToken
-          }, function(err, user) {
-            if(!err) {
-              mailchimp.call({
-                obj: 'lists',
-                fun: 'subscribe',
-                arg: {
-                  id: config.mailchimp.user,
-                  email: {
-                    email: emails.last
-                  },
-                  merge_vars: {
-                    name: user.name,
-                    login: user.login
-                  }
-                }
-              }, function(){
+          if(res && !res.updatedExisting) {
 
-              });
-            }
-          });
+	          //
+	          // Add user to our mailing list
+	          //
+	          github.call({
+	            obj: 'user',
+	            fun: 'get',
+	            token: accessToken
+	          }, function(err, user) {
+	            if(!err) {
+	              mailchimp.call({
+	                obj: 'lists',
+	                fun: 'subscribe',
+	                arg: {
+	                  id: config.mailchimp.user,
+	                  email: {
+	                    email: emails.last
+	                  },
+	                  merge_vars: {
+	                    name: user.name,
+	                    login: user.login
+	                  }
+	                }
+	              }, function(){
+
+	              });
+	            }
+	          });
+	      }
         }
       });
 		});
