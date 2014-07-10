@@ -1,6 +1,8 @@
 var assert = require('assert');
 // module
-var approval = require('../approval/default');
+// var default = require('../approval/default');
+// var webhook = require('../approval/webhook');
+
 
 module.exports = function(uuid, done) {
 
@@ -14,17 +16,23 @@ module.exports = function(uuid, done) {
 			return done(null, 'pending');
 		}
 
-		var Strategy = require('../approval/' + (comm.config.strategy || "default"));
+		// check that comm.config.strategy maps to a file
 
-		Vote.find({comm: uuid}, function(err, vote) {
+		var Strategy = require('../approval/' + (comm.config.strategy || 'default'));
 
-			if(!vote) {
+		Vote.find({comm: uuid}, function(err, votes) {
+
+			if(!votes) {
 				return done(null, 'pending');
+			}
+
+			if(err) {
+				return done(err, null);
 			}
 
 			var ninja = new Strategy(comm.config);
 
-			ninja.approval(comm.config, vote, function(err, approval) {
+			ninja.approval(votes, function(err, approval) {
 
 				if(err) {
 					return done(null, 'pending');

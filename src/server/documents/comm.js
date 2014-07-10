@@ -2,6 +2,8 @@
 var mongoose = require('mongoose');
 var withHelper = require('./with');
 
+var validate = require('../services/validate');
+
 var CommSchema = mongoose.Schema({
     uuid: String,
     user: String,
@@ -17,11 +19,18 @@ CommSchema.virtual('status').get(function () {
 });
 
 CommSchema.virtual('config').get(function () {
-	try {
-		return JSON.parse(this.ninja);
-	} catch (ex) {
-		return null;
-	}
+
+	return validate( this.ninja );
+
+	// try {
+	// 	json = JSON.parse(this.ninja);
+	// 	return validate(json);
+	// } catch (ex) {
+	// 	return {
+	// 		err: 'there was an error.',
+	// 		data: null
+	// 	};
+	// }
 });
 
 var Comm = mongoose.model('Comm', CommSchema);
