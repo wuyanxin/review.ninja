@@ -1,16 +1,16 @@
 
 module.exports = exports = function(json) {
 
-	this.json = json.data;
+	this.json = json;
 
 };
 
 exports.prototype.approval = function(votes, done) {
 
-	// if(	!(this.json && this.json.approval && typeof this.json.approval.approved === 'number') ||
-	// 	!(this.json && this.json.approval && typeof this.json.approval.rejected === 'number') ) {
-	// 	return done('this.jsonuration invalid');
-	// }
+	if(	!(this.json && this.json.approval && typeof this.json.approval.approved === 'number') ||
+		!(this.json && this.json.approval && typeof this.json.approval.rejected === 'number') ) {
+		return done('Configuration invalid');
+	}
 
 	var sum = 0;
 	
@@ -29,4 +29,8 @@ exports.prototype.approval = function(votes, done) {
 	}
 
 	done(null, approval);
+};
+
+exports.prototype.validate = function() {
+
 };

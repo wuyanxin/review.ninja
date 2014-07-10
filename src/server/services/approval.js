@@ -1,7 +1,7 @@
+var fs = require('fs');
 var assert = require('assert');
-// module
-// var default = require('../approval/default');
-// var webhook = require('../approval/webhook');
+var path = require('path');
+var sugar = require('array-sugar');
 
 
 module.exports = function(uuid, done) {
@@ -16,7 +16,18 @@ module.exports = function(uuid, done) {
 			return done(null, 'pending');
 		}
 
-		// check that comm.config.strategy maps to a file
+
+		// ensure against hacks - clean this up
+		// var strategies = fs.readdirSync(path.resolve(process.cwd(), 'src/server/approval/'));
+
+		var strategies = [
+			'default',
+			'webhook'
+		];
+
+		if(!strategies.contains(comm.config.strategy)) {
+			comm.config.strategy = 'default';
+		}
 
 		var Strategy = require('../approval/' + (comm.config.strategy || 'default'));
 

@@ -56,11 +56,14 @@ var Repo = {
 			}
 		}, function(err, grepo) {
 
-			mongod.with({uuid: grepo.id}, function(err, mrepo) {
+			if(!err) {
 
-				done(null, grepo, mrepo);
+				mongod.with({uuid: grepo.id}, function(err, mrepo) {
 
-			});
+					done(null, grepo, mrepo);
+
+				});
+			}
 
 		});
 
@@ -83,11 +86,14 @@ var Comm = {
 			}
 		}, function(err, gcomm) {
 
-			mongod.with({uuid: gcomm.sha}, function(err, mcomm) {
+			if(!err) {
 
-				done(null, gcomm, mcomm);
+				mongod.with({uuid: gcomm.sha}, function(err, mcomm) {
 
-			});
+					done(null, gcomm, mcomm);
+
+				});
+			}
 
 		});
 
