@@ -4,7 +4,8 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-	<link rel="apple-touch-icon-precomposed" href="/assets/images/favicon-152.png">
+	<link rel="apple-touch-icon" href="/assets/images/icon-alt-152.png">
+	<link rel="apple-touch-icon-precomposed" href="/assets/images/icon-152.png">
 
 	<!-- COMPONENT STYLESHEETS -->
 	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -17,7 +18,7 @@
 	<link href="/assets/styles/app.css" rel="stylesheet">
 </head>
 
-<body ng-controller="LoginCtrl">
+<body ng-controller="LoginCtrl" ng-cloak>
 
 	<div class="center-block" style="max-width:500px; padding:0 20px;">
 		<div style="display:table; width:100%; height:100%; text-align:center;">
@@ -47,8 +48,12 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js"></script>
 	<script src="/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+	<script src="//www.google-analytics.com/analytics.js"></script>
+	<script src="/angulartics/dist/angulartics-ga.min.js"></script>
+	<script src="/angulartics/dist/angulartics.min.js"></script>
 
 	<!-- APP -->
+	<script src="/modules/config.js"></script>
 	<script src="/app.js"></script>
 	<script src="/api.js"></script>
 
