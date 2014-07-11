@@ -56,6 +56,9 @@ module.exports = {
 
 		Repo.with({uuid: req.args.repo}, function(err, repo) {
 
+			// To Do:
+			// - verify that the vote is valid
+
 			Vote.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name:req.user.login, vote: req.args.vote}, function(err, vote) {
 
 				if(!err) {

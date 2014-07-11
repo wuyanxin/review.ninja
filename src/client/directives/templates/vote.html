@@ -1,3 +1,3 @@
-<img ng-src="{{ user.value.avatar_url }}" class="img-rounded" width="20px"> {{ user.value.login }}
-<small>({{ (issues | deep:'user.login':user.value.login).length }} issues, {{ (comments | deep:'user.login':user.value.login).length }} comments)</small>
-<span class="badge pull-right" style="background-color:{{ value.color }}">{{ value.label }}</span>
+<img ng-src="{{ avatar }}" class="img-rounded" width="20px"> {{ vote.name }}
+<small>({{ (issues | deep:'user.login':vote.name).length }} issues, {{ (comments | deep:'user.login':vote.name).length }} comments)</small>
+<span class="badge pull-right" style="background-color:{{ vote.vote.color }}">{{ vote.vote.label }}</span>

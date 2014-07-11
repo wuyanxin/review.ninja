@@ -9,10 +9,9 @@ module.exports = function(uuid, done) {
 
 	Comm.with({uuid: uuid}, function(err, comm) {
 
-		if(!comm) {
+		if( !(comm && comm.config) ) {
 			return done(null, 'pending');
 		}
-
 
 		var strategies = [
 			'default',
@@ -29,10 +28,6 @@ module.exports = function(uuid, done) {
 
 			if(!votes) {
 				return done(null, 'pending');
-			}
-
-			if(err) {
-				return done(err, null);
 			}
 
 			var ninja = new Strategy(comm.config);
