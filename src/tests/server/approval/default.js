@@ -35,7 +35,9 @@ describe('approval::default', function () {
 	it('should yield pending', function (done) {
 
 		ninja.approval([{
-			vote: 'Not a number'
+			vote: {
+				value: 'Not a number'
+			}
 		}], function(err, approval) {
 			
 			assert.equal(approval, 'pending');
@@ -48,7 +50,9 @@ describe('approval::default', function () {
 	it('should yield pending', function (done) {
 
 		ninja.approval([{
-			vote: +1
+			vote: {
+				value: 1
+			}
 		}], function(err, approval) {
 			
 			assert.equal(approval, 'pending');
@@ -61,7 +65,9 @@ describe('approval::default', function () {
 	it('should yield pending', function (done) {
 
 		ninja.approval([{
-			vote: -1
+			vote: {
+				value: -1
+			}
 		}], function(err, approval) {
 			
 			assert.equal(approval, 'pending');
@@ -75,9 +81,13 @@ describe('approval::default', function () {
 	it('should yield approved', function (done) {
 
 		ninja.approval([{
-			vote: +1
+			vote: {
+				value: 1
+			}
 		}, {
-			vote: +1
+			vote: {
+				value: 1
+			}
 		}], function(err, approval) {
 			
 			assert.equal(approval, 'approved');
@@ -90,9 +100,13 @@ describe('approval::default', function () {
 	it('should yield rejected', function (done) {
 
 		ninja.approval([{
-			vote: -1
+			vote: {
+				value: -1
+			}
 		}, {
-			vote: -1
+			vote: {
+				value: -1
+			}
 		}], function(err, approval) {
 			
 			assert.equal(approval, 'rejected');
