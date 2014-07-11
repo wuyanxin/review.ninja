@@ -73,6 +73,10 @@ module.exports = {
 			__dirname + '/server/api/*.js'
 		],
 
+		webhooks: [
+			__dirname + '/server/webhooks/*.js'
+		],
+
 		documents: [
 			__dirname + '/server/documents/*.js'
 		],
