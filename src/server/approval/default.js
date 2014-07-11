@@ -5,7 +5,7 @@ module.exports = exports = function(json) {
 
 };
 
-exports.prototype.approval = function(votes, done) {
+exports.prototype.approval = function(votes, sha, done) {
 
 	if(	!(this.json && this.json.approval && typeof this.json.approval.approved === 'number') ||
 		!(this.json && this.json.approval && typeof this.json.approval.rejected === 'number') ) {

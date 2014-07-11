@@ -32,7 +32,7 @@ module.exports = function(uuid, done) {
 
 			var ninja = new Strategy(comm.config);
 
-			ninja.approval(votes, function(err, approval) {
+			ninja.approval(votes, uuid, function(err, approval) {
 
 				if(err) {
 					return done(null, 'pending');

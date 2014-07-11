@@ -8,6 +8,8 @@ describe('approval::default', function () {
 
 	var ninja;
 
+	var sha = '1234567';
+
 	beforeEach(function() {
 		ninja = new Strategy({
 			strategy: 'default',
@@ -20,7 +22,7 @@ describe('approval::default', function () {
 
 	it('should yield pending', function (done) {
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 			
 			assert.equal(approval, 'pending');
 
@@ -33,7 +35,7 @@ describe('approval::default', function () {
 
 		ninja.approval([{
 			vote: {}
-		}], function(err, approval) {
+		}], sha, function(err, approval) {
 
 			assert.equal(approval, 'pending');
 
@@ -47,7 +49,7 @@ describe('approval::default', function () {
 			vote: {
 				value: 'Not a number'
 			}
-		}], function(err, approval) {
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'pending');
 
@@ -62,7 +64,7 @@ describe('approval::default', function () {
 			vote: {
 				value: 1
 			}
-		}], function(err, approval) {
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'pending');
 
@@ -77,7 +79,7 @@ describe('approval::default', function () {
 			vote: {
 				value: -1
 			}
-		}], function(err, approval) {
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'pending');
 
@@ -97,7 +99,7 @@ describe('approval::default', function () {
 			vote: {
 				value: 1
 			}
-		}], function(err, approval) {
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'approved');
 
@@ -116,7 +118,7 @@ describe('approval::default', function () {
 			vote: {
 				value: -1
 			}
-		}], function(err, approval) {
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'rejected');
 
@@ -127,7 +129,7 @@ describe('approval::default', function () {
 
 	it('should yield an error', function(done) {
 
-		ninja.approval(null, function(err, approval) {
+		ninja.approval(null, sha, function(err, approval) {
 
 			assert.equal(err, 'Votes must be an array');
 
@@ -145,7 +147,7 @@ describe('approval::default', function () {
 			}
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 			
 			assert.equal(err, 'Configuration invalid');
 

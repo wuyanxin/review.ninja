@@ -9,7 +9,7 @@ module.exports = exports = function(json) {
 
 };
 
-exports.prototype.approval = function(votes, done) {
+exports.prototype.approval = function(votes, sha, done) {
 
 	if( !(this.json && validUrl.isWebUri(this.json.approval)) ) {
 		return done('Configuration is not valid url');
@@ -23,7 +23,7 @@ exports.prototype.approval = function(votes, done) {
 
 	var approval = 'pending';
 
-	request.post({url: this.json.approval, json: {votes: votes}}, function(err, res, body) {
+	request.post({url: this.json.approval, json: {votes: votes, sha: sha}}, function(err, res, body) {
 
 		if(!err && res.statusCode===200 && approvals.contains(body)) {
 			approval = body;

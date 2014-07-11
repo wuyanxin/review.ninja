@@ -11,6 +11,8 @@ describe('approval::webhook', function() {
 
 	var ninja;
 
+	var sha = '1234567';
+
 	beforeEach(function() {
 		ninja = new Strategy({
 			strategy: 'webhook',
@@ -25,7 +27,7 @@ describe('approval::webhook', function() {
 			done(null, {statusCode: 200}, 'pending');
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 
 			assert.equal(approval, 'pending');
 
@@ -42,7 +44,7 @@ describe('approval::webhook', function() {
 			done(null, {statusCode: 200}, null);
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 
 			assert.equal(approval, 'pending');
 
@@ -59,7 +61,7 @@ describe('approval::webhook', function() {
 			done(null, {statusCode: 404}, 'approved');
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 
 			assert.equal(approval, 'pending');
 
@@ -76,7 +78,7 @@ describe('approval::webhook', function() {
 			done(true, {statusCode: 500}, null);
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 
 			assert.equal(approval, 'pending');
 
@@ -93,7 +95,7 @@ describe('approval::webhook', function() {
 			done(null, {statusCode: 200}, 'this is not allowed');
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 
 			assert.equal(approval, 'pending');
 
@@ -110,7 +112,7 @@ describe('approval::webhook', function() {
 			done(null, {statusCode: 200}, 'approved');
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 
 			assert.equal(approval, 'approved');
 
@@ -127,7 +129,7 @@ describe('approval::webhook', function() {
 			done(null, {statusCode: 200}, 'rejected');
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 
 			assert.equal(approval, 'rejected');
 
@@ -144,7 +146,7 @@ describe('approval::webhook', function() {
 			approval: 'not-a-url'
 		});
 
-		ninja.approval([ ], function(err, approval) {
+		ninja.approval([ ], sha, function(err, approval) {
 
 			assert.equal(err, 'Configuration is not valid url');
 

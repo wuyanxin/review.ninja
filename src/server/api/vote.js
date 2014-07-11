@@ -58,6 +58,7 @@ module.exports = {
 
 			// To Do:
 			// - verify that the vote is valid
+			// - verify comm status is still pending
 
 			Vote.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name:req.user.login, vote: req.args.vote}, function(err, vote) {
 
