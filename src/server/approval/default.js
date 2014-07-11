@@ -15,7 +15,7 @@ exports.prototype.approval = function(votes, done) {
 	var sum = 0;
 	
 	votes.forEach(function(v) {
-		sum += parseInt(v.vote, 10);
+		sum += parseInt(v.vote.value, 10);
 	});
 
 	var approval = 'pending';
@@ -23,8 +23,7 @@ exports.prototype.approval = function(votes, done) {
 	if(sum >= this.json.approval.approved) {
 		approval = 'approved';
 	}
-
-	if(sum <= this.json.approval.rejected) {
+	else if(sum <= this.json.approval.rejected) {
 		approval = 'rejected';
 	}
 

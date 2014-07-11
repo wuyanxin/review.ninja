@@ -1,6 +1,3 @@
-var fs = require('fs');
-var assert = require('assert');
-var path = require('path');
 var sugar = require('array-sugar');
 
 
@@ -16,9 +13,6 @@ module.exports = function(uuid, done) {
 			return done(null, 'pending');
 		}
 
-
-		// ensure against hacks - clean this up
-		// var strategies = fs.readdirSync(path.resolve(process.cwd(), 'src/server/approval/'));
 
 		var strategies = [
 			'default',

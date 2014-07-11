@@ -41,6 +41,7 @@ module.exports = {
 
 	whitelist: [
 		'/chimp/add',
+		'/hooks/approval'
 	],
 
 	server: {

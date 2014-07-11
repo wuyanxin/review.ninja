@@ -56,7 +56,7 @@ module.exports = {
 
 		Repo.with({uuid: req.args.repo}, function(err, repo) {
 
-			Vote.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, vote: req.args.vote}, function(err, vote) {
+			Vote.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name:req.user.login, vote: req.args.vote}, function(err, vote) {
 
 				if(!err) {
 					require('../bus').emit('vote:add', {

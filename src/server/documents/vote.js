@@ -6,7 +6,8 @@ var VoteSchema = mongoose.Schema({
 	repo: Number,
 	comm: String,
 	user: String,
-	vote: String
+	name: String,
+	vote: Object
 });
 
 VoteSchema.plugin(withHelper);
