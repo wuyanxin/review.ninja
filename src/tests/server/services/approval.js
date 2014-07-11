@@ -35,15 +35,12 @@ describe('approval', function () {
 
 	it('should yield "pending" for unknown vote', function (done) {
 
-		var stubComm1 = sinon.stub(Comm, 'findOne', function(args, done) {
+		var stubComm = sinon.stub(Comm, 'findOne', function(args, done) {
 			done(null, {
-				uuid: '123456789'
-			});
-		});
-
-		var stubComm2 = sinon.stub(Comm, 'update', function(args, opts, done) {
-			done(null, {
-				uuid: '123456789'
+				uuid: '123456789',
+				config: {
+					strategy: 'default'
+				}
 			});
 		});
 
@@ -55,8 +52,7 @@ describe('approval', function () {
 
 			assert.equal(approval, 'pending');
 
-			stubComm1.restore();
-			stubComm2.restore();
+			stubComm.restore();
 			stubVote.restore();
 
 			done();

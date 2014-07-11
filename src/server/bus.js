@@ -1,6 +1,7 @@
 
 var mongoose = require('mongoose');
 var github = require('./services/github');
+var logger = require('./log');
 
 module.exports = new (require('events').EventEmitter)();
 
@@ -17,31 +18,38 @@ module.exports.on('vote:add', function(vote) {
 	Comm.with({repoUuid: vote.uuid, commUuid: vote.comm, token: vote.token}, function(err, comm) {
 
 		approval(vote.comm, function(err, approval) {
-			// update database
-			if(approval === 'approved' || approval === 'rejected') {
-				if(comm.approval !== approval) {
-					comm.approval = approval;
-					comm.save(function(err) {
-						module.exports.emit('comm:approval', approval);
-					});
-				}
-			}
-			// update github status
-			github.call({
-				obj: 'statuses',
-				fun: 'create',
-				arg: {
-					user: vote.user,
-					repo: vote.repo,
-					sha: vote.comm,
-					state: mapping[approval],
-					context: 'code-review/review.ninja',
-					target_url: 'http://review.ninja/dtornow/review.ninja/sha'
-				},
-				token: vote.token
-			}, function(err) {
 
-			});
+			if(err) {
+				logger.log(err);
+				return;
+			}
+
+			// update database
+			if((approval === 'approved' || approval === 'rejected') && comm.approval !== approval) {
+
+				comm.approval = approval;
+
+				comm.save(function(err) {
+					module.exports.emit('comm:approval', approval);
+				});
+
+				// update github status
+				github.call({
+					obj: 'statuses',
+					fun: 'create',
+					arg: {
+						user: vote.user,
+						repo: vote.repo,
+						sha: vote.comm,
+						state: mapping[approval],
+						context: 'code-review/review.ninja',
+						target_url: 'http://review.ninja/dtornow/review.ninja/sha'
+					},
+					token: vote.token
+				}, function(err) {
+
+				});
+			}
 		});
 	});
 });

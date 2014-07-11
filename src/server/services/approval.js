@@ -1,6 +1,5 @@
-var assert = require('assert');
-// module
-var approval = require('../approval/default');
+var sugar = require('array-sugar');
+
 
 module.exports = function(uuid, done) {
 
@@ -10,17 +9,30 @@ module.exports = function(uuid, done) {
 
 	Comm.with({uuid: uuid}, function(err, comm) {
 
-		if(!comm) {
+		if( !(comm && comm.config) ) {
 			return done(null, 'pending');
 		}
 
-		Vote.find({comm: uuid}, function(err, vote) {
+		var strategies = [
+			'default',
+			'webhook'
+		];
 
-			if(!vote) {
+		if(!strategies.contains(comm.config.strategy)) {
+			comm.config.strategy = 'default';
+		}
+
+		var Strategy = require('../approval/' + (comm.config.strategy || 'default'));
+
+		Vote.find({comm: uuid}, function(err, votes) {
+
+			if(!votes) {
 				return done(null, 'pending');
 			}
 
-			approval(comm.config, vote, function(err, approval) {
+			var ninja = new Strategy(comm.config);
+
+			ninja.approval(votes, uuid, function(err, approval) {
 
 				if(err) {
 					return done(null, 'pending');

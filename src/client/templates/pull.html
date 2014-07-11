@@ -7,7 +7,7 @@
 					</h3>
 					<span class="pull-right">
 						<div ng-show="vote.value" style="padding:8px 0;">
-							{{ status.value }} (you voted {{ vote.value.vote }})
+							{{ status.value }} (you voted {{ vote.value.vote.label }})
 						</div>
 						<div ng-show="!vote.value">
 							<div class="btn-group">
@@ -16,7 +16,7 @@
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li ng-repeat="vote in ninja.value.config.votes"><a href ng-click="castVote(vote.value)">{{ vote.label }}</a></li>
+									<li ng-repeat="vote in ninja.value.config.votes"><a href ng-click="castVote(vote)">{{ vote.label }}</a></li>
 								</ul>
 							</div>
 						</div>
@@ -222,7 +222,7 @@
 	<div class="col-md-4">
 		<ul class="list-group">
 			<li class="list-group-item" ng-repeat="vote in votes.value">
-				<vote user="vote.user" value="vote.vote" issues="issue.value" comments="commitComments.value"></vote>
+				<vote value="vote" issues="issue.value" comments="commitComments.value"></vote>
 			</li>
 		</ul>
 	</div>

@@ -1,22 +1,55 @@
 require('trace.ninja');
 // unit test
 var assert = require('assert');
-// models
-var Comm = require('../../../server/documents/comm').Comm;
-var Vote = require('../../../server/documents/vote').Vote;
 // approval
-var approval = require('../../../server/approval/default');
+var Strategy = require('../../../server/approval/default');
 
 describe('approval::default', function () {
 
-	it('should yield pending', function (done) {
+	var ninja;
 
-		approval({
+	var sha = '1234567';
+
+	beforeEach(function() {
+		ninja = new Strategy({
+			strategy: 'default',
 			approval: {
 				approved: +2,
 				rejected: -2
 			}
-		}, [ ], function(err, approval) {
+		});
+	});
+
+	it('should yield pending', function (done) {
+
+		ninja.approval([ ], sha, function(err, approval) {
+			
+			assert.equal(approval, 'pending');
+
+			done();
+		});
+
+	});
+
+	it('should yield pending', function(done) {
+
+		ninja.approval([{
+			vote: {}
+		}], sha, function(err, approval) {
+
+			assert.equal(approval, 'pending');
+
+			done();
+		});
+	});
+
+	it('should yield pending', function (done) {
+
+		ninja.approval([{
+			vote: {
+				value: 'Not a number'
+			}
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'pending');
 
@@ -27,14 +60,11 @@ describe('approval::default', function () {
 
 	it('should yield pending', function (done) {
 
-		approval({
-			approval: {
-				approved: +2,
-				rejected: -2
+		ninja.approval([{
+			vote: {
+				value: 1
 			}
-		}, [{
-			vote: 'Not a number'
-		}], function(err, approval) {
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'pending');
 
@@ -45,32 +75,11 @@ describe('approval::default', function () {
 
 	it('should yield pending', function (done) {
 
-		approval({
-			approval: {
-				approved: +2,
-				rejected: -2
+		ninja.approval([{
+			vote: {
+				value: -1
 			}
-		}, [{
-			vote: +1
-		}], function(err, approval) {
-			
-			assert.equal(approval, 'pending');
-
-			done();
-		});
-
-	});
-
-	it('should yield pending', function (done) {
-
-		approval({
-			approval: {
-				approved: +2,
-				rejected: -2
-			}
-		}, [{
-			vote: -1
-		}], function(err, approval) {
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'pending');
 
@@ -82,16 +91,15 @@ describe('approval::default', function () {
 
 	it('should yield approved', function (done) {
 
-		approval({
-			approval: {
-				approved: +2,
-				rejected: -2
+		ninja.approval([{
+			vote: {
+				value: 1
 			}
-		}, [{
-			vote: +1
 		}, {
-			vote: +1
-		}], function(err, approval) {
+			vote: {
+				value: 1
+			}
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'approved');
 
@@ -102,16 +110,15 @@ describe('approval::default', function () {
 
 	it('should yield rejected', function (done) {
 
-		approval({
-			approval: {
-				approved: +2,
-				rejected: -2
+		ninja.approval([{
+			vote: {
+				value: -1
 			}
-		}, [{
-			vote: -1
 		}, {
-			vote: -1
-		}], function(err, approval) {
+			vote: {
+				value: -1
+			}
+		}], sha, function(err, approval) {
 			
 			assert.equal(approval, 'rejected');
 
@@ -120,14 +127,27 @@ describe('approval::default', function () {
 
 	});
 
+	it('should yield an error', function(done) {
+
+		ninja.approval(null, sha, function(err, approval) {
+
+			assert.equal(err, 'Votes must be an array');
+
+			done();
+		});
+	});
+
 	it('should yield error', function (done) {
 
-		approval({
+		var ninja = new Strategy({
+			strategy: 'default',
 			approval: {
 				approved: 'Not a Number',
 				rejected: 'Not a Number'
 			}
-		}, [ ], function(err, approval) {
+		});
+
+		ninja.approval([ ], sha, function(err, approval) {
 			
 			assert.equal(err, 'Configuration invalid');
 

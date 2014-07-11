@@ -17,6 +17,7 @@ CommSchema.virtual('status').get(function () {
 });
 
 CommSchema.virtual('config').get(function () {
+
 	try {
 		return JSON.parse(this.ninja);
 	} catch (ex) {

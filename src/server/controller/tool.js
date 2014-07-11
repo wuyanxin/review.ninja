@@ -14,6 +14,7 @@ var router = express.Router();
 
 router.all('/vote/:uuid/:comm', function(req, res) {
 
+
 	var Tool = require('mongoose').model('Tool');
 	var Repo = require('mongoose').model('Repo');
 	var Vote = require('mongoose').model('Vote');
@@ -21,6 +22,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 	var uuid = req.params.uuid;
 	var comm = req.params.comm;
 	var vote = req.body;
+
 
 	if (!vote) {
 		return res.send(400, 'Bad request, no data sent');
@@ -38,7 +40,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 			return res.send(404, 'Tool not found');
 		}
 
-		Vote.findOne({repo: tool.repo, comm: comm, user: 'tool/' + tool.name}, function(err, previousVote) {
+		Vote.findOne({repo: tool.repo, comm: comm, user: 'tool', name: tool.name}, function(err, previousVote) {
 
 			if (err) {
 				logger.log('Mongoose[Vote] err', ['tool', 'mongoose', '500']);
@@ -85,18 +87,18 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 							});
 						}
 
-						if(vote.vote) {
+						if(vote.vote && vote.vote.label) {
 							queue.push(function(done) {
 								github.call({obj: 'repos', fun: 'createCommitComment', arg: {
 									user: repoUser,
 									repo: repoName,
 									sha: comm.sha,
 									commit_id: comm.sha,
-									body: vote.vote + '\n\n' + 'On behalf of ' + tool.name
+									body: vote.vote.label + '\n\n' + 'On behalf of ' + tool.name
 								}, token: repo.token}, done);
 							});
 							queue.push(function(done) {
-								Vote.update({repo: repo.uuid, comm: comm.sha, user: 'tool/' + tool.name}, {vote: vote.vote}, {upsert: true}, function(err, vote) {
+								Vote.update({repo: repo.uuid, comm: comm.sha, user: 'tool', name: tool.name}, {vote: vote.vote}, {upsert: true}, function(err, vote) {
 									if(!err) {
 										require('../bus').emit('vote:add', {
 											uuid: grepo.id,
