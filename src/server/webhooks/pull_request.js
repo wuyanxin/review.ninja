@@ -15,7 +15,7 @@ module.exports = function(req, res) {
 
   var uuid = req.body.repository.id;
 
-  get_collaborators = function collaborators(user, repo, token, done) {
+  function get_collaborators(user, repo, token, done) {
     args = {user: user, repo: repo};
     github.call({obj: 'repos', fun: 'getCollaborators', arg: args, token: token}, function(err, collaborators) {
       var collaborator_ids = collaborators.map(function(collaborator) {
