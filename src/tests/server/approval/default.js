@@ -1,9 +1,6 @@
 require('trace.ninja');
 // unit test
 var assert = require('assert');
-// models
-var Comm = require('../../../server/documents/comm').Comm;
-var Vote = require('../../../server/documents/vote').Vote;
 // approval
 var Strategy = require('../../../server/approval/default');
 
@@ -30,6 +27,18 @@ describe('approval::default', function () {
 			done();
 		});
 
+	});
+
+	it('should yield pending', function(done) {
+
+		ninja.approval([{
+			vote: {}
+		}], function(err, approval) {
+
+			assert.equal(approval, 'pending');
+
+			done();
+		});
 	});
 
 	it('should yield pending', function (done) {
@@ -114,6 +123,16 @@ describe('approval::default', function () {
 			done();
 		});
 
+	});
+
+	it('should yield an error', function(done) {
+
+		ninja.approval(null, function(err, approval) {
+
+			assert.equal(err, 'Votes must be an array');
+
+			done();
+		});
 	});
 
 	it('should yield error', function (done) {

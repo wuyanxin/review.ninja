@@ -23,7 +23,7 @@ exports.prototype.approval = function(votes, done) {
 
 	var approval = 'pending';
 
-	request({url: this.json.approval, json: {votes: votes}}, function(err, res, body) {
+	request.post({url: this.json.approval, json: {votes: votes}}, function(err, res, body) {
 
 		if(!err && res.statusCode===200 && approvals.contains(body)) {
 			approval = body;

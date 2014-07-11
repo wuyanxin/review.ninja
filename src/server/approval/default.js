@@ -12,6 +12,10 @@ exports.prototype.approval = function(votes, done) {
 		return done('Configuration invalid');
 	}
 
+	if( !(votes instanceof Array) ) {
+		return done('Votes must be an array');
+	}
+
 	var sum = 0;
 	
 	votes.forEach(function(v) {
@@ -28,8 +32,4 @@ exports.prototype.approval = function(votes, done) {
 	}
 
 	done(null, approval);
-};
-
-exports.prototype.validate = function() {
-
 };
