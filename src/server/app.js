@@ -26,6 +26,7 @@ global.config = require('./../config');
 
 var app = express();
 var api = {};
+var webhooks = {};
 
 // Setup rollbar
 if(process.env.NODE_ENV === 'production')
@@ -152,6 +153,27 @@ async.series([
 				callback();
 			});
 		}, callback());
+	},
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// Bootstrap webhooks
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+	function(callback) {
+
+		console.log('bootstrap webhooks'.bold);
+
+		async.eachSeries(config.server.webhooks, function(p, callback) {
+			glob(p, function(err, file) {
+				if(file && file.length && file.length > 0) {
+					file.forEach(function(f) {
+						console.log('✓ '.bold.green + path.relative(process.cwd(), f));
+						webhooks[path.basename(f, '.js')] = require(f);
+					});
+				}
+				callback();
+			});
+		}, callback());
 	}
 
 ], function(err, res) {
@@ -185,6 +207,24 @@ app.all('/api/:obj/:fun', function(req, res) {
 			return obj ? res.send(JSON.stringify(obj)) : res.send();
 		}
 	});
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Handle webhook calls
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.all('/github/webhook', function(req, res) {
+  var event = req.headers['x-github-event'];
+  try {
+    if(webhooks[event]) {
+      webhooks[event](req, res);
+      return;
+    }
+    res.send(400, 'Unsupported event');
+  }catch(err) {
+    logger.log(err);
+    res.send(500, 'Internal Server Error');
+  }
 });
 
 module.exports = app;
