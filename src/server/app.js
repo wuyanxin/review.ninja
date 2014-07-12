@@ -215,8 +215,16 @@ app.all('/api/:obj/:fun', function(req, res) {
 
 app.all('/github/webhook', function(req, res) {
   var event = req.headers['x-github-event'];
-  webhooks[event](req, res);
-  res.end();
+  try {
+    if(webhooks[event]) {
+      webhooks[event](req, res);
+      return;
+    }
+    res.send(400, 'Unsupported event');
+  }catch(err) {
+    logger.log(err);
+    res.send(500, 'Internal Server Error');
+  }
 });
 
 module.exports = app;

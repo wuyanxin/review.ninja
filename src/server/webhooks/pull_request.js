@@ -93,5 +93,6 @@ module.exports = function(req, res) {
         logger.log('unsupported action for pull requests');
       });
     }
+    res.end();
   });
 };
