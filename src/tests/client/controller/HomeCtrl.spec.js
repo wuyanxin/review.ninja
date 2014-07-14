@@ -37,12 +37,6 @@ describe('Home Controller', function() {
 
 		// load the data
 
-		httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"get"}').respond({
-			data: {
-				login: 'me'
-			}
-		});
-
 		httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{}}').respond({
 			data: [
 				{
@@ -109,12 +103,6 @@ describe('Home Controller', function() {
 		var ctrl = createCtrl();
 
 		// load the data
-
-		httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"get"}').respond({
-			data: {
-				login: 'me'
-			}
-		});
 
 		httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{}}').respond({
 			data: [
