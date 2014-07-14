@@ -33,3 +33,7 @@ pre {
 	background:none; 
 	border:none;
 }
+
+.tab-pane {
+	margin-top: 20px;
+}

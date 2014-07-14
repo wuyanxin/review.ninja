@@ -18,7 +18,7 @@
 	<link href="/assets/styles/app.css" rel="stylesheet">
 </head>
 
-<body ng-controller="LoginCtrl" ng-cloak>
+<body ng-controller="LoginCtrl">
 
 	<div class="center-block" style="max-width:500px; padding:0 20px;">
 		<div style="display:table; width:100%; height:100%; text-align:center;">
@@ -37,11 +37,11 @@
 							</span>
 						</div>
 					</form>
-					<span ng-show="call.loaded && !call.error && !call.value.code">
+					<span ng-show="call.loaded && !call.error && !call.value.code" ng-cloak>
 						We have sent you an email to confirm you are not a robot.<br />
 						After you confirm you will be in the know!
 					</span>
-					<span ng-show="call.loaded && !call.error && call.value.code===214">
+					<span ng-show="call.loaded && !call.error && call.value.code===214" ng-cloak>
 						You're already on the list silly.
 					</span>
 				</div>

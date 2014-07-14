@@ -21,7 +21,15 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 		.state('home', {
 			url:'/',
 			templateUrl: '/templates/home.html',
-			controller: 'HomeCtrl'
+			controller: 'HomeCtrl',
+			// resolve: {
+			// 	repo: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
+			// 		return $HUBService.call('repos', 'getAll');
+			// 	}],
+			// 	orgs: ['$stateParams', '$HUBService', function($stateParams, $HUBService) {
+			// 		return $HUBService.call('user', 'getOrgs');
+			// 	}]
+			// }
 		})
 		.state('repo', {
 			url: '/:user/:repo',
