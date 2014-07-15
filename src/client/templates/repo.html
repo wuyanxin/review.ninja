@@ -29,12 +29,14 @@
 		<tabset>
 			<tab heading="Pull Requests">
 
+				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
+
 				<div class="list-group">
 					<a class="list-group-item" ng-repeat="pull in pulls" ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">
 						<span class="label pull-right" ng-class="{'label-default':pull.status==='pending', 'label-success':pull.status==='approved', 'label-danger':pull.status==='rejected'}" style="margin-top:12px;">
 							{{ pull.status }}
 						</span>
-						{{ pull.title }}<br />
+						<i class="fa fa-code-fork"></i> {{ pull.title }}<br />
 						<img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
 					</a>
 				</div>
@@ -42,6 +44,8 @@
 			</tab>
 
 			<tab heading="Commits">
+
+				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="commits.loading" style="text-align:center; display:block; margin:0 auto;"></i>
 
 				<div class="list-group">
 					<a class="list-group-item" ng-repeat="commit in commits.value" ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">
@@ -57,16 +61,32 @@
 
 			<tab heading="Bots">
 
+				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="bots.loading" style="text-align:center; display:block; margin:0 auto;"></i>
+
 				<div class="list-group">
 					<span class="list-group-item" ng-repeat="bot in bots.value">
-						{{ bot.name }}
+						{{ bot.name }} &mdash; <small>{{ origin }}/{{ bot._id }}/:sha</small>
 						<span class="pull-right" style="height:24px; margin-top:-3px;">
 							<bs-switch height="24px" type="checkbox" ng-model="blah" switch-size="small"></bs-switch>
 						</span>
 					</span>
+					<span class="list-group-item" role="form" ng-show="add">
+						<form ng-submit="addBot(name); name=null; add=false;" style="margin:0;">
+							<div class="input-group">
+								<input ng-model="name" focus="add" type="text" class="form-control" />
+								<span class="input-group-btn">
+									<button type="submit" class="btn btn-primary" ng-disabled="!valid">Add</button>
+								</span>
+							</div>
+						</form>
+						<validate arg="name" against="botNames" valid="valid" invalid-text="{{ name }} bot already exists" invalid-icon="fa-exclamation"></validate>
+					</span>
 				</div>
 
-				<button type="button" class="btn btn-primary pull-right" ng-click="addBot()">Add Bot</button>
+				<button type="button" class="btn btn-default pull-right" ng-click="add=!add">
+					<i class="fa fa-times" ng-show="add"></i>
+					<i class="fa fa-plus" ng-show="!add"></i>
+				</button>
 				
 			</tab>
 		</tabset>

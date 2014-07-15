@@ -11,6 +11,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 	// get the repo
 	$scope.repo = repo;
 
+	$scope.origin = location.origin;
+
 	// get the branches
 	$scope.branches = $HUB.call('repos', 'getBranches', {
 		user: $stateParams.user,
@@ -71,12 +73,13 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 	});
 
 	// get the bots
-	var bots = [];	
+	$scope.botNames = [];
+
 	$scope.bots = $RPC.call('tool', 'all', {
 		repo: $scope.repo.value.id
 	}, function() {
 		$scope.bots.value.forEach(function(bot) {
-			bots.push(bot.name);
+			$scope.botNames.push(bot.name);
 		});
 	});
 
@@ -85,42 +88,39 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 	// Actions
 	//
 
-	$scope.addBot = function() {
+	$scope.addBot = function(name) {
 
-		var addBotModal = $modal.open({
-			templateUrl: '/templates/modals/bot.html',
-			controller: 'AddBotCtrl',
-			resolve: {
-				bots: function() {
-					return bots;
-				}
+		$RPC.call('tool', 'add', {
+			name: name,
+			repo: $scope.repo.value.id
+		}, function(err, bot) {
+			if(!err) {
+
+				$scope.bots.value.push(bot.value);
+				$scope.botNames.push(bot.value.name);
+
+				var addBotModal = $modal.open({
+					templateUrl: '/templates/modals/bot.html',
+					controller: 'AddBotCtrl',
+					resolve: {
+						bot: function() {
+							return bot.value;
+						}
+					}
+				});
 			}
-		});
-
-		addBotModal.result.then(function(name) {
-			$RPC.call('tool', 'add', {
-				name: name,
-				repo: $scope.repo.value.id
-			}, function(err, bot) {
-				if(!err) {
-					$scope.bots.value.push(bot.value);
-					bots.push(bot.value.name);
-				}
-			});
 		});
 	};
 
 }]);
 
-module.controller('AddBotCtrl', ['$scope', '$stateParams', '$modalInstance', 'bots', function($scope, $stateParams, $modalInstance, bots) {
+module.controller('AddBotCtrl', ['$scope', '$stateParams', '$modalInstance', 'bot', function($scope, $stateParams, $modalInstance, bot) {
 
-	$scope.bots = bots;
+	$scope.bot = bot;
 
-	$scope.add = function(name) {
-		$modalInstance.close(name);
-	};
+	$scope.origin = location.origin;
 
-	$scope.cancel = function() {
+	$scope.done = function() {
 		$modalInstance.dismiss('cancel');
 	};
 }]);
