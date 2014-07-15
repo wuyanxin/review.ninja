@@ -7,9 +7,6 @@
 
 module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', function($scope, $stateParams, $HUB, $RPC) {
 
-	// get the user
-	$scope.user = $HUB.call('user', 'get');
-
 	$scope.repos = [];
 
 	// get all user repos
@@ -30,7 +27,7 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', functio
 
 	// get user orgs
 	$HUB.call('user', 'getOrgs', {
-	}, function(err, orgs){
+	}, function(err, orgs) {
 		orgs.value.forEach(function(org) {
 			$HUB.call('repos', 'getFromOrg', {
 				org: org.login
@@ -48,7 +45,7 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', functio
 				});
 			});
 		});
-	});	
+	});
 
 	//
 	// Actions

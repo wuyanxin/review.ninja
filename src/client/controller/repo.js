@@ -35,35 +35,36 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 			$RPC.call('vote', 'status', {
 				repo: $scope.repo.value.id,
 				comm: comm.sha
-			}, function(err, vote) {
-				comm.rnstatus = vote.value;
+			}, function(err, status) {
+				comm.status = status.value;
 			});
 		});
 	});
 
 	// get the pull requests (open and closed)
-	$scope.openPulls = $HUB.call('pullRequests', 'getAll', {
+	$HUB.call('pullRequests', 'getAll', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
 		state: 'open'
-	}, function() {
-		$scope.closedPulls = $HUB.call('pullRequests', 'getAll', {
+	}, function(err, open) {
+
+		$HUB.call('pullRequests', 'getAll', {
 			user: $stateParams.user,
 			repo: $stateParams.repo,
 			state: 'closed'
-		}, function() {
-			var open = $scope.openPulls.value || [];
-			var closed = $scope.closedPulls.value || [];
+		}, function(err, closed) {
+			
+			$scope.pulls = (open.value || []).concat(closed.value || []);
 
-			$scope.pulls = open.concat(closed);
-
-			// get votes for each pull request
+			// get status of each pull request
 			$scope.pulls.forEach(function(pull) {
-				$RPC.call('vote', 'all', {
+				$RPC.call('vote', 'status', {
 					repo: $scope.repo.value.id,
 					comm: pull.head.sha
-				}, function(err, votes){
-					pull.votes = votes.value || null;
+				}, function(err, status) {
+					if(!err) {
+						pull.status = status.value;
+					}
 				});
 			});
 		});
