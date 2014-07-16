@@ -5,3 +5,5 @@ output
 venv
 report
 npm-debug.log
+test
+coverage
