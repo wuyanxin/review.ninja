@@ -88,6 +88,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 						}
 
 						if(vote.vote && vote.vote.label) {
+
 							queue.push(function(done) {
 								github.call({obj: 'repos', fun: 'createCommitComment', arg: {
 									user: repoUser,

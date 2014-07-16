@@ -1,26 +1,3 @@
-<!-- <div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					<span>
-						{{ repo.value.full_name }}
-					</span>
-					<span class="pull-right">
-						<small>{{ comm.value.sha }}</small>
-					</span>
-				</h3>
-			</div>
-			<div class="panel-body">
-				<span>
-					<img ng-src="{{ comm.value.author.avatar_url}}" width="18px" />
-					{{comm.value.author.login}} <small moment="comm.value.commit.committer.date"></small>
-				</span>
-			</div>
-		</div>
-	</div>
-</div> -->
-
 <div class="row">
 	<div class="col-md-12">
 
@@ -30,6 +7,10 @@
 			<tab heading="Pull Requests">
 
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
+
+				<div class="well text-center" ng-show="pulls.length===0">
+					<i class="fa fa-lg fa-code-fork"></i> Pull reqests will show up here.
+				</div>
 
 				<div class="list-group">
 					<a class="list-group-item" ng-repeat="pull in pulls" ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">
@@ -63,9 +44,13 @@
 
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="bots.loading" style="text-align:center; display:block; margin:0 auto;"></i>
 
+				<div class="well text-center" ng-show="bots.value.length===0 && !add">
+					Click <i class="fa fa-plus"></i> to create a bot.
+				</div>
+
 				<div class="list-group">
 					<span class="list-group-item" ng-repeat="bot in bots.value">
-						{{ bot.name }} &mdash; <small>{{ origin }}/{{ bot._id }}/:sha</small>
+						{{ bot.name }} &mdash; <small>{{ origin }}/vote/{{ bot._id }}/:sha</small>
 						<span class="pull-right" style="height:24px; margin-top:-3px;">
 							<bs-switch height="24px" type="checkbox" ng-model="blah" switch-size="small"></bs-switch>
 						</span>
