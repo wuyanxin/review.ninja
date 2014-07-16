@@ -16,7 +16,7 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 
 	// for the diff view
 	$scope.head = $scope.comm.value.sha;
-	$scope.base = $scope.comm.value.parents[0].sha;
+	$scope.base = $scope.comm.value.parents[0] ? $scope.comm.value.parents[0].sha : null;
 
 	// get the statuses
 	$scope.stat = $HUB.call('statuses', 'get', {

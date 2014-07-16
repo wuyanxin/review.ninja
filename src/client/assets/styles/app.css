@@ -37,3 +37,7 @@ pre {
 .tab-pane {
 	margin-top: 20px;
 }
+
+.nav-tabs a {
+	cursor: pointer;
+}

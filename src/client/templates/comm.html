@@ -1,40 +1,30 @@
 <div class="row">
 	<div class="col-md-12">
+
+		<p class="lead">{{ repo.value.full_name }}</p>
+
 		<div class="panel panel-default">
 			<div class="panel-heading" style="height:55px;">
-				<h3 class="panel-title" style="float:left; padding:8px 0;">
+				<h3 class="panel-title" style="float:left; padding:8px 0; width:100%">
+					<span class="label pull-right" ng-class="{'label-default':status.value==='pending', 'label-success':status.value==='approved', 'label-danger':status.value==='rejected'}">
+						{{ status.value }}
+					</span>
+
 					{{ comm.value.commit.message }}
 				</h3>
-				<span class="pull-right">
-					<div ng-show="vote.value" style="padding:8px 0;">
-						{{ status.value }} (you voted {{ vote.value.vote.label }})
-					</div>
-					<div ng-show="!vote.value">
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								{{ status.value }}
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li ng-repeat="vote in ninja.value.config.votes"><a href ng-click="castVote(vote)">{{ vote.label }}</a></li>
-							</ul>
-						</div>
-					</div>
-				</span>
 			</div>
 			<div class="panel-body">
-				<span>
-					<img ng-src="{{ comm.value.author.avatar_url }}" width="18px" />
-					{{comm.value.author.login}} <small moment="comm.value.commit.committer.date"></small>
-					<img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ comm.value.sha }}">
-				</span>
 				<span class="pull-right" style="text-align:right;">
 					<small><strong>commit</strong> {{ comm.value.sha }}</small><br />
 					<small><strong>{{ comm.value.parents.length | pluralize:'parent' }}</strong></small>
 					<small ng-repeat="parent in comm.value.parents">
-						<!-- <a href="" ng-click="compComm(parent.sha)">{{ parent.sha | limitTo:7 }}</a> -->
 						{{ parent.sha | limitTo:7 }}
 					</small>
+				</span>
+				<span>
+					<img ng-src="{{ comm.value.author.avatar_url }}" width="18px" />
+					{{comm.value.author.login}} <small moment="comm.value.commit.committer.date"></small> <br />
+					<!-- <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ comm.value.sha }}" style="margin-top:5px;"> -->
 				</span>
 			</div>
 		</div>
@@ -42,7 +32,7 @@
 </div>
 
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-9">
 
 		<tabset>
 			<tab heading="Stats">
@@ -82,7 +72,7 @@
 				</ul>
 				<h3>Comments</h3>				
 				<ul>
-					<li ng-repeat="comment in comments.value">
+					<li ng-repeat="comment in commitComments.value">
 						{{ comment.user.login }}, {{ comment.body }}
 					</li>
 				</ul>
@@ -185,13 +175,35 @@
 				</div>
 			</tab>
 			<tab heading="Ninja">
+
+				<div class="well text-center" ng-show="!ninja.value.config">
+					<p>Before you can use Review Ninja you will need to create a <abbr title=".ninja.json">Ninja File</abbr> in the root directory of your repository.</p>
+					<p><a ng-href="{{ repo.value.html_url }}/new/master?filename=.ninja.json" target="_blank">Click here</a> to create your Ninja File.</p>
+				</div>
+
 				<file path="'.ninja'" content="ninja.value.ninja"></file>
 			</tab>
 		</tabset>
 		
 	</div>
 
-	<div class="col-md-4">
+	<div class="col-md-3">
+		<div ng-show="!vote.value && status.value==='pending' && ninja.value.config">
+			<div class="btn-group btn-block">
+				<button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown">
+					Vote
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" style="width:100%;">
+					<li ng-repeat="vote in ninja.value.config.votes">
+						<a href ng-click="castVote(vote)">
+							{{ vote.description }}
+							<span class="badge pull-right" style="background-color:{{ vote.color }}">{{ vote.label }}</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 		<ul class="list-group">
 			<li class="list-group-item" ng-repeat="vote in votes.value">
 				<vote value="vote" issues="issue.value" comments="commitComments.value"></vote>

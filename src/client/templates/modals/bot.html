@@ -1,13 +1,12 @@
 <div class="modal-header">
-	<h3 class="modal-title">Add a bot</h3>
+	<h3 class="modal-title">{{ bot.name }} has been created</h3>
 </div>
 <div class="modal-body">
-	<div class="form-group">
-		<input type="text" ng-model="name" class="form-control" placeholder="Name">
-		<validate arg="name" against="bots" valid="valid" invalid-text="{{ name }} bot already exists" invalid-icon="fa-exclamation"></validate>
+	<p>You can now post votes on behalf of '{{ bot.name }}' to this url:</p>
+	<div class="well well-sm">
+		{{ origin }}/vote/{{ bot._id }}/:sha
 	</div>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-default btn-link" ng-click="cancel()">Cancel</button>
-	<button class="btn btn-primary" ng-click="add(name)" ng-disabled="!valid">Add</button>
+	<button class="btn btn-primary" ng-click="done()">Got it</button>
 </div>
