@@ -16,24 +16,8 @@ module.exports = function(grunt) {
                 	coverage: true,
                     mask: '**/*.js',
                     coverageFolder: 'output/coverage'
-                    //istanbulOptions: ['--dir=./output/coverage'],
-					// reporter: 'mocha.ninja',
-					// captureFile: './output/mochaTest/server.out'
                 }
             }
-            // ,
-            // coveralls: {
-            //     src: 'test', // the folder, not the files
-            //     options: {
-            //         coverage:true,
-            //         check: {
-            //             lines: 75,
-            //             statements: 75
-            //         },
-            //         root: './lib', // define where the cover task should consider the root of libraries that are covered by tests
-            //         reportFormats: ['cobertura','lcovonly']
-            //     }
-            // }
         },
 
         coveralls: {
