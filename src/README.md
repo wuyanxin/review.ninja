@@ -32,6 +32,9 @@ Structure
     |   |   |-- api
     |   |   |   |-- api
     |   |   |   |-- ...
+    |   |   |-- approval
+    |   |   |   |-- default
+    |   |   |   |-- ...
     |   |   |-- controller
     |   |   |   |-- controller
     |   |   |   |-- ...
@@ -46,6 +49,9 @@ Structure
     |   |   |   |-- ...
     |   |   |-- services
     |   |   |   |-- utility
+    |   |   |   |-- ...
+    |   |   |-- webhooks
+    |   |   |   |-- github webhook
     |   |   |   |-- ...
     |   |   |-- app.js    
     |   |-- tests
