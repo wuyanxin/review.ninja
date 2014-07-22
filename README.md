@@ -23,7 +23,7 @@ Try Review Ninja
 ----------------
 
 Review Ninja is in the very early stages of active development, and you can expect significant API and UX/UI
-changes. To sign up for our newsletter go to http://review.ninja/
+changes. To sign up for our newsletter go to http://review.ninja/ .
 
 License
 =======
@@ -45,6 +45,7 @@ limitations under the License.
 Credits
 =======
 
-:heart: from the github team @ sap 
+<p align="center">
+![SAP](https://cdn.rawgit.com/reviewninja/review.ninja/master/sap_logo.svg =250x)
 
-[![SAP](https://cdn.rawgit.com/reviewninja/review.ninja/master/sap_logo.svg)]
+-> :heart: from the github team @ sap <-
