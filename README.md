@@ -6,38 +6,25 @@ Review Ninja
 <p align="center">
 [![Review Ninja](https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png)](http://review.ninja)
 
-Review Ninja is a lightweight code review tool based on GitHub. It aims to
-provide a structured way to use pull-requests for code review, using a highly
-customizable voting system. The main focus lies on pull-requests, however, it
-is also possible to vote on single commits.
+Review Ninja is a lightweight code review tool that works with GitHub. It provides a more structured way to use pull-requests for code review, adding a highly customizable voting system. Though it's primarily designed for use with pull-requests, it's also possible to vote on single commits.
 
-Review Ninja comes with a process of automating votes, which we call bots. Bots
-can be any imaginable application or step in your continuous delivery system.
+Review Ninja comes with a flexible approach to add automatic voters in addition to human voters. Auto voters, which we call "bots" can be any application or step in your continuous delivery system.
 
-Review Ninja tries to store the least amount of information from your GitHub
-account to make sure the data is up to date and the data is stored at GitHub
-only. Currently only the email of your account is transfered to our system for
+Review Ninja tries to store the least amount of information from your GitHub account to make sure the data is up to date and the data is stored at GitHub only. Currently only the email of your account is transfered to our system for
 notification purposes.
 
-Review Ninja was build to integrate into GitHub.com as well as GitHub
-enterprise. The application stack includes Node.js, Express, MongoDB and
-AngularJS.
+Review Ninja was built to integrate into GitHub.com as well as GitHub Enterprise. The application stack includes Node.js, Express, MongoDB and AngularJS.
 
 Why should I use Review Ninja?
 ------------------------------
 
-Review Ninja defines a more clear structure for code review in GitHub. Review
-Ninja also tries to provide a more general overview of a project so people
-other than the development team understand the state of the project. (eg.
-possible users of a product or project management)
+Review Ninja defines a clearer process for code review in GitHub. Review Ninja also provides a status overview, so team members in addition to development can understand the state of the project (e.g., product management).
 
 Try Review Ninja
 ----------------
 
-Review Ninja is still in a very early stage, you can expect api and UX/UI
-changes. (In fact in the current version no Design effort has been done)
-
-To sign up for our newsletter go to http://review.ninja/
+Review Ninja is in the very early stages of active development, and you can expect significant API and UX/UI
+changes. To sign up for our newsletter go to http://review.ninja/
 
 License
 =======
