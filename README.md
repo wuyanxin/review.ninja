@@ -3,6 +3,7 @@
 Review Ninja
 ===========
 
+<p align="center">
 [![Review Ninja](https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png)](http://review.ninja)
 
 - Review Ninja is a new, lightweight code review tool.
