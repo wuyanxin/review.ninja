@@ -1,5 +1,5 @@
 // module
-var github = require('../services/github.js');
+var github = require('../services/github');
 
 module.exports = {
 
