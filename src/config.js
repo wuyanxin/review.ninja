@@ -48,7 +48,7 @@ module.exports = {
 
         http: {
             host: 'review.ninja',
-            port: 80,
+            port: 80
         },
 
         smtp: {
