@@ -6,99 +6,99 @@
  */
 module.exports = {
 
-	github: {
+    github: {
 
-		// optional
-		host: process.env.GITHUB_HOST,
-		enterprise: !!process.env.GITHUB_HOST, // flag enterprise version
+        // optional
+        host: process.env.GITHUB_HOST,
+        enterprise: !!process.env.GITHUB_HOST, // flag enterprise version
 
-		// optional
-		pathPrefix: process.env.GITHUB_PATH_PREFIX,
-		protocol: process.env.GITHUB_PROTOCOL,
-		version: process.env.GITHUB_VERSION || '3.0.0',
+        // optional
+        pathPrefix: process.env.GITHUB_PATH_PREFIX,
+        protocol: process.env.GITHUB_PROTOCOL,
+        version: process.env.GITHUB_VERSION || '3.0.0',
 
-		// required
-		client: process.env.GITHUB_CLIENT,
-		secret: process.env.GITHUB_SECRET,
-		callback: process.env.GITHUB_CALLBACK,
+        // required
+        client: process.env.GITHUB_CLIENT,
+        secret: process.env.GITHUB_SECRET,
+        callback: process.env.GITHUB_CALLBACK,
 
-		// review.ninja specific
-		scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org'],
+        // review.ninja specific
+        scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org'],
 
-		// optional urls
-		urls: {
-			authorization: process.env.GITHUB_AUTHORIZATION_URL,
-			token: process.env.GITHUB_TOKEN_URL,
-			profile: process.env.GITHUB_PROFILE_URL
-		}
-	},
-
-	mailchimp: {
-		key: process.env.MAILCHIMP,
-		news: 'fefbc1ceed',
-		user: 'cee7e023eb'
-	},
-
-	whitelist: [
-		'/chimp/add',
-		'/hooks/approval'
-	],
-
-	server: {
-
-		http: {
-			host: 'localhost',
-			port: 60000,
-		},
-
-    smtp: {
-      host: process.env.SMTP_HOST,
-      secureConnection: true,
-      port: process.env.SMTP_PORT,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
+        // optional urls
+        urls: {
+            authorization: process.env.GITHUB_AUTHORIZATION_URL,
+            token: process.env.GITHUB_TOKEN_URL,
+            profile: process.env.GITHUB_PROFILE_URL
+        }
     },
 
-		static: [
-			__dirname + '/bower',
-			__dirname + '/client'
-		],
+    mailchimp: {
+        key: process.env.MAILCHIMP,
+        news: 'fefbc1ceed',
+        user: 'cee7e023eb'
+    },
 
-		mongodb: {
-			uri: process.env.MONGODB
-		},
+    whitelist: [
+        '/chimp/add',
+        '/hooks/approval'
+    ],
 
-		api: [
-			__dirname + '/server/api/*.js'
-		],
+    server: {
 
-		webhooks: [
-			__dirname + '/server/webhooks/*.js'
-		],
+        http: {
+            host: 'review.ninja',
+            port: 80,
+        },
 
-		documents: [
-			__dirname + '/server/documents/*.js'
-		],
+        smtp: {
+            host: process.env.SMTP_HOST,
+            secureConnection: true,
+            port: process.env.SMTP_PORT,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            }
+        },
 
-		controller: [
-			__dirname + '/server/controller/!(default).js',
-			__dirname + '/server/controller/default.js',
-		],
+        static: [
+            __dirname + '/bower',
+            __dirname + '/client'
+        ],
 
-		middleware: [
-			__dirname + '/server/middleware/*.js'
-		],
+        mongodb: {
+            uri: process.env.MONGODB
+        },
 
-		passport: [
-			__dirname + '/server/passports/*.js'
-		]
+        api: [
+            __dirname + '/server/api/*.js'
+        ],
 
-	},
+        webhooks: [
+            __dirname + '/server/webhooks/*.js'
+        ],
 
-  client: {
-    gacode: process.env.GACODE
-  }
+        documents: [
+            __dirname + '/server/documents/*.js'
+        ],
+
+        controller: [
+            __dirname + '/server/controller/!(default).js',
+            __dirname + '/server/controller/default.js',
+        ],
+
+        middleware: [
+            __dirname + '/server/middleware/*.js'
+        ],
+
+        passport: [
+            __dirname + '/server/passports/*.js'
+        ]
+
+    },
+
+    client: {
+        gacode: process.env.GACODE
+    }
 
 };
