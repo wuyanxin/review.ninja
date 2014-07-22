@@ -46,7 +46,7 @@ Credits
 =======
 
 <p align="center">
-![SAP](https://cdn.rawgit.com/reviewninja/review.ninja/master/sap_logo.svg)
+![SAP](https://cdn.rawgit.com/reviewninja/review.ninja/master/sap_logo.png)
 
 <p align="center">
 :heart: from the github team @ sap
