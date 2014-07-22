@@ -10,8 +10,7 @@ Review Ninja is a lightweight code review tool that works with GitHub. It provid
 
 Review Ninja comes with a flexible approach to add automatic voters in addition to human voters. Auto voters, which we call "bots" can be any application or step in your continuous delivery system.
 
-Review Ninja tries to store the least amount of information from your GitHub account to make sure the data is up to date and the data is stored at GitHub only. Currently only the email of your account is transfered to our system for
-notification purposes.
+Review Ninja tries to store the least amount of information from your GitHub account to make sure the data is up to date and the data is stored at GitHub only.
 
 Review Ninja was built to integrate into GitHub.com as well as GitHub Enterprise. The application stack includes Node.js, Express, MongoDB and AngularJS.
 
@@ -46,6 +45,6 @@ limitations under the License.
 Credits
 =======
 
-Review Ninja is created by the github-team@sap :heart:
+:heart: from the github team @ sap 
 
 [![SAP](https://cdn.rawgit.com/reviewninja/review.ninja/master/sap_logo.svg)]
