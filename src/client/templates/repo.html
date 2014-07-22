@@ -5,6 +5,39 @@
 
 		<tabset>
 			<tab heading="Pull Requests">
+				<div class="btn-group">
+				  <button class="btn">Reset filters</button>
+				</div>
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    master
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				    <!-- dropdown menu links -->
+				  </ul>
+				</div>
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    MitchK
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				    <!-- dropdown menu links -->
+				  </ul>
+				</div>
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    pending
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				    <!-- dropdown menu links -->
+				  </ul>
+				</div>
+
+				<br>
+				<br>
 
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
 
@@ -25,8 +58,42 @@
 			</tab>
 
 			<tab heading="Commits">
+				<div class="btn-group">
+				  <button class="btn">Reset filters</button>
+				</div>
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    master
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				    <!-- dropdown menu links -->
+				  </ul>
+				</div>
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    MitchK
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				    <!-- dropdown menu links -->
+				  </ul>
+				</div>
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    pending
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				    <!-- dropdown menu links -->
+				  </ul>
+				</div>
+
+				<br>
+				<br>
 
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="commits.loading" style="text-align:center; display:block; margin:0 auto;"></i>
+
 
 				<div class="list-group">
 					<a class="list-group-item" ng-repeat="commit in commits.value" ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">
