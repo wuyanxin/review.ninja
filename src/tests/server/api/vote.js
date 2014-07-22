@@ -3,7 +3,9 @@ require('trace.ninja');
 var assert = require('assert');
 var sinon = require('sinon');
 // models
+var Repo = require('../../../server/documents/repo').Repo;
 var Comm = require('../../../server/documents/comm').Comm;
+var Vote = require('../../../server/documents/vote').Vote;
 // api
 var vote = require('../../../server/api/vote');
 
