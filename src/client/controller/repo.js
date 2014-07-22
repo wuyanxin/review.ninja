@@ -8,6 +8,111 @@
 
 module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
 
+	// Filtering
+	$scope.filters = {
+		'pull_requests': {
+			'user':  {
+				filter: function (pulls, crit) {
+
+					var regex = new RegExp(crit);
+
+					// If no criteria is set, return all the objects
+					if (crit == null) {
+						return pulls;
+					}
+
+					var matched = [];
+
+					pulls.forEach(function (pull) {
+						if (regex.test(pull.user.login)) {
+							matched.push(pull);
+						}
+					});
+
+					return matched;
+				},
+				criteria: null
+			},
+			'branch': {
+				filter: function (pulls, crit) {
+					var regex = new RegExp(crit);
+
+					// If no criteria is set, return all the objects
+					if (crit == null) {
+						return pulls;
+					}
+
+					var matched = [];
+
+					pulls.forEach(function (pull) {
+						if (regex.test(pull.head.ref)) {
+							matched.push(pull);
+						}
+					});
+
+					console.log(matched);
+
+					return matched;
+				},
+				criteria: null
+			},
+			'status': {
+				filter: function (data, crit) {
+					// TODO
+					return data;
+				},
+				criteria: null
+			},
+			'tag': {
+				filter: function (data, crit) {
+					// TODO
+					return data;
+				},
+				criteria: null
+			}
+		},
+		'commits': {
+			'user': {
+				filter: function (data, crit) {
+					// TODO
+					return data;
+				},
+				criteria: null
+			},
+			'branch': {
+				filter: function (data, crit) {
+					// TODO
+					return data;
+				},
+				criteria: null
+			},
+			'status': {
+				filter: function (data, crit) {
+					// TODO
+					return data;
+				},
+				criteria: null
+			}
+		}
+	};
+
+	$scope.setFilter = function (filter, crit) {
+		// Set criteria for filter
+		filter.criteria = crit;
+
+		$scope.pullsFiltered = $scope.pulls;
+
+		// Refilter 
+		Object.keys($scope.filters['pull_requests']).forEach(function (filterName) {
+			var filter = $scope.filters['pull_requests'][filterName];
+
+			$scope.pullsFiltered = filter.filter($scope.pullsFiltered, filter.criteria);
+		});
+
+	};
+
+
+
 	// get the repo
 	$scope.repo = repo;
 
@@ -57,6 +162,16 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 		}, function(err, closed) {
 			
 			$scope.pulls = (open.value || []).concat(closed.value || []);
+
+
+			$scope.pullsFiltered = $scope.pulls;
+
+			// Refilter 
+			Object.keys($scope.filters['pull_requests']).forEach(function (filterName) {
+				var filter = $scope.filters['pull_requests'][filterName];
+
+				$scope.pullsFiltered = filter.filter($scope.pullsFiltered, filter.criteria);
+			});
 
 			// get status of each pull request
 			$scope.pulls.forEach(function(pull) {

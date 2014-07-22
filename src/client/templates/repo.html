@@ -10,7 +10,21 @@
 				</div>
 				<div class="btn-group">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    master
+				    {{ filters['pull_requests']['branch'].criteria || 'All branches'}}
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				  	<li>
+				  		<a href="#" ng-href="#" ng-click="setFilter(filters['pull_requests']['branch'], null)">All branches</a>
+				  	</li>
+				  	<li ng-repeat="branch in branches.value">
+				  		<a href="#" ng-href="#" ng-click="setFilter(filters['pull_requests']['branch'], branch.name)">{{ branch.name }}</a>
+				  	</li>
+				  </ul>
+				</div>
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    {{ filters['pull_requests']['user'].criteria || 'All users'}}
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu">
@@ -19,7 +33,7 @@
 				</div>
 				<div class="btn-group">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    MitchK
+				    {{ filters['pull_requests']['status'].criteria || 'All states'}}
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu">
@@ -28,7 +42,7 @@
 				</div>
 				<div class="btn-group">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    pending
+				    {{ filters['pull_requests']['tag'].criteria || 'All tags'}}
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu">
@@ -42,15 +56,15 @@
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
 
 				<div class="well text-center" ng-show="pulls.length===0">
-					<i class="fa fa-lg fa-code-fork"></i> Pull reqests will show up here.
+					<i class="fa fa-lg fa-code-fork"></i> Pull requests will show up here.
 				</div>
 
 				<div class="list-group">
-					<a class="list-group-item" ng-repeat="pull in pulls" ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">
+					<a class="list-group-item" ng-repeat="pull in pullsFiltered" ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">
 						<span class="label pull-right" ng-class="{'label-default':pull.status==='pending', 'label-success':pull.status==='approved', 'label-danger':pull.status==='rejected'}" style="margin-top:12px;">
 							{{ pull.status }}
 						</span>
-						<i class="fa fa-code-fork"></i> {{ pull.title }}<br />
+						<i class="fa fa-code-fork"></i> {{ pull.title }} ({{ pull.head.ref }})<br />
 						<img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
 					</a>
 				</div>
