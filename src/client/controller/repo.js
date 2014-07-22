@@ -17,7 +17,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 					var regex = new RegExp(crit);
 
 					// If no criteria is set, return all the objects
-					if (crit == null) {
+					if (crit === null) {
 						return pulls;
 					}
 
@@ -38,7 +38,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 					var regex = new RegExp(crit);
 
 					// If no criteria is set, return all the objects
-					if (crit == null) {
+					if (crit === null) {
 						return pulls;
 					}
 
@@ -103,8 +103,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 		$scope.pullsFiltered = $scope.pulls;
 
 		// Refilter 
-		Object.keys($scope.filters['pull_requests']).forEach(function (filterName) {
-			var filter = $scope.filters['pull_requests'][filterName];
+		Object.keys($scope.filters.pull_requests).forEach(function (filterName) {
+			var filter = $scope.filters.pull_requests[filterName];
 
 			$scope.pullsFiltered = filter.filter($scope.pullsFiltered, filter.criteria);
 		});
@@ -167,8 +167,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 			$scope.pullsFiltered = $scope.pulls;
 
 			// Refilter 
-			Object.keys($scope.filters['pull_requests']).forEach(function (filterName) {
-				var filter = $scope.filters['pull_requests'][filterName];
+			Object.keys($scope.filters.pull_requests).forEach(function (filterName) {
+				var filter = $scope.filters.pull_requests[filterName];
 
 				$scope.pullsFiltered = filter.filter($scope.pullsFiltered, filter.criteria);
 			});
