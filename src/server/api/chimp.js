@@ -1,3 +1,4 @@
+// module
 var mailchimp = require('../services/chimp');
 
 module.exports = {

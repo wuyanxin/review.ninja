@@ -1,15 +1,15 @@
 // module
 var approval = require('../services/approval');
 // models
-var Repo = require('../documents/repo.js').Repo;
-var Comm = require('../documents/comm.js').Comm;
-var Vote = require('../documents/vote.js').Vote;
+var Repo = require('mongoose').model('Repo');
+var Comm = require('mongoose').model('Comm');
+var Vote = require('mongoose').model('Vote');
 
 module.exports = {
 
 /************************************************************************************************************
 
-	Models:
+	@models
 
 	+ Vote, where repo=repo-uuid, comm=comm-uuid
 
@@ -28,7 +28,7 @@ module.exports = {
 
 /************************************************************************************************************
 
-	Models:
+	@models
 
 	+ Vote, where repo=repo-uuid, comm=comm-uuid, user=user-uuid
 
@@ -36,7 +36,7 @@ module.exports = {
 
 	get: function(req, done) {
 
-		Vote.findOne({repo: req.args.repo, comm: req.args.comm, user: req.user.id}, function(err, vote) {
+		Vote.with({repo: req.args.repo, comm: req.args.comm, user: req.user.id}, function(err, vote) {
 			
 			done(err, vote);
 
@@ -46,7 +46,7 @@ module.exports = {
 
 /************************************************************************************************************
 
-	Models:
+	@models
 
 	+ Vote
 
@@ -83,7 +83,7 @@ module.exports = {
 
 /************************************************************************************************************
 
-	Models:
+	@models
 
 	+ Comm, where repo=repo-uuid, uuid=repo-uuid
 
@@ -103,7 +103,7 @@ module.exports = {
 
 /************************************************************************************************************
 
-	Models:
+	@models
 
 	+ Comm
 

@@ -3,20 +3,19 @@ var github = require('../services/github');
 // models
 var Comm = require('mongoose').model('Comm');
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-// Review Ninja API - Comm
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 module.exports = {
 
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Returns the commit
-	//
-	// Returns the commit document where comm.repo == req.args.uuid and comm.uuid == req.args.comm;
-	// creates the commit document if the commit does not exist yet.
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
+/************************************************************************************************************
+
+	@models
+
+	+ Comm, where repo=repo-uuid, comm=comm-uuid
+
+    @github
+
+    + repos.getContent
+
+************************************************************************************************************/
 
 	get: function(req, done) {
 
@@ -65,14 +64,17 @@ module.exports = {
 
 	},
 
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Returns file content in commit
-	//
-	// Returns the commit document where comm.repo == req.args.uuid and comm.uuid == req.args.comm;
-	// creates the commit document if the commit does not exist yet.
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
+/************************************************************************************************************
+
+	@models
+
+	+ Comm, where repo=repo-uuid, comm=comm-uuid
+
+    @github
+
+    + gitdata.getBlob
+
+************************************************************************************************************/
 
 	file: function(req, done) {
 

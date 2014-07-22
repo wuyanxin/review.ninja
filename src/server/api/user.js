@@ -1,5 +1,5 @@
 // models
-var User = require('../documents/user.js').User;
+var User = require('mongoose').model('User');
 
 User.aggregate({$project: {token: 0}});
 
@@ -7,7 +7,7 @@ module.exports = {
 
 /************************************************************************************************************
 
-	Models:
+	@models
 
 	+ User, where user=user-uuid
 
