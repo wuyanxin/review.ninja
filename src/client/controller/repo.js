@@ -8,31 +8,12 @@
 
 module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
 
+	$scope.pullRequestStates = ['open', 'closed'];
+	$scope.reviewStatuses = ['approved', 'rejected', 'pending'];
+
 	// Filtering
 	$scope.filters = {
 		'pull_requests': {
-			'user':  {
-				filter: function (pulls, crit) {
-
-					var regex = new RegExp(crit);
-
-					// If no criteria is set, return all the objects
-					if (crit === null) {
-						return pulls;
-					}
-
-					var matched = [];
-
-					pulls.forEach(function (pull) {
-						if (regex.test(pull.user.login)) {
-							matched.push(pull);
-						}
-					});
-
-					return matched;
-				},
-				criteria: null
-			},
 			'branch': {
 				filter: function (pulls, crit) {
 					var regex = new RegExp(crit);
@@ -50,46 +31,49 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 						}
 					});
 
-					console.log(matched);
+					return matched;
+				},
+				criteria: null
+			},
+			'pull_request_state': {
+				filter: function (pulls, crit) {
+					var regex = new RegExp(crit);
+
+					// If no criteria is set, return all the objects
+					if (crit === null) {
+						return pulls;
+					}
+
+					var matched = [];
+
+					pulls.forEach(function (pull) {
+						if (regex.test(pull.state)) {
+							matched.push(pull);
+						}
+					});
 
 					return matched;
 				},
 				criteria: null
 			},
-			'status': {
-				filter: function (data, crit) {
-					// TODO
-					return data;
-				},
-				criteria: null
-			},
-			'tag': {
-				filter: function (data, crit) {
-					// TODO
-					return data;
-				},
-				criteria: null
-			}
-		},
-		'commits': {
-			'user': {
-				filter: function (data, crit) {
-					// TODO
-					return data;
-				},
-				criteria: null
-			},
-			'branch': {
-				filter: function (data, crit) {
-					// TODO
-					return data;
-				},
-				criteria: null
-			},
-			'status': {
-				filter: function (data, crit) {
-					// TODO
-					return data;
+			'review_status': {
+				filter: function (pulls, crit) {
+					var regex = new RegExp(crit);
+
+					// If no criteria is set, return all the objects
+					if (crit === null) {
+						return pulls;
+					}
+
+					var matched = [];
+
+					pulls.forEach(function (pull) {
+						if (regex.test(pull.status)) {
+							matched.push(pull);
+						}
+					});
+
+					return matched;
 				},
 				criteria: null
 			}
