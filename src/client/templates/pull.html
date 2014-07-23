@@ -200,7 +200,7 @@
 				</li>
 			</ul>
 		</div> -->
-		<button class="btn btn-primary btn-block"><i class="fa fa-star"></i> Star</button>
+		<button class="btn btn-primary btn-block" ng-click="castStar()"><i class="fa fa-star"></i> Star</button>
 		<ul class="list-group">
 			<li class="list-group-item" ng-repeat="vote in votes.value">
 				<vote value="vote" issues="issue.value" comments="commitComments.value"></vote>
