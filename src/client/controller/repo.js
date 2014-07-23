@@ -40,6 +40,17 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 			}, function(err, status) {
 				comm.status = status.value;
 			});
+
+			$RPC.call('star', 'all', {
+				repo: $scope.repo.value.id,
+				comm: comm.sha
+			}, function(err, stars) {
+				if(!err) {
+					comm.stars = stars.value;
+				}
+			});
+
+			
 		});
 	});
 
@@ -60,6 +71,10 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 
 			// get status of each pull request
 			$scope.pulls.forEach(function(pull) {
+
+
+
+
 				$RPC.call('vote', 'status', {
 					repo: $scope.repo.value.id,
 					comm: pull.head.sha

@@ -8,7 +8,26 @@
 
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
 
-				<div class="well text-center" ng-show="pulls.length===0">
+				<table class="table">
+				<tr ng-repeat="pull in pulls">
+				<td>
+					<span class="fa-stack fa-lg">
+					  <i class="fa fa-circle fa-stack-2x"></i>
+					  <i class="fa fa-code-fork fa-stack-1x fa-inverse"></i>
+					</span>
+				<td><a ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">{{ pull.title }}</a> <img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small></td>
+				<td>
+				<td>
+					<span class="label label-success">{{ pull.state }}</span>
+					{{ pull.head.ref }}
+				</td>
+				<td style="text-align:right;">
+					<i class="fa fa-star" ng-repeat="star in pull.value.stars"></i>
+				</td>
+				</tr>
+				</table>
+
+				<!-- <div class="well text-center" ng-show="pulls.length===0">
 					<i class="fa fa-lg fa-code-fork"></i> Pull reqests will show up here.
 				</div>
 
@@ -20,7 +39,7 @@
 						<i class="fa fa-code-fork"></i> {{ pull.title }}<br />
 						<img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
 					</a>
-				</div>
+				</div> -->
 
 			</tab>
 
@@ -28,7 +47,22 @@
 
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="commits.loading" style="text-align:center; display:block; margin:0 auto;"></i>
 
-				<div class="list-group">
+				<table class="table">
+				<tr ng-repeat="commit in commits.value">
+				<td>
+					<span class="fa-stack fa-lg">
+					  <i class="fa fa-circle fa-stack-2x"></i>
+					  <i class="fa fa-code fa-stack-1x fa-inverse"></i>
+					</span>
+				<td><a ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">{{ commit.commit.message }}</a> <img ng-src="{{ commit.author.avatar_url }}" width="16px;" /> <small>{{ commit.author.login }} <span moment="commit.commit.committer.date"></span></small></td>
+				<td>
+				<td style="text-align:right;">
+					<i class="fa fa-star" ng-repeat="star in commit.stars"></i>
+				</td>
+				</tr>
+				</table>
+
+				<!-- <div class="list-group">
 					<a class="list-group-item" ng-repeat="commit in commits.value" ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">
 						<span class="label pull-right" ng-class="{'label-default':commit.status==='pending', 'label-success':commit.status==='approved', 'label-danger':commit.status==='rejected'}" style="margin-top:12px;">
 							{{ commit.status }}
@@ -36,7 +70,7 @@
 						{{ commit.sha | limitTo:8 }}: {{ commit.commit.message }}<br />
 						<img ng-src="{{ commit.author.avatar_url }}" width="16px;" /> <small>{{ commit.author.login }} <span moment="commit.commit.committer.date"></span></small>
 					</a>
-				</div>
+				</div> -->
 
 			</tab>
 
