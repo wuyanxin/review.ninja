@@ -40,6 +40,22 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		per_page: 15
 	});
 
+	// get your star
+	$scope.star = $RPC.call('star', 'get', {
+		// repo uuid
+		repo: $scope.repo.value.id,
+		// comm uuid
+		comm: $stateParams.sha,
+	});
+
+	// get stars
+	$scope.stars = $RPC.call('star', 'all', {
+		// repo uuid
+		repo: $scope.repo.value.id,
+		// comm uuid
+		comm: $stateParams.sha,
+	});
+
 	// get your vote
 	$scope.vote = $RPC.call('vote', 'get', {
 		// repo uuid
@@ -136,6 +152,15 @@ module.controller('CommCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 	//
 	// Actions
 	//
+
+	$scope.castStar = function() {
+		$scope.vote = $RPC.call('star', 'set', {
+			// repo uuid
+			repo: $scope.repo.value.id,
+			// comm uuid
+			comm: $stateParams.sha
+		});
+	};
 
 	$scope.castVote = function(value) {
 		$scope.vote = $RPC.call('vote', 'set', {
