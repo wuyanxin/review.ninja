@@ -75,6 +75,12 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 						});
 					}
 
+					if (vote.star === undefined || vote.star === null)
+					{
+						res.send(400,'Post data did not include star');
+						return;
+					}
+
 					if(vote.star) {
 
 						queue.push(function(done) {
