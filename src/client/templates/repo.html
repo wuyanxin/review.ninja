@@ -39,30 +39,13 @@
 				  </ul>
 				</div>
 
-				<!-- Review Status filter -->
-				<div class="btn-group">
-				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    {{ selectedfilters.review_status || 'All review statuses'}}
-				    <span class="caret"></span>
-				  </a>
-				  <ul class="dropdown-menu">
-				  	<li>
-				  		<a href="#" ng-href="#" ng-click="selectFilter('review_status', null)">All review statuses</a>
-				  	</li>
-				  	<li ng-show="branches.loading">Loading branches...</li>
-				  	<li ng-repeat="status in reviewStatuses" ng-show="branches.loaded">
-				  		<a href="#" ng-href="#" ng-click="selectFilter('review_status', status)">{{ status }}</a>
-				  	</li>
-				  </ul>
-				</div>
-
 				<br>
 				<br>
 
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
 
         <table class="table">
-          <tr ng-repeat="pull in pulls">
+          <tr ng-repeat="pull in pullsFiltered">
             <td>
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x" ng-class="{'done': pull.state == 'closed'}"></i>
