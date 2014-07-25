@@ -89,25 +89,19 @@ describe('tool::router.all', function () {
 		}
 	});
 		// Create fake app
-		 app = express();
+		app = express();
 
 		app.use(bodyParser.json());
 		app.use('/api', toolRouter);
 
 		// Create and send fake request
 		request(app)
-			.post('/api/vote/mockTool/mockCommit')
+		.post('/api/vote/mockTool/mockCommit')
+		.send({issues:['I has an issue'],comments:[],star:false})
+		.set('Accept', 'application/json')
+		.set('Content-Type', 'application/json')
+		.expect(201, done);
 
-			// Send example vote
-			.send({issues:['I has an issue'],comments:[],star:false})
-
-			// Set Content-Types
-  			.set('Accept', 'application/json')
-  			.set('Content-Type', 'application/json')
-
-  			// It should return a 201 - CREATED status
-  			.expect(201, done);
-  			//also expect star create
 	});
 
 
@@ -186,25 +180,22 @@ describe('tool::router.all', function () {
 			done();
 		}
 	});
+
+
+
+
 		// Create fake app
-		 app = express();
+		app = express();
 
 		app.use(bodyParser.json());
 		app.use('/api', toolRouter);
-
-		// Create and send fake request
+		//create fake request
 		request(app)
-			.post('/api/vote/mockTool/mockCommit')
-
-			// Send example vote
-			.send({issues:[],comments:[],star:true})
-
-			// Set Content-Types
-  			.set('Accept', 'application/json')
-  			.set('Content-Type', 'application/json')
-
-  			// It should return a 201 - CREATED status
-  			.expect(201, done);
+		.post('/api/vote/mockTool/mockCommit')
+		.send({issues:[],comments:[],star:true})
+		.set('Accept', 'application/json')
+		.set('Content-Type', 'application/json')
+		.expect(201, done);
 	});
 
 
@@ -276,25 +267,20 @@ describe('tool::router.all', function () {
 			done();
 		}
 	});
+
 		// Create fake app
-		 app = express();
+		app = express();
 
 		app.use(bodyParser.json());
 		app.use('/api', toolRouter);
-
-		// Create and send fake request
+		//create fake request
 		request(app)
-			.post('/api/vote/mockTool/mockCommit')
+		.post('/api/vote/mockTool/mockCommit')
+		.send({issues:[],comments:[],star:true})
+		.set('Accept', 'application/json')
+		.set('Content-Type', 'application/json')
+		.expect(500, done);
 
-			// Send example vote
-			.send({issues:[],comments:[],star:true})
-
-			// Set Content-Types
-  			.set('Accept', 'application/json')
-  			.set('Content-Type', 'application/json')
-
-  			// It should return a 500 - can't find tool
-  			.expect(500, done);
 	});
 
 
@@ -356,25 +342,23 @@ describe('tool::router.all', function () {
 			done();
 		}
 	});
+
+
+
+
 		// Create fake app
-		 app = express();
+		app = express();
 
 		app.use(bodyParser.json());
 		app.use('/api', toolRouter);
-
-		// Create and send fake request
+		//create fake request
 		request(app)
-			.post('/api/vote/mockTool/mockCommit')
+		.post('/api/vote/mockTool/mockCommit')
+		.send({issues:[],comments:[],star:true})
+		.set('Accept', 'application/json')
+		.set('Content-Type', 'application/json')
+		.expect(404, done);
 
-			// Send example vote
-			.send({issues:[],comments:[],star:true})
-
-			// Set Content-Types
-  			.set('Accept', 'application/json')
-  			.set('Content-Type', 'application/json')
-
-  			// It should return a 404 - can't find tool
-  			.expect(404, done);
 	});
 
 
@@ -435,25 +419,21 @@ describe('tool::router.all', function () {
 			done();
 		}
 	});
+
+
 		// Create fake app
-		 app = express();
+		app = express();
 
 		app.use(bodyParser.json());
 		app.use('/api', toolRouter);
-
-		// Create and send fake request
+		//create fake request
 		request(app)
-			.post('/api/vote/mockTool/mockCommit')
+		.post('/api/vote/mockTool/mockCommit')
+		.send({issues:[],comments:[],star:null})
+		.set('Accept', 'application/json')
+		.set('Content-Type', 'application/json')
+		.expect(400, done);
 
-			// Send example vote
-			.send({issues:[],comments:[],star:null})
-
-			// Set Content-Types
-  			.set('Accept', 'application/json')
-  			.set('Content-Type', 'application/json')
-
-  			// It should return a 400 - Bad Post Data
-  			.expect(400, done);
 	});
 
 
@@ -527,28 +507,23 @@ it('should have correct number of comments created', function (done) {
 			done();
 		}
 	});
+
+
 		// Create fake app
-		 app = express();
+		app = express();
 
 		app.use(bodyParser.json());
 		app.use('/api', toolRouter);
-
-		// Create and send fake request
+		//create fake request
 		request(app)
-			.post('/api/vote/mockTool/mockCommit')
-
-			// Send example vote
-			.send({issues:[],comments:['test 1','test 2'],star:true})
-
-			// Set Content-Types
-  			.set('Accept', 'application/json')
-  			.set('Content-Type', 'application/json')
-  			.expect(201,function(){
-  				assert.equal(num_comments,2);
-  				done();
-  			});
-  			// It should return a 201 - CREATED status
-
+		.post('/api/vote/mockTool/mockCommit')
+		.send({issues:[],comments:['test 1','test 2'],star:true})
+		.set('Accept', 'application/json')
+		.set('Content-Type', 'application/json')
+		.expect(201,function(){
+			assert.equal(num_comments,2);
+			done();			
+		});
 
 	});
 
