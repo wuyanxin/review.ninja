@@ -18,7 +18,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 	};
 
 	$scope.selectFilter = function (critType, crit) {
-		console.log(critType + " " + crit);
 		$scope.selectedfilters[critType] = crit;
 
 		$scope.filterSet
