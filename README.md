@@ -6,7 +6,7 @@ Review Ninja
 <p align="center">
 [![Review Ninja](https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png)](http://review.ninja)
 
-Review Ninja is a lightweight code review tool that works with GitHub. It provides a more structured way to use pull-requests for code review.
+Review Ninja is a lightweight code review tool that works with GitHub, providing a more structured way to use pull-requests for code review. Review Ninja dispenses with elaborate voting systems, and supports hassle-free committing and merging for acceptable changes. Our primary focus is making it easier to identify, review, collaborate and track problems with a specific pull request until they're satisfactorily addressed.
 
 Review Ninja comes with a flexible approach to add automatic voters in addition to human voters. Auto voters, which we call "bots" can be any application or step in your continuous delivery system.
 
