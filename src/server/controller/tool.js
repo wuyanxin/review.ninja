@@ -28,6 +28,12 @@ router.all('/vote/:uuid/:comm', function(req, res) {
         return res.send(400, 'Bad request, no data sent');
     }
 
+    if (vote.star === undefined || vote.star === null)
+    {
+        res.send(400,'Post data did not include star');
+        return;
+    }
+
     Tool.findById(uuid, function (err, tool) {
 
         if (err) {
@@ -73,12 +79,6 @@ router.all('/vote/:uuid/:comm', function(req, res) {
                                 }, token: repo.token}, done);
                             });
                         });
-                    }
-
-                    if (vote.star === undefined || vote.star === null)
-                    {
-                        res.send(400,'Post data did not include star');
-                        return;
                     }
 
                     if(vote.star) {
