@@ -2,17 +2,16 @@
 var mongoose = require('mongoose');
 var withHelper = require('./with');
 
-var VoteSchema = mongoose.Schema({
+var StarSchema = mongoose.Schema({
 	repo: Number,
 	comm: String,
 	user: String,
 	name: String,
-	vote: Object
 });
 
-VoteSchema.plugin(withHelper);
+StarSchema.plugin(withHelper);
 
-VoteSchema.index({
+StarSchema.index({
 	repo: 1,
 	comm: 1,
 	user: 1
@@ -20,8 +19,8 @@ VoteSchema.index({
 	unique: true
 });
 
-var Vote = mongoose.model('Vote', VoteSchema);
+var Star = mongoose.model('Star', StarSchema);
 
 module.exports = {
-	Vote: Vote
+	Star: Star
 };

@@ -17,7 +17,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 
 	var Tool = require('mongoose').model('Tool');
 	var Repo = require('mongoose').model('Repo');
-	var Vote = require('mongoose').model('Vote');
+	var Star = require('mongoose').model('Star');
 
 	var uuid = req.params.uuid;
 	var comm = req.params.comm;
@@ -40,89 +40,59 @@ router.all('/vote/:uuid/:comm', function(req, res) {
 			return res.send(404, 'Tool not found');
 		}
 
-		Vote.findOne({repo: tool.repo, comm: comm, user: 'tool', name: tool.name}, function(err, previousVote) {
+		Repo.findOne({'uuid': tool.repo}, function(err, repo) {
 
-			if (err) {
-				logger.log('Mongoose[Vote] err', ['tool', 'mongoose', '500']);
-				return res.send(500);
+			if (err || !repo) {
+				return res.send(404, 'Repo not found');
 			}
 
-			if(previousVote) {
-				logger.log('Previously voted', ['tool', 'mongoose', '500']);
-				return res.send(403);
-			}
+			github.call({obj: 'repos', fun: 'one', arg: {id: repo.uuid}, token: repo.token}, function(err, grepo) {
 
-			Repo.findOne({'uuid': tool.repo}, function(err, repo) {
+				var repoUser = grepo.owner.login;
+				var repoName = grepo.name;
 
-				if (err || !repo) {
-					return res.send(404, 'Repo not found');
-				}
+				github.call({obj: 'repos', fun: 'getCommit', arg: {user: repoUser, repo: repoName, sha: comm}, token: repo.token}, function(err, comm) {
 
-				github.call({obj: 'repos', fun: 'one', arg: {id: repo.uuid}, token: repo.token}, function(err, grepo) {
+					if(err) {
+						return res.send(err.code, err.message.message);
+					}
 
-					var repoUser = grepo.owner.login;
-					var repoName = grepo.name;
+					var queue = [];
 
-					github.call({obj: 'repos', fun: 'getCommit', arg: {user: repoUser, repo: repoName, sha: comm}, token: repo.token}, function(err, comm) {
-
-						if(err) {
-							return res.send(err.code, err.message.message);
-						}
-
-						var queue = [];
-
-						if(vote.comments) {
-							vote.comments.forEach(function(c) {
-								queue.push(function(done) {
-									github.call({obj: 'repos', fun: 'createCommitComment', arg: {
-										user: repoUser,
-										repo: repoName,
-										sha: comm.sha,
-										commit_id: comm.sha,
-										body: c.body,
-										path: c.path,
-										line: c.line
-									}, token: repo.token}, done);
-								});
-							});
-						}
-
-						if(vote.vote && vote.vote.label) {
-
+					if(vote.comments) {
+						vote.comments.forEach(function(c) {
 							queue.push(function(done) {
 								github.call({obj: 'repos', fun: 'createCommitComment', arg: {
 									user: repoUser,
 									repo: repoName,
 									sha: comm.sha,
 									commit_id: comm.sha,
-									body: vote.vote.label + '\n\n' + 'On behalf of ' + tool.name
+									body: c.body,
+									path: c.path,
+									line: c.line
 								}, token: repo.token}, done);
 							});
-							queue.push(function(done) {
-								Vote.update({repo: repo.uuid, comm: comm.sha, user: 'tool', name: tool.name}, {vote: vote.vote}, {upsert: true}, function(err, vote) {
-									if(!err) {
-										require('../bus').emit('vote:add', {
-											uuid: grepo.id,
-											user: repoUser,
-											repo: repoName,
-											comm: comm.sha,
-											token: repo.token
-										});
-									}
-									done();
-								});
-							});
-						}
-
-						async.parallel(queue, function() {
-							res.send(201);
 						});
-					
-					});
+					}
 
+					if(vote.star) {
+
+						queue.push(function(done) {
+							Star.create({repo: repo.uuid, comm: comm.sha, user: 'tool', name: tool.name}, function(err, star) {
+								done();
+							});
+						});
+
+					}
+
+					async.parallel(queue, function() {
+						res.send(201);
+					});
+				
 				});
 
 			});
+
 		});
 	});
 });

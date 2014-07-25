@@ -186,7 +186,7 @@
 	</div>
 
 	<div class="col-md-4">
-		<div ng-show="!vote.value && status.value==='pending' && ninja.value.config" class="btn-group btn-block" style="margin-bottom:20px;">
+		<!-- <div ng-show="!vote.value && status.value==='pending' && ninja.value.config" class="btn-group btn-block" style="margin-bottom:20px;">
 			<button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown">
 				Vote
 				<span class="caret"></span>
@@ -199,7 +199,8 @@
 					</a>
 				</li>
 			</ul>
-		</div>
+		</div> -->
+		<button class="btn btn-primary btn-block" ng-click="castStar()"><i class="fa fa-star"></i> Star</button>
 		<ul class="list-group">
 			<li class="list-group-item" ng-repeat="vote in votes.value">
 				<vote value="vote" issues="issue.value" comments="commitComments.value"></vote>

@@ -168,14 +168,12 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 	// Actions
 	//
 
-	$scope.castVote = function(value) {
-		$scope.vote = $RPC.call('vote', 'set', {
+	$scope.castStar = function() {
+		$scope.vote = $RPC.call('star', 'set', {
 			// repo uuid
 			repo: $scope.repo.value.id,
 			// comm uuid
-			comm: $scope.pull.value.head.sha,
-			// vote
-			vote: value
+			comm: $scope.pull.value.head.sha
 		});
 	};
 
