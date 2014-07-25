@@ -9,16 +9,16 @@
 				<!-- Branches filter -->
 				<div class="btn-group">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    {{ filters['pull_requests']['branch'].criteria || 'All branches'}}
+				    {{ selectedfilters.branch  || 'All branches'}}
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu">
 				  	<li>
-				  		<a href="#" ng-href="#" ng-click="setFilter(filters['pull_requests']['branch'], null)">All branches</a>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('branch', null)">All branches</a>
 				  	</li>
 				  	<li ng-show="branches.loading">Loading branches...</li>
 				  	<li ng-repeat="branch in branches.value" ng-show="branches.loaded">
-				  		<a href="#" ng-href="#" ng-click="setFilter(filters['pull_requests']['branch'], branch.name)">{{ branch.name }}</a>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('branch', branch.name)">{{ branch.name }}</a>
 				  	</li>
 				  </ul>
 				</div>
@@ -26,15 +26,15 @@
 				<!-- Pull Request Status filter -->
 				<div class="btn-group">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    {{ filters['pull_requests']['pull_request_state'].criteria || 'All pull request states'}}
+				    {{ selectedfilters.state || 'All pull request states'}}
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu">
 				  	<li>
-				  		<a href="#" ng-href="#" ng-click="setFilter(filters['pull_requests']['pull_request_state'], null)">All pull request states</a>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('state', null)">All pull request states</a>
 				  	</li>
 				  	<li ng-repeat="state in pullRequestStates">
-				  		<a href="#" ng-href="#" ng-click="setFilter(filters['pull_requests']['pull_request_state'], state)">{{ state }}</a>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('state', state)">{{ state }}</a>
 				  	</li>
 				  </ul>
 				</div>
@@ -42,16 +42,16 @@
 				<!-- Review Status filter -->
 				<div class="btn-group">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    {{ filters['pull_requests']['review_status'].criteria || 'All review statuses'}}
+				    {{ selectedfilters.review_status || 'All review statuses'}}
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu">
 				  	<li>
-				  		<a href="#" ng-href="#" ng-click="setFilter(filters['pull_requests']['review_status'], null)">All review statuses</a>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('review_status', null)">All review statuses</a>
 				  	</li>
 				  	<li ng-show="branches.loading">Loading branches...</li>
 				  	<li ng-repeat="status in reviewStatuses" ng-show="branches.loaded">
-				  		<a href="#" ng-href="#" ng-click="setFilter(filters['pull_requests']['review_status'], status)">{{ status }}</a>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('review_status', status)">{{ status }}</a>
 				  	</li>
 				  </ul>
 				</div>
