@@ -6,10 +6,63 @@
 		<tabset>
 			<tab heading="Pull Requests">
 
+				<!-- Branches filter -->
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    {{ selectedfilters.branch  || 'All branches'}}
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				  	<li>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('branch', null)">All branches</a>
+				  	</li>
+				  	<li ng-show="branches.loading">Loading branches...</li>
+				  	<li ng-repeat="branch in branches.value" ng-show="branches.loaded">
+				  		<a href="#" ng-href="#" ng-click="selectFilter('branch', branch.name)">{{ branch.name }}</a>
+				  	</li>
+				  </ul>
+				</div>
+
+				<!-- Pull Request Status filter -->
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    {{ selectedfilters.state || 'All pull request states'}}
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				  	<li>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('state', null)">All pull request states</a>
+				  	</li>
+				  	<li ng-repeat="state in pullRequestStates">
+				  		<a href="#" ng-href="#" ng-click="selectFilter('state', state)">{{ state }}</a>
+				  	</li>
+				  </ul>
+				</div>
+
+				<!-- Review Status filter -->
+				<div class="btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    {{ selectedfilters.review_status || 'All review statuses'}}
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				  	<li>
+				  		<a href="#" ng-href="#" ng-click="selectFilter('review_status', null)">All review statuses</a>
+				  	</li>
+				  	<li ng-show="branches.loading">Loading branches...</li>
+				  	<li ng-repeat="status in reviewStatuses" ng-show="branches.loaded">
+				  		<a href="#" ng-href="#" ng-click="selectFilter('review_status', status)">{{ status }}</a>
+				  	</li>
+				  </ul>
+				</div>
+
+				<br>
+				<br>
+
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
 
 				<table class="table">
-				<tr ng-repeat="pull in pulls">
+				<tr ng-repeat="pull in pullsFiltered">
 				<td>
 					<span class="fa-stack fa-lg">
 					  <i class="fa fa-circle fa-stack-2x"></i>
@@ -32,11 +85,12 @@
 				</div>
 
 				<div class="list-group">
-					<a class="list-group-item" ng-repeat="pull in pulls" ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">
-						<span class="label pull-right" ng-class="{'label-default':pull.status==='pending', 'label-success':pull.status==='approved', 'label-danger':pull.status==='rejected'}" style="margin-top:12px;">
-							{{ pull.status }}
+					<a class="list-group-item" ng-repeat="pull in pullsFiltered" ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">
+						<span class="label pull-right" ng-class="{'label-default':pull.status==='pending', 'label-success':pull.status==='approved', 'label-danger':pull.status==='rejected'}" style="margin-top:12px">
+							review is {{ pull.status }}
 						</span>
-						<i class="fa fa-code-fork"></i> {{ pull.title }}<br />
+						<span class="label pull-right" ng-class="{'label-success':pull.state==='open', 'label-danger':pull.state==='closed'}" style="margin-top:12px;margin-right: 8px;">{{ pull.state }}</span>
+						<i class="fa fa-code-fork"></i> {{ pull.title }} ({{ pull.head.ref }})<br />
 						<img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
 					</a>
 				</div> -->

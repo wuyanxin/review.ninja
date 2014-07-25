@@ -6,7 +6,100 @@
 // resolve: repo 
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', '$FilterSet', 'repo', function($scope, $stateParams, $HUB, $RPC, $modal, $FilterSet, repo) {
+
+	// *********
+	// FILTERING
+	// *********
+
+	$scope.selectedfilters = {
+		branch: null,
+		state: null,
+		review_status: null,
+	};
+
+	$scope.selectFilter = function (critType, crit) {
+		$scope.selectedfilters[critType] = crit;
+
+		$scope.filterSet
+			.filter($scope.pulls, 'pull_requests')
+			.by('branch', $scope.selectedfilters.branch)
+			.by('state', $scope.selectedfilters.state)
+			.by('review_status', $scope.selectedfilters.review_status)
+			.getResult(function (result) {
+				$scope.pullsFiltered = result;
+			});
+	};
+
+	$scope.resetFilters = function () {
+		$scope.selectedfilters.branch = null;
+		$scope.selectedfilters.state = null;
+		$scope.selectedfilters.review_status = null;
+
+		$scope.filterSet
+			.filter($scope.pulls, 'pull_requests')
+			.by('branch', $scope.selectedfilters.branch)
+			.by('state', $scope.selectedfilters.state)
+			.by('review_status', $scope.selectedfilters.review_status)
+			.getResult(function (result) {
+				$scope.pullsFiltered = result;
+			});
+	};
+
+	if (!$scope.filterSet) {
+		$scope.filterSet = $FilterSet();
+
+		// Filter pull requests by branch
+		$scope.filterSet.define('pull_requests', 'branch', function (pulls, crit) {
+			var regex = new RegExp(crit);
+
+			var matched = [];
+
+			pulls.forEach(function (pull) {
+				if (regex.test(pull.head.ref)) {
+					matched.push(pull);
+				}
+			});
+
+			return matched;
+		});
+
+		// Filter pull requests by state
+		$scope.filterSet.define('pull_requests', 'state', function (pulls, crit) {
+			var regex = new RegExp(crit);
+
+			var matched = [];
+
+			pulls.forEach(function (pull) {
+				if (regex.test(pull.state)) {
+					matched.push(pull);
+				}
+			});
+
+			return matched;
+		});
+
+		// Filter pull requests by status
+		$scope.filterSet.define('pull_requests', 'review_status', function (pulls, crit) {
+			var regex = new RegExp(crit);
+
+			var matched = [];
+
+			pulls.forEach(function (pull) {
+				if (regex.test(pull.status)) {
+					matched.push(pull);
+				}
+			});
+
+			return matched;
+		});
+	}
+
+
+	$scope.pullRequestStates = ['open', 'closed'];
+	$scope.reviewStatuses = ['approved', 'rejected', 'pending'];
+
+
 
 	// get the repo
 	$scope.repo = repo;
@@ -53,6 +146,19 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 		}, function(err, closed) {
 			
 			$scope.pulls = (open.value || []).concat(closed.value || []);
+
+
+			$scope.pullsFiltered = $scope.pulls;
+
+			$scope.filterSet
+				.filter($scope.pullsFiltered, 'pull_requests')
+				.by('branch', $scope.selectedfilters.branch)
+				.by('state', $scope.selectedfilters.state)
+				.by('review_status', $scope.selectedfilters.review_status)
+				.getResult(function (result) {
+					$scope.pullsFiltered = result;
+				});
+	
 
 			// get status of each pull request
 			$scope.pulls.forEach(function(pull) {
