@@ -41,3 +41,34 @@ pre {
 .nav-tabs a {
 	cursor: pointer;
 }
+
+svg.merge {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+path.git-base,
+path.git-head,
+polygon.git-graph-arrow {
+  stroke: black;
+}
+
+path.git-head {
+  fill: none;
+}
+
+circle.git-commit {
+  fill: black;
+}
+
+.done {
+  color: #5cb85c;
+}
+
+.mergeable {
+  padding-left: 30px;
+}
+
+.mergeable-text {
+  font-size: 10px;
+}
