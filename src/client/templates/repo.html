@@ -61,24 +61,38 @@
 
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
 
-				<table class="table">
-				<tr ng-repeat="pull in pullsFiltered">
-				<td>
-					<span class="fa-stack fa-lg">
-					  <i class="fa fa-circle fa-stack-2x"></i>
-					  <i class="fa fa-code-fork fa-stack-1x fa-inverse"></i>
-					</span>
-				<td><a ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">{{ pull.title }}</a> <img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small></td>
-				<td>
-				<td>
-					<span class="label label-success">{{ pull.state }}</span>
-					{{ pull.head.ref }}
-				</td>
-				<td style="text-align:right;">
-					<i class="fa fa-star" ng-repeat="star in pull.stars"></i>
-				</td>
-				</tr>
-				</table>
+        <table class="table">
+          <tr ng-repeat="pull in pulls">
+            <td>
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x" ng-class="{'done': pull.state == 'closed'}"></i>
+                <i class="fa fa-stack-1x fa-inverse" ng-class="{'fa-code-fork': pull.state == 'open', 'fa-check': pull.state == 'closed'}"></i>
+              </span>
+            </td>
+            <td><a ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">{{ pull.title }}</a><br /><img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small></td>
+            <td>
+              <td>
+                <?xml version="1.0" encoding="utf-8"?>
+                <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+                <svg version="1.1" class="merge pull-right" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 180 40" enable-background="new 0 0 180 40" xml:space="preserve" width="400px" height="40px">
+                  <path class="git-base" stroke-width="4" stroke-miterlimit="10" d="M 103 6 L 171 6"/>
+                  <polygon class="git-graph-arrow" points="171,1.7 180,5.6 171,9.6 "/>
+                  <path class="git-head" stroke-width="4" stroke-miterlimit="10" d="M152.5,4.8c-7,2.5-7,12.5-15.6,18.6
+                  c-6.7,4.8-11.7,5-33.3,5"/>
+                  <circle class="git-commit" cx="103" cy="28.1" r="4.8"/>
+                  <text class="git-base" y="10" x="95" text-anchor="end">{{ pull.base.ref }}</text>
+                  <circle class="git-commit" cx="103" cy="5.6" r="4.8"/>
+                  <text class="git-head" y="33" x="95" text-anchor="end">{{ pull.head.ref }}</text>
+                  <circle class="git-commit" cx="148.6" cy="5.6" r="4.8"/>
+                </svg>
+              </td>
+              <td style="text-align:right;">
+                <i class="fa fa-star" ng-repeat="star in pull.stars"></i>
+              </td>
+            </tr>
+            </table>
 
 				<!-- <div class="well text-center" ng-show="pulls.length===0">
 					<i class="fa fa-lg fa-code-fork"></i> Pull reqests will show up here.
@@ -102,18 +116,23 @@
 				<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="commits.loading" style="text-align:center; display:block; margin:0 auto;"></i>
 
 				<table class="table">
-				<tr ng-repeat="commit in commits.value">
-				<td>
-					<span class="fa-stack fa-lg">
-					  <i class="fa fa-circle fa-stack-2x"></i>
-					  <i class="fa fa-code fa-stack-1x fa-inverse"></i>
-					</span>
-				<td><a ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">{{ commit.commit.message }}</a> <img ng-src="{{ commit.author.avatar_url }}" width="16px;" /> <small>{{ commit.author.login }} <span moment="commit.commit.committer.date"></span></small></td>
-				<td>
-				<td style="text-align:right;">
-					<i class="fa fa-star" ng-repeat="star in commit.stars"></i>
-				</td>
-				</tr>
+          <tr ng-repeat="commit in commits.value">
+            <td>
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-code fa-stack-1x fa-inverse"></i>
+              </span>
+            </td>
+            <td>
+              <a ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">{{ commit.commit.message }}</a>
+              <img ng-src="{{ commit.author.avatar_url }}" width="16px;" />
+              <small>{{ commit.author.login }}
+                <span moment="commit.commit.committer.date"></span></small>
+            </td>
+            <td style="text-align:right;">
+              <i class="fa fa-star" ng-repeat="star in commit.stars"></i>
+            </td>
+          </tr>
 				</table>
 
 				<!-- <div class="list-group">
