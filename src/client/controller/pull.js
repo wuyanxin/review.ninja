@@ -161,6 +161,14 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         });
     };
 
+    $scope.setCurrentIssue = function(issue) {
+        if($scope.currentIssue === issue) {
+            $scope.currentIssue = null;
+            return;
+        }
+        $scope.currentIssue = issue;
+    };
+
 	// get ninja config file
 	$scope.ninja = $RPC.call('comm', 'get', {
 		uuid: $scope.repo.value.id,

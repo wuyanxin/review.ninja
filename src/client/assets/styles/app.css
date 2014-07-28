@@ -86,3 +86,8 @@ circle.git-commit {
   background-color: #f5f5f5;
   border-left: 1px solid #eee;
 }
+
+.issue-sidebar {
+  background-color: #eee;
+  border: 1px solid #f0f0f0;
+}
