@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose');
 var withHelper = require('./with');
 
@@ -14,5 +13,5 @@ UserSchema.plugin(withHelper);
 var User = mongoose.model('User', UserSchema);
 
 module.exports = {
-	User: User
+    User: User
 };

@@ -3,7 +3,7 @@ var Tool = require('mongoose').model('Tool');
 
 module.exports = {
 
-/************************************************************************************************************
+    /************************************************************************************************************
 
 	@models
 
@@ -11,17 +11,19 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	all: function(req, done) {
+    all: function(req, done) {
 
-		Tool.find({repo: req.args.repo}, function(err, tool) {
-			
-			done(err, tool);
+        Tool.find({
+            repo: req.args.repo
+        }, function(err, tool) {
 
-		});
+            done(err, tool);
 
-	},
+        });
 
-/************************************************************************************************************
+    },
+
+    /************************************************************************************************************
 
 	@models
 
@@ -29,35 +31,20 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	add: function(req, done) {
+    add: function(req, done) {
 
-		Tool.create({repo: req.args.repo, name: req.args.name}, function(err, tool) {
+        Tool.create({
+            repo: req.args.repo,
+            name: req.args.name
+        }, function(err, tool) {
 
-			done(err, tool);
+            done(err, tool);
 
-		});
+        });
 
-	},
+    },
 
-/************************************************************************************************************
-
-	@models
-
-	+ Tool, where id=id
-
-************************************************************************************************************/
-
-	get: function(req, done) {
-
-		Tool.findById(req.args.id, function(err, tool) {
-			
-			done(err, tool);
-
-		});
-
-	},
-
-/************************************************************************************************************
+    /************************************************************************************************************
 
 	@models
 
@@ -65,20 +52,38 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	set: function(req, done) {
+    get: function(req, done) {
 
-		Tool.findById(req.args.id, function(err, tool) {
-			
-			tool.name = req.args.name || tool.name;
+        Tool.findById(req.args.id, function(err, tool) {
 
-			tool.save(function(err, tool) {
+            done(err, tool);
 
-				done(err, tool);
+        });
 
-			});
+    },
 
-		});
+    /************************************************************************************************************
 
-	}
+	@models
+
+	+ Tool, where id=id
+
+************************************************************************************************************/
+
+    set: function(req, done) {
+
+        Tool.findById(req.args.id, function(err, tool) {
+
+            tool.name = req.args.name || tool.name;
+
+            tool.save(function(err, tool) {
+
+                done(err, tool);
+
+            });
+
+        });
+
+    }
 
 };

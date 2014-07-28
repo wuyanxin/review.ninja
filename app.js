@@ -1,19 +1,18 @@
-
 var http = require('http');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Crash Report
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-if(process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
 
-	// Log to rollbar
+    // Log to rollbar
 
-	var rollbar = require('rollbar');
+    var rollbar = require('rollbar');
 
-	rollbar.handleUncaughtExceptions('51d783b209fd4c24927dc5e0b1270aef', {
-		exitOnUncaughtException: false
-	});	
+    rollbar.handleUncaughtExceptions('51d783b209fd4c24927dc5e0b1270aef', {
+        exitOnUncaughtException: false
+    });
 
 }
 

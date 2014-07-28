@@ -1,11 +1,15 @@
 // models
 var User = require('mongoose').model('User');
 
-User.aggregate({$project: {token: 0}});
+User.aggregate({
+    $project: {
+        token: 0
+    }
+});
 
 module.exports = {
 
-/************************************************************************************************************
+    /************************************************************************************************************
 
 	@models
 
@@ -13,16 +17,18 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	get: function(req, done) {
+    get: function(req, done) {
 
-		User.findOne({uuid: req.args.user}, function(err, user) {
-			
-			done(err, {
-				name: user ? user.name : null
-			});
+        User.findOne({
+            uuid: req.args.user
+        }, function(err, user) {
 
-		});
+            done(err, {
+                name: user ? user.name : null
+            });
 
-	}
+        });
+
+    }
 
 };

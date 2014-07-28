@@ -1,4 +1,3 @@
-
 var async = require('async');
 var express = require('express');
 
@@ -28,63 +27,90 @@ router.all('/vote/:uuid/:comm', function(req, res) {
         return res.send(400, 'Bad request, no data sent');
     }
 
-    if (vote.star === undefined || vote.star === null)
-    {
-        res.send(400,'Post data did not include star');
+    if (vote.star === undefined || vote.star === null) {
+        res.send(400, 'Post data did not include star');
         return;
     }
 
-    Tool.findById(uuid, function (err, tool) {
+    Tool.findById(uuid, function(err, tool) {
 
         if (err) {
             logger.log('Mongoose[Tool] err', ['tool', 'mongoose', '500']);
             return res.send(500);
         }
 
-        if(!tool) {
+        if (!tool) {
             logger.log('Tool not found', ['tool', '404']);
             return res.send(404, 'Tool not found');
         }
 
-        Repo.findOne({'uuid': tool.repo}, function(err, repo) {
+        Repo.findOne({
+            'uuid': tool.repo
+        }, function(err, repo) {
 
             if (err || !repo) {
                 return res.send(404, 'Repo not found');
             }
 
-            github.call({obj: 'repos', fun: 'one', arg: {id: repo.uuid}, token: repo.token}, function(err, grepo) {
+            github.call({
+                obj: 'repos',
+                fun: 'one',
+                arg: {
+                    id: repo.uuid
+                },
+                token: repo.token
+            }, function(err, grepo) {
 
                 var repoUser = grepo.owner.login;
                 var repoName = grepo.name;
 
-                github.call({obj: 'repos', fun: 'getCommit', arg: {user: repoUser, repo: repoName, sha: comm}, token: repo.token}, function(err, comm) {
+                github.call({
+                    obj: 'repos',
+                    fun: 'getCommit',
+                    arg: {
+                        user: repoUser,
+                        repo: repoName,
+                        sha: comm
+                    },
+                    token: repo.token
+                }, function(err, comm) {
 
-                    if(err) {
+                    if (err) {
                         return res.send(err.code, err.message.message);
                     }
 
                     var queue = [];
 
-                    if(vote.comments) {
+                    if (vote.comments) {
                         vote.comments.forEach(function(c) {
                             queue.push(function(done) {
-                                github.call({obj: 'repos', fun: 'createCommitComment', arg: {
-                                    user: repoUser,
-                                    repo: repoName,
-                                    sha: comm.sha,
-                                    commit_id: comm.sha,
-                                    body: c.body,
-                                    path: c.path,
-                                    line: c.line
-                                }, token: repo.token}, done);
+                                github.call({
+                                    obj: 'repos',
+                                    fun: 'createCommitComment',
+                                    arg: {
+                                        user: repoUser,
+                                        repo: repoName,
+                                        sha: comm.sha,
+                                        commit_id: comm.sha,
+                                        body: c.body,
+                                        path: c.path,
+                                        line: c.line
+                                    },
+                                    token: repo.token
+                                }, done);
                             });
                         });
                     }
 
-                    if(vote.star) {
+                    if (vote.star) {
 
                         queue.push(function(done) {
-                            Star.create({repo: repo.uuid, comm: comm.sha, user: 'tool', name: tool.name}, function(err, star) {
+                            Star.create({
+                                repo: repo.uuid,
+                                comm: comm.sha,
+                                user: 'tool',
+                                name: tool.name
+                            }, function(err, star) {
                                 done();
                             });
                         });
@@ -94,7 +120,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
                     async.parallel(queue, function() {
                         res.send(201);
                     });
-                
+
                 });
 
             });

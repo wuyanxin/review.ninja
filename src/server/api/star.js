@@ -5,7 +5,7 @@ var Star = require('mongoose').model('Star');
 
 module.exports = {
 
-/************************************************************************************************************
+    /************************************************************************************************************
 
 	@models
 
@@ -13,18 +13,21 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	all: function(req, done) {
+    all: function(req, done) {
 
-		Star.find({repo: req.args.repo, comm: req.args.comm}, function(err, star) {
-			
-			done(err, star);
+        Star.find({
+            repo: req.args.repo,
+            comm: req.args.comm
+        }, function(err, star) {
 
-		});
+            done(err, star);
 
-	},
+        });
+
+    },
 
 
-/************************************************************************************************************
+    /************************************************************************************************************
 
 	@models
 
@@ -32,17 +35,21 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	get: function(req, done) {
+    get: function(req, done) {
 
-		Star.with({repo: req.args.repo, comm: req.args.comm, user: req.user.id}, function(err, star) {
-			
-			done(err, star);
+        Star.with({
+            repo: req.args.repo,
+            comm: req.args.comm,
+            user: req.user.id
+        }, function(err, star) {
 
-		});
+            done(err, star);
 
-	},
+        });
 
-/************************************************************************************************************
+    },
+
+    /************************************************************************************************************
 
 	@models
 
@@ -50,18 +57,25 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	set: function(req, done) {
+    set: function(req, done) {
 
-		Repo.with({uuid: req.args.repo}, function(err, repo) {
+        Repo.with({
+            uuid: req.args.repo
+        }, function(err, repo) {
 
-			Star.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name: req.user.login}, function(err, star) {
+            Star.create({
+                repo: req.args.repo,
+                comm: req.args.comm,
+                user: req.user.id,
+                name: req.user.login
+            }, function(err, star) {
 
-				done(err, star);
+                done(err, star);
 
-			});
+            });
 
-		});
+        });
 
-	}
+    }
 
 };
