@@ -72,3 +72,17 @@ circle.git-commit {
 .mergeable-text {
   font-size: 10px;
 }
+
+.sidebar {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  right: 0;
+  z-index: 1000;
+  display: block;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  border-left: 1px solid #eee;
+}
