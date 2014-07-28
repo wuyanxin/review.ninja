@@ -4,7 +4,7 @@ var merge = require('merge');
 
 module.exports = {
 
-/************************************************************************************************************
+    /************************************************************************************************************
 
     @github
 
@@ -12,13 +12,15 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	call: function(req, done) {
-		github.call(merge(req.args, {token: req.user.token}), function(err, res, meta) {
-			done(err, {
-				data: res,
-				meta: meta
-			});
-		});
-	}
+    call: function(req, done) {
+        github.call(merge(req.args, {
+            token: req.user.token
+        }), function(err, res, meta) {
+            done(err, {
+                data: res,
+                meta: meta
+            });
+        });
+    }
 
 };

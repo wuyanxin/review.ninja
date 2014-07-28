@@ -5,21 +5,23 @@
 // path: /
 // *****************************************************
 
-module.controller('LoginCtrl', ['$scope', '$RPC', function($scope, $RPC) {
+module.controller('LoginCtrl', ['$scope', '$RPC',
+    function($scope, $RPC) {
 
-	//
-	// Actions
-	//
+        //
+        // Actions
+        //
 
-	$scope.subscribe = function() {
+        $scope.subscribe = function() {
 
-		$scope.call = $RPC.call('chimp', 'add', {
-			email: $scope.email
-		}, function(err, res) {
-			if(!err) {
-				$scope.email = null;
-			}
-		});
-	};
+            $scope.call = $RPC.call('chimp', 'add', {
+                email: $scope.email
+            }, function(err, res) {
+                if (!err) {
+                    $scope.email = null;
+                }
+            });
+        };
 
-}]);
+    }
+]);

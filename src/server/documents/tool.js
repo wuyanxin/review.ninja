@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose');
 var withHelper = require('./with');
 
@@ -14,5 +13,5 @@ ToolSchema.plugin(withHelper);
 var Tool = mongoose.model('Tool', ToolSchema);
 
 module.exports = {
-	Tool: Tool
+    Tool: Tool
 };

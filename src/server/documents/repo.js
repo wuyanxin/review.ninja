@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose');
 var withHelper = require('./with');
 
@@ -15,5 +14,5 @@ RepoSchema.plugin(withHelper);
 var Repo = mongoose.model('Repo', RepoSchema);
 
 module.exports = {
-	Repo: Repo
+    Repo: Repo
 };

@@ -8,15 +8,15 @@
 // {{ 3 | pluralize:'person':'people' }} -> 3 people
 // *****************************************************
 
-filters.filter('pluralize', function(){
-	return function(value, singular, plural) {
+filters.filter('pluralize', function() {
+    return function(value, singular, plural) {
 
-		var pluralized;
+        var pluralized;
 
-		if( value !== 1 ) {
-			pluralized = plural ? plural : singular + 's';
-		}
+        if (value !== 1) {
+            pluralized = plural ? plural : singular + 's';
+        }
 
-		return value + ' ' + (pluralized || singular);
-	};
+        return value + ' ' + (pluralized || singular);
+    };
 });
