@@ -6,7 +6,7 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', 'repo', 'pull', function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, repo, pull) {
+module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$modal', 'repo', 'pull', function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $modal, repo, pull) {
 
 	// get the repo
 	$scope.repo = repo;
@@ -140,8 +140,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 	$scope.issue = $HUB.call('issues', 'repoIssues', {
 		user: $stateParams.user,
 		repo: $stateParams.repo,
-		state: 'open',
-		labels: 'review.ninja'
+        labels: 'review.ninja,pull-request-' + $stateParams.number
 	}, function() {
 		$scope.issue.value.forEach(function(c) {
 			$HUB.call('issues', 'getComments', {
@@ -153,6 +152,22 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 			});
 		});
 	});
+
+    // open case
+    $scope.openCase = function() {
+        var openCaseModal = $modal.open({
+            templateUrl: '/templates/modals/case.html',
+            controller: 'OpenCaseCtrl'
+        });
+    };
+
+    $scope.setCurrentIssue = function(issue) {
+        if($scope.currentIssue === issue) {
+            $scope.currentIssue = null;
+            return;
+        }
+        $scope.currentIssue = issue;
+    };
 
 	// get ninja config file
 	$scope.ninja = $RPC.call('comm', 'get', {
@@ -244,4 +259,18 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		}
 	};
 
+}]);
+
+module.controller('OpenCaseCtrl', ['$scope', '$stateParams', '$modalInstance', '$HUB', function($scope, $stateParams, $modalInstance, $HUB) {
+	$scope.done = function() {
+        $HUB.call('issues', 'create', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            title: 'Test title',
+            body: 'Test body',
+            labels: ['review.ninja', 'pull-request-'+$stateParams.number]
+        }, function() {
+            $modalInstance.dismiss('cancel');
+        });
+	};
 }]);
