@@ -15,6 +15,11 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         // get the pull request
         $scope.pull = pull;
 
+        $scope.star = $RPC.call('star', 'all', {
+            repo: $scope.repo.value.id,
+            comm: $scope.pull.value.head.sha
+        });
+
         // for the diff view
         $scope.head = $scope.pull.value.head.sha;
         $scope.base = $scope.pull.value.base.sha;

@@ -20,6 +20,9 @@
           {{ pull.value.user.login }} <small moment="pull.value.created_at"></small>
           <!-- <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ pull.value.head.sha }}"> -->
         </span>
+        <span class="pull-right">
+          <i class="fa fa-star" ng-repeat="star in star.value"></i>
+        </span>
       </div>
     </div>
 
