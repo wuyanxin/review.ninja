@@ -174,6 +174,19 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         $scope.currentIssue = issue;
     };
 
+    $scope.commentOnIssue = function(issue) {
+        $HUB.call('issues', 'createComment', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            number: issue.number,
+            body: $scope.newCommentBody
+        }, function(err, data) {
+            var comment = data.value;
+            $scope.currentIssue.fetchedComments.value.push(comment);
+            $scope.newCommentBody = '';
+        });
+    };
+
 	// get ninja config file
 	$scope.ninja = $RPC.call('comm', 'get', {
 		uuid: $scope.repo.value.id,
@@ -264,18 +277,4 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		}
 	};
 
-}]);
-
-module.controller('OpenCaseCtrl', ['$scope', '$stateParams', '$modalInstance', '$HUB', function($scope, $stateParams, $modalInstance, $HUB) {
-	$scope.done = function() {
-        $HUB.call('issues', 'create', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            title: 'Test title',
-            body: 'Test body',
-            labels: ['review.ninja', 'pull-request-'+$stateParams.number]
-        }, function() {
-            $modalInstance.dismiss('cancel');
-        });
-	};
 }]);

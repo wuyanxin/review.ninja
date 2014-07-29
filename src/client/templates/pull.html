@@ -168,6 +168,12 @@
     <h1>{{currentIssue.title}} #{{currentIssue.number}}</h1>
     <div class="well">{{currentIssue.body}}</div>
     <div class="well" ng-repeat="comment in currentIssue.fetchedComments.value">{{comment.body}}</div>
+    <div class="form-group">
+      <textarea ng-model="newCommentBody" ng-init="newCommentBody=''" class="form-control" placeholder="Comment body..." />
+    </div>
+    <div class="form-group">
+      <button class="form-control btn btn-default" ng-click="commentOnIssue(currentIssue)">COMMENT</button>
+    </div>
   </div>
   <div class="col-md-2 sidebar">
     <button class="btn btn-primary btn-block" ng-click="castStar()"><i class="fa fa-star"></i> Star</button>
