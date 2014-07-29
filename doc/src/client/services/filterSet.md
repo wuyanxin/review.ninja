@@ -1,8 +1,25 @@
-define()
---------
+Global
+===
+
+
+
+define() 
+-----------------------------
 Appends a filter function
 
-filter()
---------
+
+filter() 
+-----------------------------
 Does the actual filtering
+
+
+
+---
+
+
+
+
+
+
+
 
