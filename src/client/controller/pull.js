@@ -160,8 +160,11 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             repo: $stateParams.repo,
             title: $scope.newIssue.title,
             body: $scope.newIssue.body,
-            pull_number: $stateParams.number
+            pull_request: $scope.pull.value,
+            file_references: null
         }, function(data, err) {
+            $scope.newIssue.title = '';
+            $scope.newIssue.body = '';
             $scope.showNewIssue = false;
         });
     };
