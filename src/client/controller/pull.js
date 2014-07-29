@@ -155,7 +155,15 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 
     // create issue
     $scope.createNewIssue = function() {
-        $scope.showNewIssue = false;
+        $RPC.call('issue', 'add', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            title: $scope.newIssue.title,
+            body: $scope.newIssue.body,
+            pull_number: $stateParams.number
+        }, function(data, err) {
+            $scope.showNewIssue = false;
+        });
     };
 
     $scope.setCurrentIssue = function(issue) {
