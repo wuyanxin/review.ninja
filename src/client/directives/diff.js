@@ -15,8 +15,22 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC',
             },
             link: function(scope, elem, attrs) {
 
+                scope.selected = {};
+
+                // 
+                // actions
+                //
+
+                scope.add = function(index) {
+                    scope.selected[index] = !scope.selected[index];
+                };
+
                 scope.$watch('content', function(newVal, oldVal) {
                     if (newVal) {
+
+                        //
+                        // FIX THIS
+                        //
 
                         var lines = scope.content.trim().replace(/\t/g, '    ').split('\n');
 
