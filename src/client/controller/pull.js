@@ -153,12 +153,9 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 		});
 	});
 
-    // open case
-    $scope.openCase = function() {
-        var openCaseModal = $modal.open({
-            templateUrl: '/templates/modals/case.html',
-            controller: 'OpenCaseCtrl'
-        });
+    // create issue
+    $scope.createNewIssue = function() {
+        $scope.showNewIssue = false;
     };
 
     $scope.setCurrentIssue = function(issue) {

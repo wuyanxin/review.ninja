@@ -87,7 +87,12 @@ circle.git-commit {
   border-left: 1px solid #eee;
 }
 
+.new-issue-sidebar,
 .issue-sidebar {
   background-color: #eee;
   border: 1px solid #f0f0f0;
+}
+
+.new-issue-sidebar {
+  padding-top: 20px;
 }
