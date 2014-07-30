@@ -31,7 +31,6 @@
     "grunt": "0.4.1",
     "grunt-cli": "0.1.9",
     "grunt-contrib-jshint": "0.6.3",
-    "grunt-jsdox": "0.1.5",
     "grunt-karma": "^0.8.3",
     "grunt-mocha-test": "^0.10.2",
     "grunt-http": "1.4.0",
