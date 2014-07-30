@@ -129,10 +129,18 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         // Actions
         //
 
-        $scope.openCase = function() {
-            var openCaseModal = $modal.open({
-                templateUrl: '/templates/modals/case.html',
-                controller: 'OpenCaseCtrl'
+        $scope.createNewIssue = function() {
+            $RPC.call('issue', 'add', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                title: $scope.newIssue.title,
+                body: $scope.newIssue.body,
+                pull_request: $scope.pull.value,
+                file_references: null
+            }, function(data, err) {
+                $scope.newIssue.title = '';
+                $scope.newIssue.body = '';
+                $scope.showNewIssue = false;
             });
         };
 
@@ -142,6 +150,19 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
                 return;
             }
             $scope.currentIssue = issue;
+        };
+
+        $scope.commentOnIssue = function(issue) {
+            $HUB.call('issues', 'createComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: issue.number,
+                body: $scope.newCommentBody
+            }, function(err, data) {
+                var comment = data.value;
+                $scope.currentIssue.fetchedComments.value.push(comment);
+                $scope.newCommentBody = '';
+            });
         };
 
         $scope.castStar = function() {
