@@ -1,4 +1,33 @@
 
+/*
+ * The diff table
+ * (when this is less wrap in table.diff)
+ */
+
+table.diff {
+  font-size: 11px;
+  margin-bottom:0;
+
+  /* disallow selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+table.diff>thead>tr>th,
+table.diff>tbody>tr>th,
+table.diff>tfoot>tr>th,
+table.diff>thead>tr>td,
+table.diff>tbody>tr>td,
+table.diff>tfoot>tr>td {
+  padding: 2px 8px;
+  border:none;
+  cursor: pointer;
+}
+
 .addition {
 	background-color: #dfd;
 }
@@ -15,11 +44,12 @@
 	background-color: #f7c8c8 !important;
 }
 
-tr.highlight:hover td.highlight {
+tr.highlight:hover td.highlight,
+tr.selected td.highlight {
 	background-color: #f8eec7 !important;
 }
 
-tr:hover td.comment {
+tr.selected td.comment {
 	display: block !important;
 }
 
