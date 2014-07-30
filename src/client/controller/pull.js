@@ -49,7 +49,13 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         });
 
         // get the files (for the diff)
-        $scope.files = $HUB.call('pullRequests', 'getFiles', {
+        // $scope.files = $HUB.call('pullRequests', 'getFiles', {
+        //     user: $stateParams.user,
+        //     repo: $stateParams.repo,
+        //     number: $stateParams.number
+        // });
+
+        $scope.files = $RPC.call('files', 'all', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.number

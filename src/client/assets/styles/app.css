@@ -4,10 +4,18 @@
  * (when this is less wrap in table.diff)
  */
 
- table.diff {
+table.diff {
   font-size: 11px;
   margin-bottom:0;
- }
+
+  /* disallow selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 table.diff>thead>tr>th,
 table.diff>tbody>tr>th,
@@ -16,6 +24,7 @@ table.diff>thead>tr>td,
 table.diff>tbody>tr>td,
 table.diff>tfoot>tr>td {
   padding: 2px 8px;
+  border:none;
   cursor: pointer;
 }
 
