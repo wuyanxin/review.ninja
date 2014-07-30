@@ -72,13 +72,17 @@ module.exports = {
 
     set: function(req, done) {
 
-        Tool.findById(req.args.id, function(err, tool) {
+		Tool.findById(req.args.id, function(err, tool) {
 
-            tool.name = req.args.name || tool.name;
+			if (err) {
+                return done({code: 404, text: 'Not found'});
+			}
+			
+			tool.name = req.args.name || tool.name;
 
-            tool.save(function(err, tool) {
-
-                done(err, tool);
+			tool.save(function(err, tool) {
+				
+				done(err, tool);
 
             });
 
