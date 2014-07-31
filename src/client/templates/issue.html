@@ -1,5 +1,5 @@
 <div class="row">
-  <div ng-class="{'col-md-7': (currentIssue !== null) || showNewIssue, 'col-md-10': currentIssue === null}">
+  <div class="col-md-10">
 
     <p class="lead">{{ repo.value.full_name }}</p>
 
@@ -86,21 +86,7 @@
 
         <tab heading="Diff">
 
-          <form class="form-inline" role="form" style="margin-top:20px;">
-            <div class="form-group">
-              <label>Compare to:</label>
-              <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  {{ base | limitTo:10 }}&hellip; <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li ng-repeat="commit in baseCommits.value">
-                  <a ng-click="compComm(commit.sha)" href="">{{ commit.sha | limitTo:15 }}&hellip;</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </form>
+          <a href="">Compare to base branch</a> &bull; <a href="">Compare to issue commit</a>
 
           <div ng-repeat="file in files.value" class="panel panel-default" style="margin:20px 0 0 20px;">
             <div class="panel-heading">
@@ -156,35 +142,15 @@
 
     </div>
   </div>
-  <div class="col-md-3 new-issue-sidebar" ng-show="showNewIssue" ng-init="showNewIssue=false">
-    <div class="form-group">
-      <input ng-model="newIssue.title" ng-init="newIssue.title=''" class="form-control" placeholder="Issue title" />
-    </div>
-    <div class="form-group">
-      <textarea ng-model="newIssue.body" ng-init="newIssue.body=''" class="form-control" placeholder="Issue body..." />
-    </div>
-    <div class="form-group">
-      <button class="form-control btn btn-default" ng-click="createNewIssue()">CREATE</button>
-    </div>
-  </div>
-  <div class="col-md-3 issue-sidebar" ng-show="currentIssue !== null" ng-init="currentIssue=null">
-    <h1>{{currentIssue.title}} #{{currentIssue.number}}</h1>
-    <div class="well">{{currentIssue.body}}</div>
-    <div class="well" ng-repeat="comment in currentIssue.fetchedComments.value">{{comment.body}}</div>
+  <div class="col-md-2 sidebar">
+    <h1>{{ issue.value.title }} #{{ issue.value.number }}</h1>
+    <div class="well">{{ issue.value.body }}</div>
+    <div class="well" ng-repeat="comment in comments.value">{{ comment.body }}</div>
     <div class="form-group">
       <textarea ng-model="newCommentBody" ng-init="newCommentBody=''" class="form-control" placeholder="Comment body..." />
     </div>
     <div class="form-group">
-      <button class="form-control btn btn-default" ng-click="commentOnIssue(currentIssue)">COMMENT</button>
+      <button class="form-control btn btn-default" ng-click="comment()">COMMENT</button>
     </div>
-  </div>
-  <div class="col-md-2 sidebar">
-    <button class="btn btn-primary btn-block" ng-click="castStar()"><i class="fa fa-star"></i> Star</button>
-    <button class="btn btn-danger btn-block" ng-click="showNewIssue=!showNewIssue">Create Issue</button>
-    <ul class="nav nav-sidebar">
-      <li class="active" ng-repeat="issue in issue.value">
-        <a ui-sref="issue({ user:repo.value.owner.login, repo:repo.value.name, number:pull.value.number, issue:issue.number })">{{ issue.title }}</a>
-      </li>
-    </ul>
   </div>
 </div>
