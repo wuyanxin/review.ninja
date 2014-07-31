@@ -86,7 +86,9 @@
 
         <tab heading="Diff">
 
-          <a href="">Compare to base branch</a> &bull; <a href="">Compare to issue commit</a>
+          <a href="" ng-click="compComm(pull.value.base.sha, pull.value.head.sha)">Compare to head of {{ pull.value.base.ref }}</a> 
+          &bull; 
+          <a href="" ng-click="compComm(issue.value.sha, pull.value.head.sha)">Compare to {{ issue.value.sha | limitTo:7 }} (where issue was created)</a>
 
           <div ng-repeat="file in files.value" class="panel panel-default" style="margin:20px 0 0 20px;">
             <div class="panel-heading">

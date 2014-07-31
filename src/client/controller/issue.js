@@ -16,7 +16,9 @@ module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Comm
         $scope.pull = pull;
 
         // get the issue
-        $scope.issue = issue;
+        $scope.issue = Issue(issue);
+
+        console.log($scope.issue);
         
         $scope.comments = $HUB.call('issues', 'getComments', {
             user: $stateParams.user,
@@ -104,17 +106,14 @@ module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Comm
             });
         };
 
-        $scope.compComm = function(base) {
-            $HUB.call('repos', 'compareCommits', {
+        $scope.compComm = function(base, head) {
+            $RPC.call('files', 'compare', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                // head sha
-                head: $scope.head,
-                // base sha
-                base: base
+                base: base,
+                head: head
             }, function(err, res) {
-                if (!err) {
-                    $scope.base = base;
+                if(!err) {
                     $scope.files.value = res.value.files;
                 }
             });
