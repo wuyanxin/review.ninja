@@ -41,7 +41,6 @@
     "grunt-karma": "^0.8.3",
     "grunt-mocha-istanbul": "^1.5.0",
     "grunt-mocha-test": "^0.10.2",
-    "js-beautify": "^1.5.1",
     "jshint.ninja": "git+https://git@github.com/dtornow/jshint.ninja.git",
     "karma": "^0.12.16",
     "karma-mocha": "^0.1.3",
