@@ -61,6 +61,39 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                         }
                     ]
                 }
+            })
+            .state('issue', {
+                url: '/:user/:repo/pull/:number/:issue',
+                templateUrl: '/templates/issue.html',
+                controller: 'IssueCtrl',
+                resolve: {
+                    repo: ['$stateParams', '$HUBService',
+                        function($stateParams, $HUBService) {
+                            return $HUBService.call('repos', 'get', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo
+                            });
+                        }
+                    ],
+                    pull: ['$stateParams', '$HUBService',
+                        function($stateParams, $HUBService) {
+                            return $HUBService.call('pullRequests', 'get', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                number: $stateParams.number
+                            });
+                        }
+                    ],
+                    issue: ['$stateParams', '$HUBService',
+                        function($stateParams, $HUBService) {
+                            return $HUBService.call('issues', 'getRepoIssue', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                number: $stateParams.issue
+                            });
+                        }
+                    ]
+                }
             });
 
         $urlRouterProvider.otherwise('/');

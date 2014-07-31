@@ -6,8 +6,8 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$modal', 'repo', 'pull',
-    function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $modal, repo, pull) {
+module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$modal', 'repo', 'pull', 'issue',
+    function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $modal, repo, pull, issue) {
 
         // get the repo
         $scope.repo = repo;
@@ -15,14 +15,25 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         // get the pull request
         $scope.pull = pull;
 
+        // get the issue
+        $scope.issue = Issue(issue);
+
+        console.log($scope.issue);
+        
+        $scope.comments = $HUB.call('issues', 'getComments', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            number: $stateParams.issue
+        });
+
         $scope.star = $RPC.call('star', 'all', {
             repo: $scope.repo.value.id,
             comm: $scope.pull.value.head.sha
         });
 
         // for the diff view
-        $scope.head = $scope.pull.value.head.sha;
-        $scope.base = $scope.pull.value.base.sha;
+        // $scope.head = $scope.pull.value.head.sha;
+        // $scope.base = $scope.pull.value.base.sha;
 
         // get the commit
         $scope.comm = $HUB.call('repos', 'getCommit', {
@@ -53,13 +64,6 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             sha: $scope.pull.value.head.sha,
         });
 
-        // get the files (for the diff)
-        // $scope.files = $HUB.call('pullRequests', 'getFiles', {
-        //     user: $stateParams.user,
-        //     repo: $stateParams.repo,
-        //     number: $stateParams.number
-        // });
-
         $scope.files = $RPC.call('files', 'all', {
             user: $stateParams.user,
             repo: $stateParams.repo,
@@ -73,63 +77,9 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             sha: $scope.pull.value.head.sha
         });
 
-        // get issues
-        $scope.issue = $HUB.call('issues', 'repoIssues', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            labels: 'review.ninja,pull-request-' + $stateParams.number
-        }, function() {
-            $scope.issue.value.forEach(function(c) {
-                $HUB.call('issues', 'getComments', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    number: c.number
-                }, function(err, com) {
-                    c.fetchedComments = com;
-                });
-            });
-        });
-
         //
         // Actions
         //
-
-        $scope.createNewIssue = function() {
-            $RPC.call('issue', 'add', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                title: $scope.newIssue.title,
-                body: $scope.newIssue.body,
-                number: $stateParams.number,
-                sha: $scope.pull.value.head.sha,
-                file_references: null
-            }, function(data, err) {
-                $scope.newIssue.title = '';
-                $scope.newIssue.body = '';
-                $scope.showNewIssue = false;
-            });
-        };
-
-        $scope.setCurrentIssue = function(issue) {
-            if ($scope.currentIssue === issue) {
-                $scope.currentIssue = null;
-                return;
-            }
-            $scope.currentIssue = issue;
-        };
-
-        $scope.commentOnIssue = function(issue) {
-            $RPC.call('issues', 'add', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: issue.number,
-                body: $scope.newCommentBody
-            }, function(err, data) {
-                var comment = data.value;
-                $scope.currentIssue.fetchedComments.value.push(comment);
-                $scope.newCommentBody = '';
-            });
-        };
 
         $scope.castStar = function() {
             $scope.vote = $RPC.call('star', 'set', {
@@ -156,5 +106,30 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             });
         };
 
+        $scope.compComm = function(base, head) {
+            $RPC.call('files', 'compare', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                base: base,
+                head: head
+            }, function(err, res) {
+                if(!err) {
+                    $scope.files.value = res.value.files;
+                }
+            });
+        };
+
+        $scope.comment = function() {
+            $HUB.call('issues', 'createComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.issue,
+                body: $scope.newCommentBody
+            }, function(err, data) {
+                var comment = data.value;
+                $scope.comments.value.push(comment);
+                $scope.newCommentBody = '';
+            });
+        };
     }
 ]);
