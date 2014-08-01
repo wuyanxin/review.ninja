@@ -11,9 +11,11 @@ function Issue(issue) {
 
     var match = sha.exec(issue.value.body);
 
-    issue.value.sha = match[1] || null;
-
-    issue.value.body = issue.value.body.replace(match[0], '') || null;
+    issue.value.sha = null;
+    if(match) {
+        issue.value.sha = match[1];
+        issue.value.body = issue.value.body.replace(match[0], '');
+    }
 
     return issue;
 }

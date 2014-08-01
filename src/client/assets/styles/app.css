@@ -117,6 +117,19 @@ circle.git-commit {
   border-left: 1px solid #eee;
 }
 
+.sidebar-left {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  z-index: 1000;
+  display: block;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  border-left: 1px solid #eee;
+}
+
 .new-issue-sidebar,
 .issue-sidebar {
   background-color: #eee;
@@ -125,4 +138,8 @@ circle.git-commit {
 
 .new-issue-sidebar {
   padding-top: 20px;
+}
+
+.lead {
+  margin-top: 0px;
 }
