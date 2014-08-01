@@ -28,7 +28,7 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC',
                     }
                     var ranges = [];
                     for(var selection in scope.selected) {
-                        selection = parseInt(selection);
+                        selection = parseInt(selection, 10);
                         if(ranges[ranges.length-1] && ranges[ranges.length-1].end+1 == selection) {
                             ranges[ranges.length-1].end = selection;
                             continue;
