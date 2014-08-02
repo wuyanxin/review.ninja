@@ -9,12 +9,19 @@
 module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$modal', 'repo', 'pull', 'issue',
     function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $modal, repo, pull, issue) {
 
-        console.log(repo);
         // get the repo
         $scope.repo = repo;
 
         // get the pull request
         $scope.pull = pull;
+
+        $HUB.call('gitdata', 'getReference', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            ref: 'heads/'+pull.value.base.ref
+        }, function(err, data) {
+            $scope.pull.value.base.head_sha = data.value.object.sha;
+        });
 
         // get the issue
         $scope.issue = Issue(issue);

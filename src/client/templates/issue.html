@@ -15,7 +15,9 @@
   </div>
   <div class="col-md-9 col-md-offset-3">
     <div ng-show="issue.value.sha">
-      <a href="" ng-click="compComm(pull.value.base.sha, pull.value.head.sha)">Compare to head of {{ pull.value.base.ref }}</a> 
+      <a href="" ng-click="compComm(pull.value.base.head_sha, pull.value.head.sha)">Compare to head of {{ pull.value.base.ref }}</a> 
+      &bull; 
+      <a href="" ng-click="compComm(pull.value.base.sha, pull.value.head.sha)">Compare to base on {{ pull.value.base.ref}}</a> 
       &bull; 
       <a href="" ng-click="compComm(issue.value.sha, pull.value.head.sha)">Compare to {{ issue.value.sha | limitTo:7 }} (where issue was created)</a>
     </div>
