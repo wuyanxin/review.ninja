@@ -23,6 +23,18 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC',
 
                 scope.add = function(index) {
                     scope.selected[index] = !scope.selected[index];
+                    if(!scope.selected[index]) {
+                        delete scope.selected[index];
+                    }
+                    var ranges = [];
+                    for(var selection in scope.selected) {
+                        selection = parseInt(selection, 10);
+                        if(ranges[ranges.length-1] && ranges[ranges.length-1].end+1 == selection) {
+                            ranges[ranges.length-1].end = selection;
+                            continue;
+                        }
+                        ranges.push({start: selection, end: selection});
+                    }
                 };
 
                 console.log( scope.lines );
