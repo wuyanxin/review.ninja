@@ -107,6 +107,10 @@ circle.git-commit:hover {
   color: #5cb85c;
 }
 
+.issues {
+  color: #E8AE0C;
+}
+
 .mergeable {
   padding-left: 30px;
 }

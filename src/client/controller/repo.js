@@ -149,6 +149,27 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                         }
                     });
                 });
+
+                $scope.pulls.forEach(function(pull) {
+                    $HUB.call('issues', 'repoIssues', {
+                        user: $stateParams.user,
+                        repo: $stateParams.repo,
+                        labels: 'review.ninja,pull-request-'+pull.number,
+                        state: 'all'
+                    }, function(err, issues) {
+                        console.log(pull.user.login+': '+pull.title);
+                        console.log(issues.value);
+                        if(issues.value.length > 0) {
+                            pull.hasIssues = true;
+                            pull.allIssuesResolved = true;
+                            issues.value.forEach(function(issue) {
+                               if(issue.state == 'open') {
+                                   pull.allIssuesResolved = false;
+                               } 
+                            });
+                        }
+                    });
+                });
             });
         });
 
