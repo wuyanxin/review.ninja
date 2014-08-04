@@ -77,6 +77,10 @@ svg.merge {
   font-size: 14px;
 }
 
+svg.branch {
+  font-size: 22px;
+}
+
 path.git-base,
 path.git-head,
 polygon.git-graph-arrow {
@@ -89,6 +93,14 @@ path.git-head {
 
 circle.git-commit {
   fill: black;
+}
+
+circle.git-commit.active {
+  fill: red;
+}
+
+circle.git-commit:hover {
+  filter: url(#dropshadow);
 }
 
 .done {

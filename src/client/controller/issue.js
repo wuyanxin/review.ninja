@@ -43,6 +43,8 @@ module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Comm
         //
 
         $scope.compComm = function(base, head) {
+            $scope.currentCommit = base;
+
             $RPC.call('files', 'compare', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
