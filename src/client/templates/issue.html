@@ -15,11 +15,36 @@
   </div>
   <div class="col-md-9 col-md-offset-3">
     <div ng-show="issue.value.sha">
+      <!--
       <a href="" ng-click="compComm(pull.value.base.head_sha, pull.value.head.sha)">Compare to head of {{ pull.value.base.ref }}</a> 
       &bull; 
       <a href="" ng-click="compComm(pull.value.base.sha, pull.value.head.sha)">Compare to base on {{ pull.value.base.ref}}</a> 
       &bull; 
       <a href="" ng-click="compComm(issue.value.sha, pull.value.head.sha)">Compare to {{ issue.value.sha | limitTo:7 }} (where issue was created)</a>
+      -->
+
+      <div class="pull-request-graph">
+        <svg version="1.1" class="branch" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           viewBox="0 0 608 150" enable-background="new 0 0 608 150" xml:space="preserve" width="450px">
+          <path class="git-base" stroke-width="11" stroke-miterlimit="10" d="M 341.1 16.1 L 532.6 16.1"/>
+          <polygon class="git-graph-arrow" points="524,4.9 550,16 524,27.4 "/>
+          <path class="git-head" stroke-width="11" stroke-miterlimit="10" d="M526.4,78.3c-112.1,0-133.6,1.3-152.8-12.4
+            C349.1,48.4,354,22.3,334,15.1"/>
+          <filter id="dropshadow" height="130%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/> <!-- stdDeviation is how much to blur -->
+            <feMerge> 
+              <feMergeNode/> <!-- this contains the offset blurred image -->
+              <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
+            </feMerge>
+          </filter>
+          <circle class="git-commit active" cx="535.6" cy="78.4" r="13.7"/>
+          <circle class="git-commit" ng-class="{active: currentCommit == pull.value.base.sha}" ng-click="compComm(pull.value.base.sha, pull.value.head.sha)" cx="342.3" cy="16" r="13.7"/>
+          <circle class="git-commit" ng-class="{active: currentCommit == issue.value.sha}" ng-click="compComm(issue.value.sha, pull.value.head.sha)" cx="436.9" cy="78.4" r="13.7"/>
+          <text class="git-base" transform="matrix(1 0 0 1 300 21)" text-anchor="end">{{ pull.value.base.ref }}</text>
+          <text class="git-head" transform="matrix(1 0 0 1 370 120)" text-anchor="center">issue created</text>
+        </svg>
+      </div>
+
     </div>
 
     <div ng-repeat="file in files.value" class="panel panel-default" style="margin:20px 0 0 20px;">
