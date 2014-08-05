@@ -15,10 +15,7 @@ module.exports = {
 
     all: function(req, done) {
 
-        Star.find({
-            repo: req.args.repo,
-            comm: req.args.comm
-        }, function(err, star) {
+		Star.find({repo: req.args.repo, comm: req.args.comm}, function(err, star) {
 
             done(err, star);
 
@@ -59,16 +56,13 @@ module.exports = {
 
     set: function(req, done) {
 
-        Repo.with({
-            uuid: req.args.repo
-        }, function(err, repo) {
+        Repo.with({uuid: req.args.repo}, function(err, repo) {
 
-            Star.create({
-                repo: req.args.repo,
-                comm: req.args.comm,
-                user: req.user.id,
-                name: req.user.login
-            }, function(err, star) {
+			if(err){
+                return done(err,repo);
+			}
+
+			Star.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name: req.user.login}, function(err, star) {
 
                 done(err, star);
 
