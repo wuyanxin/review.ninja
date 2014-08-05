@@ -1,4 +1,33 @@
 
+/*
+ * The diff table
+ * (when this is less wrap in table.diff)
+ */
+
+table.diff {
+  font-size: 11px;
+  margin-bottom:0;
+
+  /* disallow selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+table.diff>thead>tr>th,
+table.diff>tbody>tr>th,
+table.diff>tfoot>tr>th,
+table.diff>thead>tr>td,
+table.diff>tbody>tr>td,
+table.diff>tfoot>tr>td {
+  padding: 2px 8px;
+  border:none;
+  cursor: pointer;
+}
+
 .addition {
 	background-color: #dfd;
 }
@@ -15,11 +44,12 @@
 	background-color: #f7c8c8 !important;
 }
 
-tr.highlight:hover td.highlight {
+tr.highlight:hover td.highlight,
+tr.selected td.highlight {
 	background-color: #f8eec7 !important;
 }
 
-tr:hover td.comment {
+tr.selected td.comment {
 	display: block !important;
 }
 
@@ -47,6 +77,10 @@ svg.merge {
   font-size: 14px;
 }
 
+svg.branch {
+  font-size: 22px;
+}
+
 path.git-base,
 path.git-head,
 polygon.git-graph-arrow {
@@ -61,8 +95,20 @@ circle.git-commit {
   fill: black;
 }
 
+circle.git-commit.active {
+  fill: red;
+}
+
+circle.git-commit:hover {
+  filter: url(#dropshadow);
+}
+
 .done {
   color: #5cb85c;
+}
+
+.issues {
+  color: #E8AE0C;
 }
 
 .mergeable {
@@ -87,7 +133,29 @@ circle.git-commit {
   border-left: 1px solid #eee;
 }
 
+.sidebar-left {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  z-index: 1000;
+  display: block;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  border-left: 1px solid #eee;
+}
+
+.new-issue-sidebar,
 .issue-sidebar {
   background-color: #eee;
   border: 1px solid #f0f0f0;
+}
+
+.new-issue-sidebar {
+  padding-top: 20px;
+}
+
+.lead {
+  margin-top: 0px;
 }

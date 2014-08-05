@@ -10,9 +10,9 @@ module.exports = function() {
         to.forEach(function(user){
            var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
             
-            template = fs.readFileSync(tmpl,'utf-8');
+            var template = fs.readFileSync(tmpl,'utf-8');
             
-            mailOptions = {
+            var mailOptions = {
                 from: 'RobotNinja ✔ <noreply@review.ninja>',
                 to:user.email,
                 subject:subj,
@@ -38,7 +38,7 @@ module.exports = function() {
     return {
         pull_request_opened: function(slug, number, sender, collaborators, review_url) {
             // start a review: send messages to appropriate users
-            args={
+            var args={
                 slug:slug,
                 number:number,
                 sender:sender,
@@ -48,7 +48,7 @@ module.exports = function() {
         },
         pull_request_synchronized: function(slug, number, sender, collaborators, review_url) {
             // a pull request you have been reviewing has a new commit
-            args={
+            var args={
                 slug:slug,
                 number:number,
                 sender:sender,

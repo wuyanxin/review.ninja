@@ -54,10 +54,18 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         });
 
         // get the files (for the diff)
-        $scope.files = $HUB.call('pullRequests', 'getFiles', {
+        // $scope.files = $HUB.call('pullRequests', 'getFiles', {
+        //     user: $stateParams.user,
+        //     repo: $stateParams.repo,
+        //     number: $stateParams.number
+        // });
+
+        $scope.files = $RPC.call('files', 'all', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.number
+        }, function(err, files) {
+            
         });
 
         // get the tree (for the file browser)
@@ -65,47 +73,6 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             user: $stateParams.user,
             repo: $stateParams.repo,
             sha: $scope.pull.value.head.sha
-        });
-
-        // get comments
-        $scope.comments = {
-            diff: {},
-            file: {}
-        };
-
-        $scope.commitComments = $HUB.call('repos', 'getCommitComments', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            sha: $scope.pull.value.head.sha
-        }, function(err, comments) {
-            comments.value.forEach(function(comment) {
-
-                // In the future we will have to do one of the following:
-                //
-                // 1) map all line comments to line numbers (preferred)
-                // 2) map all line comments to patch positions
-                //    - not preferred but may be necessary due to line #s being deprecated
-
-                if (comment.position) {
-                    if (!$scope.comments.diff[comment.path]) {
-                        $scope.comments.diff[comment.path] = {};
-                    }
-                    if (!$scope.comments.diff[comment.path][comment.position]) {
-                        $scope.comments.diff[comment.path][comment.position] = [];
-                    }
-                    $scope.comments.diff[comment.path][comment.position].push(comment);
-                }
-
-                if (comment.line) {
-                    if (!$scope.comments.file[comment.path]) {
-                        $scope.comments.file[comment.path] = {};
-                    }
-                    if (!$scope.comments.file[comment.path][comment.line]) {
-                        $scope.comments.file[comment.path][comment.line] = [];
-                    }
-                    $scope.comments.file[comment.path][comment.line].push(comment);
-                }
-            });
         });
 
         // get issues
@@ -129,10 +96,19 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         // Actions
         //
 
-        $scope.openCase = function() {
-            var openCaseModal = $modal.open({
-                templateUrl: '/templates/modals/case.html',
-                controller: 'OpenCaseCtrl'
+        $scope.createNewIssue = function() {
+            $RPC.call('issue', 'add', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                title: $scope.newIssue.title,
+                body: $scope.newIssue.body,
+                number: $stateParams.number,
+                sha: $scope.pull.value.head.sha,
+                file_references: null
+            }, function(data, err) {
+                $scope.newIssue.title = '';
+                $scope.newIssue.body = '';
+                $scope.showNewIssue = false;
             });
         };
 
@@ -142,6 +118,19 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
                 return;
             }
             $scope.currentIssue = issue;
+        };
+
+        $scope.commentOnIssue = function(issue) {
+            $RPC.call('issues', 'add', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: issue.number,
+                body: $scope.newCommentBody
+            }, function(err, data) {
+                var comment = data.value;
+                $scope.currentIssue.fetchedComments.value.push(comment);
+                $scope.newCommentBody = '';
+            });
         };
 
         $scope.castStar = function() {
@@ -169,72 +158,5 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             });
         };
 
-        $scope.compComm = function(base) {
-            $HUB.call('repos', 'compareCommits', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                // head sha
-                head: $scope.head,
-                // base sha
-                base: base
-            }, function(err, res) {
-                if (!err) {
-                    $scope.base = base;
-                    $scope.files.value = res.value.files;
-                }
-            });
-        };
-
-        $scope.comment = function(body, issue, path, position, line) {
-
-            if (body) {
-                $CommitCommentService.comment($stateParams.user, $stateParams.repo, $scope.pull.value.head.sha, body, path, position, line)
-                    .then(function(comment) {
-
-                        $scope.commitComments.value.push(comment);
-
-                        if (comment.position) {
-                            if (!$scope.comments.diff[comment.path]) {
-                                $scope.comments.diff[comment.path] = {};
-                            }
-                            if (!$scope.comments.diff[comment.path][comment.position]) {
-                                $scope.comments.diff[comment.path][comment.position] = [];
-                            }
-                            $scope.comments.diff[comment.path][comment.position].push(comment);
-                        }
-
-                        if (comment.line) {
-                            if (!$scope.comments.file[comment.path]) {
-                                $scope.comments.file[comment.path] = {};
-                            }
-                            if (!$scope.comments.file[comment.path][comment.line]) {
-                                $scope.comments.file[comment.path][comment.line] = [];
-                            }
-                            $scope.comments.file[comment.path][comment.line].push(comment);
-                        }
-                    });
-
-                if (issue) {
-                    $CommitCommentService.issue($stateParams.user, $stateParams.repo, $scope.pull.value.head.sha, body, path, line);
-                }
-            }
-        };
-
-    }
-]);
-
-module.controller('OpenCaseCtrl', ['$scope', '$stateParams', '$modalInstance', '$HUB',
-    function($scope, $stateParams, $modalInstance, $HUB) {
-        $scope.done = function() {
-            $HUB.call('issues', 'create', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                title: 'Test title',
-                body: 'Test body',
-                labels: ['review.ninja', 'pull-request-' + $stateParams.number]
-            }, function() {
-                $modalInstance.dismiss('cancel');
-            });
-        };
     }
 ]);

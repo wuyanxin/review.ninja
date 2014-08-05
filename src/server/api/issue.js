@@ -3,7 +3,7 @@ var github = require('../services/github');
 
 module.exports = {
 
-    /************************************************************************************************************
+/************************************************************************************************************
 
     @github
 
@@ -11,41 +11,27 @@ module.exports = {
 
 ************************************************************************************************************/
 
-    add: function(req, done) {
+	add: function(req, done) {
+            
+        var body = '--- Pull Request #' + req.args.number + ' on commit ' + req.args.sha  + ' ---';
 
-        var body = req.args.body;
-
-        if (req.args.comm) {
-
-            body += '\n\n';
-
-            body += '| Commit |' + req.args.comm + ' |\n';
-            body += '| ------ | -------------------- |\n';
-
-            if (req.args.path) {
-                body += '| File | ' + req.args.path + ' |\n';
-            }
-
-            if (req.args.line) {
-                body += '| Line | ' + req.args.line + ' |\n';
-            }
-
+        if(req.args.file_references) {
+            req.args.file_references.forEach(function(file_reference) {
+                body += '\n\n';
+                body += '--- File: ' + file_reference.file_name + ' (' + file_reference.start + ' - ' + file_reference.end + ' ) ---';
+            });
         }
 
-        github.call({
-            obj: 'issues',
-            fun: 'create',
-            arg: {
-                user: req.args.user,
-                repo: req.args.repo,
-                body: body,
-                title: req.args.title,
-                labels: ['review.ninja']
-            },
-            token: req.user.token
-        }, function(err, obj) {
-            done(null, null);
-        });
+        body = body + '\n\n' + req.args.body;
 
-    }
+		github.call({obj: 'issues', fun: 'create', arg: {
+			user: req.args.user,
+			repo: req.args.repo,
+			body: body,
+			title: req.args.title,
+			labels: ['review.ninja', 'pull-request-' + req.args.number]
+		}, token: req.user.token}, function(err, obj) {
+			done(null, obj);
+		});
+	}
 };
