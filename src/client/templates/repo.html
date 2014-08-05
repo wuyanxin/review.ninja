@@ -48,8 +48,8 @@
           <tr ng-repeat="pull in pullsFiltered">
             <td>
               <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x" ng-class="{'done': pull.state == 'closed'}"></i>
-                <i class="fa fa-stack-1x fa-inverse" ng-class="{'fa-code-fork': pull.state == 'open', 'fa-check': pull.state == 'closed'}"></i>
+                <i class="fa fa-circle fa-stack-2x" ng-class="{'done': pull.allIssuesResolved && pull.hasIssues, 'issues': !pull.allIssuesResolved && pull.hasIssues}"></i>
+                <i class="fa fa-stack-1x fa-inverse fa-code-fork"></i>
               </span>
             </td>
             <td><a ui-sref="pull({ user:repo.value.owner.login, repo:repo.value.name, number:pull.number })">{{ pull.title }}</a><br /><img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small></td>
