@@ -6,8 +6,8 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$modal', 'repo', 'pull', 'issue',
-    function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $modal, repo, pull, issue) {
+module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$state', 'repo', 'pull', 'issue',
+    function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $state, repo, pull, issue) {
 
         // get the repo
         $scope.repo = repo;
@@ -67,6 +67,21 @@ module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Comm
                 var comment = data.value;
                 $scope.comments.value.push(comment);
                 $scope.newCommentBody = '';
+            });
+        };
+
+        $scope.close = function() {
+            $HUB.call('issues', 'edit', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.issue,
+                state: 'closed'
+            }, function(err, data) {
+                $state.go('pull', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number 
+                });
             });
         };
     }
