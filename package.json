@@ -29,7 +29,8 @@
     "request": "^2.37.0",
     "rollbar": "^0.3.8",
     "universal-analytics": "0.3.4",
-    "valid-url": "^1.0.9"
+    "valid-url": "^1.0.9",
+    "ejs":"1.0.0"
   },
   "devDependencies": {
     "bower": "^1.3.3",
@@ -38,11 +39,9 @@
     "grunt-contrib-jshint": "0.6.3",
     "grunt-coveralls": "^0.3.0",
     "grunt-http": "1.4.0",
-    "grunt-jsdox": "0.1.5",
     "grunt-karma": "^0.8.3",
     "grunt-mocha-istanbul": "^1.5.0",
     "grunt-mocha-test": "^0.10.2",
-    "js-beautify": "^1.5.1",
     "jshint.ninja": "git+https://git@github.com/dtornow/jshint.ninja.git",
     "karma": "^0.12.16",
     "karma-mocha": "^0.1.3",

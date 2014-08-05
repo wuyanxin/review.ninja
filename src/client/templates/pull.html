@@ -1,5 +1,5 @@
 <div class="row">
-  <div ng-class="{'col-md-7': (currentIssue !== null) || showNewIssue, 'col-md-10': currentIssue === null}">
+  <div class="col-md-10">
 
     <p class="lead">{{ repo.value.full_name }}</p>
 
@@ -40,20 +40,15 @@
               <span ng-show="status.value==='pending'"><i class="fa fa-lg fa-times-circle text-danger"></i> Pull request is currently pending</span>
             </h3>
           </div>
-          <div class="panel-body" ng-show="pull.value.mergeable && status.value==='approved'">
+          <div class="panel-body">
             <button class="btn btn-primary pull-right" ng-click="merge()">
               Merge pull request
             </button>
-            <strong>This pull request can be automatically merged.</strong><br />
-            <small>You can also merge branches on the <abbr title="...">command line</abbr>.</small>
-          </div>
-          <div class="panel-body" ng-show="pull.value.mergeable && status.value!=='approved'">
-            <strong>You will be able to merge this pull request once it has been approved.</strong><br />
-            <small>We strongly suggest only merging pull requests that have passed review.</small>
-          </div>
-          <div class="panel-body" ng-show="!pull.value.mergeable">
-            <strong>This pull request cannot be automatically merged.</strong><br />
-            <small>We strongly suggest only merging pull requests that have passed review.</small>
+            <div>
+              <strong ng-show="pull.value.mergeable && status.value!=='approved'">This pull request can be automatically merged.</strong>
+              <strong ng-show="!pull.value.mergeable">This pull request cannot be automatically merged.</strong><br />
+              <small>We strongly suggest only merging pull requests that have passed review.</small>
+            </div>
           </div>
         </div>
 
@@ -182,7 +177,9 @@
     <button class="btn btn-primary btn-block" ng-click="castStar()"><i class="fa fa-star"></i> Star</button>
     <button class="btn btn-danger btn-block" ng-click="showNewIssue=!showNewIssue">Create Issue</button>
     <ul class="nav nav-sidebar">
-      <li class="active" ng-repeat="issue in issue.value"><a ng-click="setCurrentIssue(issue)" href="#">{{ issue.title }}</a></li>
+      <li class="active" ng-repeat="issue in issue.value">
+        <a ui-sref="issue({ user:repo.value.owner.login, repo:repo.value.name, number:pull.value.number, issue:issue.number })">{{ issue.title }}</a>
+      </li>
     </ul>
   </div>
 </div>

@@ -77,6 +77,10 @@ svg.merge {
   font-size: 14px;
 }
 
+svg.branch {
+  font-size: 22px;
+}
+
 path.git-base,
 path.git-head,
 polygon.git-graph-arrow {
@@ -91,8 +95,20 @@ circle.git-commit {
   fill: black;
 }
 
+circle.git-commit.active {
+  fill: red;
+}
+
+circle.git-commit:hover {
+  filter: url(#dropshadow);
+}
+
 .done {
   color: #5cb85c;
+}
+
+.issues {
+  color: #E8AE0C;
 }
 
 .mergeable {
@@ -117,6 +133,19 @@ circle.git-commit {
   border-left: 1px solid #eee;
 }
 
+.sidebar-left {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  z-index: 1000;
+  display: block;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  border-left: 1px solid #eee;
+}
+
 .new-issue-sidebar,
 .issue-sidebar {
   background-color: #eee;
@@ -125,4 +154,8 @@ circle.git-commit {
 
 .new-issue-sidebar {
   padding-top: 20px;
+}
+
+.lead {
+  margin-top: 0px;
 }

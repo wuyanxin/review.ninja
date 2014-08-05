@@ -26,38 +26,17 @@ module.exports = function(grunt) {
                     src: ['app.js', 'src/client/**/*.js', 'src/server/**/*.js', 'src/tests/**/*.js']
                 }
             }
-        },
-
-        // jsdox
-        jsdox: {
-            generate: {
-                options: {
-                    contentsEnable: true,
-                    contentsTitle: 'Review.Ninja Documentation',
-                    contentsFile: 'README.md'
-                },
-
-                src: [
-                    'app.js',
-                    'src/config.js',
-                    'src/client/**/*.js',
-                    'src/server/**/*.js',
-                    'src/tests/**/*.js'
-                ],
-
-                dest: ['./doc']
-            }
         }
+
     };
 
     // Initialize configuration
     grunt.initConfig(config);
 
-    grunt.loadNpmTasks('grunt-jsdox');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('default', ['jshint', 'mochaTest', 'karma', 'jsdox']);
+    grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
 
 };
