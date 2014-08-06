@@ -67,34 +67,40 @@
           <button class="form-control btn btn-default" ng-click="commentOnIssue(currentIssue)">COMMENT</button>
         </div>
       </div>-->
-  <div class="col-md-3 sidebar">
-    <button class="btn btn-danger btn-block" ng-click="showNewIssue=!showNewIssue">Create Issue</button>
-    <div class="new-issue" ng-show="showNewIssue" ng-init="showNewIssue=false">
-      <h5>New Issue</h5>
-      <div class="form-group">
-        <input ng-model="newIssue.title" ng-init="newIssue.title=''" class="form-control" placeholder="Issue title" />
+  <div class="col-md-3">
+
+    <!-- <div class="affix"> -->
+
+      <button class="btn btn-danger btn-block" ng-click="showNewIssue=!showNewIssue">Create Issue</button>
+      <div class="new-issue" ng-show="showNewIssue" ng-init="showNewIssue=false">
+        <h5>New Issue</h5>
+        <div class="form-group">
+          <input ng-model="newIssue.title" ng-init="newIssue.title=''" class="form-control" placeholder="Issue title" />
+        </div>
+        <div class="form-group">
+          <textarea ng-model="newIssue.body" ng-init="newIssue.body=''" class="form-control" placeholder="Issue body..." />
+        </div>
+        <div class="form-group">
+          <button class="form-control btn btn-default" ng-click="createNewIssue()">CREATE</button>
+        </div>
       </div>
-      <div class="form-group">
-        <textarea ng-model="newIssue.body" ng-init="newIssue.body=''" class="form-control" placeholder="Issue body..." />
-      </div>
-      <div class="form-group">
-        <button class="form-control btn btn-default" ng-click="createNewIssue()">CREATE</button>
-      </div>
-    </div>
-    <ul class="nav">
-      <li class="issue" ng-repeat="issue in issue.value">
-        <a ui-sref="issue({ user:repo.value.owner.login, repo:repo.value.name, number:pull.value.number, issue:issue.number })">
-          <span class="fa-stack closed-issue" ng-show="issue.state == 'closed'">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-check fa-stack-1x fa-inverse"></i>
-          </span>
-          <span class="fa-stack open-issue" ng-show="issue.state == 'open'">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
-          </span>
-          <span> {{ issue.title }}</span>
-        </a>
-      </li>
-    </ul>
+      <ul class="nav">
+        <li class="issue" ng-repeat="issue in issue.value">
+          <a ui-sref="issue({ user:repo.value.owner.login, repo:repo.value.name, number:pull.value.number, issue:issue.number })">
+            <span class="fa-stack closed-issue" ng-show="issue.state == 'closed'">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="fa-stack open-issue" ng-show="issue.state == 'open'">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
+            </span>
+            <span> {{ issue.title }}</span>
+          </a>
+        </li>
+      </ul>
+
+    <!-- </div> -->
+
   </div>
 </div>

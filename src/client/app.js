@@ -104,12 +104,16 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 
     }
 ])
-    .run(['$config',
-        function($config) {
-            $config.get(function(data, status) {
-                if (data.gacode) {
-                    ga('create', data.gacode, 'auto');
-                }
-            });
-        }
-    ]);
+.run(['$config', '$rootScope', '$state', '$stateParams',
+    function($config, $rootScope, $state, $stateParams) {
+
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+
+        $config.get(function(data, status) {
+            if (data.gacode) {
+                ga('create', data.gacode, 'auto');
+            }
+        });
+    }
+]);
