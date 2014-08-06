@@ -6,7 +6,7 @@
     <div class="well row" style="margin: 0px 0px 20px 0px;">
       <div class="col-md-9">
         <h5>
-          <button class="btn btn-primary" ng-click="castStar()"><i class="fa fa-star"></i> Star ({{ star.value.length }})</button>
+          <button class="btn btn-primary" ng-click="{true: unstar, false: star}[starred]()"><i class="fa fa-star"></i> {{ {true: 'Unstar', false: 'Star'}[starred] }} ({{ stargazers.value.length }})</button>
           <span>
             <span class="label pull-right" ng-class="{'label-default':status.value==='pending', 'label-success':status.value==='approved', 'label-danger':status.value==='rejected'}">
               {{ status.value }}
