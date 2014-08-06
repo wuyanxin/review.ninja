@@ -1,3 +1,7 @@
+
+/* import our files */
+@import "diff.css.scss";
+
 /* import bootstrap */
 @import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
 
@@ -111,6 +115,10 @@ circle.git-commit:hover {
 
 .issues {
   color: #E8AE0C;
+}
+
+.asdf {
+  color: gre;
 }
 
 .mergeable {
