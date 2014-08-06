@@ -15,7 +15,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         // get the pull request
         $scope.pull = pull;
 
-        $scope.star = $RPC.call('star', 'all', {
+        $scope.stargazers = $RPC.call('star', 'all', {
             repo: $scope.repo.value.id,
             comm: $scope.pull.value.head.sha
         });
@@ -134,14 +134,45 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             });
         };
 
-        $scope.castStar = function() {
+        $scope.star = function() {
             $scope.vote = $RPC.call('star', 'set', {
                 // repo uuid
                 repo: $scope.repo.value.id,
                 // comm uuid
                 comm: $scope.pull.value.head.sha
+            }, function(err, star) {
+                if(!err) {
+                    $scope.stargazers.value.push(star.value);
+                    $scope.starred = true;
+                }
             });
         };
+
+        $scope.unstar = function() {
+            $scope.vote = $RPC.call('star', 'rmv', {
+                // repo uuid
+                repo: $scope.repo.value.id,
+                // comm uuid
+                comm: $scope.pull.value.head.sha
+            }, function(err, star) {
+                for(var i=0; i<$scope.stargazers.value.length; i++) {
+                    if($scope.stargazers.value[i]._id == star.value._id) {
+                        $scope.stargazers.value.splice(i, 1);
+                        $scope.starred = false;
+                        break;
+                    }
+                }
+            });
+        };
+
+        $RPC.call('star', 'get', {
+            // repo uuid
+            repo: $scope.repo.value.id,
+            // comm uuid
+            comm: $scope.pull.value.head.sha
+        }, function(err, data) {
+            $scope.starred = data.value !== '';
+        });
 
         $scope.merge = function() {
             $HUB.call('pullRequests', 'merge', {

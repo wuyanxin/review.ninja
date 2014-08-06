@@ -7,15 +7,15 @@ module.exports = {
 
     /************************************************************************************************************
 
-	@models
+    @models
 
-	+ Star, where repo=repo-uuid, comm=comm-uuid
+    + Star, where repo=repo-uuid, comm=comm-uuid
 
-************************************************************************************************************/
+    ************************************************************************************************************/
 
     all: function(req, done) {
 
-		Star.find({repo: req.args.repo, comm: req.args.comm}, function(err, star) {
+        Star.find({repo: req.args.repo, comm: req.args.comm}, function(err, star) {
 
             done(err, star);
 
@@ -26,11 +26,11 @@ module.exports = {
 
     /************************************************************************************************************
 
-	@models
+    @models
 
-	+ Star, where repo=repo-uuid, comm=comm-uuid, user=user-uuid
+    + Star, where repo=repo-uuid, comm=comm-uuid, user=user-uuid
 
-************************************************************************************************************/
+    ************************************************************************************************************/
 
     get: function(req, done) {
 
@@ -48,21 +48,21 @@ module.exports = {
 
     /************************************************************************************************************
 
-	@models
+    @models
 
-	+ Star
+    + Star
 
-************************************************************************************************************/
+    ************************************************************************************************************/
 
     set: function(req, done) {
 
         Repo.with({uuid: req.args.repo}, function(err, repo) {
 
-			if(err){
+            if(err){
                 return done(err,repo);
-			}
+            }
 
-			Star.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name: req.user.login}, function(err, star) {
+            Star.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name: req.user.login}, function(err, star) {
 
                 done(err, star);
 
@@ -70,6 +70,27 @@ module.exports = {
 
         });
 
-    }
+    },
 
+    /************************************************************************************************************
+
+    @models
+
+    + Star
+
+    ************************************************************************************************************/
+
+    rmv: function(req, done) {
+        Star.with({
+            repo: req.args.repo,
+            comm: req.args.comm,
+            user: req.user.id
+        }, function(err, star) {
+            if(star) {
+                star.remove(function(err, star) {
+                    done(err, star);
+                });
+            }
+        });
+    }
 };
