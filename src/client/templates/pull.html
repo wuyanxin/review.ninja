@@ -1,184 +1,99 @@
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-9">
 
-    <p class="lead">{{ repo.value.full_name }}</p>
+    <p class="lead"><a ui-sref="repo({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a></p>
 
-    <div class="panel panel-default">
-      <div class="panel-heading" style="height:55px;">
+    <div class="well row" style="margin: 0px 0px 20px 0px;">
+      <div class="col-md-9">
+        <h5>
+          <button class="btn btn-primary" ng-click="castStar()"><i class="fa fa-star"></i> Star ({{ star.value.length }})</button>
+          <span>
+            <span class="label pull-right" ng-class="{'label-default':status.value==='pending', 'label-success':status.value==='approved', 'label-danger':status.value==='rejected'}">
+              {{ status.value }}
+            </span>
 
-        <h3 class="panel-title" style="float:left; padding:8px 0; width:100%">
-          <span class="label pull-right" ng-class="{'label-default':status.value==='pending', 'label-success':status.value==='approved', 'label-danger':status.value==='rejected'}">
-            {{ status.value }}
+            {{ pull.value.title }}
+            <span>
+              <img class="img-circle" ng-src="{{ pull.value.user.avatar_url }}" width="18px" />
+              {{ pull.value.user.login }} <small moment="pull.value.created_at"></small>
+              <!-- <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ pull.value.head.sha }}"> -->
+            </span>
           </span>
-
-          {{ pull.value.title }}
-        </h3>
+        </h5>
       </div>
-      <div class="panel-body">
-        <span>
-          <img ng-src="{{ pull.value.user.avatar_url }}" width="18px" />
-          {{ pull.value.user.login }} <small moment="pull.value.created_at"></small>
-          <!-- <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ pull.value.head.sha }}"> -->
-        </span>
-        <span class="pull-right">
-          <i class="fa fa-star" ng-repeat="star in star.value"></i>
-        </span>
+      <div class="col-md-3">
+        <h5>
+          <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()"> 
+            Merge pull request
+          </button>
+          <small ng-show="pull.value.merged">This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></small>
+        </h5>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
-
         <tabset>
-        <tab heading="Status">
-
-        <div class="panel panel-default" ng-show="!pull.value.merged">
-          <div class="panel-heading">
-            <h3 class="panel-title">
-              <span ng-show="status.value==='approved'"><i class="fa fa-lg fa-check-circle text-success"></i> Pull request has been approved</span>
-              <span ng-show="status.value==='rejected'"><i class="fa fa-lg fa-times-circle text-danger"></i> Pull request has been rejected</span>
-              <span ng-show="status.value==='pending'"><i class="fa fa-lg fa-times-circle text-danger"></i> Pull request is currently pending</span>
-            </h3>
-          </div>
-          <div class="panel-body">
-            <button class="btn btn-primary pull-right" ng-click="merge()">
-              Merge pull request
-            </button>
-            <div>
-              <strong ng-show="pull.value.mergeable && status.value!=='approved'">This pull request can be automatically merged.</strong>
-              <strong ng-show="!pull.value.mergeable">This pull request cannot be automatically merged.</strong><br />
-              <small>We strongly suggest only merging pull requests that have passed review.</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel panel-default" ng-show="pull.value.merged">
-          <div class="panel-heading">
-            <h3 class="panel-title">
-              <span ng-show="status.value==='approved'"><i class="fa fa-lg fa-check-circle text-success"></i> Pull request has been approved</span>
-              <span ng-show="status.value==='rejected'"><i class="fa fa-lg fa-times-circle text-danger"></i> Pull request has been rejected</span>
-              <span ng-show="status.value==='pending'"><i class="fa fa-lg fa-times-circle text-danger"></i> Pull request is currently pending</span>
-            </h3>
-          </div>
-          <div class="panel-body">
-            This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></span>.
-          </div>
-        </div>
-
-        </tab>
-
-        <tab heading="Commits">
-        <div class="list-group">
-          <a class="list-group-item" ng-repeat="commit in commits.value" ui-sref="comm({ user:repo.value.owner.login, repo:repo.value.name, sha:commit.sha })">
-            <span class="label pull-right" ng-class="{'label-default':commit.status==='pending', 'label-success':commit.status==='approved', 'label-danger':commit.status==='rejected'}" style="margin-top:12px;">
-              {{ commit.status }}
-            </span>
-            {{ commit.sha | limitTo:8 }}: {{ commit.commit.message }}<br />
-            <img ng-src="{{ commit.author.avatar_url }}" width="16px;" /> <small>{{ commit.author.login }} <span moment="commit.commit.committer.date"></span></small>
-          </a>
-        </div>
-        </tab>
-
         <tab heading="Diff">
-
-          <form class="form-inline" role="form" style="margin-top:20px;">
-            <div class="form-group">
-              <label>Compare to:</label>
-              <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  {{ base | limitTo:10 }}&hellip; <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li ng-repeat="commit in baseCommits.value">
-                  <a ng-click="compComm(commit.sha)" href="">{{ commit.sha | limitTo:15 }}&hellip;</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </form>
-
-          <div ng-repeat="file in files.value" class="panel panel-default" style="margin:20px 0 0 20px;">
-            <div class="panel-heading">
-              <strong>
-                {{ file.filename }}
-              </strong>
-              <!-- <span class="pull-right">
-                <small>status: {{ file.status }} | {{ file.additions }} additions | {{ file.deletions }} deletions | {{ file.changes }} changes</small>
-              </span> -->
-            </div>
-
-            <div class="panel-body" ng-show="file.status=='renamed'">
-              This file was renamed.
-            </div>
-
-            <div class="panel-body" ng-show="file.status=='modified' || file.status=='added' || file.status=='removed'" style="padding:0;">
-              <diff lines="file.lines.lines"></diff>
-            </div>
+        <div ng-repeat="file in files.value" class="panel panel-default" style="margin:20px;">
+          <div class="panel-heading">
+            <strong>
+              {{ file.filename }}
+            </strong>
           </div>
-        </tab>
-
-        <tab heading="Files">
-          <browser data="tree"></browser>
-        </tab>
-
-        </tabset>
-
-      </div>
-
-      <div class="col-md-4">
-        <!-- <div ng-show="!vote.value && status.value==='pending' && ninja.value.config" class="btn-group btn-block" style="margin-bottom:20px;">
-      <button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown">
-        Vote
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" style="width:100%;">
-        <li ng-repeat="vote in ninja.value.config.votes">
-          <a href ng-click="castVote(vote)">
-            {{ vote.description }}
-            <span class="badge pull-right" style="background-color:{{ vote.color }}">{{ vote.label }}</span>
-          </a>
-        </li>
-      </ul>
-    </div> -->
-        <ul class="list-group">
-          <li class="list-group-item" ng-repeat="vote in votes.value">
-          <vote value="vote" issues="issue.value" comments="commitComments.value"></vote>
-          </li>
-        </ul>
-        <div class="list-group">
+          <div class="panel-body" ng-show="file.status=='renamed'">
+            This file was renamed.
+          </div>
+          <div class="panel-body" ng-show="file.status=='modified' || file.status=='added' || file.status=='removed'" style="padding:0;">
+            <diff lines="file.lines.lines"></diff>
+          </div>
         </div>
+        </tab>
+        <tab heading="Files">
+        <browser data="tree"></browser>
+        </tab>
+        </tabset>
       </div>
-
     </div>
   </div>
-  <div class="col-md-3 new-issue-sidebar" ng-show="showNewIssue" ng-init="showNewIssue=false">
-    <div class="form-group">
-      <input ng-model="newIssue.title" ng-init="newIssue.title=''" class="form-control" placeholder="Issue title" />
-    </div>
-    <div class="form-group">
-      <textarea ng-model="newIssue.body" ng-init="newIssue.body=''" class="form-control" placeholder="Issue body..." />
-    </div>
-    <div class="form-group">
-      <button class="form-control btn btn-default" ng-click="createNewIssue()">CREATE</button>
-    </div>
-  </div>
-  <div class="col-md-3 issue-sidebar" ng-show="currentIssue !== null" ng-init="currentIssue=null">
-    <h1>{{currentIssue.title}} #{{currentIssue.number}}</h1>
-    <div class="well">{{currentIssue.body}}</div>
-    <div class="well" ng-repeat="comment in currentIssue.fetchedComments.value">{{comment.body}}</div>
-    <div class="form-group">
-      <textarea ng-model="newCommentBody" ng-init="newCommentBody=''" class="form-control" placeholder="Comment body..." />
-    </div>
-    <div class="form-group">
-      <button class="form-control btn btn-default" ng-click="commentOnIssue(currentIssue)">COMMENT</button>
-    </div>
-  </div>
-  <div class="col-md-2 sidebar">
-    <button class="btn btn-primary btn-block" ng-click="castStar()"><i class="fa fa-star"></i> Star</button>
+  <!--<div class="col-md-3 issue-sidebar" ng-show="currentIssue !== null" ng-init="currentIssue=null">
+      <h1>{{currentIssue.title}} #{{currentIssue.number}}</h1>
+      <div class="well">{{currentIssue.body}}</div>
+      <div class="well" ng-repeat="comment in currentIssue.fetchedComments.value">{{comment.body}}</div>
+      <div class="form-group">
+        <textarea ng-model="newCommentBody" ng-init="newCommentBody=''" class="form-control" placeholder="Comment body..." />
+        </div>
+        <div class="form-group">
+          <button class="form-control btn btn-default" ng-click="commentOnIssue(currentIssue)">COMMENT</button>
+        </div>
+      </div>-->
+  <div class="col-md-3 sidebar">
     <button class="btn btn-danger btn-block" ng-click="showNewIssue=!showNewIssue">Create Issue</button>
-    <ul class="nav nav-sidebar">
-      <li class="active" ng-repeat="issue in issue.value">
-        <a ui-sref="issue({ user:repo.value.owner.login, repo:repo.value.name, number:pull.value.number, issue:issue.number })">{{ issue.title }}</a>
+    <div class="new-issue" ng-show="showNewIssue" ng-init="showNewIssue=false">
+      <h5>New Issue</h5>
+      <div class="form-group">
+        <input ng-model="newIssue.title" ng-init="newIssue.title=''" class="form-control" placeholder="Issue title" />
+      </div>
+      <div class="form-group">
+        <textarea ng-model="newIssue.body" ng-init="newIssue.body=''" class="form-control" placeholder="Issue body..." />
+      </div>
+      <div class="form-group">
+        <button class="form-control btn btn-default" ng-click="createNewIssue()">CREATE</button>
+      </div>
+    </div>
+    <ul class="nav">
+      <li class="issue" ng-repeat="issue in issue.value">
+        <a ui-sref="issue({ user:repo.value.owner.login, repo:repo.value.name, number:pull.value.number, issue:issue.number })">
+          <span class="fa-stack closed-issue" ng-show="issue.state == 'closed'">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+          </span>
+          <span class="fa-stack open-issue" ng-show="issue.state == 'open'">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
+          </span>
+          <span> {{ issue.title }}</span>
+        </a>
       </li>
     </ul>
   </div>

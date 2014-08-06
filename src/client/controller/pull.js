@@ -79,7 +79,8 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
         $scope.issue = $HUB.call('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            labels: 'review.ninja,pull-request-' + $stateParams.number
+            labels: 'review.ninja,pull-request-' + $stateParams.number,
+            state: 'all'
         }, function() {
             $scope.issue.value.forEach(function(c) {
                 $HUB.call('issues', 'getComments', {
