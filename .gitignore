@@ -7,3 +7,5 @@ report
 npm-debug.log
 test
 coverage
+src/client/assets/styles/app.css
+.sass-cache
