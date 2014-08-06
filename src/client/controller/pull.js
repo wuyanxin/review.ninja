@@ -171,7 +171,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             // comm uuid
             comm: $scope.pull.value.head.sha
         }, function(err, data) {
-            $scope.starred = data.value != "";
+            $scope.starred = data.value !== '';
         });
 
         $scope.merge = function() {
