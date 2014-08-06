@@ -159,3 +159,24 @@ circle.git-commit:hover {
 .lead {
   margin-top: 0px;
 }
+
+p.lead a,
+p.lead a:hover {
+  color: #333;
+}
+
+p.lead a:hover {
+  text-decoration: underline;
+}
+
+li.issue a {
+  color: #333;
+}
+
+li.issue .closed-issue .fa-circle {
+  color: #5cb85c;
+}
+
+li.issue .open-issue .fa-circle {
+  color: #E8AE0C;
+}
