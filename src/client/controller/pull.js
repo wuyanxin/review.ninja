@@ -118,18 +118,25 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
                 $scope.currentIssue = null;
                 return;
             }
-            $scope.currentIssue = issue;
-        };
-
-        $scope.commentOnIssue = function(issue) {
-            $RPC.call('issues', 'add', {
+            $scope.currentIssue = Issue(issue);
+            $HUB.call('issues', 'getComments', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                number: issue.number,
+                number: $scope.currentIssue.number
+            }, function(err, data) {
+                $scope.currentIssue.comments = data;
+            });
+        };
+
+        $scope.comment = function() {
+            $HUB.call('issues', 'createComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $scope.currentIssue.number,
                 body: $scope.newCommentBody
             }, function(err, data) {
                 var comment = data.value;
-                $scope.currentIssue.fetchedComments.value.push(comment);
+                $scope.currentIssue.comments.value.push(comment);
                 $scope.newCommentBody = '';
             });
         };
