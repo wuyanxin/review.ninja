@@ -51,32 +51,7 @@
 		</div>
 	</div>
 
-	<div class="container-fluid">
-
-		<div class="row">
-
-			<div class="col-md-2">
-				
-				<div class="row">
-					<div class="col-md-12">Pull Requests</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">Settings</div>
-				</div>
-
-			</div>
-
-			<div class="col-md-10">
-				<div class="container-fluid">
-					<section ui-view></section>
-				</div>
-			</div>
-
-		</div>
-
-	</div>
-
-		
+	<section ui-view></section>
 
 	<!-- COMPONENT SCRIPTS -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
@@ -122,6 +97,7 @@
 	<script src="/controller/repo.js"></script>
 	<script src="/controller/pull.js"></script>
 	<script src="/controller/issue.js"></script>
+	<script src="/controller/settings.js"></script>
 
 	<!-- INTERCEPTORS -->
 	<script src="/interceptors/401.js"></script>

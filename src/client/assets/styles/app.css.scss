@@ -2,191 +2,203 @@
 /* import our files */
 @import "diff.css.scss";
 
+/* overwrite bootstrap styles */
+// $body-bg: #f5f5f5;
+$navbar-margin-bottom: none;
+
 /* import bootstrap */
 @import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
+
+.main {
+  min-height: 100%; // fix this
+  background: #fff;
+  padding: $padding-large-vertical $padding-large-horizontal;
+  border-right: $gray-lighter 1px solid;
+  border-left: $gray-lighter 1px solid;
+}
 
 /*
  * The diff table
  * (when this is less wrap in table.diff)
  */
 
-table.diff {
-  font-size: 11px;
-  margin-bottom:0;
+// table.diff {
+//   font-size: 11px;
+//   margin-bottom:0;
 
-  /* disallow selection */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+//   /* disallow selection */
+//   -webkit-touch-callout: none;
+//   -webkit-user-select: none;
+//   -khtml-user-select: none;
+//   -moz-user-select: none;
+//   -ms-user-select: none;
+//   user-select: none;
+// }
 
-table.diff>thead>tr>th,
-table.diff>tbody>tr>th,
-table.diff>tfoot>tr>th,
-table.diff>thead>tr>td,
-table.diff>tbody>tr>td,
-table.diff>tfoot>tr>td {
-  padding: 2px 8px;
-  border:none;
-  cursor: pointer;
-}
+// table.diff>thead>tr>th,
+// table.diff>tbody>tr>th,
+// table.diff>tfoot>tr>th,
+// table.diff>thead>tr>td,
+// table.diff>tbody>tr>td,
+// table.diff>tfoot>tr>td {
+//   padding: 2px 8px;
+//   border:none;
+//   cursor: pointer;
+// }
 
-.addition {
-	background-color: #dfd;
-}
+// .addition {
+// 	background-color: #dfd;
+// }
 
-.addition.dark {
-	background-color: #ceffce !important;
-}
+// .addition.dark {
+// 	background-color: #ceffce !important;
+// }
 
-.deletion {
-	background-color: #ffdddd;
-}
+// .deletion {
+// 	background-color: #ffdddd;
+// }
 
-.deletion.dark {
-	background-color: #f7c8c8 !important;
-}
+// .deletion.dark {
+// 	background-color: #f7c8c8 !important;
+// }
 
-tr.highlight:hover td.highlight,
-tr.selected td.highlight {
-	background-color: #f8eec7 !important;
-}
+// tr.highlight:hover td.highlight,
+// tr.selected td.highlight {
+// 	background-color: #f8eec7 !important;
+// }
 
-tr.selected td.comment {
-	display: block !important;
-}
+// tr.selected td.comment {
+// 	display: block !important;
+// }
 
-.meta pre {
-	color:#aaa;
-}
+// .meta pre {
+// 	color:#aaa;
+// }
 
-pre {
-	padding:0; 
-	margin:0; 
-	background:none; 
-	border:none;
-}
+// pre {
+// 	padding:0; 
+// 	margin:0; 
+// 	background:none; 
+// 	border:none;
+// }
 
-.tab-pane {
-	margin-top: 20px;
-}
+// .tab-pane {
+// 	margin-top: 20px;
+// }
 
-.nav-tabs a {
-	cursor: pointer;
-}
+// .nav-tabs a {
+// 	cursor: pointer;
+// }
 
-svg.merge {
-  margin-top: 5px;
-  font-size: 14px;
-}
+// svg.merge {
+//   margin-top: 5px;
+//   font-size: 14px;
+// }
 
-svg.branch {
-  font-size: 22px;
-}
+// svg.branch {
+//   font-size: 22px;
+// }
 
-path.git-base,
-path.git-head,
-polygon.git-graph-arrow {
-  stroke: black;
-}
+// path.git-base,
+// path.git-head,
+// polygon.git-graph-arrow {
+//   stroke: black;
+// }
 
-path.git-head {
-  fill: none;
-}
+// path.git-head {
+//   fill: none;
+// }
 
-circle.git-commit {
-  fill: black;
-}
+// circle.git-commit {
+//   fill: black;
+// }
 
-circle.git-commit.active {
-  fill: red;
-}
+// circle.git-commit.active {
+//   fill: red;
+// }
 
-circle.git-commit:hover {
-  filter: url(#dropshadow);
-}
+// circle.git-commit:hover {
+//   filter: url(#dropshadow);
+// }
 
-.done {
-  color: #5cb85c;
-}
+// .done {
+//   color: #5cb85c;
+// }
 
-.issues {
-  color: #E8AE0C;
-}
+// .issues {
+//   color: #E8AE0C;
+// }
 
-.asdf {
-  color: gre;
-}
+// .asdf {
+//   color: gre;
+// }
 
-.mergeable {
-  padding-left: 30px;
-}
+// .mergeable {
+//   padding-left: 30px;
+// }
 
-.mergeable-text {
-  font-size: 10px;
-}
+// .mergeable-text {
+//   font-size: 10px;
+// }
 
-.sidebar {
-  position: fixed;
-  top: 51px;
-  bottom: 0;
-  right: 0;
-  z-index: 1000;
-  display: block;
-  padding: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: #f5f5f5;
-  border-left: 1px solid #eee;
-}
+// .sidebar {
+//   position: fixed;
+//   top: 51px;
+//   bottom: 0;
+//   right: 0;
+//   z-index: 1000;
+//   display: block;
+//   padding: 20px;
+//   overflow-x: hidden;
+//   overflow-y: auto;
+//   background-color: #f5f5f5;
+//   border-left: 1px solid #eee;
+// }
 
-.sidebar-left {
-  position: fixed;
-  top: 51px;
-  bottom: 0;
-  z-index: 1000;
-  display: block;
-  padding: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: #f5f5f5;
-  border-left: 1px solid #eee;
-}
+// .sidebar-left {
+//   position: fixed;
+//   top: 51px;
+//   bottom: 0;
+//   z-index: 1000;
+//   display: block;
+//   padding: 20px;
+//   overflow-x: hidden;
+//   overflow-y: auto;
+//   background-color: #f5f5f5;
+//   border-left: 1px solid #eee;
+// }
 
-.new-issue-sidebar,
-.issue-sidebar {
-  background-color: #eee;
-  border: 1px solid #f0f0f0;
-}
+// .new-issue-sidebar,
+// .issue-sidebar {
+//   background-color: #eee;
+//   border: 1px solid #f0f0f0;
+// }
 
-.new-issue-sidebar {
-  padding-top: 20px;
-}
+// .new-issue-sidebar {
+//   padding-top: 20px;
+// }
 
-.lead {
-  margin-top: 0px;
-}
+// .lead {
+//   margin-top: 0px;
+// }
 
-p.lead a,
-p.lead a:hover {
-  color: #333;
-}
+// p.lead a,
+// p.lead a:hover {
+//   color: #333;
+// }
 
-p.lead a:hover {
-  text-decoration: underline;
-}
+// p.lead a:hover {
+//   text-decoration: underline;
+// }
 
-li.issue a {
-  color: #333;
-}
+// li.issue a {
+//   color: #333;
+// }
 
-li.issue .closed-issue .fa-circle {
-  color: #5cb85c;
-}
+// li.issue .closed-issue .fa-circle {
+//   color: #5cb85c;
+// }
 
-li.issue .open-issue .fa-circle {
-  color: #E8AE0C;
-}
+// li.issue .open-issue .fa-circle {
+//   color: #E8AE0C;
+// }

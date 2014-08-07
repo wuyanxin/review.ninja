@@ -24,9 +24,9 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 controller: 'HomeCtrl'
             })
             .state('repo', {
+                abstract: true,
                 url: '/:user/:repo',
                 templateUrl: '/templates/repo.html',
-                controller: 'RepoCtrl',
                 resolve: {
                     repo: ['$stateParams', '$HUBService',
                         function($stateParams, $HUBService) {
@@ -38,19 +38,24 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                     ]
                 }
             })
-            .state('pull', {
-                url: '/:user/:repo/pull/:number',
+            .state('repo.list', {
+                url: '',
+                templateUrl: '/templates/list.html',
+                controller: 'RepoCtrl',
+                resolve: {
+                    repo: ['repo', function(repo) {
+                        return repo; // inherited from parent state
+                    }]
+                }
+            })
+            .state('repo.pull', {
+                url: '/pull/:number',
                 templateUrl: '/templates/pull.html',
                 controller: 'PullCtrl',
                 resolve: {
-                    repo: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
-                            return $HUBService.call('repos', 'get', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo
-                            });
-                        }
-                    ],
+                    repo: ['repo', function(repo) {
+                        return repo; // inherited from parent state
+                    }],
                     pull: ['$stateParams', '$HUBService',
                         function($stateParams, $HUBService) {
                             return $HUBService.call('pullRequests', 'get', {
@@ -62,37 +67,14 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                     ]
                 }
             })
-            .state('issue', {
-                url: '/:user/:repo/pull/:number/:issue',
-                templateUrl: '/templates/issue.html',
-                controller: 'IssueCtrl',
+            .state('repo.settings', {
+                url: '/settings',
+                templateUrl: '/templates/settings.html',
+                controller: 'SettingsCtrl',
                 resolve: {
-                    repo: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
-                            return $HUBService.call('repos', 'get', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo
-                            });
-                        }
-                    ],
-                    pull: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
-                            return $HUBService.call('pullRequests', 'get', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                number: $stateParams.number
-                            });
-                        }
-                    ],
-                    issue: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
-                            return $HUBService.call('issues', 'getRepoIssue', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                number: $stateParams.issue
-                            });
-                        }
-                    ]
+                    repo: ['repo', function(repo) {
+                        return repo; // inherited from parent state
+                    }]
                 }
             });
 
@@ -100,7 +82,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 
         $locationProvider.html5Mode(true);
 
-        $analyticsProvider.withAutoBase(true); /* Records full path */
+        $analyticsProvider.withAutoBase(true); // Records full path
 
     }
 ])
