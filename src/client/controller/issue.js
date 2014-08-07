@@ -57,19 +57,6 @@ module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Comm
             });
         };
 
-        $scope.comment = function() {
-            $HUB.call('issues', 'createComment', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: $stateParams.issue,
-                body: $scope.newCommentBody
-            }, function(err, data) {
-                var comment = data.value;
-                $scope.comments.value.push(comment);
-                $scope.newCommentBody = '';
-            });
-        };
-
         $scope.close = function() {
             $HUB.call('issues', 'edit', {
                 user: $stateParams.user,
