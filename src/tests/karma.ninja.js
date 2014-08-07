@@ -20,6 +20,7 @@ module.exports = function(config) {
             'src/bower/should/should.js',
 
             // Angular
+            'https://cdn.socket.io/socket.io-1.0.4.js',
             'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js',
             'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js',
