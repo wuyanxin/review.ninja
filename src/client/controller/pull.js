@@ -6,19 +6,14 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$modal', 'repo', 'pull',
-    function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $modal, repo, pull) {
+module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$modal', 'repo', 'pull', 'socket',
+    function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $modal, repo, pull, socket) {
 
         // get the repo
         $scope.repo = repo;
 
         // get the pull request
         $scope.pull = pull;
-
-        $scope.stargazers = $RPC.call('star', 'all', {
-            repo: $scope.repo.value.id,
-            comm: $scope.pull.value.head.sha
-        });
 
         // for the diff view
         $scope.head = $scope.pull.value.head.sha;
@@ -141,46 +136,6 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             });
         };
 
-        $scope.star = function() {
-            $scope.vote = $RPC.call('star', 'set', {
-                // repo uuid
-                repo: $scope.repo.value.id,
-                // comm uuid
-                comm: $scope.pull.value.head.sha
-            }, function(err, star) {
-                if(!err) {
-                    $scope.stargazers.value.push(star.value);
-                    $scope.starred = true;
-                }
-            });
-        };
-
-        $scope.unstar = function() {
-            $scope.vote = $RPC.call('star', 'rmv', {
-                // repo uuid
-                repo: $scope.repo.value.id,
-                // comm uuid
-                comm: $scope.pull.value.head.sha
-            }, function(err, star) {
-                for(var i=0; i<$scope.stargazers.value.length; i++) {
-                    if($scope.stargazers.value[i]._id == star.value._id) {
-                        $scope.stargazers.value.splice(i, 1);
-                        $scope.starred = false;
-                        break;
-                    }
-                }
-            });
-        };
-
-        $RPC.call('star', 'get', {
-            // repo uuid
-            repo: $scope.repo.value.id,
-            // comm uuid
-            comm: $scope.pull.value.head.sha
-        }, function(err, data) {
-            $scope.starred = data.value !== '';
-        });
-
         $scope.merge = function() {
             $HUB.call('pullRequests', 'merge', {
                 user: $stateParams.user,
@@ -197,5 +152,48 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
             });
         };
 
+        $scope.refreshStargazers = function() {
+            $RPC.call('star', 'all', {
+                repo: $scope.repo.value.id,
+                comm: $scope.pull.value.head.sha
+            }, function(err, stargazers) {
+                $scope.stargazers = stargazers;
+                $RPC.call('star', 'get', {
+                    // repo uuid
+                    repo: $scope.repo.value.id,
+                    // comm uuid
+                    comm: $scope.pull.value.head.sha
+                }, function(err, data) {
+                    $scope.starred = data.value !== '';
+                });
+            });
+        };
+        $scope.refreshStargazers();
+
+        $scope.star = function() {
+            $scope.vote = $RPC.call('star', 'set', {
+                // repo uuid
+                repo: $scope.repo.value.id,
+                // comm uuid
+                comm: $scope.pull.value.head.sha
+            });
+        };
+
+        $scope.unstar = function() {
+            $scope.vote = $RPC.call('star', 'rmv', {
+                // repo uuid
+                repo: $scope.repo.value.id,
+                // comm uuid
+                comm: $scope.pull.value.head.sha
+            });
+        };
+
+        socket.on('pull-request-' +repo.value.id+ ':starred', function() {
+            $scope.refreshStargazers();
+        });
+
+        socket.on('pull-request-' +repo.value.id+ ':unstarred', function() {
+            $scope.refreshStargazers();
+        });
     }
 ]);
