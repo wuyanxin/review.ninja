@@ -1,5 +1,4 @@
 var express = require('express');
-var path = require('path');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Default router
@@ -10,21 +9,16 @@ var router = express.Router();
 router.all('/*', function(req, res) {
 
     if (req.isAuthenticated()) {
-        return res.sendfile('home.html', {
-            root: __dirname + './../../client'
+        return res.render('home.html', {
+            user: req.user
         });
-    } else {
-
-        if (config.github.enterprise) {
-            return res.sendfile('login.enterprise.html', {
-                root: __dirname + './../../client'
-            });
-        } else {
-            return res.sendfile('login.html', {
-                root: __dirname + './../../client'
-            });
-        }
     }
+
+    if (config.github.enterprise) {
+        return res.render('login.enterprise.html');
+    }
+
+    return res.render('login.html');
 });
 
 module.exports = router;

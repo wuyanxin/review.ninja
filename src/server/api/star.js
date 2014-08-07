@@ -63,9 +63,8 @@ module.exports = {
             }
 
             Star.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name: req.user.login}, function(err, star) {
-
+                io.emit('pull-request-'+req.args.repo+':starred', {});
                 done(err, star);
-
             });
 
         });
@@ -88,6 +87,7 @@ module.exports = {
         }, function(err, star) {
             if(star) {
                 star.remove(function(err, star) {
+                    io.emit('pull-request-'+req.args.repo+':unstarred', {});
                     done(err, star);
                 });
             }

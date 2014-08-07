@@ -1,4 +1,5 @@
 <html>
+
 <head>
 	<title>Review Ninja</title>
 
@@ -15,6 +16,7 @@
 	<!-- APP STYLESHEET -->
 	<link href="/assets/styles/app.css" rel="stylesheet">
 </head>
+
 <body>
 
 	<div class="navbar navbar-default navbar-static-top" role="navigation">
@@ -32,20 +34,27 @@
 				<ul class="nav navbar-nav">
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a href="/logout" target="_self">Sign out</a>
+					<li><a href="">Features</a></li>
+					<li><a href="">Documentation</a></li>
+					<li><a href="">Contact</a></li>
+					<li class="dropdown">
+						<a href="" class="dropdown-toggle" data-toggle="dropdown">
+							<img src="<%= user.avatar_url %>" width="20px" class="img-circle" />
+							<%= user.login %> <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/logout" target="_self">Sign out</a></li>
+						</ul>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
 
-
-	<div class="container-fluid" style="margin-bottom:20px;">
-		<section ui-view></section>
-	</div>
+	<section ui-view></section>
 
 	<!-- COMPONENT SCRIPTS -->
+  <script src="//cdn.socket.io/socket.io-1.0.4.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
 	<script src="/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
@@ -56,7 +65,6 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js"></script>
 	<script src="/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
 	<script src="//www.google-analytics.com/analytics.js"></script>
 	<script src="/angulartics/dist/angulartics.min.js"></script>
 	<script src="/angulartics/dist/angulartics-ga.min.js"></script>
@@ -74,6 +82,7 @@
 	<!-- SERVICES -->
 	<script src="/services/commitComment.js"></script>
 	<script src="/services/filterSet.js"></script>
+	<script src="/services/socket.js"></script>
 
 	<!-- DIRECTIVES -->
 	<script src="/directives/browser.js"></script>
@@ -89,6 +98,7 @@
 	<script src="/controller/repo.js"></script>
 	<script src="/controller/pull.js"></script>
 	<script src="/controller/issue.js"></script>
+	<script src="/controller/settings.js"></script>
 
 	<!-- INTERCEPTORS -->
 	<script src="/interceptors/401.js"></script>
@@ -96,4 +106,5 @@
 	<!-- TMP -->
 	<script src="/Issue.js"></script>
 </body>
+
 </html>

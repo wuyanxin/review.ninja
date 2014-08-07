@@ -22,6 +22,18 @@ if (process.env.NODE_ENV === 'production') {
 
 var app = require('./src/server/app.js');
 
-http.createServer(app).listen(60000).on('listening', function() {
+server = http.createServer(app).listen(60000).on('listening', function() {
 
 });
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Initialize websockets
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+global.io = require('socket.io').listen(server).sockets;
+io.on('connection', function(socket) {
+    socket.emit('init', {
+        message: 'Welcome!'
+    });
+});
+console.log('Websockets initialized'.bold);
