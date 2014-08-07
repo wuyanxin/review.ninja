@@ -44,6 +44,10 @@ app.use(passport.session());
 app.use('/api', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 
+// setup render engine
+app.set('views', path.join(__dirname + '../../client'));
+app.engine('html', require('ejs').renderFile);
+
 
 async.series([
 

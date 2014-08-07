@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-9">
 
-    <p class="lead"><a ui-sref="repo({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a></p>
+    <p class="lead"><a ui-sref="repo.list({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a></p>
 
     <div class="well row" style="margin: 0px 0px 20px 0px;">
       <div class="col-md-9">
