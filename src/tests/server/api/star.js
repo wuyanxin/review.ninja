@@ -12,7 +12,6 @@ var Comm = require('../../../server/documents/comm').Comm;
 // api
 var star = require('../../../server/api/star');
 
-
 describe('star:all', function(done){
 
 	it('should get all stars without error', function(done){
@@ -142,6 +141,10 @@ describe('star:get', function(){
 
 describe('star:set', function(){
 
+beforeEach(function() {
+    global.io = {emit: sinon.spy()};
+});
+
 it('should create a star', function(done){
 
 		repo_with_stub = sinon.stub(Repo,'with', function(args, done){
@@ -169,6 +172,7 @@ it('should create a star', function(done){
 
 
 		star.set(req,function(error,res){
+            assert(io.emit.called);
 			assert.equal('star', res);
 			done();
 		});
