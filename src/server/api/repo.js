@@ -98,7 +98,7 @@ module.exports = {
                     return done({code: 404, text: 'Not found'});
                 }
 
-                github.call({obj: 'repos', fun: 'createHook', arg: {user: github_repo.owner.login, repo: github_repo.name, name: 'web', config: {url: webhook_url, content_type: 'json'}, events: ['pull_request'], active: true}, token: req.user.token}, function(err, data) {
+                github.call({obj: 'repos', fun: 'createHook', arg: {user: github_repo.owner.login, repo: github_repo.name, name: 'web', config: {url: webhook_url, content_type: 'json'}, events: ['pull_request','issues'], active: true}, token: req.user.token}, function(err, data) {
 
                     if(err) {
                         // this is no error if the hook already exists when we want to create it
