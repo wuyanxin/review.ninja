@@ -65,7 +65,7 @@ module.exports = {
 
             Star.create({repo: req.args.repo_uuid, comm: req.args.sha, user: req.user.id, name: req.user.login}, function(err, star) {
                 io.emit(req.args.user + ':' + req.args.repo + ':pull-request-'+req.args.number+':starred', {});
-                GitHubStatusApiService.updatePullRequestStatus(req.args.user, req.args.repo, req.args.repo_uuid, req.args.sha, req.args.number, req.user.token);
+                GitHubStatusApiService.updateCommit({ user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid, sha: req.args.sha, number: req.args.number, token: req.user.token});
                 done(err, star);
             });
 
@@ -90,7 +90,7 @@ module.exports = {
             if(star) {
                 star.remove(function(err, star) {
                     io.emit(req.args.user + ':' + req.args.repo + ':pull-request-'+req.args.number+':unstarred', {});
-                    GitHubStatusApiService.updatePullRequestStatus(req.args.user, req.args.repo, req.args.repo_uuid, req.args.sha, req.args.number, req.user.token);
+                    GitHubStatusApiService.updateCommit({user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid, sha: req.args.sha, number: req.args.number, token: req.user.token});
                     done(err, star);
                 });
             }
