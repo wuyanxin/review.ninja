@@ -1,4 +1,13 @@
-module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters', 'ninja.config', 'frapontillo.bootstrap-switch', 'angulartics', 'angulartics.google.analytics']);
+module = angular.module('app', 
+    ['ninja.filters', 
+     'ninja.config',
+     'ui.router', 
+     'ngAnimate',
+     'ui.bootstrap',
+     'mgcrea.ngStrap.popover',
+     'frapontillo.bootstrap-switch', 
+     'angulartics', 
+     'angulartics.google.analytics']);
 
 filters = angular.module('ninja.filters', []);
 
