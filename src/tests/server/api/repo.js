@@ -16,187 +16,189 @@ var repo = require('../../../server/api/repo');
 ///////////Repo Get/////////////
 ////////////////////////////////
 
-describe('Repo: get', function(){
+describe('Repo: get', function() {
 
-	it('should get repo', function(done){
+    it('should get repo', function(done) {
 
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
+        stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github ={
-					permissions:{
-						pull:true
-					}
-				};
-				err = null;
-				done(err,repo_github);
-			}
-		});
+            if (args.fun == 'one' && args.obj == 'repos') {
+                repo_github = {
+                    permissions: {
+                        pull: true
+                    }
+                };
+                err = null;
+                done(err, repo_github);
+            }
+        });
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
-
-
-			repoTest = 'repoTest';
-			err = null;
-
-			done(err,repoTest);
-		});
-
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+        repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
 
-		repo.get(req, function(err,repoTest){
-			assert.equal(repoTest,'repoTest');
-			done();
-		});
+            repoTest = 'repoTest';
+            err = null;
 
-	});
+            done(err, repoTest);
+        });
 
-
-	it('should throw error for null repo', function(done){
-		
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
-
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github =null;
-				err = null;
-				done(err,repo_github);
-			}
-		});
-
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+        req = {
+            args: {
+                uuid: 'uuid'
+            },
+            user: {
+                token: 'token'
+            }
+        };
 
 
-			repoTest = 'repoTest';
-			err = null;
+        repo.get(req, function(err, repoTest) {
+            assert.equal(repoTest, 'repoTest');
+            done();
+        });
 
-			done(err,repoTest);
-		});
-
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+    });
 
 
-		repo.get(req, function(err,res){
-			assert.equal(err.code,404);
-			done();
-		});		
+    it('should throw error for null repo', function(done) {
 
-	});
+        stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
+            if (args.fun == 'one' && args.obj == 'repos') {
+                repo_github = null;
+                err = null;
+                done(err, repo_github);
+            }
+        });
 
-
-
-
-	it('should throw error for wrong permissions', function(done){
-
-		//github api stub
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
-
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github ={
-					permissions:{
-						pull:false
-					}
-				};				err = null;
-				done(err,repo_github);
-			}
-		});
+        repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+            repoTest = 'repoTest';
+            err = null;
+
+            done(err, repoTest);
+        });
+
+        req = {
+            args: {
+                uuid: 'uuid'
+            },
+            user: {
+                token: 'token'
+            }
+        };
 
 
-			repoTest = 'repoTest';
-			err = null;
+        repo.get(req, function(err, res) {
+            assert.equal(err.code, 404);
+            done();
+        });
 
-			done(err,repoTest);
-		});
-
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
-
-		repo.get(req, function(err,repoTest){
-			assert.equal(err.code,403);
-			done();
-		});
-
-
-	});
+    });
 
 
 
 
 
-//testing get failure -> getting null form Repo.with
-	it('should throw error for null Repo.with', function(done){
+    it('should throw error for wrong permissions', function(done) {
 
-		//github api stub
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
+        //github api stub
+        stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github ={
-					permissions:{
-						pull:true
-					}
-				};				err = null;
-				done(err,repo_github);
-			}
-		});
-
-
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+            if (args.fun == 'one' && args.obj == 'repos') {
+                repo_github = {
+                    permissions: {
+                        pull: false
+                    }
+                };
+                err = null;
+                done(err, repo_github);
+            }
+        });
 
 
-			repoTest = null;
-			err = 'error';
-
-			done(err,repoTest);
-		});
-
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
-
-		repo.get(req, function(err,repoTest){
-			assert.equal(err.code,404);
-			done();
-		});
+        repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
 
-	});
+            repoTest = 'repoTest';
+            err = null;
+
+            done(err, repoTest);
+        });
+
+        req = {
+            args: {
+                uuid: 'uuid'
+            },
+            user: {
+                token: 'token'
+            }
+        };
+
+        repo.get(req, function(err, repoTest) {
+            assert.equal(err.code, 403);
+            done();
+        });
+
+
+    });
 
 
 
 
-afterEach(function(){
-	stub_github_call.restore();
-	repo_with.restore();
-});
+
+    //testing get failure -> getting null form Repo.with
+    it('should throw error for null Repo.with', function(done) {
+
+        //github api stub
+        stub_github_call = sinon.stub(github, 'call', function(args, done) {
+
+            if (args.fun == 'one' && args.obj == 'repos') {
+                repo_github = {
+                    permissions: {
+                        pull: true
+                    }
+                };
+                err = null;
+                done(err, repo_github);
+            }
+        });
+
+
+        repo_with = sinon.stub(Repo, 'with', function(args, done) {
+
+
+            repoTest = null;
+            err = 'error';
+
+            done(err, repoTest);
+        });
+
+        req = {
+            args: {
+                uuid: 'uuid'
+            },
+            user: {
+                token: 'token'
+            }
+        };
+
+        repo.get(req, function(err, repoTest) {
+            assert.equal(err.code, 404);
+            done();
+        });
+
+
+    });
+
+
+
+
+    afterEach(function() {
+        stub_github_call.restore();
+        repo_with.restore();
+    });
 
 });
 
@@ -207,60 +209,60 @@ afterEach(function(){
 ///////////Repo Add/////////////
 ////////////////////////////////
 
-describe('repo: add', function(){
+// describe('repo: add', function() {
 
-	it('should add repo without error', function(done){
+//     it('should add repo without error', function(done) {
 
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github ={
-					permissions:{
-						admin:true
-					},
-					owner:{
-						login:'login'
-					},
-					name:'name'
-				};
-				err = null;
-				done(err,repo_github);
-			}else if (args.fun == 'createHook' && args.obj =='repos'){
-				err = null;
-				data = 'data';
-				done(err,data);
-			}
-		});
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: true
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
+//                 err = null;
+//                 done(err, repo_github);
+//             } else if (args.fun == 'createHook' && args.obj == 'repos') {
+//                 err = null;
+//                 data = 'data';
+//                 done(err, data);
+//             }
+//         });
 
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-			repoTest = 'repoTest';
-			err = null;
+//             repoTest = 'repoTest';
+//             err = null;
 
-			done(err,repoTest);
-		});
+//             done(err, repoTest);
+//         });
 
 
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
-		repo.add(req, function(err,repoTest){
-			assert.equal(repoTest,'repoTest');
-			done();
-		});
+//         repo.add(req, function(err, repoTest) {
+//             assert.equal(repoTest, 'repoTest');
+//             done();
+//         });
 
 
-	});
+//     });
 
 
 
@@ -268,57 +270,58 @@ describe('repo: add', function(){
 
 
 
-	it('should throw error with wrong permission', function(done){
+//     it('should throw error with wrong permission', function(done) {
 
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github ={
-					permissions:{
-						admin:false
-					},
-					owner:{
-						login:'login'
-					},
-					name:'name'
-				};				err = null;
-				done(err,repo_github);
-			}else if (args.fun == 'createHook' && args.obj =='repos'){
-				err = null;
-				data = 'data';
-				done(err,data);
-			}
-		});
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: false
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
+//                 err = null;
+//                 done(err, repo_github);
+//             } else if (args.fun == 'createHook' && args.obj == 'repos') {
+//                 err = null;
+//                 data = 'data';
+//                 done(err, data);
+//             }
+//         });
 
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-			repoTest = 'repoTest';
-			err = null;
+//             repoTest = 'repoTest';
+//             err = null;
 
-			done(err,repoTest);
-		});
+//             done(err, repoTest);
+//         });
 
 
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
-		repo.add(req, function(err,repoTest){
-			assert.equal(err.code,403);
-			done();
-		});
+//         repo.add(req, function(err, repoTest) {
+//             assert.equal(err.code, 403);
+//             done();
+//         });
 
 
-	});
+//     });
 
 
 
@@ -327,50 +330,50 @@ describe('repo: add', function(){
 
 
 
-	it('should throw error with null repo', function(done){
+//     it('should throw error with null repo', function(done) {
 
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github =null;
-				err = null;
-				done(err,repo_github);
-			}else if (args.fun == 'createHook' && args.obj =='repos'){
-				err = null;
-				data = 'data';
-				done(err,data);
-			}
-		});
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = null;
+//                 err = null;
+//                 done(err, repo_github);
+//             } else if (args.fun == 'createHook' && args.obj == 'repos') {
+//                 err = null;
+//                 data = 'data';
+//                 done(err, data);
+//             }
+//         });
 
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-			repoTest = 'repoTest';
-			err = null;
+//             repoTest = 'repoTest';
+//             err = null;
 
-			done(err,repoTest);
-		});
+//             done(err, repoTest);
+//         });
 
 
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
-		repo.add(req, function(err,repoTest){
-			assert.equal(err.code,404);
-			done();
-		});
+//         repo.add(req, function(err, repoTest) {
+//             assert.equal(err.code, 404);
+//             done();
+//         });
 
 
-	});
+//     });
 
 
 
@@ -380,680 +383,676 @@ describe('repo: add', function(){
 
 
 
+//     it('should throw error with null Repo with', function(done) {
 
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: true
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
+//                 err = null;
+//                 done(err, repo_github);
+//             } else if (args.fun == 'createHook' && args.obj == 'repos') {
+//                 err = null;
+//                 data = 'data';
+//                 done(err, data);
+//             }
+//         });
 
 
-	it('should throw error with null Repo with', function(done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
+//             repoTest = null;
+//             err = 'error';
 
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github ={
-					permissions:{
-						admin:true
-					},
-					owner:{
-						login:'login'
-					},
-					name:'name'
-				};					err = null;
-				done(err,repo_github);
-			}else if (args.fun == 'createHook' && args.obj =='repos'){
-				err = null;
-				data = 'data';
-				done(err,data);
-			}
-		});
+//             done(err, repoTest);
+//         });
 
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
 
-			repoTest = null;
-			err = 'error';
 
-			done(err,repoTest);
-		});
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
+//         repo.add(req, function(err, repoTest) {
+//             assert.equal(err.code, 404);
+//             done();
+//         });
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//     });
 
 
-		repo.add(req, function(err,repoTest){
-			assert.equal(err.code,404);
-			done();
-		});
 
+//     it('should throw error with create hook', function(done) {
 
-	});
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: true
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
+//                 err = null;
+//                 done(err, repo_github);
+//             } else if (args.fun == 'createHook' && args.obj == 'repos') {
+//                 err_string = '{"errors":["one","two"]}';
+//                 //error = JSON.stringify(err_string);
+//                 //et = JSON.parse(error);
+//                 //console.log('in stub: '+et+' '+et.errors);
+//                 err = {
+//                     message: err_string
+//                 };
+//                 data = null;
+//                 done(err, data);
+//             }
+//         });
 
 
-	it('should throw error with create hook', function(done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
+//             repoTest = 'repoTest';
+//             err = null;
 
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github ={
-					permissions:{
-						admin:true
-					},
-					owner:{
-						login:'login'
-					},
-					name:'name'
-				};					
-				err = null;
-				done(err,repo_github);
-			}else if (args.fun == 'createHook' && args.obj =='repos'){
-				err_string = '{"errors":["one","two"]}';
-				//error = JSON.stringify(err_string);
-				//et = JSON.parse(error);
-				//console.log('in stub: '+et+' '+et.errors);
-				err ={
-					message:err_string
-				};
-				data = null;
-				done(err,data);
-			}
-		});
+//             done(err, repoTest);
+//         });
 
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
 
-			repoTest = 'repoTest';
-			err = null;
 
-			done(err,repoTest);
-		});
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
+//         repo.add(req, function(err, repoTest) {
+//             assert.equal(err.message, '{"errors":["one","two"]}');
+//             done();
+//         });
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//     });
 
 
-		repo.add(req, function(err,repoTest){
-			assert.equal(err.message,'{"errors":["one","two"]}');
-			done();
-		});
+//     it('should add hook even if hook already exists', function(done) {
 
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-	});
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: true
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
+//                 err = null;
+//                 done(err, repo_github);
+//             } else if (args.fun == 'createHook' && args.obj == 'repos') {
+//                 err_string = '{"errors":["Hook already exists on this repository"]}';
+//                 err = {
+//                     message: err_string
+//                 };
+//                 data = null;
+//                 done(err, data);
+//             }
+//         });
 
 
-	it('should add hook even if hook already exists', function(done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-		stub_github_call = sinon.stub(github, 'call', function(args, done){
+//             repoTest = 'repoTest';
+//             err = null;
 
-			if (args.fun == 'one'  && args.obj =='repos'){
-				repo_github ={
-					permissions:{
-						admin:true
-					},
-					owner:{
-						login:'login'
-					},
-					name:'name'
-				};					
-				err = null;
-				done(err,repo_github);
-			}else if (args.fun == 'createHook' && args.obj =='repos'){
-				err_string = '{"errors":["Hook already exists on this repository"]}';
-				err ={
-					message:err_string
-				};
-				data = null;
-				done(err,data);
-			}
-		});
+//             done(err, repoTest);
+//         });
 
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
 
-			repoTest = 'repoTest';
-			err = null;
 
-			done(err,repoTest);
-		});
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
+//         repo.add(req, function(err, repoTest) {
+//             assert.equal(repoTest, 'repoTest');
+//             done();
+//         });
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//     });
 
 
-		repo.add(req, function(err,repoTest){
-			assert.equal(repoTest,'repoTest');
-			done();
-		});
+//     afterEach(function() {
+//         stub_github_call.restore();
+//         repo_with.restore();
+//     });
 
 
-	});
+// });
 
 
-	afterEach(function(){
-		stub_github_call.restore();
-		repo_with.restore();
-	});
 
+// /////////////////////////////////
+// ///////////Repo Rmv/////////////
+// ////////////////////////////////
 
-});
+// describe('repo:rmv', function() {
 
 
+//     it('should remove existing repo webhook', function(done) {
 
-/////////////////////////////////
-///////////Repo Rmv/////////////
-////////////////////////////////
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-describe('repo:rmv', function(){
+//             if (args.fun == 'one') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: true
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
 
+//                 err = null;
 
-	it('should remove existing repo webhook', function(done){
+//                 done(err, repo_github);
 
-		stub_github_call = sinon.stub(github,'call', function(args,done){
+//             } else if (args.fun == 'getHooks') {
 
-			if(args.fun =='one'){
-				repo_github = {
-					permissions: {
-						admin:true
-					},
-					owner: {
-						login: 'login'
-					},
-					name:'name'
-				};
+//                 webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
 
-				err = null;
+//                 hook1 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook1'
+//                 };
 
-				done(err,repo_github);
+//                 hook2 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook2'
+//                 };
 
-			}else if(args.fun == 'getHooks'){
-				
-				webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
+//                 hook3 = {
+//                     config: {
+//                         url: webhook_url
+//                     },
+//                     id: 'hook3'
+//                 };
+//                 hooks = [hook1, hook2, hook3];
 
-				hook1 ={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook1'
-				};
+//                 error = null;
 
-				hook2={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook2'
-				};
+//                 done(error, hooks);
 
-				hook3 ={
-					config:{
-						url:webhook_url
-					},
-					id:'hook3'
-				};
-				hooks=[hook1,hook2,hook3];
+//             } else if (args.fun == 'deleteHook') {
+//                 error = null;
+//                 data = 'data';
+//                 done(error, data);
+//             }
 
-				error = null;
+//         });
 
-				done(error,hooks);
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-			}else if(args.fun == 'deleteHook'){
-				error = null;
-				data = 'data';
-				done(error,data);
-			}
+//             repoTest = 'repoTest';
+//             err = null;
 
-		});
+//             done(err, repoTest);
+//         });
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
 
-			repoTest = 'repoTest';
-			err = null;
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
-			done(err,repoTest);
-		});
 
+//         repo.rmv(req, function(err, res) {
+//             assert.equal(res, 'repoTest');
+//             done();
+//         });
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
 
+//     });
 
-		repo.rmv(req,function(err,res){
-			assert.equal(res,'repoTest');
-			done();
-		});
 
 
-	});
+//     it('should return not found for no repo', function(done) {
 
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
+//             if (args.fun == 'one') {
+//                 repo_github = null;
 
-	it('should return not found for no repo', function(done){
+//                 err = 'error';
 
-		stub_github_call = sinon.stub(github,'call', function(args,done){
+//                 done(err, repo_github);
 
-			if(args.fun =='one'){
-				repo_github = null;
+//             } else if (args.fun == 'getHooks') {
 
-				err = 'error';
+//                 webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
 
-				done(err,repo_github);
+//                 hook1 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook1'
+//                 };
 
-			}else if(args.fun == 'getHooks'){
-				
-				webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
+//                 hook2 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook2'
+//                 };
 
-				hook1 ={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook1'
-				};
+//                 hook3 = {
+//                     config: {
+//                         url: webhook_url
+//                     },
+//                     id: 'hook3'
+//                 };
+//                 hooks = [hook1, hook2, hook3];
 
-				hook2={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook2'
-				};
+//                 error = null;
 
-				hook3 ={
-					config:{
-						url:webhook_url
-					},
-					id:'hook3'
-				};
-				hooks=[hook1,hook2,hook3];
+//                 done(error, hooks);
 
-				error = null;
+//             } else if (args.fun == 'deleteHook') {
+//                 error = null;
+//                 data = 'data';
+//                 done(error, data);
+//             }
 
-				done(error,hooks);
+//         });
 
-			}else if(args.fun == 'deleteHook'){
-				error = null;
-				data = 'data';
-				done(error,data);
-			}
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-		});
+//             repoTest = 'repoTest';
+//             err = null;
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+//             done(err, repoTest);
+//         });
 
-			repoTest = 'repoTest';
-			err = null;
 
-			done(err,repoTest);
-		});
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
+//         repo.rmv(req, function(err, res) {
+//             assert.equal(err.code, 404);
+//             done();
+//         });
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//     });
 
-		repo.rmv(req,function(err,res){
-			assert.equal(err.code,404);
-			done();
-		});
 
-	});
 
 
+//     it('should return forbidden with bad permissions', function(done) {
 
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-it('should return forbidden with bad permissions', function(done){
+//             if (args.fun == 'one') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: false
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
 
-		stub_github_call = sinon.stub(github,'call', function(args,done){
+//                 err = null;
 
-			if(args.fun =='one'){
-				repo_github = {
-					permissions: {
-						admin:false
-					},
-					owner: {
-						login: 'login'
-					},
-					name:'name'
-				};
+//                 done(err, repo_github);
 
-				err = null;
+//             } else if (args.fun == 'getHooks') {
 
-				done(err,repo_github);
+//                 webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
 
-			}else if(args.fun == 'getHooks'){
-				
-				webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
+//                 hook1 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook1'
+//                 };
 
-				hook1 ={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook1'
-				};
+//                 hook2 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook2'
+//                 };
 
-				hook2={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook2'
-				};
+//                 hook3 = {
+//                     config: {
+//                         url: webhook_url
+//                     },
+//                     id: 'hook3'
+//                 };
+//                 hooks = [hook1, hook2, hook3];
 
-				hook3 ={
-					config:{
-						url:webhook_url
-					},
-					id:'hook3'
-				};
-				hooks=[hook1,hook2,hook3];
+//                 error = null;
 
-				error = null;
+//                 done(error, hooks);
 
-				done(error,hooks);
+//             } else if (args.fun == 'deleteHook') {
+//                 error = null;
+//                 data = 'data';
+//                 done(error, data);
+//             }
 
-			}else if(args.fun == 'deleteHook'){
-				error = null;
-				data = 'data';
-				done(error,data);
-			}
+//         });
 
-		});
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+//             repoTest = 'repoTest';
+//             err = null;
 
-			repoTest = 'repoTest';
-			err = null;
+//             done(err, repoTest);
+//         });
 
-			done(err,repoTest);
-		});
 
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
 
+//         repo.rmv(req, function(err, res) {
+//             assert.equal(err.code, 403);
+//             done();
+//         });
 
-		repo.rmv(req,function(err,res){
-			assert.equal(err.code,403);
-			done();
-		});
 
+//     });
 
-});
 
 
 
+//     it('should throw error if not correct hook', function(done) {
 
-it('should throw error if not correct hook', function(done){
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-		stub_github_call = sinon.stub(github,'call', function(args,done){
+//             if (args.fun == 'one') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: true
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
 
-			if(args.fun =='one'){
-				repo_github = {
-					permissions: {
-						admin:true
-					},
-					owner: {
-						login: 'login'
-					},
-					name:'name'
-				};
+//                 err = null;
 
-				err = null;
+//                 done(err, repo_github);
 
-				done(err,repo_github);
+//             } else if (args.fun == 'getHooks') {
 
-			}else if(args.fun == 'getHooks'){
-				
-				webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
+//                 webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
 
-				hook1 ={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook1'
-				};
+//                 hook1 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook1'
+//                 };
 
-				hook2={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook2'
-				};
+//                 hook2 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook2'
+//                 };
 
-				hooks=[hook1,hook2];
+//                 hooks = [hook1, hook2];
 
-				error = null;
+//                 error = null;
 
-				done(error,hooks);
+//                 done(error, hooks);
 
-			}else if(args.fun == 'deleteHook'){
-				error = null;
-				data = 'data';
-				done(error,data);
-			}
+//             } else if (args.fun == 'deleteHook') {
+//                 error = null;
+//                 data = 'data';
+//                 done(error, data);
+//             }
 
-		});
+//         });
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-			repoTest = 'repoTest';
-			err = null;
+//             repoTest = 'repoTest';
+//             err = null;
 
-			done(err,repoTest);
-		});
+//             done(err, repoTest);
+//         });
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
-		repo.rmv(req,function(err,res){
-			assert.equal(err.code,404);
-			done();
-		});
+//         repo.rmv(req, function(err, res) {
+//             assert.equal(err.code, 404);
+//             done();
+//         });
 
 
-});
+//     });
 
 
-it('should throw error for github gethooks', function(done){
+//     it('should throw error for github gethooks', function(done) {
 
-		stub_github_call = sinon.stub(github,'call', function(args,done){
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-			if(args.fun =='one'){
-				repo_github = {
-					permissions: {
-						admin:true
-					},
-					owner: {
-						login: 'login'
-					},
-					name:'name'
-				};
+//             if (args.fun == 'one') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: true
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
 
-				err = null;
+//                 err = null;
 
-				done(err,repo_github);
+//                 done(err, repo_github);
 
-			}else if(args.fun == 'getHooks'){
+//             } else if (args.fun == 'getHooks') {
 
-				hooks= null;
+//                 hooks = null;
 
-				error = 'error';
+//                 error = 'error';
 
-				done(error,hooks);
+//                 done(error, hooks);
 
-			}else if(args.fun == 'deleteHook'){
-				error = null;
-				data = 'data';
-				done(error,data);
-			}
+//             } else if (args.fun == 'deleteHook') {
+//                 error = null;
+//                 data = 'data';
+//                 done(error, data);
+//             }
 
-		});
+//         });
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-			repoTest = 'repoTest';
-			err = null;
+//             repoTest = 'repoTest';
+//             err = null;
 
-			done(err,repoTest);
-		});
+//             done(err, repoTest);
+//         });
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
-		repo.rmv(req,function(err,res){
-			assert.equal(err,'error');
-			done();
-		});
+//         repo.rmv(req, function(err, res) {
+//             assert.equal(err, 'error');
+//             done();
+//         });
 
 
-	});
+//     });
 
 
 
-it('should throw error for github delete hook', function(done){
+//     it('should throw error for github delete hook', function(done) {
 
-		stub_github_call = sinon.stub(github,'call', function(args,done){
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-			if(args.fun =='one'){
-				repo_github = {
-					permissions: {
-						admin:true
-					},
-					owner: {
-						login: 'login'
-					},
-					name:'name'
-				};
+//             if (args.fun == 'one') {
+//                 repo_github = {
+//                     permissions: {
+//                         admin: true
+//                     },
+//                     owner: {
+//                         login: 'login'
+//                     },
+//                     name: 'name'
+//                 };
 
-				err = null;
+//                 err = null;
 
-				done(err,repo_github);
+//                 done(err, repo_github);
 
-			}else if(args.fun == 'getHooks'){
-				webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
+//             } else if (args.fun == 'getHooks') {
+//                 webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
 
-				hook1 ={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook1'
-				};
+//                 hook1 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook1'
+//                 };
 
-				hook2={
-					config:{
-						url:'http://google.com'
-					},
-					id:'hook2'
-				};
+//                 hook2 = {
+//                     config: {
+//                         url: 'http://google.com'
+//                     },
+//                     id: 'hook2'
+//                 };
 
-				hook3 ={
-					config:{
-						url:webhook_url
-					},
-					id:'hook3'
-				};
-				hooks=[hook1,hook2,hook3];
+//                 hook3 = {
+//                     config: {
+//                         url: webhook_url
+//                     },
+//                     id: 'hook3'
+//                 };
+//                 hooks = [hook1, hook2, hook3];
 
-				error = null;
+//                 error = null;
 
-				done(error,hooks);
+//                 done(error, hooks);
 
-			}else if(args.fun == 'deleteHook'){
-				error = 'error';
-				data = null;
-				done(error,data);
-			}
+//             } else if (args.fun == 'deleteHook') {
+//                 error = 'error';
+//                 data = null;
+//                 done(error, data);
+//             }
 
-		});
+//         });
 
-		repo_with = sinon.stub(Repo, 'with', function(args,done){
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-			repoTest = 'repoTest';
-			err = null;
+//             repoTest = 'repoTest';
+//             err = null;
 
-			done(err,repoTest);
-		});
+//             done(err, repoTest);
+//         });
 
 
-		req={
-			args:{
-				uuid:'uuid'
-			},
-			user:{
-				token: 'token'
-			}
-		};
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
-		repo.rmv(req,function(err,res){
-			assert.equal(err,'error');
-			done();
-		});
+//         repo.rmv(req, function(err, res) {
+//             assert.equal(err, 'error');
+//             done();
+//         });
 
 
-	});
+//     });
 
 
 
-afterEach(function(){
-	stub_github_call.restore();
-	repo_with.restore();
-});
+//     afterEach(function() {
+//         stub_github_call.restore();
+//         repo_with.restore();
+//     });
 
-});
-
+// });

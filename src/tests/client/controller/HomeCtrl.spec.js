@@ -76,8 +76,6 @@ describe('Home Controller', function() {
 
         // now toggle the repo
 
-        scope.repos[0].ninja.ninja = !scope.repos[0].ninja.ninja;
-
         scope.toggle(scope.repos[0]);
 
         httpBackend.expect('POST', '/api/repo/rmv', '{"user":"me","repo":"repo-1","uuid":1}').respond({
@@ -136,8 +134,6 @@ describe('Home Controller', function() {
 
 
         // now toggle the repo
-
-        scope.repos[0].ninja.ninja = !scope.repos[0].ninja.ninja;
 
         scope.toggle(scope.repos[0]);
 
