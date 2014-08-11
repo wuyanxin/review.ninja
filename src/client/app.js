@@ -2,10 +2,10 @@ module = angular.module('app',
     ['ninja.filters', 
      'ninja.config',
      'ui.router', 
-     'ngAnimate',
-     'ui.bootstrap',
+     'ui.bootstrap.tpls',
+     'ui.bootstrap.tabs',
+     'ui.bootstrap.modal',
      'mgcrea.ngStrap.popover',
-     'frapontillo.bootstrap-switch', 
      'angulartics', 
      'angulartics.google.analytics']);
 
