@@ -13,7 +13,7 @@ var notification = require('../services/notification');
 
 module.exports = function(req, res) {
 
-    var uuid = req.body.repository.id;
+    var repo_uuid = req.body.repository.id;
 
     function get_collaborators(user, repo, token, done) {
         args = {
@@ -36,7 +36,7 @@ module.exports = function(req, res) {
     }
 
     Repo.with({
-        uuid: uuid
+        uuid: repo_uuid
     }, function(err, repo) {
         if (err) {
             logger.log(err);
@@ -50,7 +50,6 @@ module.exports = function(req, res) {
             var user = repository.owner.login;
             var repo_name = repository.name;
             var slug = repository.full_name;
-            var pull_request = req.body.pull_request;
             var sender = req.body.sender;
             var review_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/' + repository.full_name + '/pull/' + req.body.number;
             var latest_commit_sha = req.body.pull_request.head.sha;
@@ -60,40 +59,23 @@ module.exports = function(req, res) {
                     logger.log(err);
                 }
 
-                args = {
+                arg = {
                     user: user,
                     repo: repo_name,
+                    repo_uuid: repo_uuid,
                     sha: latest_commit_sha,
-                    state: 'pending',
-                    description: 'To be reviewed.',
-                    target_url: review_url
+                    number: pull_request_number,
+                    token: repo.token
                 };
+
                 var actions = {
                     opened: function() {
-                        github.call({
-                            obj: 'statuses',
-                            fun: 'create',
-                            arg: args,
-                            token: repo.token
-                        }, function(err, data) {
-                            if (err) {
-                                logger.log(err);
-                                return;
-                            }
+                        GitHubStatusApiService.updateCommit(arg, function(err, data) {
                             notification.pull_request_opened(slug, pull_request_number, sender, collaborators, review_url);
                         });
                     },
                     synchronize: function() {
-                        github.call({
-                            obj: 'statuses',
-                            fun: 'create',
-                            arg: args,
-                            token: repo.token
-                        }, function(err, data) {
-                            if (err) {
-                                logger.log(err);
-                                return;
-                            }
+                        GitHubStatusApiService.updateCommit(arg, function(err, data) {
                             notification.pull_request_synchronized(slug, pull_request_number, sender, collaborators, review_url);
                         });
                     },

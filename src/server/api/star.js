@@ -2,6 +2,7 @@
 var Repo = require('mongoose').model('Repo');
 var Comm = require('mongoose').model('Comm');
 var Star = require('mongoose').model('Star');
+var GitHubStatusApiService = require('../services/github-status-api');
 
 module.exports = {
 
@@ -56,14 +57,15 @@ module.exports = {
 
     set: function(req, done) {
 
-        Repo.with({uuid: req.args.repo}, function(err, repo) {
+        Repo.with({uuid: req.args.repo_uuid}, function(err, repo) {
 
             if(err){
                 return done(err,repo);
             }
 
-            Star.create({repo: req.args.repo, comm: req.args.comm, user: req.user.id, name: req.user.login}, function(err, star) {
-                io.emit('pull-request-'+req.args.repo+':starred', {});
+            Star.create({repo: req.args.repo_uuid, comm: req.args.sha, user: req.user.id, name: req.user.login}, function(err, star) {
+                io.emit(req.args.user + ':' + req.args.repo + ':pull-request-'+req.args.number+':starred', {});
+                GitHubStatusApiService.updateCommit({ user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid, sha: req.args.sha, number: req.args.number, token: req.user.token});
                 done(err, star);
             });
 
@@ -81,13 +83,14 @@ module.exports = {
 
     rmv: function(req, done) {
         Star.with({
-            repo: req.args.repo,
-            comm: req.args.comm,
+            repo: req.args.repo_uuid,
+            comm: req.args.sha,
             user: req.user.id
         }, function(err, star) {
             if(star) {
                 star.remove(function(err, star) {
-                    io.emit('pull-request-'+req.args.repo+':unstarred', {});
+                    io.emit(req.args.user + ':' + req.args.repo + ':pull-request-'+req.args.number+':unstarred', {});
+                    GitHubStatusApiService.updateCommit({user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid, sha: req.args.sha, number: req.args.number, token: req.user.token});
                     done(err, star);
                 });
             }

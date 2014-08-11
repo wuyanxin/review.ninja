@@ -97,6 +97,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 title: $scope.newIssue.title,
+                repo_uuid: $scope.repo.value.id,
                 body: $scope.newIssue.body,
                 number: $stateParams.number,
                 sha: $scope.pull.value.head.sha,
@@ -172,27 +173,29 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
 
         $scope.star = function() {
             $scope.vote = $RPC.call('star', 'set', {
-                // repo uuid
-                repo: $scope.repo.value.id,
-                // comm uuid
-                comm: $scope.pull.value.head.sha
+                repo: $stateParams.repo,
+                user: $stateParams.user,
+                number: $stateParams.number,
+                repo_uuid: $scope.repo.value.id,
+                sha: $scope.pull.value.head.sha
             });
         };
 
         $scope.unstar = function() {
             $scope.vote = $RPC.call('star', 'rmv', {
-                // repo uuid
-                repo: $scope.repo.value.id,
-                // comm uuid
-                comm: $scope.pull.value.head.sha
+                repo: $stateParams.repo,
+                user: $stateParams.user,
+                number: $stateParams.number,
+                repo_uuid: $scope.repo.value.id,
+                sha: $scope.pull.value.head.sha
             });
         };
 
-        socket.on('pull-request-' +repo.value.id+ ':starred', function() {
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':starred', function() {
             $scope.refreshStargazers();
         });
 
-        socket.on('pull-request-' +repo.value.id+ ':unstarred', function() {
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':unstarred', function() {
             $scope.refreshStargazers();
         });
     }
