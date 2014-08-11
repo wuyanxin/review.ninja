@@ -6,6 +6,7 @@ var User = require('mongoose').model('User');
 //services
 var github = require('../services/github');
 var notification = require('../services/notification');
+var GitHubStatusApiService = require('../services/github-status-api');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Pull Request Webhook Handler
@@ -16,7 +17,7 @@ module.exports = function(req, res) {
     var uuid = req.body.repository.id;
 
     function get_collaborators(user, repo, token, done) {
-        args = {
+        var args = {
             user: user,
             repo: repo
         };
@@ -27,7 +28,6 @@ module.exports = function(req, res) {
             token: token
         }, function(err, collaborators) {
             var collaborator_ids = collaborators.map(function(collaborator) {
-                console.log('Collaborators: '+collaborator);
                 return collaborator.id;
             });
             
@@ -38,19 +38,45 @@ module.exports = function(req, res) {
     }
 
 
-    function get_issues(user, repo, token, done) {
-        args = {
+    function get_issues(user, repo,pull_request_label, token, done) {
+        
+        label = 'review.ninja,'+String(pull_request_label);
+
+        var args = {
             user: user,
-            repo: repo
+            repo: repo,
+            labels: label,
+            state:'open'
         };
+
         github.call({
-            obj: 'repos',
-            fun: 'getIssues',
+            obj: 'issues',
+            fun: 'repoIssues',
             arg: args,
             token: token
         }, function(err, issues) {
             done(err,issues);
         });
+    }
+
+
+    function get_pull_request(user,repo,number, token, done){
+        var args= {
+            user: user,
+            repo: repo,
+            number:number
+        };
+        console.log('ARGS');
+        console.log(args);
+        github.call({
+            obj:'pullRequests',
+            fun:'get',
+            arg: args,
+            token:token
+        }, function(err,pull_request){
+            done(err,pull_request);
+        });
+
     }
 
     Repo.with({
@@ -65,58 +91,253 @@ module.exports = function(req, res) {
             var action = req.body.action;
             var issue = req.body.issue;
             var number = req.body.issue.number;
-            var labels = req.body.issue.label;
+            var labels = req.body.issue.labels;
             var state = req.body.issue.state;
             var assignee = req.body.issue.assignee;
             var repository = req.body.repository;
             var sender = req.body.sender;
-            var user = req.body.issue.user;
+            var user = repository.owner.login;
             var repo_name = repository.name;
-
             var review_url = req.body.issue.url;
 
             get_collaborators(user, repo_name, repo.token, function(err, collaborators) {
                 if (err) {
                     logger.log(err);
                 }
-
                 var actions = {
                     opened: function() {
+                        // for(var index in labels){
+                        //     label = labels[index];
 
-                        for(var label in labels){
-                            if(label.name == 'review.ninja'){
+                        //     if(label.name == 'review.ninja'){
+                        //         for(var index_inner in labels){
+                        //             inner = labels[index_inner];
+                        //             var reg = /pull-request-(\d*)?/;
+                        //             var match =reg.exec(inner.name);
+                        //             console.log(match);
+                        //             if(match){
 
-                                notification.new_issue(sender,collaborators,number,review_url);
+                        //                 var pull_request_number = match[1];
+                        //                 get_pull_request(user,repo_name,pull_request_number,repo.token, function(err, pull_request){
 
+                        //                     arg = {
+                        //                         user: user,
+                        //                         repo: repo_name,
+                        //                         repo_uuid: uuid,
+                        //                         sha: pull_request.head.sha,
+                        //                         number: pull_request_number,
+                        //                         token: repo.token
+                        //                     };
+
+                        //                    GitHubStatusApiService.updateCommit(arg, function(err, data) {
+                        //                         notification.new_issue(sender,collaborators,pull_request_number,review_url);
+                        //                         return;
+                        //                    });
+
+                        //                 });
+                        //             }
+
+                        //         }
+
+                        //     }
+                        // }
+
+
+                        var found_review = false;
+
+                        for(var review_index = 0; review_index <labels.length;review_index++)
+                        {
+
+                            var review_label = labels[review_index];
+
+                            if(review_label.name == 'review.ninja'){
+                                found_review = true;
+                                break;
                             }
+
+
                         }
+
+
+                        if(!found_review){
+                            return;
+                        }
+
+                        var found_label = false;
+                        var pull_request_number = 0;
+                        for(var index = 0; index < labels.length; index++){
+
+                            var label = labels[index];
+                            var reg = /pull-request-(\d*)?/;
+                            var match =reg.exec(label.name); 
+
+                            if(match){
+                                found_label = true;
+                                pull_request_number = match[1];
+                                break;
+                            }
+
+                        }
+
+                        if(!found_label){
+                            return;
+                        }
+                       
+                        get_pull_request(user,repo_name,pull_request_number,repo.token, function(err, pull_request){
+
+                            arg = {
+                                user: user,
+                                repo: repo_name,
+                                repo_uuid: uuid,
+                                sha: pull_request.head.sha,
+                                number: pull_request_number,
+                                token: repo.token
+                            };
+
+                           GitHubStatusApiService.updateCommit(arg, function(err, data) {
+                                notification.new_issue(sender,collaborators,pull_request_number,review_url);
+                                return;
+                           });
+
+                        });
 
                     },
                     closed: function() {
                         // an issue has been closed
 
-                        for(var label in labels){
-                            if(label.name.match(/pull-request-\d*?/)){
-                                var pull_request_number = label.name;
+                        // for(var review_index in labels){
+                        //     var review_label = labels[review_index];
+                        //     if(review_label.name == 'review.ninja'){
+                        //         for(var index in labels){
+                        //             var label = labels[index];
+                        //             var reg = /pull-request-(\d*)?/;
+                        //             var match =reg.exec(label.name);
 
-                                get_issues(user, repo_name, repo.token, function(err, all_issues) {
+                        //             if(match){
+                        //                 var pull_request_number = match[1];
+                        //                 get_issues(user, repo_name,label.name,repo.token, function(err,issues){
+                                            
+                        //                     if(err){
+                        //                         logger.log(err);
+                        //                     }
+                        //                     if(issues.length!==0 ){
+                        //                         console.log('returned');
+                        //                         return;
 
-                                    for (iss in all_issues){
+                        //                     }
 
-                                        for(issue_label in iss.labels){
-                                            if(issue_label == label && iss.state=='open'){
-                                                return;
-                                            }
-                                        }
-                                    }
 
-                                    notification.issues_close(sender,collaborators,pull_request_number,review_url);
+                        //                     get_pull_request(user,repo_name,pull_request_number,repo.token, function(err, pull_request){
 
-                                });
+                        //                         if(err){
+                        //                             logger.log(err);
+                        //                         }
 
+                        //                         arg = {
+                        //                             user: user,
+                        //                             repo: repo_name,
+                        //                             repo_uuid: uuid,
+                        //                             sha: pull_request.head.sha,
+                        //                             number: pull_request_number,
+                        //                             token: repo.token
+                        //                         };
+
+                        //                        GitHubStatusApiService.updateCommit(arg, function(err, data) {
+                        //                             notification.issues_close(sender,collaborators,pull_request_number,review_url);
+                        //                             return;
+                        //                        });
+
+                        //                     });
+
+                        //                 });
+                        //             }
+                        //         }
+
+                        //     }
+
+                        // }
+
+
+                        var found_review = false;
+
+                        for(var review_index = 0; review_index <labels.length;review_index++)
+                        {
+
+
+                            var review_label = labels[review_index];
+
+                            if(review_label.name == 'review.ninja'){
+                                found_review = true;
+                                break;
+                            }
+
+
+                        }
+
+
+                        if(!found_review){
+                            return;
+                        }
+
+                        var found_label = false;
+                        var pull_request_number = 0;
+                        for(var index = 0; index < labels.length; index++){
+
+                            var label = labels[index];
+                            var reg = /pull-request-(\d*)?/;
+                            var match =reg.exec(label.name); 
+
+                            if(match){
+                                found_label = true;
+                                pull_request_number = match[1];
+                                break;
                             }
 
                         }
+
+                        if(!found_label){
+                            return;
+                        }
+                      
+
+                        get_issues(user, repo_name,label.name,repo.token, function(err,issues){
+                                    
+                            if(err){
+                                logger.log(err);
+                            }
+                            if(issues.length!==0 ){
+                                console.log('returned');
+                                return;
+
+                            }
+
+
+                            get_pull_request(user,repo_name,pull_request_number,repo.token, function(err, pull_request){
+
+                                if(err){
+                                    logger.log(err);
+                                }
+
+                                arg = {
+                                    user: user,
+                                    repo: repo_name,
+                                    repo_uuid: uuid,
+                                    sha: pull_request.head.sha,
+                                    number: pull_request_number,
+                                    token: repo.token
+                                };
+
+                               GitHubStatusApiService.updateCommit(arg, function(err, data) {
+                                    notification.issues_close(sender,collaborators,pull_request_number,review_url);
+                                    return;
+                               });
+
+                            });
+
+                        });
+
+
+
 
                     },
                     reopened: function() {

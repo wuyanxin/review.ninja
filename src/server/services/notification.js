@@ -11,7 +11,7 @@ module.exports = function() {
            var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
             
             var template = fs.readFileSync(tmpl,'utf-8');
-            
+            console.log(template);
             var mailOptions = {
                 from: 'RobotNinja ✔ <noreply@review.ninja>',
                 to:user.email,
@@ -19,14 +19,15 @@ module.exports = function() {
                 html:ejs.render(template,args)
             };
 
+            console.log(mailOptions);
 
-            smtpTransport.sendMail(mailOptions, function(error, response) {
+            // smtpTransport.sendMail(mailOptions, function(error, response) {
                
-                if (error) {
-                    logger.log(error);
-                }
-                smtpTransport.close();
-            });
+            //     if (error) {
+            //         logger.log(error);
+            //     }
+            //     smtpTransport.close();
+            // });
 
 
 
@@ -54,7 +55,7 @@ module.exports = function() {
                 sender:sender,
                 review_url:review_url
             };   
-            sendmail(collaborators,'New Commits, you can now review them','../templates/pullReqSync.ejs',args);
+            sendmail(collaborators,'New Commits, you can now review them','./../templates/pullReqSync.ejs',args);
         },
         star: function(collaborators,starrer,number){
 
@@ -63,7 +64,7 @@ module.exports = function() {
                 number:number
             };
 
-            sendmail(collaborators,'Your pull request has been starred','../templates/starred.ejs',args);
+            sendmail(collaborators,'Your pull request has been starred','./../templates/starred.ejs',args);
 
         },
 
@@ -76,7 +77,7 @@ module.exports = function() {
 
             sendmail(collaborators,'Your pull request has been UNstarred','../templates/unstarred.ejs',args);
         },
-        new_issue: function(sender,collaborator,issue_number,review_url){
+        new_issue: function(sender,collaborators,issue_number,review_url){
 
             var args= {
                 review_url: review_url,
@@ -84,7 +85,7 @@ module.exports = function() {
                 sender:sender
             };
 
-            sendmail(collaborators,'A new issue has just been raised!!','../templates/new_issue.ejs', args);
+            sendmail(collaborators,'A new issue has just been raised!!','src/server/templates/new_issue.ejs', args);
         },
         issues_close: function(sender,collaborators,number, review_url){
 
@@ -94,7 +95,7 @@ module.exports = function() {
                 sender:sender
             };
 
-            sendmail(collaborators,'All issues have just been closed','../templates/issues_closed.ejs',args);
+            sendmail(collaborators,'All issues have just been closed','src/server/templates/issue_closed.ejs',args);
 
         },
         new_commit: function(sender,collaborators,reviewer,number){

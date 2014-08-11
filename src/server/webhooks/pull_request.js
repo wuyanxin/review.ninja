@@ -6,6 +6,7 @@ var User = require('mongoose').model('User');
 //services
 var github = require('../services/github');
 var notification = require('../services/notification');
+var GitHubStatusApiService = require('../services/github-status-api');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Pull Request Webhook Handler
@@ -16,6 +17,7 @@ module.exports = function(req, res) {
     var repo_uuid = req.body.repository.id;
 
     function get_collaborators(user, repo, token, done) {
+        console.log('getting collaborators');
         args = {
             user: user,
             repo: repo
@@ -55,6 +57,7 @@ module.exports = function(req, res) {
             var latest_commit_sha = req.body.pull_request.head.sha;
 
             get_collaborators(user, repo_name, repo.token, function(err, collaborators) {
+                console.log('in collaborators');
                 if (err) {
                     logger.log(err);
                 }
@@ -70,7 +73,10 @@ module.exports = function(req, res) {
 
                 var actions = {
                     opened: function() {
+                        console.log('opened');
                         GitHubStatusApiService.updateCommit(arg, function(err, data) {
+                            console.log(collaborators);
+                            console.log(pull_request_number);
                             notification.pull_request_opened(slug, pull_request_number, sender, collaborators, review_url);
                         });
                     },
