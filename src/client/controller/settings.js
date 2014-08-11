@@ -23,7 +23,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
                     $scope.botName = '';
                 }
             });
-        }
+        };
 
         $scope.removeBot = function(bot) {
             $RPC.call('tool', 'rmv', {
@@ -60,7 +60,6 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         };
 
         $scope.removeRepo = function() {
-            console.log("removing repo: " + $scope.repo.value.full_name);
         };
 
         $scope.setNotifications = function() {
