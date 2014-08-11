@@ -111,6 +111,30 @@ module.factory('$HUBService', ['$q', '$HUB',
 
 
 // *****************************************************
+// Angular Route Provider Resolve Promises
+// *****************************************************
+
+
+module.factory('$RPCService', ['$q', '$RPC',
+    function($q, $RPC) {
+        return {
+            call: function(o, f, d) {
+                var deferred = $q.defer();
+                $RPC.call(o, f, d, function(err, obj) {
+                    if (err) {
+                        deferred.reject();
+                    } else {
+                        deferred.resolve(obj);
+                    }
+                });
+                return deferred.promise;
+            }
+        };
+    }
+]);
+
+
+// *****************************************************
 // Event Bus
 // *****************************************************
 
