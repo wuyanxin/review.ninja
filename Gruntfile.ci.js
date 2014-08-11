@@ -126,8 +126,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-istanbul');
     grunt.loadNpmTasks('grunt-coveralls');
 
-    // grunt.registerTask('default', ['jshint', 'mochaTest', 'karma', 'http']);
-    grunt.registerTask('default', ['jshint', 'karma']);
+    grunt.registerTask('default', ['jshint', 'mochaTest', 'karma', 'http']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'coveralls:mocha']);
 
 };

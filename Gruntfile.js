@@ -69,6 +69,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-concurrent');
 
     grunt.registerTask('serve', ['concurrent'])
-    // grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
-    grunt.registerTask('default', ['jshint', 'karma']);
+    grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
 };
