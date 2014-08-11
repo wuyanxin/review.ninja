@@ -3,33 +3,40 @@
 	<div class="row">
 
 		<!-- the left sidebar -->
-		<div class="col-md-2">
+		<div class="col-xs-1 col-md-4 sidebar">
+
+			<table class="table">
+				<tr>
+					<td>
+						<a href=""
+						   placement="bottom",
+						   container="body"
+						   args="{repos:repos, toggle:toggle}"
+						   template="/templates/popovers/add-repo.html"
+						   popover>
+
+						   <span class="hidden-xs hidden-sm"><i class="fa fa-plus-circle"></i> Add Repository</span>
+    					   <span class="visible-xs visible-sm small"><i class="fa fa-lg fa-plus-circle center-block"></i></span>
+						</a>
+					</td>
+				</tr>
+			</table>
 
 		</div>
 
 		<!-- the main section -->
-		<div class="col-md-10">
+		<div class="col-xs-23 col-md-20 main">
 
-			<p class="lead">Repositories</p>
+			<!-- <i class="fa fa-spin fa-spinner fa-3x center-block"></i> -->
 
-			<i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="repos.length===0" style="text-align:center; display:block; margin:0 auto;"></i>
-
-			<div class="list-group" collapse="configure" style="margin:0;" ng-show="repos.length">
-				<a class="list-group-item" ng-repeat="repo in repos | deep:'ninja.ninja' | orderBy:'name'" ui-sref="repo.list({ user:repo.owner.login, repo:repo.name })">
-					{{ repo.full_name }}
-				</a>
-				<a class="list-group-item" href="" ng-click="configure=!configure"><i class="fa fa-gear"></i> <strong>Configure</strong></a>
-			</div>
-
-			<div class="list-group" collapse="!configure" style="margin:0;">
-				<a class="list-group-item" href="" ng-click="configure=!configure"><i class="fa fa-gear"></i> <strong>Configure</strong></a>
-				<span class="list-group-item" ng-repeat="repo in repos | deep:'permissions.admin' | orderBy:'name'">
-					{{ repo.full_name }}
-					<span class="pull-right" style="height:24px; margin-top:-3px;">
-						<bs-switch height="24px" type="checkbox" ng-model="repo.ninja.ninja" ng-change="toggle(repo)" switch-size="small"></bs-switch>
-					</span>
-				</span>
-			</div>
+			<table class="table">
+				<tr ng-repeat="repo in repos | deep:'ninja.ninja' | orderBy:'full_name'">
+					<td><a ui-sref="repo.list({ user:repo.owner.login, repo:repo.name })">{{ repo.full_name }}</a></td>
+					<td style="text-align:right;">
+						<a href="" ng-click="toggle(repo)" ng-show="repo.permissions.admin"><i class="fa fa-times"></i></a>
+					</td>
+				</tr>
+			</table>
 					
 		</div>
 

@@ -66,8 +66,7 @@ module.exports = function(req, res) {
             repo: repo,
             number:number
         };
-        console.log('ARGS');
-        console.log(args);
+
         github.call({
             obj:'pullRequests',
             fun:'get',
@@ -106,42 +105,6 @@ module.exports = function(req, res) {
                 }
                 var actions = {
                     opened: function() {
-                        // for(var index in labels){
-                        //     label = labels[index];
-
-                        //     if(label.name == 'review.ninja'){
-                        //         for(var index_inner in labels){
-                        //             inner = labels[index_inner];
-                        //             var reg = /pull-request-(\d*)?/;
-                        //             var match =reg.exec(inner.name);
-                        //             console.log(match);
-                        //             if(match){
-
-                        //                 var pull_request_number = match[1];
-                        //                 get_pull_request(user,repo_name,pull_request_number,repo.token, function(err, pull_request){
-
-                        //                     arg = {
-                        //                         user: user,
-                        //                         repo: repo_name,
-                        //                         repo_uuid: uuid,
-                        //                         sha: pull_request.head.sha,
-                        //                         number: pull_request_number,
-                        //                         token: repo.token
-                        //                     };
-
-                        //                    GitHubStatusApiService.updateCommit(arg, function(err, data) {
-                        //                         notification.new_issue(sender,collaborators,pull_request_number,review_url);
-                        //                         return;
-                        //                    });
-
-                        //                 });
-                        //             }
-
-                        //         }
-
-                        //     }
-                        // }
-
 
                         var found_review = false;
 
@@ -205,59 +168,6 @@ module.exports = function(req, res) {
                     closed: function() {
                         // an issue has been closed
 
-                        // for(var review_index in labels){
-                        //     var review_label = labels[review_index];
-                        //     if(review_label.name == 'review.ninja'){
-                        //         for(var index in labels){
-                        //             var label = labels[index];
-                        //             var reg = /pull-request-(\d*)?/;
-                        //             var match =reg.exec(label.name);
-
-                        //             if(match){
-                        //                 var pull_request_number = match[1];
-                        //                 get_issues(user, repo_name,label.name,repo.token, function(err,issues){
-                                            
-                        //                     if(err){
-                        //                         logger.log(err);
-                        //                     }
-                        //                     if(issues.length!==0 ){
-                        //                         console.log('returned');
-                        //                         return;
-
-                        //                     }
-
-
-                        //                     get_pull_request(user,repo_name,pull_request_number,repo.token, function(err, pull_request){
-
-                        //                         if(err){
-                        //                             logger.log(err);
-                        //                         }
-
-                        //                         arg = {
-                        //                             user: user,
-                        //                             repo: repo_name,
-                        //                             repo_uuid: uuid,
-                        //                             sha: pull_request.head.sha,
-                        //                             number: pull_request_number,
-                        //                             token: repo.token
-                        //                         };
-
-                        //                        GitHubStatusApiService.updateCommit(arg, function(err, data) {
-                        //                             notification.issues_close(sender,collaborators,pull_request_number,review_url);
-                        //                             return;
-                        //                        });
-
-                        //                     });
-
-                        //                 });
-                        //             }
-                        //         }
-
-                        //     }
-
-                        // }
-
-
                         var found_review = false;
 
                         for(var review_index = 0; review_index <labels.length;review_index++)
@@ -306,7 +216,6 @@ module.exports = function(req, res) {
                                 logger.log(err);
                             }
                             if(issues.length!==0 ){
-                                console.log('returned');
                                 return;
 
                             }

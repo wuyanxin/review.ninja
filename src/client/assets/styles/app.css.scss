@@ -1,21 +1,36 @@
 
-/* import our files */
-@import "diff.css.scss";
-
 /* overwrite bootstrap styles */
-// $body-bg: #f5f5f5;
+$grid-columns: 24;
+$body-bg: #f5f5f5;
 $navbar-margin-bottom: none;
 
 /* import bootstrap */
 @import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
 
-.main {
-  min-height: 100%; // fix this
-  background: #fff;
-  padding: $padding-large-vertical $padding-large-horizontal;
-  border-right: $gray-lighter 1px solid;
-  border-left: $gray-lighter 1px solid;
+/* define our own styles */
+$main-bg: #fff;
+
+/* import our files */
+@import "main.css.scss";
+@import "sidebar.css.scss";
+@import "diff.css.scss";
+@import "tabs.css.scss";
+
+/* global styles */
+
+.center-block {
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+
+/*
+ * TO DO:
+ * 1) convert this to sass
+ * 2) move to seperate files
+ */
 
 /*
  * The diff table

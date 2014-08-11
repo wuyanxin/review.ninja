@@ -11,7 +11,6 @@ module.exports = function() {
            var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
             
             var template = fs.readFileSync(tmpl,'utf-8');
-            console.log(template);
             var mailOptions = {
                 from: 'RobotNinja ✔ <noreply@review.ninja>',
                 to:user.email,
@@ -19,15 +18,13 @@ module.exports = function() {
                 html:ejs.render(template,args)
             };
 
-            console.log(mailOptions);
-
-            // smtpTransport.sendMail(mailOptions, function(error, response) {
+            smtpTransport.sendMail(mailOptions, function(error, response) {
                
-            //     if (error) {
-            //         logger.log(error);
-            //     }
-            //     smtpTransport.close();
-            // });
+                if (error) {
+                    logger.log(error);
+                }
+                smtpTransport.close();
+            });
 
 
 

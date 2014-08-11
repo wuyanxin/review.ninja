@@ -1,4 +1,13 @@
-module = angular.module('app', ['ui.router', 'ui.bootstrap', 'ninja.filters', 'ninja.config', 'frapontillo.bootstrap-switch', 'angulartics', 'angulartics.google.analytics']);
+module = angular.module('app', 
+    ['ninja.filters', 
+     'ninja.config',
+     'ui.router', 
+     'ui.bootstrap.tpls',
+     'ui.bootstrap.tabs',
+     'ui.bootstrap.modal',
+     'mgcrea.ngStrap.popover',
+     'angulartics', 
+     'angulartics.google.analytics']);
 
 filters = angular.module('ninja.filters', []);
 
@@ -88,6 +97,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 ])
 .run(['$config', '$rootScope', '$state', '$stateParams',
     function($config, $rootScope, $state, $stateParams) {
+
+        console.log( $state );
 
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
