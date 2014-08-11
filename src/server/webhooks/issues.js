@@ -193,9 +193,9 @@ module.exports = function(req, res) {
                         var pull_request_number = 0;
                         for(var index = 0; index < labels.length; index++){
 
-                            var label = labels[index];
+                            label = labels[index];
                             var reg = /pull-request-(\d*)?/;
-                            var match =reg.exec(label.name); 
+                            match =reg.exec(label.name); 
 
                             if(match){
                                 found_label = true;
