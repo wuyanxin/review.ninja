@@ -83,6 +83,16 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 resolve: {
                     repo: ['repo', function(repo) {
                         return repo; // inherited from parent state
+                    }],
+                    settings: ['$RPCService', 'repo', function($RPCService, repo) {
+                        return $RPCService.call('conf', 'all', {
+                            repo: repo.value.id
+                        });
+                    }],
+                    bots: ['$RPCService', 'repo', function($RPCService, repo) {
+                        return $RPCService.call('tool', 'all', {
+                            repo: repo.value.id
+                        });
                     }]
                 }
             });

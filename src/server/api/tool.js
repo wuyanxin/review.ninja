@@ -88,6 +88,24 @@ module.exports = {
 
         });
 
+    },
+
+    /************************************************************************************************************
+
+	@models
+
+	+ Tool, where id=id
+
+    ************************************************************************************************************/
+
+    rmv: function(req, done) {
+        Tool.findById(req.args.id, function(err, tool) {
+            if(!err && tool) {
+                tool.remove(function(err, tool) {
+                    done(err, tool);
+                });
+            }
+        });
     }
 
 };
