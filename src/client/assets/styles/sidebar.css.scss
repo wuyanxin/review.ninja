@@ -15,21 +15,23 @@
     }
 
     a { 
-        display: block !important;
+        display: block;
         color: inherit; 
-        padding: 10px 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis; 
+        padding: 0;
 
         span {
-            padding: 0 20px;
+            display: block;
+            padding: 10px 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; 
         }
-        span.visible-xs.visible-sm {
-            padding: 0;
+        span.small {
+            padding: 10px 0;
         }
     }
-    a:hover {
+    a:hover,
+    a.active {
         text-decoration: none;
         background: #E5E5E5;
     }

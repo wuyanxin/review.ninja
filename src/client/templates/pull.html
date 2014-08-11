@@ -1,38 +1,48 @@
 <div class="row">
-  <div class="col-md-9">
 
-    <p class="lead"><a ui-sref="repo.list({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a></p>
+  <!-- the main content area -->
+  <div class="col-sm-18 main">
 
-    <div class="well row" style="margin: 0px 0px 20px 0px;">
-      <div class="col-md-9">
-        <h5>
-          <button class="btn btn-primary" tooltip-placement="bottom" tooltip-html-unsafe="{{ stargazers.value | stargazerAccumulator }}" ng-click="{true: unstar, false: star}[starred]()"><i class="fa fa-star"></i> {{ {true: 'Unstar', false: 'Star'}[starred] }} ({{ stargazers.value.length }})</button>
-          <span>
-            <span class="label pull-right" ng-class="{'label-default':status.value==='pending', 'label-success':status.value==='approved', 'label-danger':status.value==='rejected'}">
-              {{ status.value }}
-            </span>
+    <div class="row">
+      <div class="col-sm-24">
 
-            {{ pull.value.title }}
-            <span>
-              <img class="img-circle" ng-src="{{ pull.value.user.avatar_url }}" width="18px" />
-              {{ pull.value.user.login }} <small moment="pull.value.created_at"></small>
-              <!-- <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ pull.value.head.sha }}"> -->
-            </span>
-          </span>
-        </h5>
-      </div>
-      <div class="col-md-3">
-        <h5>
-          <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()" popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}"> 
-            Merge pull request
-          </button>
-          <small ng-show="pull.value.merged">This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></small>
-        </h5>
+        <p class="lead"><a ui-sref="repo.list({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a></p>
+
+        <div class="well row" style="margin: 0px 0px 20px 0px;">
+          <div class="col-md-18">
+            <h5>
+              <button class="btn btn-primary" tooltip-placement="bottom" tooltip-html-unsafe="{{ stargazers.value | stargazerAccumulator }}" ng-click="{true: unstar, false: star}[starred]()"><i class="fa fa-star"></i> {{ {true: 'Unstar', false: 'Star'}[starred] }} ({{ stargazers.value.length }})</button>
+              <span>
+                <span class="label pull-right" ng-class="{'label-default':status.value==='pending', 'label-success':status.value==='approved', 'label-danger':status.value==='rejected'}">
+                  {{ status.value }}
+                </span>
+
+                {{ pull.value.title }}
+                <span>
+                  <img class="img-circle" ng-src="{{ pull.value.user.avatar_url }}" width="18px" />
+                  {{ pull.value.user.login }} <small moment="pull.value.created_at"></small>
+                  <!-- <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ pull.value.head.sha }}"> -->
+                </span>
+              </span>
+            </h5>
+          </div>
+          <div class="col-md-6">
+            <h5>
+              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()" popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}"> 
+                Merge pull request
+              </button>
+              <small ng-show="pull.value.merged">This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></small>
+            </h5>
+          </div>
+        </div>
+
+
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-24">
+
         <tabset>
         <tab heading="Diff">
         <div ng-repeat="file in files.value" class="panel panel-default" style="margin:20px;">
@@ -53,10 +63,15 @@
         <browser data="tree"></browser>
         </tab>
         </tabset>
+
       </div>
     </div>
+
   </div>
-  <div class="col-md-3 sidebar">
+
+  <!-- the right sidebar -->
+  <div class="col-sm-6 sidebar">
+
     <button class="btn btn-danger btn-block" ng-click="showNewIssue=!showNewIssue">Create Issue</button>
     <div class="new-issue" ng-show="showNewIssue" ng-init="showNewIssue=false">
       <h5>New Issue</h5>
@@ -107,5 +122,7 @@
         </div>
       </li>
     </ul>
+
   </div>
+
 </div>
