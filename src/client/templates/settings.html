@@ -1,10 +1,60 @@
-<div class="row">
+<div class="settings">
+  <p class="lead"><a ui-sref="repo.list({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a></p>
 
-  <!-- the main content area -->
-  <div class="col-sm-24 main">
+  <h3><i class="fa fa-cog"></i> Settings</h3>
 
-        here are some settings!
-
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Bots <a class="fa-stack text-success" ng-click="showAddBot=!showAddBot" ng-init="showAddBot=false"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></a></h4>
+      <div class="form well" ng-show="showAddBot">
+        <div class="form-group">
+          <label>Name</label>
+          <input class="form-control" ng-model="botName" placeholder="E.g. CI-System" />
+        </div>
+        <button class="btn btn-success btn-block" ng-click="addBot()"><i class="fa fa-plus"></i> ADD</button>
+      </div>
+      <table class="table table-hover">
+        <tr ng-repeat="bot in bots.value">
+          <td>{{ bot.name }}</td>
+          <td>{{ origin }}/vote/{{ bot._id }}/:sha</td>
+          <td><button class="btn btn-danger btn-xs pull-right" ng-click="removeBot(bot)">remove</button></td>
+        </tr>
+      </table>
+    </div>
   </div>
-
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Notifications <a class="fa-stack text-success" ng-click="showAddNotification=!showAddNotification" ng-init="showAddNotification=false"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></a></h4>
+      <div class="form well" ng-show="showAddNotification">
+        <div class="form-group">
+          <label>Branch to watch</label>
+          <input class="form-control" ng-model="branchRegex" placeholder="E.g. feature/new" />
+          <p class="help-block">You can also use regular expressions to specify multiple branches at once.</p>
+        </div>
+        <button class="btn btn-success btn-block" ng-click="addBranchRegex()"><i class="fa fa-plus"></i> ADD</button>
+      </div>
+      <table class="table table-hover">
+        <tr ng-repeat="regex in settings.value.watch">
+          <td>{{ regex }}</td>
+          <td><button class="btn btn-danger btn-xs pull-right" ng-click="removeBranchRegex(regex)">remove</button></td>
+        </tr>
+      </table>
+      <label><input type="checkbox" ng-model="settings.value.notifications.pull_request" ng-change="setNotifications()" /> Pull Request</label>
+      <label><input type="checkbox" ng-model="settings.value.notifications.issue" ng-change="setNotifications()" /> Issue</label>
+      <label><input type="checkbox" ng-model="settings.value.notifications.star" ng-change="setNotifications()" /> Star</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <h4>Remove repository</h4>
+      <p>This will remove all information in our system, all your issues will remain as they are in GitHub. The information in our system includes: stars, bots, settings.</p>
+      <div class="form-group">
+        <input ng-model="repoDeleteConfirmation" class="form-control" ng-init="''"/>
+        <p class="help-block">Type <strong>{{ repo.value.full_name }}</strong> to confirm that you want to delete this repo.</p>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-danger" ng-click="removeRepo()" ng-disabled="repoDeleteConfirmation!=repo.value.full_name">Remove</button>
+      </div>
+    </div>
+  </div>
 </div>
