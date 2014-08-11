@@ -98,6 +98,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 .run(['$config', '$rootScope', '$state', '$stateParams',
     function($config, $rootScope, $state, $stateParams) {
 
+        console.log( $state );
+
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
 

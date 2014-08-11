@@ -59,6 +59,7 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC',
         //
 
         $scope.toggle = function(repo) {
+
             var fn = repo.ninja.ninja ? 'rmv' : 'add';
 
             $RPC.call('repo', fn, {

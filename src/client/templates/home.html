@@ -3,19 +3,20 @@
 	<div class="row">
 
 		<!-- the left sidebar -->
-		<div class="col-xs-1 col-md-2 sidebar">
+		<div class="col-xs-1 col-md-4 sidebar">
 
 			<table class="table">
 				<tr>
 					<td>
-						<a href="" 
-						   data-placement="bottom" 
-						   data-container="body" 
-						   data-template="/templates/popovers/add-repo.html"
-						   data-content="repos"
-						   bs-popover>
-							<span class="hidden-xs hidden-sm"><i class="fa fa-plus-circle"></i> Add Repository</span>
-							<span class="visible-xs visible-sm"><i class="fa fa-lg fa-plus-circle center-block"></i></span>
+						<a href=""
+						   placement="bottom",
+						   container="body"
+						   args="{repos:repos, toggle:toggle}"
+						   template="/templates/popovers/add-repo.html"
+						   popover>
+
+						   <span class="hidden-xs hidden-sm"><i class="fa fa-plus-circle"></i> Add Repository</span>
+    					   <span class="visible-xs visible-sm small"><i class="fa fa-lg fa-plus-circle center-block"></i></span>
 						</a>
 					</td>
 				</tr>
@@ -24,7 +25,7 @@
 		</div>
 
 		<!-- the main section -->
-		<div class="col-xs-11 col-md-10 main">
+		<div class="col-xs-23 col-md-20 main">
 
 			<!-- <i class="fa fa-spin fa-spinner fa-3x center-block"></i> -->
 
