@@ -11,9 +11,10 @@ $navbar-margin-bottom: none;
 $main-bg: #fff;
 
 /* import our files */
-@import "diff.css.scss";
 @import "main.css.scss";
 @import "sidebar.css.scss";
+@import "diff.css.scss";
+@import "tabs.css.scss";
 
 /* global styles */
 
