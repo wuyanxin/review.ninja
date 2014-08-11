@@ -28,7 +28,8 @@
           </div>
           <div class="col-md-6">
             <h5>
-              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()" popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}"> 
+              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()"> 
+                <!-- popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}" -->
                 Merge pull request
               </button>
               <small ng-show="pull.value.merged">This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></small>
