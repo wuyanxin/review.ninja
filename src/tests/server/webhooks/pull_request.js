@@ -16,8 +16,11 @@ var mongoose = require('mongoose');
 var User = require('../../../server/documents/user');
 var Repo2 = require('../../../server/documents/repo');
 var Star = require('../../../server/documents/star');
+var conf = require('../../../server/documents/conf');
+
 mongoose.model('User');
 mongoose.model('Star');
+mongoose.model('Conf');
 var Repo=mongoose.model('Repo');
 
 //services

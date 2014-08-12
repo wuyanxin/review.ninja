@@ -16,9 +16,11 @@ var mongoose = require('mongoose');
 var User2 = require('../../../server/documents/user');
 var Repo2 = require('../../../server/documents/repo');
 var Star = require('../../../server/documents/star');
-
+var conf = require('../../../server/documents/conf');
 mongoose.model('User');
 mongoose.model('Star');
+mongoose.model('Conf');
+
 var Repo=mongoose.model('Repo');
 var User = mongoose.model('User');
 //services
@@ -26,7 +28,6 @@ var github = require('../../../server/services/github');
 var GithubServiceApi = require('../../../server/services/github-status-api');
 var notification = require('../../../server/services/notification');
 var Issue = require('../../../server/webhooks/issues');
-
 
 describe('pull_request:opened', function(){
 

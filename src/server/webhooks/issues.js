@@ -99,10 +99,13 @@ module.exports = function(req, res) {
             var repo_name = repository.name;
             var review_url = req.body.issue.url;
 
+
+
             get_collaborators(user, repo_name, repo.token, function(err, collaborators) {
                 if (err) {
                     logger.log(err);
                 }
+
                 var actions = {
                     opened: function() {
 
@@ -158,7 +161,7 @@ module.exports = function(req, res) {
                             };
 
                            GitHubStatusApiService.updateCommit(arg, function(err, data) {
-                                notification.new_issue(sender,collaborators,pull_request_number,review_url);
+                                notification.new_issue(sender,collaborators,pull_request_number,review_url,repo);
                                 return;
                            });
 
@@ -247,7 +250,7 @@ module.exports = function(req, res) {
 
 
 
-
+    
                     },
                     reopened: function() {
                         // an issue has been reopened
