@@ -1,42 +1,8 @@
 <div class="container-fluid">
-
     <div class="row">
-
-        <!-- the left sidebar -->
-        <div class="col-xs-1 sidebar" ng-class="{ 'col-md-4':!$state.is('repo.pull') }">
-
-            <table class="table">
-                <tr>
-                    <td>
-                        <a ui-sref="repo.list()" ng-class="{active: $state.includes('repo.list')}" ng-hide="$state.is('repo.pull')">
-                           <span class="hidden-xs hidden-sm"><i class="fa fa-code-fork"></i> Pull Requests</span>
-                           <span class="visible-xs visible-sm small"><i class="fa fa-lg fa-code-fork center-block"></i></span>
-                        </a>
-                        <a ui-sref="repo.list()" ng-show="$state.is('repo.pull')">
-                            <span class="small"><i class="fa fa-lg fa-code-fork center-block"></i></span>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a ui-sref="repo.settings()" ng-class="{active: $state.includes('repo.settings')}" ng-hide="$state.is('repo.pull')">
-                            <span class="hidden-xs hidden-sm"><i class="fa fa-cog"></i> Settings</span>
-                            <span class="visible-xs visible-sm small"><i class="fa fa-lg fa-cog center-block"></i></span>
-                        </a>
-                        <a ui-sref="repo.settings()" ng-show="$state.is('repo.pull')">
-                            <span class="small"><i class="fa fa-lg fa-cog center-block"></i></span>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-
         <!-- the main section -->
-        <div class="col-xs-23" ng-class="{ 'col-md-20':!$state.is('repo.pull') }">
+        <div class="col-md-12">
             <section ui-view></section>
         </div>
-
     </div>
-
 </div>
