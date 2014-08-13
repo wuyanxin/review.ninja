@@ -64,13 +64,13 @@ module.exports = function() {
 
                         console.log('sending mail to');
                         console.log(mailOptions);
-                        // smtpTransport.sendMail(mailOptions, function(error, response) {
+                        smtpTransport.sendMail(mailOptions, function(error, response) {
                            
-                        //     if (error) {
-                        //         logger.log(error);
-                        //     }
-                        //     smtpTransport.close();
-                        // });
+                            if (error) {
+                                logger.log(error);
+                            }
+                            smtpTransport.close();
+                        });
 
                     }                
 
