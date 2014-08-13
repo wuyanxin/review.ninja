@@ -17,23 +17,39 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             $RPC.call('tool', 'add', {
                 name: $scope.botName,
                 repo: $scope.repo.value.id
-            }, function(err, bots) {
+            }, function(err, bot) {
                 if(!err) {
-                    $scope.bots = bots;
+                    $scope.bots.value.push(bot.value);
                     $scope.botName = '';
                 }
             });
         };
 
-        $scope.removeBot = function(bot) {
+        $scope.removeBot = function(bot, index) {
             $RPC.call('tool', 'rmv', {
                 id: bot._id
             }, function(err, bot) {
                 if(!err) {
-                    $scope.bots = bots;
+                    $scope.bots.value.splice(index, 1);
                 }
             });
         };
+
+        $scope.botSetEnabled = function(bot) {
+            $RPC.call('tool', 'enable', {
+                id: bot._id,
+            }, function(err, bot) {
+            });
+            bot.enabled = true;
+        }
+
+        $scope.botSetDisabled = function(bot) {
+            $RPC.call('tool', 'disable', {
+                id: bot._id,
+            }, function(err, bot) {
+            });
+            bot.enabled = false;
+        }
 
         $scope.addBranchRegex = function() {
             $RPC.call('conf', 'addWatch', {
