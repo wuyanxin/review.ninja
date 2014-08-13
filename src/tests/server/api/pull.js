@@ -95,5 +95,9 @@ describe('pull: getAll', function(){
 
 	});
 
+	afterEach(function(){
+		conf_find_one_stub.restore();
+		github_call_stub.restore();
+	});
 
 });
