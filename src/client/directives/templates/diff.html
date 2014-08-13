@@ -1,20 +1,35 @@
-<div style="overflow-x:scroll;">
-	<table class="table diff">
-		<tbody ng-repeat="line in lines track by $index" style="border:none;">
-			<tr class="highlight" ng-class="{meta:line.chunk, selected:selected[$index]}" ng-click="add($index)">
-				<td class="comment" style="display:none; position:absolute; width:30px; margin-left:-30px; padding:6px 8px;">
-					<a href=""><i ng-show="!line.chunk" class="fa fa-lg fa-circle text-warning"></i></a>
+<div class="diff panel panel-default">
+	<div class="panel-heading">
+		<strong>{{ name }}</strong>
+		<button class="btn btn-xs btn-default pull-right" ng-click="expanded=!expanded">
+			{{ expanded ? 'contract' : 'expand' }}
+		</button>
+	</div>
+	<div class="panel-body" ng-show="status==='renamed'">
+		This file was renamed.
+	</div>
+	<div class="panel-body" ng-show="status!=='renamed'">
+		
+		<table>
+
+			<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
+			    ng-class="{ addition:line.add, 
+			                deletion:line.del, 
+			                chunk:line.chunk, 
+			                selected:selected===match(pullSha, name, line.head) }">
+
+				<td class="select" ng-click="select(line)">
+					<i class="fa fa-circle"></i>
 				</td>
-				<td class="dark" ng-class="{addition:line.add, deletion:line.del, highlight:!line.chunk}" style="width:45px; position:absolute; background:#fff; text-align:right; color:#aaa; border-right:1px solid;">
-					<pre style="color:#aaa;">{{ line.ln || line.ln1 || ' ' }}</pre>
-				</td>
-				<td class="dark" ng-class="{addition:line.add, deletion:line.del, highlight:!line.chunk}" style="width:45px; position:absolute; background:#fff; margin-left:45px; text-align:right; color:#aaa; border-right:1px solid;">
-					<pre style="color:#aaa;">{{ line.ln || line.ln2 || ' ' }}</pre>
-				</td>
-				<td class="light" ng-class="{addition:line.add, deletion:line.del, highlight:!line.chunk}" style="padding-left:100px; border:none;">
-					<pre>{{ line.content }}</pre>
-				</td>
+
+				<td class="number" ng-click="select(line)"><pre>{{ line.base }}</pre></td>
+				<td class="number" ng-click="select(line)"><pre>{{ line.head }}</pre></td>
+
+				<td><pre>{{ line.content }}</pre></td>
+
 			</tr>
-		</tbody>
-	</table>
+
+		</table>
+
+	</div>
 </div>

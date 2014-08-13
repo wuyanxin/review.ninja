@@ -10,6 +10,7 @@ module.exports = {
 
         // optional
         host: process.env.GITHUB_HOST,
+        api: process.env.GITHUB_API_HOST,
         enterprise: !!process.env.GITHUB_HOST, // flag enterprise version
 
         // optional

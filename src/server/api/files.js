@@ -7,6 +7,28 @@ var github = require('../services/github');
 
 module.exports = {
 
+    get: function(req, done) {
+
+        github.call({
+            obj:'gitdata', 
+            fun: 'getBlob',
+            arg: {
+                user: req.args.user,
+                repo: req.args.repo,
+                sha: req.args.sha
+            },
+            token: req.user.token
+        }, function(err, res) {
+
+            if(!err) {
+                res.content = parse(new Buffer(res.content, 'base64').toString());
+            }
+
+            done(err, res);
+        });
+
+    },
+
     all: function(req, done) {
 
         github.call({
@@ -22,7 +44,7 @@ module.exports = {
 
             if(!err) {
                 files.forEach(function(file) {
-                    file.lines = parse(file.patch);
+                    file.patch = parse(file.patch);
                 });
             }
 
@@ -46,7 +68,7 @@ module.exports = {
             
             if(!err) {
                 res.files.forEach(function(file) {
-                    file.lines = parse(file.patch);
+                    file.patch = parse(file.patch);
                 });
             }
 

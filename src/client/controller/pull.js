@@ -6,14 +6,16 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$modal', 'repo', 'pull', 'socket',
-    function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $modal, repo, pull, socket) {
+module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', 'pull', 'socket', 'Issue',
+    function($scope, $stateParams, $HUB, $RPC, $modal, repo, pull, socket, Issue) {
 
         // get the repo
         $scope.repo = repo;
 
         // get the pull request
         $scope.pull = pull;
+
+        $scope.selection = null;
 
         // for the diff view
         $scope.head = $scope.pull.value.head.sha;
@@ -101,7 +103,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
                 body: $scope.newIssue.body,
                 number: $stateParams.number,
                 sha: $scope.pull.value.head.sha,
-                file_references: null
+                reference: $scope.selection
             }, function(data, err) {
                 $scope.newIssue.title = '';
                 $scope.newIssue.body = '';
@@ -114,7 +116,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$Commi
                 $scope.currentIssue = null;
                 return;
             }
-            $scope.currentIssue = Issue(issue);
+            $scope.currentIssue = Issue.parse(issue);
             $HUB.call('issues', 'getComments', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
