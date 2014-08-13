@@ -6,8 +6,8 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', 'pull', 'socket',
-    function($scope, $stateParams, $HUB, $RPC, $modal, repo, pull, socket) {
+module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', 'pull', 'socket', 'Issue',
+    function($scope, $stateParams, $HUB, $RPC, $modal, repo, pull, socket, Issue) {
 
         // get the repo
         $scope.repo = repo;
@@ -114,7 +114,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 $scope.currentIssue = null;
                 return;
             }
-            $scope.currentIssue = Issue(issue);
+            $scope.currentIssue = Issue.parse(issue);
             $HUB.call('issues', 'getComments', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,

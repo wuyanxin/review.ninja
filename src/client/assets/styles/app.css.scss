@@ -8,6 +8,10 @@ $navbar-margin-bottom: none;
 /* define our own styles */
 $main-bg: #fff;
 
+$code-line-number-color: #aaa;
+$code-line-select-color: #8a6d3b;
+$code-font-size: 12px;
+
 /* import our files */
 @import "main.css.scss";
 @import "sidebar.css.scss";
