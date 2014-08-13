@@ -40,7 +40,7 @@ describe('issue webhook', function(){
               err = null;
               done(err,issues);
             }else if(args.fun == 'get' && args.obj == 'pullRequests'){
-              console.log('getting pull request');
+
               var pull_request = {
                 head: {
                   sha: '123'
@@ -62,18 +62,15 @@ describe('issue webhook', function(){
         });
 
         stub_user_find = sinon.stub(User,'find', function(args,done){
-          console.log('in find');
+
           var find= {
               where: function(uuid){
-                console.log('in where');
 
                 var where = {
                     in : function(collaborators){
-                      console.log('in in');
 
                       var inside = {
                         exec : function(){
-                          console.log('in exec');
                           var err = null;
                           return (err,'collab');
                         }
@@ -268,7 +265,6 @@ var req={
 
 };
 
-console.log(req.body.repository.name);
     var res= {
         end: function(){
             done();
@@ -318,11 +314,10 @@ console.log(req.body.repository.name);
 
                 var where = {
                     in : function(collaborators){
-                      console.log('in in');
 
                       var inside = {
                         exec : function(){
-                          console.log('in exec');
+
                           var err = null;
                           return (err,'collab');
                         }
@@ -516,7 +511,6 @@ var req={
 
 };
 
-console.log(req.body.repository.name);
     var res= {
         end: function(){
             done();

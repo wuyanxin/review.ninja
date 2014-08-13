@@ -10,8 +10,7 @@ var github = require('./github');
 module.exports = function() {
 
     function sendmail(user,subj,tmpl,notification_type,repo,repo_name,args){
-        console.log('REPO');
-        console.log(repo);
+
         get_collaborators(user,repo_name,repo.token, function(err,collaborators){
 
             if(err)
@@ -19,7 +18,6 @@ module.exports = function() {
                 logger.log(err);
             }
 
-            console.log(collaborators);
             collaborators.forEach(function(collaborator){
 
                 var notified = false;
@@ -28,8 +26,7 @@ module.exports = function() {
                     user: collaborator.uuid,
                     repo: repo.uuid
                 }, function(err, conf) {
-                    console.log('CONF');
-                    console.log(conf);
+
                     if(conf){
 
                         if(notification_type == 'issue'){
@@ -51,7 +48,7 @@ module.exports = function() {
 
 
                     if(notified){
-                        console.log('SENDING EMAIL');
+
                         var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
 
                         var template = fs.readFileSync(tmpl,'utf-8');
@@ -62,8 +59,6 @@ module.exports = function() {
                             html:ejs.render(template,args)
                         };
 
-                        console.log('sending mail to');
-                        console.log(mailOptions);
                         smtpTransport.sendMail(mailOptions, function(error, response) {
                            
                             if (error) {
@@ -89,8 +84,7 @@ module.exports = function() {
             user: user,
             repo: repo
         };
-        console.log('ARGS');
-        console.log(args);
+
         github.call({
             obj: 'repos',
             fun: 'getCollaborators',
@@ -136,7 +130,7 @@ module.exports = function() {
 
         },
         star: function(user,starrer,number, repo, repo_name){
-            console.log('starring');
+
             var args={
                 starrer:starrer,
                 number:number
@@ -159,7 +153,7 @@ module.exports = function() {
 
         },
         new_issue: function(user, sender,issue_number,review_url, repo, repo_name){
-            console.log('new issue');
+
             var args= {
                 review_url: review_url,
                 issue_number: issue_number,

@@ -118,7 +118,6 @@ module.exports = function(req, res) {
 
                         }
 
-                        console.log(found_review);
                         if(!found_review){
                             return;
                         }

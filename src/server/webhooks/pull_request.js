@@ -46,7 +46,7 @@ module.exports = function(req, res) {
 
             var actions = {
                 opened: function() {
-                    console.log('opened');
+
                     GitHubStatusApiService.updateCommit(arg, function(err, data) {
                         notification.pull_request_opened(user, slug, pull_request_number, sender, review_url, repo, repo_name);
                     });
