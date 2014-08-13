@@ -87,8 +87,8 @@ describe('pull: getAll', function(){
 
 
 		pull.getAll(req,function(err,res){
-
-			assert.equal(res[0].highlight,true);
+			console.log(res);
+			assert.equal(res[0].watched,true);
 			done();
 
 		});
