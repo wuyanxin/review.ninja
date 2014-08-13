@@ -6,8 +6,8 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$CommitCommentService', '$state', 'repo', 'pull', 'issue',
-    function($scope, $stateParams, $HUB, $RPC, $CommitCommentService, $state, repo, pull, issue) {
+module.controller('IssueCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$state', 'repo', 'pull', 'issue',
+    function($scope, $stateParams, $HUB, $RPC, $state, repo, pull, issue) {
 
         // get the repo
         $scope.repo = repo;

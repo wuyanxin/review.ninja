@@ -44,8 +44,7 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                                 if(scope.patch[index].chunk) {
 
-                                    var start, end;
-                                    var chunk = [];
+                                    var start, end, c=[];
 
                                     while( ++index<scope.patch.length && !scope.patch[index].chunk ) {
 
@@ -53,10 +52,10 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                                         end = scope.patch[index].head ? scope.patch[index].head : end;
 
-                                        chunk.push(scope.patch[index]);
+                                        c.push(scope.patch[index]);
                                     }
 
-                                    chunks.push({ start:start, end:end, chunk:chunk });
+                                    chunks.push({ start:start, end:end, chunk:c });
 
                                     index = index - 1;
                                 }

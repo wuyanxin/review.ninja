@@ -1,7 +1,5 @@
 
 /* overwrite bootstrap styles */
-$grid-columns: 24;
-$body-bg: #f5f5f5;
 $navbar-margin-bottom: none;
 
 /* import bootstrap */
@@ -221,3 +219,17 @@ $code-font-size: 12px;
 // li.issue .open-issue .fa-circle {
 //   color: #E8AE0C;
 // }
+
+.default-font {
+  font-size: 14px;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.settings .row {
+  margin-bottom: 20px;
+}
+
+.bold {
+  font-weight: bold;
+}

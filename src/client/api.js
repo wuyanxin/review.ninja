@@ -111,51 +111,23 @@ module.factory('$HUBService', ['$q', '$HUB',
 
 
 // *****************************************************
-// Event Bus
+// Angular Route Provider Resolve Promises
 // *****************************************************
 
 
-module.factory('$EventBus', ['$rootScope',
-    function($rootScope) {
+module.factory('$RPCService', ['$q', '$RPC',
+    function($q, $RPC) {
         return {
-            emit: function(type, data) {
-                $rootScope.$emit(type, data);
-            },
-            on: function(type, func, scope) {
-                var unbind = $rootScope.$on(type, func);
-                if (scope) {
-                    scope.$on('$destroy', unbind);
-                }
-            }
-        };
-    }
-]);
-
-
-// *****************************************************
-// Event Bus
-// *****************************************************
-
-
-module.factory('$Socket', ['$rootScope',
-    function($rootScope) {
-        var socket = io.connect();
-        return {
-            emit: function(eventName, data, callback) {
-                socket.emit(eventName, data, function() {
-                    $rootScope.$apply(function() {
-                        if (callback) {
-                            callback.apply(socket, arguments);
-                        }
-                    });
+            call: function(o, f, d) {
+                var deferred = $q.defer();
+                $RPC.call(o, f, d, function(err, obj) {
+                    if (err) {
+                        deferred.reject();
+                    } else {
+                        deferred.resolve(obj);
+                    }
                 });
-            },
-            on: function(eventName, callback) {
-                socket.on(eventName, function() {
-                    $rootScope.$apply(function() {
-                        callback.apply(socket, arguments);
-                    });
-                });
+                return deferred.promise;
             }
         };
     }
