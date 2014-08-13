@@ -124,7 +124,7 @@ router.all('/vote/:uuid/:comm', function(req, res) {
                     });
                 });
             });
-        });
+        }
     });
 });
 
