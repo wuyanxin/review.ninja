@@ -12,7 +12,6 @@ module.exports = function() {
     function sendmail(user,subj,tmpl,notification_type,repo,repo_name,args){
 
         get_collaborators(user,repo_name,repo.token, function(err,collaborators){
-
             if(err)
             {
                 logger.log(err);
@@ -130,13 +129,12 @@ module.exports = function() {
 
         },
         star: function(user,starrer,number, repo, repo_name){
-
             var args={
                 starrer:starrer,
                 number:number
             };
 
-            sendmail(user,'Your pull request has been starred','./../templates/starred.ejs','star',repo,repo_name, args);
+            sendmail(user,'Your pull request has been starred','src/server/templates/starred.ejs','star',repo,repo_name, args);
 
 
         },
@@ -148,7 +146,7 @@ module.exports = function() {
                 number:number
             };
 
-            sendmail(user,'Your pull request has been UNstarred','../templates/unstarred.ejs','star',repo,repo_name,args);
+            sendmail(user,'Your pull request has been UNstarred','src/server/templates/unstarred.ejs','star',repo,repo_name,args);
 
 
         },
