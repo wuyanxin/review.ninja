@@ -1,15 +1,11 @@
 <div class="row">
-
   <!-- the main content area -->
-  <div class="col-sm-18 main">
-
+  <div class="col-sm-9 main">
     <div class="row">
-      <div class="col-sm-24">
-
-        <p class="lead"><a ui-sref="repo.list({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a></p>
-
+      <div class="col-sm-12">
+        <p class="lead"><a ui-sref="repo.list({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a> <a ui-sref="repo.settings({ user:repo.value.owner.login, repo:repo.value.name })"><i class="fa fa-cog"></i></a></p>
         <div class="well row" style="margin: 0px 0px 20px 0px;">
-          <div class="col-md-18">
+          <div class="col-md-9">
             <h5>
               <button class="btn btn-primary" tooltip-placement="bottom" tooltip-html-unsafe="{{ stargazers.value | stargazerAccumulator }}" ng-click="{true: unstar, false: star}[starred]()"><i class="fa fa-star"></i> {{ {true: 'Unstar', false: 'Star'}[starred] }} ({{ stargazers.value.length }})</button>
               <span>
@@ -26,23 +22,21 @@
               </span>
             </h5>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-3">
             <h5>
-              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()" popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}"> 
+              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()"> 
+                <!-- popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}" -->
                 Merge pull request
               </button>
               <small ng-show="pull.value.merged">This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></small>
             </h5>
           </div>
         </div>
-
-
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-24">
-
+      <div class="col-sm-12">
         <tabset>
         <tab heading="Diff">
         <div ng-repeat="file in files.value" class="panel panel-default" style="margin:20px;">
@@ -63,15 +57,12 @@
         <browser data="tree"></browser>
         </tab>
         </tabset>
-
       </div>
     </div>
-
   </div>
 
   <!-- the right sidebar -->
-  <div class="col-sm-6 sidebar">
-
+  <div class="col-sm-3 sidebar">
     <button class="btn btn-danger btn-block" ng-click="showNewIssue=!showNewIssue">Create Issue</button>
     <div class="new-issue" ng-show="showNewIssue" ng-init="showNewIssue=false">
       <h5>New Issue</h5>
@@ -87,15 +78,15 @@
     </div>
     <ul class="nav">
       <li class="issue" ng-show="currentIssue != null">
-        <a ng-click="setCurrentIssue(currentIssue)">
+        <a ng-click="setCurrentIssue(currentIssue)" href="">
           <span class="fa-stack">
             <i class="fa fa-circle fa-stack-2x"></i>
             <i class="fa fa-bars fa-stack-1x fa-inverse"></i>
           </span>
-          <span> Back to all issues</span>
+          <span> {{ issue.value.length || 0 }} Issues</span>
         </a></li>
       <li class="issue" ng-repeat="issue in issue.value" ng-show="currentIssue == null || currentIssue == issue">
-        <a ng-click="setCurrentIssue(issue)">
+        <a ng-click="setCurrentIssue(issue)" href="">
           <span class="fa-stack closed-issue" ng-show="issue.state == 'closed'">
             <i class="fa fa-circle fa-stack-2x"></i>
             <i class="fa fa-check fa-stack-1x fa-inverse"></i>
@@ -122,7 +113,5 @@
         </div>
       </li>
     </ul>
-
   </div>
-
 </div>
