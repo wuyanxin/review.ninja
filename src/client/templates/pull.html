@@ -39,19 +39,16 @@
       <div class="col-sm-12">
         <tabset>
         <tab heading="Diff">
-        <div ng-repeat="file in files.value" class="panel panel-default" style="margin:20px;">
-          <div class="panel-heading">
-            <strong>
-              {{ file.filename }}
-            </strong>
-          </div>
-          <div class="panel-body" ng-show="file.status=='renamed'">
-            This file was renamed.
-          </div>
-          <div class="panel-body" ng-show="file.status=='modified' || file.status=='added' || file.status=='removed'" style="padding:0;">
-            <diff lines="file.lines.lines"></diff>
-          </div>
-        </div>
+
+          <diff ng-repeat="file in files.value" 
+                name="file.filename" 
+                patch="file.patch" 
+                status="file.status" 
+                file-sha="file.sha"
+                pull-sha="pull.value.head.sha"
+                selected="$parent.selected">
+          </diff>
+
         </tab>
         <tab heading="Files">
         <browser data="tree"></browser>

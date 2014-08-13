@@ -5,7 +5,8 @@ var ToolSchema = mongoose.Schema({
     uuid: String,
     name: String,
     repo: Number,
-    token: String
+    token: String,
+    enabled: {type: Boolean, default: true}
 });
 
 ToolSchema.plugin(withHelper);

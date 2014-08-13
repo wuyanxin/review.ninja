@@ -105,7 +105,51 @@ module.exports = {
                     done(err, tool);
                 });
             }
+            if(err) {
+                done(err, tool);
+            }
+        });
+    },
+
+    /************************************************************************************************************
+
+	@models
+
+	+ Tool, where id=id
+
+    ************************************************************************************************************/
+
+    enable: function(req, done) {
+		Tool.findById(req.args.id, function(err, tool) {
+			if (err) {
+                return done({code: 404, text: 'Not found'});
+			}
+
+			tool.enabled = true;
+			tool.save(function(err, tool) {
+				done(err, tool);
+            });
+        });
+    },
+
+    /************************************************************************************************************
+
+	@models
+
+	+ Tool, where id=id
+
+    ************************************************************************************************************/
+
+    disable: function(req, done) {
+		Tool.findById(req.args.id, function(err, tool) {
+			if (err) {
+                return done({code: 404, text: 'Not found'});
+			}
+
+			tool.enabled = false;
+			tool.save(function(err, tool) {
+				done(err, tool);
+            });
         });
     }
-
 };
