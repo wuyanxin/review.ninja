@@ -15,6 +15,8 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         // get the pull request
         $scope.pull = pull;
 
+        $scope.selection = null;
+
         // for the diff view
         $scope.head = $scope.pull.value.head.sha;
         $scope.base = $scope.pull.value.base.sha;
@@ -101,7 +103,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 body: $scope.newIssue.body,
                 number: $stateParams.number,
                 sha: $scope.pull.value.head.sha,
-                file_references: null
+                reference: $scope.selection
             }, function(data, err) {
                 $scope.newIssue.title = '';
                 $scope.newIssue.body = '';

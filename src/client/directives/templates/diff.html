@@ -22,8 +22,8 @@
 					<i class="fa fa-circle"></i>
 				</td>
 
-				<td class="number"><pre>{{ line.base || ' ' }}</pre></td>
-				<td class="number"><pre>{{ line.head || ' ' }}</pre></td>
+				<td class="number" ng-click="select(line)"><pre>{{ line.base }}</pre></td>
+				<td class="number" ng-click="select(line)"><pre>{{ line.head }}</pre></td>
 
 				<td><pre>{{ line.content }}</pre></td>
 
