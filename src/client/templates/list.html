@@ -10,7 +10,7 @@
     <i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="!pulls" style="text-align:center; display:block; margin:0 auto;"></i>
 
     <table class="table">
-      <tr ng-repeat="pull in pullsFiltered">
+      <tr ng-repeat="pull in pulls.value">
         <td>
           <span class="fa-stack fa-lg">
             <i class="fa fa-circle fa-stack-2x" ng-class="{'done': pull.allIssuesResolved && pull.hasIssues, 'issues': !pull.allIssuesResolved && pull.hasIssues}"></i>

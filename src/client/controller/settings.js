@@ -6,8 +6,8 @@
 // resolve: repo
 // *****************************************************
 
-module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', '$FilterSet', 'repo', 'settings', 'bots',
-    function($scope, $stateParams, $HUB, $RPC, $modal, $FilterSet, repo, settings, bots) {
+module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', 'settings', 'bots',
+    function($scope, $stateParams, $HUB, $RPC, $modal, repo, settings, bots) {
         $scope.repo = repo;
         $scope.settings = settings;
         $scope.bots = bots;

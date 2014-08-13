@@ -32,8 +32,6 @@
             </h5>
           </div>
         </div>
-
-
       </div>
     </div>
 
@@ -80,15 +78,15 @@
     </div>
     <ul class="nav">
       <li class="issue" ng-show="currentIssue != null">
-        <a ng-click="setCurrentIssue(currentIssue)">
+        <a ng-click="setCurrentIssue(currentIssue)" href="">
           <span class="fa-stack">
             <i class="fa fa-circle fa-stack-2x"></i>
             <i class="fa fa-bars fa-stack-1x fa-inverse"></i>
           </span>
-          <span> Back to all issues</span>
+          <span> {{ issue.value.length || 0 }} Issues</span>
         </a></li>
       <li class="issue" ng-repeat="issue in issue.value" ng-show="currentIssue == null || currentIssue == issue">
-        <a ng-click="setCurrentIssue(issue)">
+        <a ng-click="setCurrentIssue(issue)" href="">
           <span class="fa-stack closed-issue" ng-show="issue.state == 'closed'">
             <i class="fa fa-circle fa-stack-2x"></i>
             <i class="fa fa-check fa-stack-1x fa-inverse"></i>
