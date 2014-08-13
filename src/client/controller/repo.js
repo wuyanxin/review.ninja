@@ -13,9 +13,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 
         // get the repo
         $scope.repo = repo;
-
         // get the pull requests
-        $HUB.call('pullRequests', 'getAll', {
+        $RPC.call('pull', 'getAll', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'all'
