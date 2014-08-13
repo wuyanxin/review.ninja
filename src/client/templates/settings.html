@@ -18,7 +18,8 @@
           <tr ng-repeat="bot in bots.value">
             <td>{{ bot.name }}</td>
             <td>{{ origin }}/vote/{{ bot._id }}/:sha</td>
-            <td><button class="btn btn-danger btn-xs pull-right" ng-click="removeBot(bot)">remove</button></td>
+            <td><a ng-click="botSetEnabled(bot)" href="" ng-class="{bold: bot.enabled}">On</a> / <a ng-click="botSetDisabled(bot)" href="" ng-class="{bold: !bot.enabled}">Off</a></td>
+            <td><button class="btn btn-danger btn-xs pull-right" ng-click="removeBot(bot, $index)">remove</button></td>
           </tr>
         </table>
       </div>
