@@ -30,9 +30,7 @@ describe('pull: getAll', function(){
 			},
 			user:{
 				token: '3004a2ac4c2055dfed8258274fb697bd8638bf32'
-
 			}
-
 		};
 
 
@@ -63,9 +61,9 @@ describe('pull: getAll', function(){
 					id:'123'
 				};
 
-				var err = null;
+				var error = null;
 
-				done(err,repo);
+				done(error,repo);
 
 			}
 

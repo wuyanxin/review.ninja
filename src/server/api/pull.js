@@ -30,20 +30,20 @@ module.exports = {
 			}
 
 
-    		github.call({
-    			obj:'repos',
-    			fun:'get',
-    			arg:{
-    				user: req.body.user,
-    				repo: req.body.repo
-    			},
-    			token:req.user.token
+			github.call({
+				obj:'repos',
+				fun:'get',
+				arg:{
+					user: req.body.user,
+					repo: req.body.repo
+				},
+				token:req.user.token
 
 			}, function(err, repo) {
 
 				Conf.findOne({
 					// user:req.user.id,
-					user:'7750964',
+					user:req.body.user,
 					repo:repo.id
 				}, function(err,conf){
 
@@ -65,15 +65,15 @@ module.exports = {
 							for(var key=0; key<conf.watch.length; key++){
 
 								var r = req.body.user+':'+conf.watch[key];
-								var re = new RegExp(r,"g");
+								var re = new RegExp(r,'g');
 
 								var match_base =re.exec(pull.base.label); 
 								var match_head = re.exec(pull.head.label);
 
-	                            if(match_base || match_head){
+								if(match_base || match_head){
 									found = true;
 									break;
-	                            }
+								}
 							}
 
 							if(found){
