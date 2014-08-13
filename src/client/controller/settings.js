@@ -41,7 +41,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             }, function(err, bot) {
             });
             bot.enabled = true;
-        }
+        };
 
         $scope.botSetDisabled = function(bot) {
             $RPC.call('tool', 'disable', {
@@ -49,7 +49,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             }, function(err, bot) {
             });
             bot.enabled = false;
-        }
+        };
 
         $scope.addBranchRegex = function() {
             $RPC.call('conf', 'addWatch', {
