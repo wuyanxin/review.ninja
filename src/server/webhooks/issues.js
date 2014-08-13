@@ -100,12 +100,6 @@ module.exports = function(req, res) {
             var review_url = req.body.issue.url;
 
 
-
-            get_collaborators(user, repo_name, repo.token, function(err, collaborators) {
-                if (err) {
-                    logger.log(err);
-                }
-
                 var actions = {
                     opened: function() {
 
@@ -124,7 +118,7 @@ module.exports = function(req, res) {
 
                         }
 
-
+                        console.log(found_review);
                         if(!found_review){
                             return;
                         }
@@ -161,8 +155,7 @@ module.exports = function(req, res) {
                             };
 
                            GitHubStatusApiService.updateCommit(arg, function(err, data) {
-                                notification.new_issue(sender,collaborators,pull_request_number,review_url,repo);
-                                return;
+                                notification.new_issue(user, sender,pull_request_number,review_url,repo, repo_name);
                            });
 
                         });
@@ -240,8 +233,7 @@ module.exports = function(req, res) {
                                 };
 
                                GitHubStatusApiService.updateCommit(arg, function(err, data) {
-                                    notification.issues_close(sender,collaborators,pull_request_number,review_url);
-                                    return;
+                                    notification.issues_close(user, sender,pull_request_number,review_url,repo, repo_name);
                                });
 
                             });
@@ -262,7 +254,6 @@ module.exports = function(req, res) {
                     return;
                 }
                 logger.log('unsupported action for pull requests');
-            });
         }
         res.end();
     });

@@ -47,20 +47,8 @@ describe('pull_request:opened', function(){
     it('should send notification', function(done){
 
         stub_github_call = sinon.stub(github, 'call', function(args, done){
-
-            if (args.fun == 'getCollaborators'){
-                var coll = {
-                  map: function(done){
-                    console.log('in here');
-                    var collab = {
-                      id: 'id'
-                    };
-                    done(collab);
-                  }
-                };
-                err = null;
-                done(null,coll);
-            }else if(args.fun == 'getIssues'){
+            
+            if(args.fun == 'getIssues'){
               var issues = [];
               err = null;
               done(err,issues);
@@ -76,14 +64,12 @@ describe('pull_request:opened', function(){
         });
 
         stub_github_status_api = sinon.stub(GithubServiceApi, 'updateCommit', function(args,done){
-          console.log('in update commit');
           done();
         });
 
-        stub_notification_pull_request_opened = sinon.stub(notification,'pull_request_opened', function(slug, pull_request_number, sender, collaborators, review_url,done){
-
-            assert.equal(pull_request_number,48);
-            return;
+        stub_notification_pull_request_opened = sinon.stub(notification,'pull_request_opened', function(user, slug, number, sender, review_url, repo, repo_name){
+            assert.equal(number,48);
+            done(null);
         });
 
 
