@@ -42,8 +42,7 @@ module.exports = {
 			}, function(err, repo) {
 
 				Conf.findOne({
-					// user:req.user.id,
-					user:req.body.user,
+					user:req.user.id,
 					repo:repo.id
 				}, function(err,conf){
 
@@ -78,10 +77,10 @@ module.exports = {
 
 							if(found){
 
-								pull.highlight = true;
+								pull.watched = true;
 
 							}else{
-								pull.highlight = false;
+								pull.watched = false;
 							}
 
 
