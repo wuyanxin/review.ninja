@@ -112,7 +112,7 @@ module.exports = {
                         repo: github_repo.name, 
                         name: 'web', 
                         config: { url: webhook_url, content_type: 'json' }, 
-                        events: ['pull_request'], 
+                        events: ['pull_request','issues'], 
                         active: true 
                     }, 
                     token: req.user.token 

@@ -3,6 +3,7 @@ var Repo = require('mongoose').model('Repo');
 var Comm = require('mongoose').model('Comm');
 var Star = require('mongoose').model('Star');
 var GitHubStatusApiService = require('../services/github-status-api');
+var notification = require('../services/notification');
 
 module.exports = {
 
@@ -66,6 +67,7 @@ module.exports = {
             Star.create({repo: req.args.repo_uuid, comm: req.args.sha, user: req.user.id, name: req.user.login}, function(err, star) {
                 io.emit(req.args.user + ':' + req.args.repo + ':pull-request-'+req.args.number+':starred', {});
                 GitHubStatusApiService.updateCommit({ user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid, sha: req.args.sha, number: req.args.number, token: req.user.token});
+                notification.star(req.args.user,req.user.login,req.args.number,repo,req.args.repo);
                 done(err, star);
             });
 
@@ -82,18 +84,22 @@ module.exports = {
     ************************************************************************************************************/
 
     rmv: function(req, done) {
-        Star.with({
-            repo: req.args.repo_uuid,
-            comm: req.args.sha,
-            user: req.user.id
-        }, function(err, star) {
-            if(star) {
-                star.remove(function(err, star) {
-                    io.emit(req.args.user + ':' + req.args.repo + ':pull-request-'+req.args.number+':unstarred', {});
-                    GitHubStatusApiService.updateCommit({user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid, sha: req.args.sha, number: req.args.number, token: req.user.token});
-                    done(err, star);
-                });
-            }
+        Repo.with({uuid: req.args.repo_uuid}, function(err,repo){
+            Star.with({
+                repo: req.args.repo_uuid,
+                comm: req.args.sha,
+                user: req.user.id
+            }, function(err, star) {
+                if(star) {
+                    star.remove(function(err, star) {
+                        io.emit(req.args.user + ':' + req.args.repo + ':pull-request-'+req.args.number+':unstarred', {});
+                        GitHubStatusApiService.updateCommit({user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid, sha: req.args.sha, number: req.args.number, token: req.user.token});
+                        notification.unstar(req.args.user,req.user.login,req.args.number,repo,req.args.repo);
+                        done(err, star);
+                    });
+                }
+            });
         });
+
     }
 };
