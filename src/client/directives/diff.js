@@ -19,14 +19,16 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                 scope.file = null;
 
+                scope.open = true;
+
                 scope.expanded = false;
 
                 // To Do:
                 // fix this
 
-                scope.$watch('patch', function(newValue, oldValue) {
+                scope.$watch('patch', function() {
 
-                    if(newValue) {
+                    if(scope.patch) {
 
                         $RPC.call('files', 'get', {
                             user: $stateParams.user,
@@ -34,17 +36,16 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
                             sha: scope.fileSha
                         }, function(err, res) {
 
-                            var patch = [];
-                            var file = res.value.content;
+                            var file=[], chunks=[];
 
-                            var chunks = [];
+                            var index = 0;
 
                             // find the chunks
-                            for(var index=0; index<scope.patch.length; index++) {
+                            while (index < scope.patch.length) {
 
                                 if(scope.patch[index].chunk) {
 
-                                    var start, end, c=[];
+                                    var start=0, end=0, c=[];
 
                                     while( ++index<scope.patch.length && !scope.patch[index].chunk ) {
 
@@ -57,31 +58,35 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                                     chunks.push({ start:start, end:end, chunk:c });
 
-                                    index = index - 1;
+                                    continue;
                                 }
+
+                                index = index + 1;
                             }
 
+
+                            index = 0;
+
                             // insert the chunks
+                            while (index < res.value.content.length) {
 
-                            var chunk = chunks.shift();
-
-                            for(index=0; index<file.length; index++) {
-
-                                if( chunk && file[index].head===chunk.start ) {
-
-                                    patch = patch.concat( chunk.chunk );
-
-                                    index = chunk.end;
+                                if( chunks[0] && res.value.content[index].head===chunks[0].start ) {
 
                                     chunk = chunks.shift();
+
+                                    file = file.concat( chunk.chunk );
+
+                                    index = chunk.end;
 
                                     continue;
                                 }
 
-                                patch.push(file[index]);
+                                file.push( res.value.content[index] );
+
+                                index = index + 1;
                             }
 
-                            scope.file = patch;
+                            scope.file = file;
 
                         });
                     }
@@ -96,8 +101,8 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                 scope.select = function(line) {
                     if(line.head) {
-                        scope.selected = Issue.line(scope.pullSha, scope.name, line.head);
-                        console.log(scope.selected);
+                        var selected = Issue.line(scope.pullSha, scope.name, line.head);
+                        scope.selected = scope.selected!==selected ? selected : null;
                     }   
                 };
 

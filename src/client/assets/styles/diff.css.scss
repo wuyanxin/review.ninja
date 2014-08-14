@@ -7,6 +7,10 @@
         overflow-x: scroll;
     }
 
+    .panel-title a:hover {
+        cursor: pointer;
+    }
+
     table {
         width: 100%;
     }
@@ -34,6 +38,10 @@
         }
     }
 
+    tr:not(.chunk):not(.deletion) .number {
+        cursor: pointer;
+    }
+
     .select {
         width: 20px;
         margin-left: -18px;
@@ -44,8 +52,7 @@
         position: absolute;
     }
 
-    tr.selected .select,
-    tr:not(.chunk):not(.deletion):hover .select {
+    tr.selected .select {
         visibility: visible;
     }
 
