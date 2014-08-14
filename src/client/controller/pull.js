@@ -105,15 +105,16 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 number: $stateParams.number,
                 sha: $scope.pull.value.head.sha,
                 reference: $scope.selection
-            }, function(data, err) {
+            }, function(err, issue) {
                 $scope.newIssue.title = '';
                 $scope.newIssue.body = '';
                 $scope.showNewIssue = false;
+                $scope.issue.value.unshift(issue.value);
             });
         };
 
         $scope.setCurrentIssue = function(issue) {
-            if ($scope.currentIssue === issue) {
+            if ($scope.currentIssue === issue || issue === null) {
                 $scope.selection = null;
                 if($scope.currentCommit == $scope.currentIssue.sha) {
                     $scope.compComm($scope.pull.value.base.sha, $scope.pull.value.head.sha);
@@ -167,18 +168,15 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
             });
         };
 
-        $scope.close = function() {
+        $scope.close = function(index) {
             $HUB.call('issues', 'edit', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                number: $stateParams.issue,
+                number: $scope.currentIssue.number,
                 state: 'closed'
-            }, function(err, data) {
-                $state.go('pull', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    number: $stateParams.number 
-                });
+            }, function(err, issue) {
+                $scope.setCurrentIssue(null);
+                $scope.issue.value[index] = issue.value;
             });
         };
 
