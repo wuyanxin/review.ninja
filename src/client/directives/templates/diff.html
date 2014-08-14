@@ -9,17 +9,17 @@
 				{{ expanded ? 'contract' : 'expand' }}
 			</button>
 		</accordion-heading>
-		<div ng-show="status==='renamed'">
+		<div ng-show="status==='renamed' && !patch.length" style="padding:5px 10px;">
 			This file was renamed.
 		</div>
-		<div ng-show="status!=='renamed'">
+		<div ng-show="patch.length">
 			
 			<table>
-        <tr ng-repeat="line in (expanded ? file : patch) track by $index" 
-            ng-class="{ addition:line.add, 
-                        deletion:line.del, 
-                        chunk:line.chunk, 
-                        selected:selected===match(name, line.head) }">
+        		<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
+            		ng-class="{ addition:line.add, 
+                        		deletion:line.del, 
+                        		chunk:line.chunk, 
+                        		selected:selected===match(name, line.head) }">
 
 					<td class="select" ng-click="select(line)">
 						<i class="fa fa-circle"></i>

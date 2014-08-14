@@ -41,11 +41,10 @@
         <tab heading="Diff">
 
           <diff ng-repeat="file in files.value" 
+                sha="file.sha"
                 name="file.filename" 
                 patch="file.patch" 
                 status="file.status" 
-                file-sha="file.sha"
-                pull-sha="pull.value.head.sha"
                 selected="$parent.$parent.selection"
           </diff>
 

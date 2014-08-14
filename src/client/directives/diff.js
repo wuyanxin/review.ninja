@@ -8,11 +8,10 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
             scope: {
+                sha: '=',
                 name: '=',
                 patch: '=',
                 status: '=',
-                fileSha: '=',
-                pullSha: '=',
                 selected: '='
             },
             link: function(scope, elem, attrs) {
@@ -28,65 +27,68 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                 scope.$watch('patch', function() {
 
-                    if(scope.patch) {
+                    if(scope.patch && scope.patch.length && scope.sha) {
 
                         $RPC.call('files', 'get', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
-                            sha: scope.fileSha
+                            sha: scope.sha
                         }, function(err, res) {
 
-                            var file=[], chunks=[];
+                            if(!err) {
 
-                            var index = 0;
+                                var file=[], chunks=[];
 
-                            // find the chunks
-                            while (index < scope.patch.length) {
+                                var index = 0;
 
-                                if(scope.patch[index].chunk) {
+                                // find the chunks
+                                while (index < scope.patch.length) {
 
-                                    var start=0, end=0, c=[];
+                                    if(scope.patch[index].chunk) {
 
-                                    while( ++index<scope.patch.length && !scope.patch[index].chunk ) {
+                                        var start=0, end=0, c=[];
 
-                                        start = start ? start : scope.patch[index].head;
+                                        while( ++index<scope.patch.length && !scope.patch[index].chunk ) {
 
-                                        end = scope.patch[index].head ? scope.patch[index].head : end;
+                                            start = start ? start : scope.patch[index].head;
 
-                                        c.push(scope.patch[index]);
+                                            end = scope.patch[index].head ? scope.patch[index].head : end;
+
+                                            c.push(scope.patch[index]);
+                                        }
+
+                                        chunks.push({ start:start, end:end, chunk:c });
+
+                                        continue;
                                     }
 
-                                    chunks.push({ start:start, end:end, chunk:c });
-
-                                    continue;
+                                    index = index + 1;
                                 }
 
-                                index = index + 1;
-                            }
 
+                                index = 0;
 
-                            index = 0;
+                                // insert the chunks
+                                while (index < res.value.content.length) {
 
-                            // insert the chunks
-                            while (index < res.value.content.length) {
+                                    if( chunks[0] && res.value.content[index].head===chunks[0].start ) {
 
-                                if( chunks[0] && res.value.content[index].head===chunks[0].start ) {
+                                        chunk = chunks.shift();
 
-                                    chunk = chunks.shift();
+                                        file = file.concat( chunk.chunk );
 
-                                    file = file.concat( chunk.chunk );
+                                        index = chunk.end;
 
-                                    index = chunk.end;
+                                        continue;
+                                    }
 
-                                    continue;
+                                    file.push( res.value.content[index] );
+
+                                    index = index + 1;
                                 }
 
-                                file.push( res.value.content[index] );
-
-                                index = index + 1;
+                                scope.file = file;
                             }
-
-                            scope.file = file;
 
                         });
                     }
