@@ -21,6 +21,7 @@ module.exports = function(req, res) {
     }, function(err, repo) {
         if (err) {
             logger.log(err);
+            return;
         }
         if (repo.ninja) {
             // to be reviewed by review.ninja so let's go on

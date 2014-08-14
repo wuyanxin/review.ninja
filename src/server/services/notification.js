@@ -15,6 +15,7 @@ module.exports = function() {
             if(err)
             {
                 logger.log(err);
+                return;
             }
 
             collaborators.forEach(function(collaborator){
@@ -25,6 +26,11 @@ module.exports = function() {
                     user: collaborator.uuid,
                     repo: repo.uuid
                 }, function(err, conf) {
+
+                    if(err){
+                        logger.log(err);
+                        return;
+                    }
 
                     if(conf){
 
@@ -62,6 +68,7 @@ module.exports = function() {
                            
                             if (error) {
                                 logger.log(error);
+                                return;
                             }
                             smtpTransport.close();
                         });
@@ -90,6 +97,12 @@ module.exports = function() {
             arg: args,
             token: token
         }, function(err, collaborators) {
+
+            if(err){
+                logger.log(err);
+                return;
+            }
+            
             var collaborator_ids = collaborators.map(function(collaborator) {
                 return collaborator.id;
             });

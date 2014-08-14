@@ -83,6 +83,7 @@ module.exports = function(req, res) {
     }, function(err, repo) {
         if (err) {
             logger.log(err);
+            return;
         }
         if (repo.ninja) {
             // to be reviewed by review.ninja so let's go on
@@ -143,6 +144,11 @@ module.exports = function(req, res) {
                         }
                        
                         get_pull_request(user,repo_name,pull_request_number,repo.token, function(err, pull_request){
+
+                            if(err){
+                                logger.log(err);
+                                return;
+                            }
 
                             arg = {
                                 user: user,
@@ -209,6 +215,7 @@ module.exports = function(req, res) {
                                     
                             if(err){
                                 logger.log(err);
+                                return;
                             }
                             if(issues.length!==0 ){
                                 return;
@@ -220,6 +227,7 @@ module.exports = function(req, res) {
 
                                 if(err){
                                     logger.log(err);
+                                    return;
                                 }
 
                                 arg = {
