@@ -15,12 +15,11 @@
 		<div ng-show="status!=='renamed'">
 			
 			<table>
-
-				<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
-				    ng-class="{ addition:line.add, 
-				                deletion:line.del, 
-				                chunk:line.chunk, 
-				                selected:selected===match(pullSha, name, line.head) }">
+        <tr ng-repeat="line in (expanded ? file : patch) track by $index" 
+            ng-class="{ addition:line.add, 
+                        deletion:line.del, 
+                        chunk:line.chunk, 
+                        selected:selected===match(name, line.head) }">
 
 					<td class="select" ng-click="select(line)">
 						<i class="fa fa-circle"></i>

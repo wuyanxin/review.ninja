@@ -113,10 +113,18 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 
         $scope.setCurrentIssue = function(issue) {
             if ($scope.currentIssue === issue) {
+                $scope.selection = null;
                 $scope.currentIssue = null;
                 return;
             }
-            $scope.currentIssue = Issue.parse(issue);
+
+            $scope.currentIssue = issue;
+            if(!issue.hasOwnProperty('sha') || !issue.hasOwnProperty('fileReference')) {
+                $scope.currentIssue = Issue.parse(issue);
+            }
+            if($scope.currentIssue.fileReference) {
+                $scope.selection = $scope.currentIssue.fileReference;
+            }
             $HUB.call('issues', 'getComments', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
