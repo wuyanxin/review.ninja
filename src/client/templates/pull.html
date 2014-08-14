@@ -24,8 +24,7 @@
           </div>
           <div class="col-md-3">
             <h5>
-              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()"> 
-                <!-- popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}" -->
+              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()"> <!-- popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}" -->
                 Merge pull request
               </button>
               <small ng-show="pull.value.merged">This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></small>
@@ -39,6 +38,26 @@
       <div class="col-sm-12">
         <tabset>
         <tab heading="Diff">
+          <div class="pull-request-graph">
+            <svg version="1.1" class="branch pull-right" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 300 100" enable-background="new 0 0 300 100" xml:space="preserve" width="200px">
+              <path class="git-base" stroke-width="11" stroke-miterlimit="10" d="M 41.1 16.1 L 232.6 16.1"/>
+              <polygon class="git-graph-arrow" points="224,4.9 250,16 224,27.4 "/>
+              <path class="git-head" stroke-width="11" stroke-miterlimit="10" d="M226.4,78.3c-112.1,0-133.6,1.3-152.8-12.4
+                C49.1,48.4,54,22.3,34,15.1"/>
+              <filter id="dropshadow" height="130%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2"/> <!-- stdDeviation is how much to blur -->
+                <feMerge> 
+                  <feMergeNode/> <!-- this contains the offset blurred image -->
+                  <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
+                </feMerge>
+              </filter>
+              <circle class="git-commit active" cx="235.6" cy="78.4" r="13.7" popover="this is where this issue was created" popover-trigger="mouseenter" popover-append-to-body="true" popover-placement="bottom" />
+              <circle class="git-commit" ng-class="{active: currentCommit == pull.value.base.sha}" ng-click="compComm(pull.value.base.sha, pull.value.head.sha)" cx="42.3" cy="16" r="13.7" popover="this is the latest commit on the pull request" popover-trigger="mouseenter" popover-append-to-body="true" popover-placement="bottom" />
+              <circle class="git-commit" ng-show="currentIssue && currentIssue.sha != pull.value.head.sha" ng-class="{active: currentCommit == currentIssue.sha}" ng-click="compComm(currentIssue.sha, pull.value.head.sha)" cx="136.9" cy="78.4" r="13.7" popover="the pull request is based on this commit" popover-trigger="mouseenter" popover-append-to-body="true" popover-placement="bottom" />
+            </svg>
+          </div>
+          <div class="clearfix"></div>
 
           <diff ng-repeat="file in files.value" 
                 sha="file.sha"

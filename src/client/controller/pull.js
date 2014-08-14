@@ -14,6 +14,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 
         // get the pull request
         $scope.pull = pull;
+        $scope.currentCommit = $scope.pull.value.base.sha;
 
         $scope.selection = null;
 
@@ -114,6 +115,9 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         $scope.setCurrentIssue = function(issue) {
             if ($scope.currentIssue === issue) {
                 $scope.selection = null;
+                if($scope.currentCommit == $scope.currentIssue.sha) {
+                    $scope.compComm($scope.pull.value.base.sha, $scope.pull.value.head.sha);
+                }
                 $scope.currentIssue = null;
                 return;
             }
@@ -144,6 +148,37 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 var comment = data.value;
                 $scope.currentIssue.comments.value.push(comment);
                 $scope.newCommentBody = '';
+            });
+        };
+
+        $scope.compComm = function(base, head) {
+            $scope.currentCommit = base;
+
+            $RPC.call('files', 'compare', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                base: base,
+                head: head
+            }, function(err, res) {
+                console.log(res);
+                if(!err) {
+                    $scope.files.value = res.value.files;
+                }
+            });
+        };
+
+        $scope.close = function() {
+            $HUB.call('issues', 'edit', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.issue,
+                state: 'closed'
+            }, function(err, data) {
+                $state.go('pull', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number 
+                });
             });
         };
 
