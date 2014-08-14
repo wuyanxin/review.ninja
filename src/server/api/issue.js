@@ -13,16 +13,16 @@ module.exports = {
 
 	add: function(req, done) {
 
-        var fileReference = '``none``';
+        var fileReference = '`none`';
         if(req.args.reference) {
-            fileReference = 'https://' + config.github.host + '/' + req.args.user + '/' + req.args.repo + req.args.reference;
+            fileReference = '['+req.args.reference+'](https://' + config.github.host + '/' + req.args.user + '/' + req.args.repo + '/blob/' + req.args.sha + '/' + req.args.reference + ')';
         }
             
-        var body = '|commit|file reference|\n';
-        body +=    '|------|--------------|\n';
+        var body = '|commit|file reference|\r\n';
+        body +=    '|------|--------------|\r\n';
         body +=    '|'+req.args.sha+'|'+fileReference+'|';
 
-        body += '\n\n' + req.args.body;
+        body += '\r\n\r\n' + req.args.body;
 
 		github.call({obj: 'issues', fun: 'create', arg: {
 			user: req.args.user,

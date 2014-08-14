@@ -96,7 +96,7 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                 scope.select = function(line) {
                     if(line.head) {
-                        scope.selected = Issue.line(scope.pullSha, scope.name, line.head);
+                        scope.selected = Issue.line(scope.name, line.head);
                         console.log(scope.selected);
                     }   
                 };
