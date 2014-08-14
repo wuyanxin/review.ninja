@@ -27,7 +27,7 @@ var Repo=mongoose.model('Repo');
 var github = require('../../../server/services/github');
 var notification = require('../../../server/services/notification');
 var Pull_Request = require('../../../server/webhooks/pull_request');
-var GithubServiceApi = require('../../../server/services/github-status-api');
+var status = require('../../../server/services/status');
 
 require('../../../config');
 
@@ -63,13 +63,12 @@ describe('pull_request:opened', function(){
             }
         });
 
-        stub_github_status_api = sinon.stub(GithubServiceApi, 'updateCommit', function(args,done){
+        stub_github_status_api = sinon.stub(status, 'update', function(args,done){
           done();
         });
 
         stub_notification_pull_request_opened = sinon.stub(notification,'pull_request_opened', function(user, slug, number, sender, review_url, repo, repo_name){
-            assert.equal(number,48);
-            done(null);
+            assert.equal(number, 48);
         });
 
 

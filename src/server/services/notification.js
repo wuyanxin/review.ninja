@@ -9,18 +9,15 @@ var github = require('./github');
 
 module.exports = function() {
 
-    function sendmail(user,subj,tmpl,notification_type,repo,repo_name,args){
+    function sendmail(user, subj, tmpl, notification_type, repo, repo_name, args) {
 
-        get_collaborators(user,repo_name,repo.token, function(err,collaborators){
-            if(err)
-            {
-                logger.log(err);
-                return;
+        get_collaborators(user,repo_name,repo.token, function(err, collaborators) {
+
+            if(err) {
+                return logger.log(err);
             }
 
             collaborators.forEach(function(collaborator){
-
-                var notified = false;
 
                 Conf.findOne({
                     user: collaborator.uuid,
@@ -28,79 +25,52 @@ module.exports = function() {
                 }, function(err, conf) {
 
                     if(err){
-                        logger.log(err);
-                        return;
+                        return logger.log(err);
                     }
 
-                    if(conf){
-
-                        if(notification_type == 'issue'){
-                            if(conf.notifications.issue){
-                                notified = true;
-                            }
-                        }else if(notification_type == 'pull_request'){
-                            if(conf.notifications.pull_request){
-                                notified = true;
-                            }
-                        }else if(notification_type == 'star'){
-                             if(conf.notifications.star){
-                                notified = true;
-                            }                           
-                        }
-
-                    }
-
-
-
-                    if(notified){
+                    if( (notification_type === 'star' && conf.notifications.star) || 
+                        (notification_type === 'issue' && conf.notifications.issue) || 
+                        (notification_type === 'pull_request' && conf.notifications.pull_request) ){
 
                         var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
 
-                        var template = fs.readFileSync(tmpl,'utf-8');
+                        var template = fs.readFileSync(tmpl, 'utf-8');
+
                         var mailOptions = {
-                            from: 'RobotNinja ✔ <noreply@review.ninja>',
-                            to:collaborator.email,
-                            subject:subj,
-                            html:ejs.render(template,args)
+                            from: 'Review Ninja <noreply@review.ninja>',
+                            to: collaborator.email,
+                            subject: subj,
+                            html: ejs.render(template, args)
                         };
 
-                        smtpTransport.sendMail(mailOptions, function(error, response) {
+                        smtpTransport.sendMail(mailOptions, function(err, response) {
                            
-                            if (error) {
-                                logger.log(error);
-                                return;
+                            if (err) {
+                                return logger.log(error);
                             }
+
                             smtpTransport.close();
                         });
-
                     }                
-
                 });
-
-
-
             });
-
         });
-
     }
 
     function get_collaborators(user, repo, token, done) {
-        var args = {
-            user: user,
-            repo: repo
-        };
 
         github.call({
             obj: 'repos',
             fun: 'getCollaborators',
-            arg: args,
+            arg: {
+                user: user,
+                repo: repo
+            },
             token: token
         }, function(err, collaborators) {
 
-            if(err){
-                logger.log(err);
-                return;
+            if(err) {
+                return done(err);
             }
             
             var collaborator_ids = collaborators.map(function(collaborator) {
@@ -115,79 +85,68 @@ module.exports = function() {
 
 
     return {
+
         pull_request_opened: function(user, slug, number, sender, review_url, repo, repo_name) {
             // start a review: send messages to appropriate users
-            var args={
-                slug:slug,
-                number:number,
-                sender:sender,
-                review_url:review_url
+            var args = {
+                slug: slug,
+                number: number,
+                sender: sender,
+                review_url: review_url
             };
 
-            sendmail(user,'New Commits, you can now review them','src/server/templates/pullReqOpened.ejs','pull_request',repo,repo_name,args);
+            sendmail(user, 'A new pull request is ready for review', 'src/server/templates/pullReqOpened.ejs', 'pull_request', repo, repo_name, args);
 
 
         },
-        pull_request_synchronized: function(user,slug, number, sender, review_url, repo, repo_name) {
+        pull_request_synchronized: function(user, slug, number, sender, review_url, repo, repo_name) {
             // a pull request you have been reviewing has a new commit
-            var args={
-                slug:slug,
-                number:number,
-                sender:sender,
-                review_url:review_url
+            var args = {
+                slug: slug,
+                number: number,
+                sender: sender,
+                review_url: review_url
             };   
 
-            sendmail(user,'New Commits, you can now review them','src/server/templates/pullReqSync.ejs','pull_request',repo,repo_name,args);
+            sendmail(user, 'New commits added to pull request', 'src/server/templates/pullReqSync.ejs', 'pull_request', repo, repo_name, args);
 
 
         },
-        star: function(user,starrer,number, repo, repo_name){
-            var args={
-                starrer:starrer,
-                number:number
-            };
-
-            sendmail(user,'Your pull request has been starred','src/server/templates/starred.ejs','star',repo,repo_name, args);
-
-
-        },
-
-        unstar: function(user,starrer, number,repo, repo_name){
-
-            var args={
+        star: function(user, starrer, number, repo, repo_name){
+            var args = {
                 starrer: starrer,
-                number:number
+                number: number
             };
 
-            sendmail(user,'Your pull request has been UNstarred','src/server/templates/unstarred.ejs','star',repo,repo_name,args);
-
-
+            sendmail(user, 'Your pull request has been starred', 'src/server/templates/starred.ejs', 'star', repo, repo_name, args);
         },
-        new_issue: function(user, sender,issue_number,review_url, repo, repo_name){
 
-            var args= {
+        unstar: function(user, starrer, number, repo, repo_name){
+            var args = {
+                starrer: starrer,
+                number: number
+            };
+
+            sendmail(user, 'Your pull request has been unstarred', 'src/server/templates/unstarred.ejs', 'star', repo, repo_name, args);
+        },
+        new_issue: function(user, sender, issue_number, review_url, repo, repo_name){
+
+            var args = {
                 review_url: review_url,
                 issue_number: issue_number,
-                sender:sender
+                sender: sender
             };
 
-            sendmail(user,'A new issue has just been raised!!','src/server/templates/new_issue.ejs','issue',repo,repo_name, args);
-
-
-
-
+            sendmail(user, 'A new issue has been raised', 'src/server/templates/new_issue.ejs', 'issue', repo, repo_name, args);
         },
-        issues_close: function(user, sender,number, review_url, repo, repo_name){
-
-            var args= {
+        issues_closed: function(user, sender,number, review_url, repo, repo_name){
+            var args = {
                 review_url: review_url,
                 number: number,
-                sender:sender
+                sender: sender
             };
 
-            sendmail(user,'All issues have just been closed','src/server/templates/issue_closed.ejs','issue',repo,repo_name,args);
-
-
+            sendmail(user, 'All issues have been closed', 'src/server/templates/issue_closed.ejs', 'issue', repo, repo_name, args);
         }
     };
 }();

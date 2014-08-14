@@ -60,44 +60,6 @@ describe('Repo: get', function() {
     });
 
 
-    it('should throw error for null repo', function(done) {
-
-        stub_github_call = sinon.stub(github, 'call', function(args, done) {
-
-            if (args.fun == 'one' && args.obj == 'repos') {
-                repo_github = null;
-                err = null;
-                done(err, repo_github);
-            }
-        });
-
-        repo_with = sinon.stub(Repo, 'with', function(args, done) {
-
-
-            repoTest = 'repoTest';
-            err = null;
-
-            done(err, repoTest);
-        });
-
-        req = {
-            args: {
-                uuid: 'uuid'
-            },
-            user: {
-                token: 'token'
-            }
-        };
-
-
-        repo.get(req, function(err, res) {
-            assert.equal(err.code, 404);
-            done();
-        });
-
-    });
-
-
 
 
 
@@ -168,7 +130,6 @@ describe('Repo: get', function() {
 
         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
-
             repoTest = null;
             err = 'error';
 
@@ -185,7 +146,8 @@ describe('Repo: get', function() {
         };
 
         repo.get(req, function(err, repoTest) {
-            assert.equal(err.code, 404);
+
+            assert.equal(err, 'error');
             done();
         });
 

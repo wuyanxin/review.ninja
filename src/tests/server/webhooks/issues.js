@@ -25,7 +25,7 @@ var Repo=mongoose.model('Repo');
 var User = mongoose.model('User');
 //services
 var github = require('../../../server/services/github');
-var GithubServiceApi = require('../../../server/services/github-status-api');
+var status = require('../../../server/services/status');
 var notification = require('../../../server/services/notification');
 var Issue = require('../../../server/webhooks/issues');
 
@@ -52,7 +52,7 @@ describe('issue webhook', function(){
         });
 
 
-        stub_github_status_api = sinon.stub(GithubServiceApi, 'updateCommit', function(args,done){
+        stub_github_status_api = sinon.stub(status, 'update', function(args,done){
           done();
         });
 
@@ -299,11 +299,11 @@ var req={
         });
 
 
-        stub_github_status_api = sinon.stub(GithubServiceApi, 'updateCommit', function(args,done){
+        stub_github_status_api = sinon.stub(status, 'update', function(args,done){
           done();
         });
 
-        stub_notification_issues_close = sinon.stub(notification,'issues_close', function(user, sender,issue_number,review_url, repo, repo_name){
+        stub_notification_issues_closed = sinon.stub(notification,'issues_closed', function(user, sender,issue_number,review_url, repo, repo_name){
             assert.equal(issue_number,123);
             done();
         });

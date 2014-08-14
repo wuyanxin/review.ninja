@@ -6,7 +6,7 @@ var User = require('mongoose').model('User');
 //services
 var github = require('../services/github');
 var notification = require('../services/notification');
-var GitHubStatusApiService = require('../services/github-status-api');
+var status = require('../services/status');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Pull Request Webhook Handler
@@ -19,11 +19,13 @@ module.exports = function(req, res) {
     Repo.with({
         uuid: repo_uuid
     }, function(err, repo) {
+
         if (err) {
-            logger.log(err);
-            return;
+            return logger.log(err);
         }
+
         if (repo.ninja) {
+
             // to be reviewed by review.ninja so let's go on
 
             var action = req.body.action;
@@ -36,7 +38,7 @@ module.exports = function(req, res) {
             var review_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/' + repository.full_name + '/pull/' + req.body.number;
             var latest_commit_sha = req.body.pull_request.head.sha;
 
-            arg = {
+            args = {
                 user: user,
                 repo: repo_name,
                 repo_uuid: repo_uuid,
@@ -48,14 +50,16 @@ module.exports = function(req, res) {
             var actions = {
                 opened: function() {
 
-                    GitHubStatusApiService.updateCommit(arg, function(err, data) {
-                        notification.pull_request_opened(user, slug, pull_request_number, sender, review_url, repo, repo_name);
+                    status.update(args, function(err, data) {
                     });
+
+                    notification.pull_request_opened(user, slug, pull_request_number, sender, review_url, repo, repo_name);
                 },
                 synchronize: function() {
-                    GitHubStatusApiService.updateCommit(arg, function(err, data) {
-                        notification.pull_request_synchronized(user, slug, pull_request_number, sender, review_url, repo, repo_name);
+                    status.update(args, function(err, data) {
                     });
+
+                    notification.pull_request_synchronized(user, slug, pull_request_number, sender, review_url, repo, repo_name);
                 },
                 closed: function() {
                     // a pull request you have been reviewing has closed
@@ -66,12 +70,14 @@ module.exports = function(req, res) {
                     // send messages to responsible users?
                 }
             };
-            if (actions[action]) {
-                actions[action]();
-                return;
+
+            if (!actions[action]) {
+                return logger.log('unsupported action for pull requests');
             }
-            logger.log('unsupported action for pull requests');
+
+            actions[action]();
         }
+
         res.end();
     });
 };
