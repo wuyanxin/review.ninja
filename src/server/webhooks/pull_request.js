@@ -77,7 +77,7 @@ module.exports = function(req, res) {
 
             actions[action]();
         }
-
-        res.end();
     });
+
+    res.end();
 };
