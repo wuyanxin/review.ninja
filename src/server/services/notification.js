@@ -46,7 +46,7 @@ module.exports = function() {
                         smtpTransport.sendMail(mailOptions, function(err, response) {
                            
                             if (err) {
-                                return logger.log(error);
+                                return logger.log(err);
                             }
 
                             smtpTransport.close();
