@@ -41,6 +41,13 @@ module.exports = {
 
 			}, function(err, repo) {
 
+				if(err){
+	                return done({
+	                    code: 404,
+	                    text: 'Not found'
+	                });
+				}
+				
 				Conf.findOne({
 					user:req.user.id,
 					repo:repo.id
