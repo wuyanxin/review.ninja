@@ -150,7 +150,7 @@ module.exports = function(req, res) {
 
                         if( pull_request_number ) {
 
-                            get_pull_request(user, repo_name, pull_request_number, repo.token, function(err, pull_request_number) {
+                            get_pull_request(user, repo_name, pull_request_number, repo.token, function(err, pull_request) {
 
                                 if(err) {
                                     return logger.log(err);
