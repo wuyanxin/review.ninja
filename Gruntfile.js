@@ -68,6 +68,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
 
-    grunt.registerTask('serve', ['concurrent'])
+    grunt.registerTask('serve', ['sass', 'concurrent'])
     grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
 };

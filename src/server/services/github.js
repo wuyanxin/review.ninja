@@ -18,7 +18,7 @@ module.exports = {
         var github = new GitHubApi({
             protocol: config.github.protocol,
             version: config.github.version,
-            host: config.github.host,
+            host: config.github.api,
             pathPrefix: config.github.pathPrefix
         });
 

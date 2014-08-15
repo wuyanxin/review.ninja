@@ -8,6 +8,9 @@ var sinon = require('sinon');
 var Star = require('../../../server/documents/star').Star;
 var Repo = require('../../../server/documents/repo').Repo;
 var Comm = require('../../../server/documents/comm').Comm;
+var conf = require('../../../server/documents/conf');
+require('../../../server/documents/user');
+var notification = require('../../../server/services/notification');
 
 // api
 var star = require('../../../server/api/star');
@@ -143,6 +146,16 @@ describe('star:set', function(){
 
 beforeEach(function() {
     global.io = {emit: sinon.spy()};
+
+});
+
+before(function(){
+    notification_star_stub = sinon.stub(notification,'star', function(args, done){
+		return;
+    });
+    notification_unstar_stub = sinon.stub(notification,'unstar', function(args, done){
+        return;
+    });
 });
 
 it('should create a star', function(done){

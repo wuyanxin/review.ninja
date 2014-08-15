@@ -14,6 +14,9 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 
         // get the pull request
         $scope.pull = pull;
+        $scope.currentCommit = $scope.pull.value.base.sha;
+
+        $scope.selection = null;
 
         // for the diff view
         $scope.head = $scope.pull.value.head.sha;
@@ -101,20 +104,32 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 body: $scope.newIssue.body,
                 number: $stateParams.number,
                 sha: $scope.pull.value.head.sha,
-                file_references: null
-            }, function(data, err) {
+                reference: $scope.selection
+            }, function(err, issue) {
                 $scope.newIssue.title = '';
                 $scope.newIssue.body = '';
                 $scope.showNewIssue = false;
+                $scope.issue.value.unshift(issue.value);
             });
         };
 
         $scope.setCurrentIssue = function(issue) {
-            if ($scope.currentIssue === issue) {
+            if ($scope.currentIssue === issue || issue === null) {
+                $scope.selection = null;
+                if($scope.currentCommit == $scope.currentIssue.sha) {
+                    $scope.compComm($scope.pull.value.base.sha, $scope.pull.value.head.sha);
+                }
                 $scope.currentIssue = null;
                 return;
             }
-            $scope.currentIssue = Issue.parse(issue);
+
+            $scope.currentIssue = issue;
+            if(!issue.hasOwnProperty('sha') || !issue.hasOwnProperty('fileReference')) {
+                $scope.currentIssue = Issue.parse(issue);
+            }
+            if($scope.currentIssue.fileReference) {
+                $scope.selection = $scope.currentIssue.fileReference;
+            }
             $HUB.call('issues', 'getComments', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
@@ -134,6 +149,34 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 var comment = data.value;
                 $scope.currentIssue.comments.value.push(comment);
                 $scope.newCommentBody = '';
+            });
+        };
+
+        $scope.compComm = function(base, head) {
+            $scope.currentCommit = base;
+
+            $RPC.call('files', 'compare', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                base: base,
+                head: head
+            }, function(err, res) {
+                console.log(res);
+                if(!err) {
+                    $scope.files.value = res.value.files;
+                }
+            });
+        };
+
+        $scope.close = function(index) {
+            $HUB.call('issues', 'edit', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $scope.currentIssue.number,
+                state: 'closed'
+            }, function(err, issue) {
+                $scope.setCurrentIssue(null);
+                $scope.issue.value[index] = issue.value;
             });
         };
 

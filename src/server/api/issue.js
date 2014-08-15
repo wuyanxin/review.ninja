@@ -12,17 +12,17 @@ module.exports = {
 ************************************************************************************************************/
 
 	add: function(req, done) {
-            
-        var body = '--- Pull Request #' + req.args.number + ' on commit ' + req.args.sha  + ' ---';
 
-        if(req.args.file_references) {
-            req.args.file_references.forEach(function(file_reference) {
-                body += '\n\n';
-                body += '--- File: ' + file_reference.file_name + ' (' + file_reference.start + ' - ' + file_reference.end + ' ) ---';
-            });
+        var fileReference = '`none`';
+        if(req.args.reference) {
+            fileReference = '['+req.args.reference+'](https://' + config.github.host + '/' + req.args.user + '/' + req.args.repo + '/blob/' + req.args.sha + '/' + req.args.reference + ')';
         }
+            
+        var body = '|commit|file reference|\r\n';
+        body +=    '|------|--------------|\r\n';
+        body +=    '|'+req.args.sha+'|'+fileReference+'|';
 
-        body = body + '\n\n' + req.args.body;
+        body += '\r\n\r\n' + req.args.body;
 
 		github.call({obj: 'issues', fun: 'create', arg: {
 			user: req.args.user,

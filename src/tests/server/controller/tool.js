@@ -43,16 +43,11 @@ describe('tool::router.all', function() {
 
         stub_Star_create = sinon.stub(Star, 'create', function(args, done) {
 
-            console.log('help');
-
             var error = null;
             var star_create = null;
             done(error, star_create);
         });
         stub_Repo_findOne = sinon.stub(Repo, 'findOne', function(args, done) {
-
-            console.log('repo');
-
 
             var repo = new Repo({
                 uuid: args.uuid,
@@ -66,9 +61,6 @@ describe('tool::router.all', function() {
         });
 
         stub_github_call = sinon.stub(github, 'call', function(args, done) {
-
-            console.log('github');
-
 
             if (args.fun == 'one') {
                 grepo = {
@@ -461,16 +453,11 @@ describe('tool::router.all', function() {
 
         stub_Star_create = sinon.stub(Star, 'create', function(args, done) {
 
-            console.log('help');
-
             var error = null;
             var star_create = null;
             done(error, star_create);
         });
         stub_Repo_findOne = sinon.stub(Repo, 'findOne', function(args, done) {
-
-            console.log('repo');
-
 
             var repo = new Repo({
                 uuid: args.uuid,
@@ -484,9 +471,6 @@ describe('tool::router.all', function() {
         });
 
         stub_github_call = sinon.stub(github, 'call', function(args, done) {
-
-            console.log('github');
-
 
             if (args.fun == 'one') {
                 grepo = {

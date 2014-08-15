@@ -100,14 +100,14 @@ module.exports = {
 
     rmv: function(req, done) {
         Tool.findById(req.args.id, function(err, tool) {
-            if(!err && tool) {
-                tool.remove(function(err, tool) {
-                    done(err, tool);
-                });
+
+            if (err) {
+                return done({code: 404, text: 'Not found'});
             }
-            if(err) {
+
+            tool.remove(function(err, tool) {
                 done(err, tool);
-            }
+            });
         });
     },
 
@@ -121,6 +121,7 @@ module.exports = {
 
     enable: function(req, done) {
 		Tool.findById(req.args.id, function(err, tool) {
+
 			if (err) {
                 return done({code: 404, text: 'Not found'});
 			}

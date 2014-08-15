@@ -1,35 +1,39 @@
-<div class="diff panel panel-default">
-	<div class="panel-heading">
-		<strong>{{ name }}</strong>
-		<button class="btn btn-xs btn-default pull-right" ng-click="expanded=!expanded">
-			{{ expanded ? 'contract' : 'expand' }}
-		</button>
-	</div>
-	<div class="panel-body" ng-show="status==='renamed'">
-		This file was renamed.
-	</div>
-	<div class="panel-body" ng-show="status!=='renamed'">
-		
-		<table>
+<accordion class="diff">
+	<accordion-group is-open="open">
+		<accordion-heading>
+			<strong>{{ name }}</strong>
+			<button class="btn btn-xs btn-default pull-right" style="margin-left:5px;">
+				&nbsp;<i class="fa" ng-class="{ 'fa-plus':!open, 'fa-minus':open }"></i>&nbsp;
+			</button>
+			<button class="btn btn-xs btn-default pull-right" ng-click="expanded=!expanded; $event.stopPropagation();">
+				{{ expanded ? 'contract' : 'expand' }}
+			</button>
+		</accordion-heading>
+		<div ng-show="status==='renamed' && !patch.length" style="padding:5px 10px;">
+			This file was renamed.
+		</div>
+		<div ng-show="patch.length">
+			
+			<table>
+        		<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
+            		ng-class="{ addition:line.add, 
+                        		deletion:line.del, 
+                        		chunk:line.chunk, 
+                        		selected:selected===match(name, line.head) }">
 
-			<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
-			    ng-class="{ addition:line.add, 
-			                deletion:line.del, 
-			                chunk:line.chunk, 
-			                selected:selected===match(pullSha, name, line.head) }">
+					<td class="select" ng-click="select(line)">
+						<i class="fa fa-circle"></i>
+					</td>
 
-				<td class="select" ng-click="select(line)">
-					<i class="fa fa-circle"></i>
-				</td>
+					<td class="number" ng-click="select(line)"><pre>{{ line.base }}</pre></td>
+					<td class="number" ng-click="select(line)"><pre>{{ line.head }}</pre></td>
 
-				<td class="number"><pre>{{ line.base || ' ' }}</pre></td>
-				<td class="number"><pre>{{ line.head || ' ' }}</pre></td>
+					<td><pre>{{ line.content }}</pre></td>
 
-				<td><pre>{{ line.content }}</pre></td>
+				</tr>
 
-			</tr>
+			</table>
 
-		</table>
-
-	</div>
-</div>
+		</div>
+	</accordion-group>
+</accordion>

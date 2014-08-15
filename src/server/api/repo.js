@@ -29,7 +29,7 @@ module.exports = {
             token: req.user.token
         }, function(err, repo) {
 
-            if (!repo) {
+            if (err) {
                 return done({
                     code: 404,
                     text: 'Not found'
@@ -46,13 +46,6 @@ module.exports = {
             Repo.with({
                 uuid: req.args.uuid
             }, function(err, repo) {
-
-                if (!repo) {
-                    return done({
-                        code: 404,
-                        text: 'Not found'
-                    });
-                }
 
                 done(err, repo);
 
@@ -79,8 +72,11 @@ module.exports = {
 
         github.call({obj: 'repos', fun: 'one', arg: {id: req.args.uuid}, token: req.user.token}, function(err, github_repo) {
 
-            if(!github_repo || err) {
-                return done({code: 404, text: 'Not found'});
+            if(err) {
+                return done({
+                    code: 404, 
+                    text: 'Not found'
+                });
             }
 
             if (!github_repo.permissions.admin) {
@@ -93,10 +89,6 @@ module.exports = {
             var webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
 
             Repo.with({ uuid: req.args.uuid }, { token: req.user.token, ninja: true }, function(err, repo) {
-
-                if(!repo || err){
-                    return done({code: 404, text: 'Not found'});
-                }
 
                 done(err, repo);
 
@@ -112,7 +104,7 @@ module.exports = {
                         repo: github_repo.name, 
                         name: 'web', 
                         config: { url: webhook_url, content_type: 'json' }, 
-                        events: ['pull_request'], 
+                        events: ['pull_request','issues'], 
                         active: true 
                     }, 
                     token: req.user.token 
@@ -142,8 +134,11 @@ module.exports = {
 
         github.call({obj: 'repos', fun: 'one', arg: {id: req.args.uuid}, token: req.user.token}, function(err, github_repo) {
 
-            if(!github_repo) {
-                return done({code: 404, text: 'Not found'});
+            if(err) {
+                return done({
+                    code: 404, 
+                    text: 'Not found'
+                });
             }
 
             if (!github_repo.permissions.admin) {
