@@ -9,102 +9,64 @@ module.exports = {
 
 	getAll: function(req, done){
 
-		var args={
-			user: req.body.user,
-			repo: req.body.repo,
-			state: req.body.state
-		};
 
 		github.call({
 			obj: 'pullRequests',
 			fun: 'getAll',
-			arg:args,
+			arg:{
+				user: req.body.user,
+				repo: req.body.repo,
+				state: req.body.state
+			},
 			token: req.user.token
 		}, function(err, pulls){
 
 			if(err){
-                return done({
-                    code: 404,
-                    text: 'Not found'
-                });
+				return done(err, pulls);
+			}
+
+			var repo;
+
+			try {
+				repo = pulls[0].base.repo.id;
+			}
+			catch(ex) {
+				repo = null;
 			}
 
 
-			github.call({
-				obj:'repos',
-				fun:'get',
-				arg:{
-					user: req.body.user,
-					repo: req.body.repo
-				},
-				token:req.user.token
+			Conf.findOne({
+				user:req.user.id,
+				repo:repo
+			}, function(err,conf){
 
-			}, function(err, repo) {
+				console.log('CONF');
+				console.log(conf);
+				if(!err && conf) {
 
-				if(err){
-					return done({
-						code: 404,
-						text: 'Not found'
-					});
-				}
+					pulls.forEach(function(pull){
+						console.log('PULLS');
+						console.log(pull);
+						pull.watched = false;
 
-				Conf.findOne({
-					user:req.user.id,
-					repo:repo.id
-				}, function(err,conf){
+						for(var key=0; key<conf.watch.length; key++){
 
-					if(err){
-						return done({
-							code: 404,
-							text: 'Not found'
-						});
-					}
+							var r = req.body.user+':'+conf.watch[key];
+							var re = new RegExp(r,'g');
 
-
-					if(conf){
-
-						for(var index in pulls){
-							var pull = pulls[index];
-
-							var found = false;
-
-							for(var key=0; key<conf.watch.length; key++){
-
-								var r = req.body.user+':'+conf.watch[key];
-								var re = new RegExp(r,'g');
-
-								var match_base =re.exec(pull.base.label); 
-								var match_head = re.exec(pull.head.label);
-
-								if(match_base || match_head){
-									found = true;
-									break;
-								}
-							}
-
-							if(found){
-
+							if(re.exec(pull.base.label) || re.exec(pull.head.label)){
+								console.log('PULL WATCHED');
 								pull.watched = true;
-
-							}else{
-								pull.watched = false;
+								break;
 							}
-
-
 						}
 
-						done(err, pulls);
-
-					}
-						
-
-
-				});
-
+					});
+					
+				}
+				done(err, pulls);
 
 			});
-
-
 
 		});
 
