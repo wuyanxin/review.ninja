@@ -36,26 +36,23 @@ module.exports = {
 
 
 			Conf.findOne({
-				user:req.user.id,
-				repo:repo
+				user: req.user.id,
+				repo: repo
 			}, function(err,conf){
 
-				console.log('CONF');
-				console.log(conf);
 				if(!err && conf) {
 
 					pulls.forEach(function(pull){
-						console.log('PULLS');
-						console.log(pull);
+
 						pull.watched = false;
 
 						for(var key=0; key<conf.watch.length; key++){
 
-							var r = req.body.user+':'+conf.watch[key];
-							var re = new RegExp(r,'g');
+							var r = req.body.user + ':' + conf.watch[key];
+							var re = new RegExp(r, 'g');
 
 							if(re.exec(pull.base.label) || re.exec(pull.head.label)){
-								console.log('PULL WATCHED');
+
 								pull.watched = true;
 								break;
 							}
