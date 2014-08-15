@@ -1,0 +1,20 @@
+.browser {
+
+    a, i {
+        font-size: 13px;
+    }
+
+    .panel-body {
+        padding: 0;
+    }
+    
+    table {
+        margin: 0;
+
+        // why doesn't this work?
+        tr:first-child > td {
+            border-top: none;
+        }
+    }
+
+}
