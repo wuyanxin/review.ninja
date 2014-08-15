@@ -187,12 +187,12 @@ module.exports = function(req, res) {
                                 if(err){
                                     return logger.log(err);
                                 }
-                                if(issues.length !== 0 ){
+                                if(issues.length){
                                     return;
                                 }
 
 
-                                get_pull_request(user,repo_name,pull_request_number,repo.token, function(err, pull_request){
+                                get_pull_request(user, repo_name, pull_request_number, repo.token, function(err, pull_request){
 
                                     if(err){
                                         return logger.log(err);
@@ -203,7 +203,7 @@ module.exports = function(req, res) {
                                         repo: repo_name,
                                         repo_uuid: uuid,
                                         sha: pull_request.head.sha,
-                                        number: pull_request_number,
+                                        number: pull_request.number,
                                         token: repo.token
                                     }, function(err, data) {
                                         
