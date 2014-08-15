@@ -8,7 +8,8 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
             restrict: 'E',
             templateUrl: '/directives/templates/browser.html',
             scope: {
-                tree: '='
+                tree: '=',
+                selected: '='
             },
             link: function(scope, elem, attrs) {
 
@@ -16,25 +17,16 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
 
                 scope.up = function() {
 
-                    var tree = scope.stack.pop();
-
-                    if(tree) {
-                        $HUB.call('gitdata', 'getTree', {
-                            user: $stateParams.user,
-                            repo: $stateParams.repo,
-                            sha: tree.sha,
-                        }, function(err, res) {
-                            if(!err) {
-                                scope.file = null;
-                                scope.tree = res.value;
-                            }
-                        });
+                    if(scope.stack.length) {
+                        scope.file = null;
+                        scope.path.pop();
+                        scope.tree = scope.stack.pop();
                     }
                 };
 
                 scope.down = function(node) {
 
-                    if(node.type == 'tree') {
+                    if(node.type === 'tree') {
 
                         $HUB.call('gitdata', 'getTree', {
                             user: $stateParams.user,
@@ -48,9 +40,9 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                             }
                         });
                     } 
-                    else if(node.type == 'blob') {
+                    else if(node.type === 'blob') {
 
-                        $RPC.call('comm', 'file', {
+                        $RPC.call('files', 'get', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
                             sha: node.sha
