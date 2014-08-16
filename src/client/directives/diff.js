@@ -29,7 +29,7 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                     if(scope.patch && scope.patch.length && scope.sha) {
 
-                        $RPC.call('files', 'get', {
+                        $HUB.wrap('gitdata', 'getBlob', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
                             sha: scope.sha

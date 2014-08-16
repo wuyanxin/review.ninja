@@ -1,6 +1,7 @@
 // module
 var github = require('../services/github');
 var merge = require('merge');
+var path = require('path');
 
 module.exports = {
 
@@ -30,11 +31,15 @@ module.exports = {
             token: req.user.token
         }), function(err, res, meta) {
 
+            var wrap = require( path.join('../wrap', req.args.obj) );
+
             if(err) {
                 return done(err);
             }
 
-            var wrap = require('../wrap/' + req.args.obj);
+            if(!wrap[req.args.fun]) {
+                return done('Wrapper not found');
+            }
 
             wrap[req.args.fun](req.args.arg, res, function(err, res) {
                 done(err, {
