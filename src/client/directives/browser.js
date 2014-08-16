@@ -42,7 +42,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                     } 
                     else if(node.type === 'blob') {
 
-                        $RPC.call('files', 'get', {
+                        $HUB.wrap('gitdata', 'getBlob', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
                             sha: node.sha

@@ -16,153 +16,156 @@ var repo = require('../../../server/api/repo');
 ///////////Repo Get/////////////
 ////////////////////////////////
 
-describe('Repo: get', function() {
+// to do:
+// modify these to test wrap/repos : one
 
-    it('should get repo', function(done) {
+// describe('Repo: get', function() {
 
-        stub_github_call = sinon.stub(github, 'call', function(args, done) {
+//     it('should get repo', function(done) {
 
-            if (args.fun == 'one' && args.obj == 'repos') {
-                repo_github = {
-                    permissions: {
-                        pull: true
-                    }
-                };
-                err = null;
-                done(err, repo_github);
-            }
-        });
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-        repo_with = sinon.stub(Repo, 'with', function(args, done) {
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = {
+//                     permissions: {
+//                         pull: true
+//                     }
+//                 };
+//                 err = null;
+//                 done(err, repo_github);
+//             }
+//         });
 
-
-            repoTest = 'repoTest';
-            err = null;
-
-            done(err, repoTest);
-        });
-
-        req = {
-            args: {
-                uuid: 'uuid'
-            },
-            user: {
-                token: 'token'
-            }
-        };
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
 
-        repo.get(req, function(err, repoTest) {
-            assert.equal(repoTest, 'repoTest');
-            done();
-        });
+//             repoTest = 'repoTest';
+//             err = null;
 
-    });
+//             done(err, repoTest);
+//         });
 
-
-
-
-
-    it('should throw error for wrong permissions', function(done) {
-
-        //github api stub
-        stub_github_call = sinon.stub(github, 'call', function(args, done) {
-
-            if (args.fun == 'one' && args.obj == 'repos') {
-                repo_github = {
-                    permissions: {
-                        pull: false
-                    }
-                };
-                err = null;
-                done(err, repo_github);
-            }
-        });
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
 
-        repo_with = sinon.stub(Repo, 'with', function(args, done) {
+//         repo.get(req, function(err, repoTest) {
+//             assert.equal(repoTest, 'repoTest');
+//             done();
+//         });
 
-
-            repoTest = 'repoTest';
-            err = null;
-
-            done(err, repoTest);
-        });
-
-        req = {
-            args: {
-                uuid: 'uuid'
-            },
-            user: {
-                token: 'token'
-            }
-        };
-
-        repo.get(req, function(err, repoTest) {
-            assert.equal(err.code, 403);
-            done();
-        });
-
-
-    });
+//     });
 
 
 
 
 
-    //testing get failure -> getting null form Repo.with
-    it('should throw error for null Repo.with', function(done) {
+//     it('should throw error for wrong permissions', function(done) {
 
-        //github api stub
-        stub_github_call = sinon.stub(github, 'call', function(args, done) {
+//         //github api stub
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
 
-            if (args.fun == 'one' && args.obj == 'repos') {
-                repo_github = {
-                    permissions: {
-                        pull: true
-                    }
-                };
-                err = null;
-                done(err, repo_github);
-            }
-        });
-
-
-        repo_with = sinon.stub(Repo, 'with', function(args, done) {
-
-            repoTest = null;
-            err = 'error';
-
-            done(err, repoTest);
-        });
-
-        req = {
-            args: {
-                uuid: 'uuid'
-            },
-            user: {
-                token: 'token'
-            }
-        };
-
-        repo.get(req, function(err, repoTest) {
-
-            assert.equal(err, 'error');
-            done();
-        });
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = {
+//                     permissions: {
+//                         pull: false
+//                     }
+//                 };
+//                 err = null;
+//                 done(err, repo_github);
+//             }
+//         });
 
 
-    });
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
 
+
+//             repoTest = 'repoTest';
+//             err = null;
+
+//             done(err, repoTest);
+//         });
+
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
+
+//         repo.get(req, function(err, repoTest) {
+//             assert.equal(err.code, 403);
+//             done();
+//         });
+
+
+//     });
 
 
 
-    afterEach(function() {
-        stub_github_call.restore();
-        repo_with.restore();
-    });
 
-});
+
+//     //testing get failure -> getting null form Repo.with
+//     it('should throw error for null Repo.with', function(done) {
+
+//         //github api stub
+//         stub_github_call = sinon.stub(github, 'call', function(args, done) {
+
+//             if (args.fun == 'one' && args.obj == 'repos') {
+//                 repo_github = {
+//                     permissions: {
+//                         pull: true
+//                     }
+//                 };
+//                 err = null;
+//                 done(err, repo_github);
+//             }
+//         });
+
+
+//         repo_with = sinon.stub(Repo, 'with', function(args, done) {
+
+//             repoTest = null;
+//             err = 'error';
+
+//             done(err, repoTest);
+//         });
+
+//         req = {
+//             args: {
+//                 uuid: 'uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
+
+//         repo.get(req, function(err, repoTest) {
+
+//             assert.equal(err, 'error');
+//             done();
+//         });
+
+
+//     });
+
+
+
+
+//     afterEach(function() {
+//         stub_github_call.restore();
+//         repo_with.restore();
+//     });
+
+// });
 
 
 

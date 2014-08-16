@@ -18,42 +18,42 @@ module.exports = {
 
 ************************************************************************************************************/
 
-    get: function(req, done) {
+    // get: function(req, done) {
 
-        github.call({
-            obj: 'repos',
-            fun: 'one',
-            arg: {
-                id: req.args.uuid
-            },
-            token: req.user.token
-        }, function(err, repo) {
+    //     github.call({
+    //         obj: 'repos',
+    //         fun: 'one',
+    //         arg: {
+    //             id: req.args.uuid
+    //         },
+    //         token: req.user.token
+    //     }, function(err, repo) {
 
-            if (err) {
-                return done({
-                    code: 404,
-                    text: 'Not found'
-                });
-            }
+    //         if (err) {
+    //             return done({
+    //                 code: 404,
+    //                 text: 'Not found'
+    //             });
+    //         }
 
-            if (!repo.permissions.pull) {
-                return done({
-                    code: 403,
-                    text: 'Forbidden'
-                });
-            }
+    //         if (!repo.permissions.pull) {
+    //             return done({
+    //                 code: 403,
+    //                 text: 'Forbidden'
+    //             });
+    //         }
 
-            Repo.with({
-                uuid: req.args.uuid
-            }, function(err, repo) {
+    //         Repo.with({
+    //             uuid: req.args.uuid
+    //         }, function(err, repo) {
 
-                done(err, repo);
+    //             done(err, repo);
 
-            });
+    //         });
 
-        });
+    //     });
 
-    },
+    // },
 
     /************************************************************************************************************
 

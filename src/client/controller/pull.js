@@ -58,12 +58,10 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         //     number: $stateParams.number
         // });
 
-        $scope.files = $RPC.call('files', 'all', {
+        $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.number
-        }, function(err, files) {
-            
         });
 
         // get the tree (for the file browser)
@@ -155,13 +153,12 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         $scope.compComm = function(base, head) {
             $scope.currentCommit = base;
 
-            $RPC.call('files', 'compare', {
+            $HUB.wrap('repos', 'compareCommits', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 base: base,
                 head: head
             }, function(err, res) {
-                console.log(res);
                 if(!err) {
                     $scope.files.value = res.value.files;
                 }
@@ -187,6 +184,9 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 number: $stateParams.number
             }, function(err, res) {
                 if (!err && res.value.merged) {
+
+                    // instead of doing this, can we just 
+                    // set pull.merged to true??
                     $scope.pull = $HUB.call('pullRequests', 'get', {
                         user: $stateParams.user,
                         repo: $stateParams.repo,

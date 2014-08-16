@@ -70,7 +70,7 @@ module.factory('$HUB', ['$RAW', '$log',
             var res = new ResultSet();
             $RAW.call('github', type, args, function(error, value) {
 
-                res.set(error, value.data, value.meta);
+                res.set(error, value ? value.data : null, value ? value.meta : null);
                 $log.debug('$HUB', args, res, res.error);
                 if (typeof call === 'function') {
                     call(res.error, res);

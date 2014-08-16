@@ -64,11 +64,13 @@ describe('Home Controller', function() {
             }]
         });
 
-        httpBackend.when('POST', '/api/repo/get').respond({
-            name: 'repo-1',
-            ninja: true,
-            user: 'me',
-            uuid: 1
+        httpBackend.when('POST', '/api/github/wrap').respond({
+            data: {
+                name: 'repo-1',
+                ninja: true,
+                user: 'me',
+                uuid: 1
+            }
         });
 
         httpBackend.flush();
@@ -123,11 +125,13 @@ describe('Home Controller', function() {
             }]
         });
 
-        httpBackend.when('POST', '/api/repo/get').respond({
-            'name': 'repo-2',
-            'ninja': false,
-            'user': 'me',
-            'uuid': 2
+        httpBackend.when('POST', '/api/github/wrap').respond({
+            data: {
+                'name': 'repo-2',
+                'ninja': false,
+                'user': 'me',
+                'uuid': 2
+            }
         });
 
         httpBackend.flush();
