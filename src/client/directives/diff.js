@@ -104,7 +104,7 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
                 scope.match = function(line) {
                     return ( scope.selected === Issue.line(scope.baseSha, scope.path, line.base) || 
                              scope.selected === Issue.line(scope.headSha, scope.path, line.head) );
-                }
+                };
 
                 scope.select = function(line) {
                     if(line.head) {
