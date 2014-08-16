@@ -8,10 +8,12 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
             scope: {
-                sha: '=',
                 path: '=',
                 patch: '=',
                 status: '=',
+                fileSha: '=',
+                baseSha: '=',
+                headSha: '=',
                 selected: '='
             },
             link: function(scope, elem, attrs) {
@@ -27,12 +29,12 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
 
                 scope.$watch('patch', function() {
 
-                    if(scope.patch && scope.patch.length && scope.sha) {
+                    if(scope.patch && scope.patch.length) {
 
                         $HUB.wrap('gitdata', 'getBlob', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
-                            sha: scope.sha
+                            sha: scope.fileSha
                         }, function(err, res) {
 
                             if(!err) {
@@ -99,11 +101,14 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
                 // actions
                 //
 
-                scope.match = Issue.line;
+                scope.match = function(line) {
+                    return ( scope.selected === Issue.line(scope.baseSha, scope.path, line.base) || 
+                             scope.selected === Issue.line(scope.headSha, scope.path, line.head) );
+                }
 
                 scope.select = function(line) {
                     if(line.head) {
-                        var selected = Issue.line(scope.path, line.head);
+                        var selected = Issue.line(scope.headSha, scope.path, line.head);
                         scope.selected = scope.selected!==selected ? selected : null;
                     }   
                 };

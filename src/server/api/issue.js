@@ -15,7 +15,7 @@ module.exports = {
 
         var fileReference = '`none`';
         if(req.args.reference) {
-            fileReference = '['+req.args.reference+'](https://' + config.github.host + '/' + req.args.user + '/' + req.args.repo + '/blob/' + req.args.sha + '/' + req.args.reference + ')';
+            fileReference = '['+req.args.reference.replace(req.args.sha+'/', '')+'](https://' + config.github.host + '/' + req.args.user + '/' + req.args.repo + '/blob/' + req.args.reference + ')';
         }
             
         var body = '|commit|file reference|\r\n';

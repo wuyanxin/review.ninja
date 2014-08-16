@@ -10,6 +10,7 @@ module.directive('file', ['Issue',
             scope: {
                 path: '=',
                 content: '=',
+                headSha: '=',
                 selected: '='
             },
             link: function(scope, elem, attrs) {
@@ -22,7 +23,7 @@ module.directive('file', ['Issue',
 
                 scope.select = function(line) {
                     if(line.head) {
-                        var selected = Issue.line(scope.path, line.head);
+                        var selected = Issue.line(scope.headSha, scope.path, line.head);
                         scope.selected = scope.selected!==selected ? selected : null;
                     }   
                 };
