@@ -19,8 +19,6 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC',
             repos.value.forEach(function(repo) {
                 // get ninja repo
                 $HUB.wrap('repos', 'one', {
-                    // user: repo.owner.login,
-                    // repo: repo.name,
                     id: repo.id
                 }, function(err, ninja) {
                     repo.ninja = ninja.value || {
@@ -40,8 +38,6 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC',
                     repos.value.forEach(function(repo) {
                         // get ninja repo
                         $HUB.wrap('repos', 'one', {
-                            // user: repo.owner.login,
-                            // repo: repo.name,
                             id: repo.id
                         }, function(err, ninja) {
                             repo.ninja = ninja.value || {
