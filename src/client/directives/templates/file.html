@@ -1,6 +1,6 @@
 <table class="code">
 	<tr ng-repeat="line in content track by $index"
-        ng-class="{ selected:selected===match(path, line.head) }">
+        ng-class="{ selected:selected===match(headSha, path, line.head) }">
 
         <td class="select" ng-click="select(line)">
             <i class="fa fa-circle"></i>

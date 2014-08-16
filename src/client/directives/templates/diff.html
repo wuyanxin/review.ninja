@@ -19,7 +19,7 @@
             		ng-class="{ addition:line.add, 
                         		deletion:line.del, 
                         		chunk:line.chunk, 
-                        		selected:selected===match(path, line.head) }">
+                        		selected:match(line) }">
 
 					<td class="select" ng-click="select(line)">
 						<i class="fa fa-circle"></i>

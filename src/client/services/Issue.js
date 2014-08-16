@@ -13,15 +13,15 @@ module.factory('Issue', function() {
             
             if(match) {
                 issue.sha = match[1];
-                issue.fileReference = match[3];
+                issue.fileReference = match[1] + '/' + match[3];
                 issue.body = issue.body.replace(match[0], '');
             }
 
             return issue;
         },
 
-        line: function(path, number) {
-            return path + '#L' + number;
+        line: function(sha, path, number) {
+            return sha + '/' + path + '#L' + number;
         }
     };
 });

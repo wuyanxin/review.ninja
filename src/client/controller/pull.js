@@ -14,7 +14,8 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 
         // get the pull request
         $scope.pull = pull;
-        $scope.currentCommit = $scope.pull.value.base.sha;
+        $scope.base = $scope.pull.value.base.sha;
+        $scope.head = $scope.pull.value.head.sha;
 
         $scope.selection = null;
 
@@ -114,7 +115,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         $scope.setCurrentIssue = function(issue) {
             if ($scope.currentIssue === issue || issue === null) {
                 $scope.selection = null;
-                if($scope.currentCommit == $scope.currentIssue.sha) {
+                if($scope.base == $scope.currentIssue.sha) {
                     $scope.compComm($scope.pull.value.base.sha, $scope.pull.value.head.sha);
                 }
                 $scope.currentIssue = null;
@@ -151,7 +152,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         };
 
         $scope.compComm = function(base, head) {
-            $scope.currentCommit = base;
+            $scope.base = base;
 
             $HUB.wrap('repos', 'compareCommits', {
                 user: $stateParams.user,

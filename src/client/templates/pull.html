@@ -53,23 +53,28 @@
                 </feMerge>
               </filter>
               <circle class="git-commit active" cx="235.6" cy="78.4" r="13.7" popover="this is the latest commit on the pull request" popover-trigger="mouseenter" popover-append-to-body="true" popover-placement="bottom" />
-              <circle class="git-commit" ng-class="{active: currentCommit == pull.value.base.sha}" ng-click="compComm(pull.value.base.sha, pull.value.head.sha)" cx="42.3" cy="16" r="13.7" popover="the pull request is based on this commit" popover-trigger="mouseenter" popover-append-to-body="true" popover-placement="bottom" />
-              <circle class="git-commit" ng-show="currentIssue && currentIssue.sha != pull.value.head.sha" ng-class="{active: currentCommit == currentIssue.sha}" ng-click="compComm(currentIssue.sha, pull.value.head.sha)" cx="136.9" cy="78.4" r="13.7" popover="this is where this issue was created" popover-trigger="mouseenter" popover-append-to-body="true" popover-placement="bottom" />
+              <circle class="git-commit" ng-class="{active: base===pull.value.base.sha}" ng-click="compComm(pull.value.base.sha, pull.value.head.sha)" cx="42.3" cy="16" r="13.7" popover="the pull request is based on this commit" popover-trigger="mouseenter" popover-append-to-body="true" popover-placement="bottom" />
+              <circle class="git-commit" ng-show="currentIssue && currentIssue.sha != pull.value.head.sha" ng-class="{active: base===currentIssue.sha}" ng-click="compComm(currentIssue.sha, pull.value.head.sha)" cx="136.9" cy="78.4" r="13.7" popover="this is where this issue was created" popover-trigger="mouseenter" popover-append-to-body="true" popover-placement="bottom" />
             </svg>
           </div>
           <div class="clearfix"></div>
 
           <diff ng-repeat="file in files.value" 
-                sha="file.sha"
                 path="file.filename" 
                 patch="file.patch" 
                 status="file.status" 
+                file-sha="file.sha"
+                base-sha="base"
+                head-sha="head"
                 selected="$parent.$parent.selection"
           </diff>
 
         </tab>
         <tab heading="Files">
-          <browser tree="tree.value" selected="$parent.selection"></browser>
+          <browser tree="tree.value"
+                   head-sha="head"
+                   selected="$parent.selection">
+          </browser>
         </tab>
         </tabset>
       </div>
