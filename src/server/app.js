@@ -225,6 +225,4 @@ app.all('/github/webhook', function(req, res) {
     }
 });
 
-app.api = api;
-
 module.exports = app;

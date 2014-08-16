@@ -2,8 +2,6 @@
 var github = require('../services/github');
 var merge = require('merge');
 
-var api = require('../app').api;
-
 module.exports = {
 
     /************************************************************************************************************
@@ -15,6 +13,7 @@ module.exports = {
 ************************************************************************************************************/
 
     call: function(req, done) {
+        
         github.call(merge(req.args, {
             token: req.user.token
         }), function(err, res, meta) {
@@ -35,7 +34,9 @@ module.exports = {
                 return done(err);
             }
 
-            api[req.params.obj][req.params.fun](req.args.arg, res, function(err, res) {
+            var wrap = require('../wrap/' + req.args.obj);
+
+            wrap[req.args.fun](req.args.arg, res, function(err, res) {
                 done(err, {
                     data: res,
                     meta: meta
@@ -43,5 +44,4 @@ module.exports = {
             });
         });
     }
-
 };
