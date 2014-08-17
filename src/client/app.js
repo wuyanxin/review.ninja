@@ -66,7 +66,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                     }],
                     pull: ['$stateParams', '$HUBService',
                         function($stateParams, $HUBService) {
-                            return $HUBService.call('pullRequests', 'get', {
+                            return $HUBService.wrap('pullRequests', 'get', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 number: $stateParams.number

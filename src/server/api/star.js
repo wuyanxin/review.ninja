@@ -78,6 +78,8 @@ module.exports = {
                         sha: req.args.sha, 
                         number: req.args.number, 
                         token: req.user.token
+                    }, function(err, res) {
+
                     });
                     
                     notification.star(req.args.user, req.user.login, req.args.number, repo, req.args.repo);
@@ -123,6 +125,8 @@ module.exports = {
                             sha: req.args.sha, 
                             number: req.args.number, 
                             token: req.user.token
+                        }, function(err, res) {
+                            
                         });
                         
                         notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo);

@@ -4,4 +4,26 @@
     // min-height: calc(100% - 52px); // 52px = height of navbar
     padding: $padding-large-vertical $padding-large-horizontal;
     padding-left: $padding-large-horizontal * 2;
+
+    .lead a {
+        color: inherit;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    i.fill {
+        color: yellow;
+    }
+
+    .actions {
+        button {
+            z-index: 999;
+        }
+
+        button.disabled {
+            opacity: 1;
+        }
+    }
 }

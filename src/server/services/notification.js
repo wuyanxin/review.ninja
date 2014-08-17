@@ -24,7 +24,7 @@ module.exports = function() {
                     repo: repo.uuid
                 }, function(err, conf) {
 
-                    if(err){
+                    if(err || !conf){
                         return logger.log(err);
                     }
 
