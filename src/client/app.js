@@ -1,9 +1,9 @@
 module = angular.module('app', 
     ['ninja.filters', 
      'ninja.config',
+     'ui.utils',
      'ui.router', 
      'ui.bootstrap',
-     // 'mgcrea.ngStrap.popover',
      'angulartics', 
      'angulartics.google.analytics']);
 
@@ -56,6 +56,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 }
             })
             .state('repo.pull', {
+                abstract: true,
                 url: '/pull/:number',
                 templateUrl: '/templates/pull.html',
                 controller: 'PullCtrl',
@@ -69,6 +70,49 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 number: $stateParams.number
+                            });
+                        }
+                    ]
+                }
+            })
+            .state('repo.pull.list', {
+                url: '',
+                templateUrl: '/templates/pull/list.html',
+                controller: 'PullListCtrl',
+                resolve: {
+                    open: ['$stateParams', '$HUBService',
+                        function($stateParams, $HUBService) {
+                            return $HUBService.call('issues', 'repoIssues', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                labels: 'review.ninja, pull-request-' + $stateParams.number,
+                                state: 'open'
+                            });
+                        }
+                    ],
+                    closed: ['$stateParams', '$HUBService',
+                        function($stateParams, $HUBService) {
+                            return $HUBService.call('issues', 'repoIssues', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                labels: 'review.ninja, pull-request-' + $stateParams.number,
+                                state: 'closed'
+                            });
+                        }
+                    ]
+                }
+            })
+            .state('repo.pull.issue', {
+                url: '/:issue',
+                templateUrl: '/templates/pull/issue.html',
+                controller: 'PullIssueCtrl',
+                resolve: {
+                    issue: ['$stateParams', '$HUBService',
+                        function($stateParams, $HUBService) {
+                            return $HUBService.call('issues', 'getRepoIssue', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                number: $stateParams.issue
                             });
                         }
                     ]
@@ -105,8 +149,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 ])
 .run(['$config', '$rootScope', '$state', '$stateParams',
     function($config, $rootScope, $state, $stateParams) {
-
-        console.log( $state );
 
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;

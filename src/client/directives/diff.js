@@ -2,8 +2,8 @@
 // Diff File Directive
 // *****************************************************
 
-module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
-    function($stateParams, $HUB, $RPC, Issue) {
+module.directive('diff', ['$stateParams', '$HUB', '$RPC', '$state', 'reference',
+    function($stateParams, $HUB, $RPC, $state, reference) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
@@ -13,8 +13,7 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
                 status: '=',
                 fileSha: '=',
                 baseSha: '=',
-                headSha: '=',
-                selected: '='
+                headSha: '='
             },
             link: function(scope, elem, attrs) {
 
@@ -23,6 +22,8 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
                 scope.open = true;
 
                 scope.expanded = false;
+
+                scope.reference = reference;
 
                 // To Do:
                 // fix this
@@ -102,14 +103,15 @@ module.directive('diff', ['$stateParams', '$HUB', '$RPC', 'Issue',
                 //
 
                 scope.match = function(line) {
-                    return ( scope.selected === Issue.line(scope.baseSha, scope.path, line.base) || 
-                             scope.selected === Issue.line(scope.headSha, scope.path, line.head) );
+                    return ( scope.reference.ref===(scope.baseSha + '/' + scope.path + '#L' + line.base) ||
+                             scope.reference.ref===(scope.headSha + '/' + scope.path + '#L' + line.head) );
                 };
 
                 scope.select = function(line) {
-                    if(line.head) {
-                        var selected = Issue.line(scope.headSha, scope.path, line.head);
-                        scope.selected = scope.selected!==selected ? selected : null;
+                    if($state.current.name!=='repo.pull.issue' && line.head) {
+                        reference.type = !scope.match(line) ? 'selection' : null;
+                        reference.sha = !scope.match(line) ? scope.headSha : null;
+                        reference.ref = !scope.match(line) ? scope.headSha + '/' + scope.path + '#L' + line.head : null;
                     }   
                 };
 

@@ -1,0 +1,22 @@
+<p class="lead"><a ui-sref="repo.pull.list()"><i class="fa fa-chevron-left"></i></a> Issues</p>
+
+<h4>{{ issue.title }} <small>#{{ issue.number }}</small></h4>
+<h5>
+    <span class="label" ng-class="{ 'label-success':issue.state==='open',
+                                    'label-danger':issue.state==='closed'}">
+        <i class="fa fa-exclamation-circle"></i> {{ issue.state }}
+    </span> 
+    &nbsp;{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span>
+</h5>
+
+<div class="pull-right">
+    <button type="button" class="btn btn-sm btn-default" ng-click="toggle(issue)" ng-show="issue.state==='open'">
+        Close issue
+    </button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="toggle(issue)" ng-show="issue.state==='closed'">
+        Reopen issue
+    </button>
+    <button type="button" class="btn btn-sm btn-primary">
+        Comment
+    </button>
+</div>

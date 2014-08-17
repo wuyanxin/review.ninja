@@ -1,0 +1,57 @@
+
+<button class="btn btn-primary pull-right" ng-click="createComment=!createComment"><i class="fa fa-exclamation-circle"></i> New issue</button>
+<p class="lead">Issues</p>
+
+<div class="panel panel-default" ng-show="createComment">
+  <div class="panel-body">
+    <form role="form">
+      <div class="form-group">
+        <input type="text" ng-model="issue.title" class="form-control" placeholder="Title">
+      </div>
+      <textarea class="form-control" ng-model="issue.body" rows="3" placeholder="Leave a comment"></textarea>
+    </form>
+    <small class="pull-right" ng-show="reference.type!=='selection'">Select a line to pin this issue.</small>
+    <span class="pull-right" ng-show="reference.type==='selection'"><i class="fa fa-circle" style="color:#8a6d3b;"></i></span>
+  </div>
+  <div class="panel-footer" style="height:50px;">
+    
+    <div class="pull-right">
+      <button type="button" class="btn btn-sm btn-link" ng-click="createComment=false">Cancel</button>
+      <button type="button" class="btn btn-sm btn-primary" ng-click="create()">Create</button>
+    </div>
+  </div>
+</div>
+
+<tabset>
+  <tab>
+    <tab-heading><i class="fa fa-exclamation-circle"></i> {{ open.length }} open</tab-heading>
+    
+    <table class="table table-hover">
+      <tr ng-repeat="issue in open" ui-sref="repo.pull.issue({ issue: issue.number })">
+        <td width="20px;" style="padding-top:13px;">
+          <i class="fa fa-exclamation-circle"></i>
+        </td>
+        <td>
+          {{ issue.title }}<br /><small>#{{ issue.number }} {{ issue.body }}</small>
+        </td>
+        <td width="50px;"><i class="fa fa-comments"></i> {{ issue.comments }}</td>
+      </tr>
+    </table>
+  </tab>
+
+  <tab>
+    <tab-heading><i class="fa fa-check"></i> {{ closed.length }} closed</tab-heading>
+    
+    <table class="table table-hover">
+      <tr ng-repeat="issue in closed" ui-sref="repo.pull.issue({ issue: issue.number })">
+        <td width="20px;" style="padding-top:13px;">
+          <i class="fa fa-exclamation-circle"></i>
+        </td>
+        <td>
+          {{ issue.title }}<br /><small>#{{ issue.number }} {{ issue.body }}</small>
+        </td>
+        <td width="50px;"><i class="fa fa-comments"></i> {{ issue.comments }}</td>
+      </tr>
+    </table>
+  </tab>
+</tabset>

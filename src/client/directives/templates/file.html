@@ -1,9 +1,11 @@
 <table class="code">
 	<tr ng-repeat="line in content track by $index"
-        ng-class="{ selected:selected===match(headSha, path, line.head) }">
+        ng-class="{ disabled: reference.type==='issue', 
+                    selected: match(line) }">
 
         <td class="select" ng-click="select(line)">
-            <i class="fa fa-circle"></i>
+            <i class="fa fa-circle" ng-show="reference.type==='selection'"></i>
+            <i class="fa fa-exclamation-circle" ng-show="reference.type==='issue'"></i>
         </td>
 
 		<td class="number" ng-click="select(line)"><pre>{{ line.head }}</pre></td>
