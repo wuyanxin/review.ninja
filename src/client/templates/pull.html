@@ -3,7 +3,6 @@
   <div class="col-sm-9 main">
     <div class="row">
       <div class="col-sm-12">
-
         <p class="lead"><a ui-sref="repo.list({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a> <a ui-sref="repo.settings({ user:repo.value.owner.login, repo:repo.value.name })"><i class="fa fa-cog"></i></a></p>
         <div class="well row" style="margin: 0px 0px 20px 0px;">
           <div class="col-md-9">
@@ -93,13 +92,19 @@
                   status="file.status" 
                   file-sha="file.sha"
                   base-sha="base"
-                  head-sha="head">
+                  head-sha="head"
+                  reference="reference"
+                  update="update(reference)">
             </diff>
 
           </tab>
 
           <tab heading="Files">
-            <browser tree="tree.value" head-sha="head"></browser>
+            <browser tree="tree.value" 
+                     head-sha="head"
+                     reference="reference"
+                     update="update(reference)">
+            </browser>
           </tab>
 
         </tabset>
@@ -117,62 +122,5 @@
       <section class="issue" ui-view></section>
     </div>
   </div>
-
-  <!-- the right sidebar -->
-  <!-- <div class="col-sm-3 sidebar">
-    <button class="btn btn-danger btn-block" ng-click="showNewIssue=!showNewIssue">Create Issue</button>
-    <div class="new-issue" ng-show="showNewIssue" ng-init="showNewIssue=false">
-      <h5>New Issue</h5>
-      <div class="form-group">
-        <input ng-model="newIssue.title" ng-init="newIssue.title=''" class="form-control" placeholder="Issue title" />
-      </div>
-      <div class="form-group">
-        <textarea ng-model="newIssue.body" ng-init="newIssue.body=''" class="form-control" placeholder="Issue body..." />
-      </div>
-      <div class="form-group">
-        <button class="form-control btn btn-default" ng-click="createNewIssue()">CREATE</button>
-      </div>
-    </div>
-    <ul class="nav">
-      <li class="issue" ng-show="currentIssue != null">
-        <a ng-click="setCurrentIssue(null)" href="">
-          <span class="fa-stack">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-bars fa-stack-1x fa-inverse"></i>
-          </span>
-          <span> {{ issue.value.length || 0 }} Issues</span>
-        </a></li>
-      <li class="issue" ng-repeat="issue in issue.value" ng-show="currentIssue == null || currentIssue == issue">
-        <a ng-click="setCurrentIssue(issue)" href="">
-          <span class="fa-stack closed-issue" ng-show="issue.state == 'closed'">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-check fa-stack-1x fa-inverse"></i>
-          </span>
-          <span class="fa-stack open-issue" ng-show="issue.state == 'open'">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
-          </span>
-          <span> {{ issue.title }}</span>
-        </a>
-        <div ng-show="currentIssue === issue">
-          <p class="well">
-            {{ currentIssue.body }}
-          </p>
-          <p ng-repeat="comment in currentIssue.comments.value" class="well">
-            {{ comment.body }}
-          </p>
-          <div class="form-group">
-            <textarea class="form-control" placeholder="Comment body..." ng-model="$parent.newCommentBody" ng-class="issue-{{issue.number}}" ng-init="newCommentBody=''"></textarea>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-default btn-block" ng-click="comment(newCommentBody)">Comment</button>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-default btn-block" ng-click="close($index)">Close</button>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div> -->
   
 </div>

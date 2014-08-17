@@ -6,8 +6,8 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', 'pull', 'reference', 'socket', 'Issue',
-    function($scope, $rootScope, $stateParams, $HUB, $RPC, $modal, repo, pull, reference, socket, Issue) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Issue',
+    function($scope, $rootScope, $stateParams, $HUB, $RPC, repo, pull, socket, Issue) {
 
         // get the repo
         $scope.repo = repo;
@@ -17,8 +17,13 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '
         $scope.base = $scope.pull.value.base.sha;
         $scope.head = $scope.pull.value.head.sha;
 
-        // get the shared reference
-        $scope.reference = reference;
+        // file reference
+        $scope.reference = { sha: null, ref: null, type: null, disabled: null };
+
+        // note: work around for strage angular binding issue
+        $scope.update = function(reference) {
+            $scope.reference = reference;
+        };
 
         // get the commit
         $scope.comm = $HUB.call('repos', 'getCommit', {
@@ -87,12 +92,12 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '
             }
         };
 
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-            // clear the reference
-            $scope.reference.sha = null;
-            $scope.reference.ref = null;
-            $scope.reference.type = null;
-        });
+        // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        //     // clear the reference
+        //     $scope.reference.sha = null;
+        //     $scope.reference.ref = null;
+        //     $scope.reference.type = null;
+        // });
 
         $scope.merge = function() {
             $HUB.call('pullRequests', 'merge', {

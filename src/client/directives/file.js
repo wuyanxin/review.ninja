@@ -2,19 +2,18 @@
 // File Directive
 // *****************************************************
 
-module.directive('file', ['$state', 'reference', 
-    function($state, reference) {
+module.directive('file', function() {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/file.html',
             scope: {
                 path: '=',
+                update: '&',
                 content: '=',
-                headSha: '='
+                headSha: '=',
+                reference: '='
             },
             link: function(scope, elem, attrs) {
-
-                scope.reference = reference;
 
                 // 
                 // actions
@@ -26,13 +25,20 @@ module.directive('file', ['$state', 'reference',
                 };
 
                 scope.select = function(line) {
-                    if($state.current.name!=='repo.pull.issue' && line.head) {
-                        reference.type = !scope.match(line) ? 'selection' : null;
-                        reference.sha = !scope.match(line) ? scope.headSha : null;
-                        reference.ref = !scope.match(line) ? scope.headSha + '/' + scope.path + '#L' + line.head : null;
-                    }   
+
+                    if(line.head && !scope.reference.disabled) {
+
+                        var reference = scope.match(line) ? { sha: null, ref: null, type: null, disabled: null } : {
+                            sha: scope.headSha,
+                            ref: scope.headSha + '/' + scope.path + '#L' + line.head,
+                            type: 'selection',
+                            disabled: false
+                        };
+
+                        scope.update({ reference: reference });
+                    }
                 };
             }
         };
     }
-]);
+);
