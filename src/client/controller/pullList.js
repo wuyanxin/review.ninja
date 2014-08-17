@@ -30,7 +30,7 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
         });
 
         // update the comparison view
-        $scope.compComm($scope.pull.value.base.sha);
+        $scope.compComm($scope.pull.base.sha);
 
         //
         // actions
@@ -42,17 +42,16 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 number: $stateParams.number,
-                repo_uuid: $scope.repo.value.id,
+                repo_uuid: $scope.repo.id,
                 title: $scope.issue.title,
                 body: $scope.issue.body,
-                sha: $scope.pull.value.head.sha,
+                sha: $scope.pull.head.sha,
                 reference: $scope.reference.ref
             }, function(err, issue) {
 
                 // to do: error handling
 
                 if(!err) {
-                    console.log(issue.value);
                     $state.go('repo.pull.issue', { issue: issue.value.number });
                 }
             });

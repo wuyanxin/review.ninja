@@ -3,8 +3,33 @@
   <div class="col-sm-9 main">
     <div class="row">
       <div class="col-sm-12">
-        <p class="lead"><a ui-sref="repo.list({ user:repo.value.owner.login, repo:repo.value.name })">{{ repo.value.full_name }}</a> <a ui-sref="repo.settings({ user:repo.value.owner.login, repo:repo.value.name })"><i class="fa fa-cog"></i></a></p>
-        <div class="well row" style="margin: 0px 0px 20px 0px;">
+
+        <p class="lead">
+          <a ui-sref="repo.list()">{{ repo.full_name }}</a> 
+          <a ui-sref="repo.settings()" class="pull-right"><i class="fa fa-cog"></i></a>
+        </p>
+
+        <h4>{{ pull.title }}</h4>
+        <h5>
+          <img class="img-circle" ng-src="{{ pull.user.avatar_url }}" width="18px" /> 
+          <span moment="pull.created_at"></span>
+          <img ng-src="/badge/{{ repo.owner.login }}/{{ repo.name }}/{{ pull.head.sha }}">
+        </h5>
+
+        <div class="actions pull-right">
+          <button type="button" ng-show="!pull.merged" class="btn btn-sm btn-primary" ng-click="merge()">
+            Merge pull request
+          </button>
+          <small ng-show="pull.merged">This pull request was merged by {{ pull.merged_by.login }} <span moment="pull.merged_at"></span>.</small>
+          <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-primary" ng-click="toggle()">
+              &nbsp;<i class="fa fa-star" ng-class="{ fill: star.value }"></i>&nbsp;
+            </button>
+            <button type="button" class="btn btn-default disabled">{{ pull.stars.length }}</button>
+          </div>
+        </div>
+
+        <!-- <div class="well row" style="margin: 0px 0px 20px 0px;">
           <div class="col-md-9">
             <h5>
               <button class="btn btn-primary" tooltip-placement="bottom" tooltip-html-unsafe="{{ stargazers.value | stargazerAccumulator }}" ng-click="{true: unstar, false: star}[starred]()"><i class="fa fa-star"></i> {{ {true: 'Unstar', false: 'Star'}[starred] }} ({{ stargazers.value.length }})</button>
@@ -17,73 +42,37 @@
                 <span>
                   <img class="img-circle" ng-src="{{ pull.value.user.avatar_url }}" width="18px" />
                   {{ pull.value.user.login }} <small moment="pull.value.created_at"></small>
-                  <!-- <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ pull.value.head.sha }}"> -->
+                  <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ pull.value.head.sha }}">
                 </span>
               </span>
             </h5>
           </div>
           <div class="col-md-3">
             <h5>
-              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()"> <!-- popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}" -->
+              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()"> popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}" 
                 Merge pull request
               </button>
               <small ng-show="pull.value.merged">This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></small>
             </h5>
           </div>
-        </div>
+        </div> -->
+
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12" style="margin-top:-30px;">
         <tabset>
           <tab heading="Diff">
-            <div class="pull-request-graph">
-              <svg version="1.1" class="branch pull-right" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                 viewBox="0 0 300 100" enable-background="new 0 0 300 100" xml:space="preserve" width="200px">
-                <path class="git-base" stroke-width="11" stroke-miterlimit="10" d="M 41.1 16.1 L 232.6 16.1"/>
-                <polygon class="git-graph-arrow" points="224,4.9 250,16 224,27.4 "/>
-                <path class="git-head" stroke-width="11" stroke-miterlimit="10" d="M226.4,78.3c-112.1,0-133.6,1.3-152.8-12.4
-                  C49.1,48.4,54,22.3,34,15.1"/>
-                <filter id="dropshadow" height="130%">
-                  <feGaussianBlur in="SourceAlpha" stdDeviation="2"/> <!-- stdDeviation is how much to blur -->
-                  <feMerge> 
-                    <feMergeNode/> <!-- this contains the offset blurred image -->
-                    <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
-                  </feMerge>
-                </filter>
-                
-                <!-- the base commit circle -->
-                <circle class="git-commit active" 
-                        cx="235.6" cy="78.4" r="13.7" 
-                        popover="this is the latest commit on the pull request" 
-                        popover-trigger="mouseenter" 
-                        popover-append-to-body="true" 
-                        popover-placement="bottom" />
-                
-                <!-- the head commit circle -->
-                <circle class="git-commit" 
-                        cx="42.3" cy="16" r="13.7"
-                        ng-class="{ active: base===pull.value.base.sha }" 
-                        ng-click="compComm(pull.value.base.sha)"  
-                        popover="the pull request is based on this commit" 
-                        popover-trigger="mouseenter" 
-                        popover-append-to-body="true" 
-                        popover-placement="bottom" />
 
-                <!-- the issue commit cirlce -->
-                <circle class="git-commit" 
-                        cx="136.9" cy="78.4" r="13.7" 
-                        ng-show="reference.type==='issue' && reference.sha!==pull.value.base.sha && reference.sha!==pull.value.head.sha" 
-                        ng-class="{ active: base===reference.sha }" 
-                        ng-click="compComm(reference.sha)" 
-                        popover="this is where this issue was created" 
-                        popover-trigger="mouseenter" 
-                        popover-append-to-body="true" 
-                        popover-placement="bottom" />
-              
-              </svg>
-            </div>
+            <graph class="git" 
+                   base-sha="pull.base.sha" 
+                   head-sha="pull.head.sha" 
+                   active-sha="base" 
+                   compare="compComm(base)" 
+                   reference="reference">
+            </graph>
+
             <div class="clearfix"></div>
 
             <diff ng-repeat="file in files.value" 
