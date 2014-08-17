@@ -25,13 +25,13 @@
         }
     }
 
-    tr:not(.chunk):not(.deletion) .number {
+    tr:not(.chunk):not(.deletion):not(.disabled) .number {
         cursor: pointer;
     }
 
     .select {
         width: 20px;
-        margin-left: -18px;
+        margin-left: -20px;
         cursor: pointer;
         color: $code-line-select-color;
 

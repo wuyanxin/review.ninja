@@ -1,0 +1,13 @@
+.issue {
+    .table {
+
+        td { 
+            border-top: none;
+            border-bottom: 1px solid $table-border-color;
+        }
+
+        tr:hover {
+            cursor: pointer;
+        }
+    }   
+}
