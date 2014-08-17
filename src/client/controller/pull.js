@@ -92,13 +92,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '
             }
         };
 
-        // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        //     // clear the reference
-        //     $scope.reference.sha = null;
-        //     $scope.reference.ref = null;
-        //     $scope.reference.type = null;
-        // });
-
         $scope.merge = function() {
             $HUB.call('pullRequests', 'merge', {
                 user: $stateParams.user,

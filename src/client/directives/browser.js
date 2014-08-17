@@ -11,7 +11,6 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                 tree: '=',
                 update: '&',
                 headSha: '=',
-                selected: '=',
                 reference: '='
             },
             link: function(scope, elem, attrs) {

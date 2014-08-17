@@ -27,14 +27,5 @@ module.factory('Issue', function() {
         reference: function() {
             return { sha: sha, ref: ref, type: 'issue', disabled: true };
         }
-
-        // clean: function(issue) {
-
-        //     var match = regex.exec(issue.body);
-
-        //     issue.body = match ? issue.body.replace(match[0], '').trim() : issue.body;
-
-        //     return issue;
-        // }
     };
 });
