@@ -9,20 +9,24 @@
 module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'open', 'closed', 'Issue',
     function($scope, $state, $stateParams, $HUB, $RPC, open, closed, Issue) {
 
-        $scope.issue = {};
-
         // get the open issues
         $scope.open = open.value;
 
         // get the closed issues
         $scope.closed = closed.value;
 
+        // obj for createing new issue
+        $scope.issue = {};
+
+        // file reference
+        $scope.update({ sha: null, ref: null, type: null, disabled: null });
+
         // parse the comments
         $scope.open.forEach(function(issue) {
-            issue = Issue.clean(issue);
+            issue = Issue.parse(issue);
         });
         $scope.closed.forEach(function(issue) {
-            issue = Issue.clean(issue);
+            issue = Issue.parse(issue);
         });
 
         // update the comparison view

@@ -12,6 +12,9 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
         // get the issue
         $scope.issue = Issue.parse(issue.value);
 
+        // set the reference
+        $scope.update( Issue.reference() );
+
         // get the comments
         $HUB.call('issues', 'getComments', {
             user: $stateParams.user,

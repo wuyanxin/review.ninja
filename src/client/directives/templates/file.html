@@ -1,6 +1,6 @@
 <table class="code">
 	<tr ng-repeat="line in content track by $index"
-        ng-class="{ disabled: reference.type==='issue', 
+        ng-class="{ disabled: reference.disabled, 
                     selected: match(line) }">
 
         <td class="select" ng-click="select(line)">
