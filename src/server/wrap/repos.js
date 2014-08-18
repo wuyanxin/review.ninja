@@ -5,7 +5,7 @@ var Repo = require('mongoose').model('Repo');
 
 module.exports = {
 
-    one: function(args, repo, done) {
+    one: function(req, repo, done) {
 
         if (!repo.permissions.pull) {
             return done({
@@ -21,7 +21,7 @@ module.exports = {
         });
     },
     
-    compareCommits: function(args, comp, done) {
+    compareCommits: function(req, comp, done) {
         comp.files.forEach(function(file) {
             file.patch = parse(file.patch);
         });
