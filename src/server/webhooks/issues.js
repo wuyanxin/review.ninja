@@ -20,33 +20,6 @@ module.exports = function(req, res) {
     // Helper functions
     //
 
-    function get_collaborators(user, repo, token, done) {
-
-        github.call({
-            obj: 'repos',
-            fun: 'getCollaborators',
-            arg: {
-                user: user,
-                repo: repo
-            },
-            token: token
-        }, function(err, collaborators) {
-
-            if(err) {
-                return done(err);
-            }
-
-            var collaborator_ids = collaborators.map(function(collaborator) {
-                return collaborator.id;
-            });
-            
-            User.find().where('uuid').in(collaborator_ids).exec(function(err, collaborators) {
-                done(err, collaborators);
-            });
-        });
-    }
-
-
     function get_issues(user, repo, pull_request_label, token, done) {
         
         github.call({
@@ -167,7 +140,7 @@ module.exports = function(req, res) {
                                     
                                 });
 
-                                notification.new_issue(user, sender, pull_request_number, review_url, repo, repo_name);
+                                notification.new_issue(user, sender, pull_request_number, review_url, repo, repo_name, pull_request_number);
                             });
                         }
                     }
@@ -209,7 +182,7 @@ module.exports = function(req, res) {
                                         
                                     });
 
-                                    notification.issues_closed(user, sender, pull_request_number, review_url, repo, repo_name);
+                                    notification.issues_closed(user, sender, pull_request_number, review_url, repo, repo_name, pull_request_number);
                                 });
 
                             });
