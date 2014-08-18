@@ -68,8 +68,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            state: 'open',
-            per_page:1
+            state: 'open'
         }, function(err, pulls) {
 
             if(!err) {
@@ -92,8 +91,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            state: 'closed',
-            per_page:1
+            state: 'closed'
         }, function(err, pulls) {
             console.log('PULLS');
             console.log(pulls.meta);
