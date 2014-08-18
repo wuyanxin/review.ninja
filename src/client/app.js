@@ -86,7 +86,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'open'
+                                state: 'open',
+                                per_page:1
                             });
                         }
                     ],
@@ -96,7 +97,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'closed'
+                                state: 'closed',
+                                per_page:1
                             });
                         }
                     ]
