@@ -6,11 +6,15 @@
 // resolve: repo
 // *****************************************************
 
-module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', 'settings', 'bots',
-    function($scope, $stateParams, $HUB, $RPC, $modal, repo, settings, bots) {
+module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo',
+    function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
         $scope.repo = repo;
-        $scope.settings = settings;
-        $scope.bots = bots;
+        $scope.settings = $RPC.call('conf', 'all', {
+            repo: repo.value.id
+        });
+        $scope.bots = $RPC.call('tool', 'all', {
+            repo: repo.value.id
+        });
         $scope.origin = location.origin;
 
         $scope.addBot = function() {
@@ -59,6 +63,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
                 if(!err) {
                     $scope.settings = settings;
                     $scope.branchRegex = '';
+                    $scope.showAddNotification = false;
                 }
             });
         };
@@ -73,9 +78,6 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
                     $scope.branchRegex = '';
                 }
             });
-        };
-
-        $scope.removeRepo = function() {
         };
 
         $scope.setNotifications = function() {

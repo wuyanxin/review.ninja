@@ -26,6 +26,11 @@ module.exports = {
             repo: req.args.repo
         }, function(err, conf) {
 
+            if(!conf) {
+                conf = {
+                    watch: []
+                };
+            }
             var watches = {};
             conf.watch.forEach(function(watch) {
                 watches[watch] = true;
@@ -37,7 +42,6 @@ module.exports = {
                     conf.watch.push(key);
                 }
             }
-            console.log(conf.watch);
 
             Conf.with({
                 user: req.user.id,
