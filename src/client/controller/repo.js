@@ -7,23 +7,23 @@
 // *****************************************************
 
 module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo',
+
     function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
 
-        $scope.pullRequestState = 'open';
+        $scope.open = {
+            value: [],
+            meta: null
+        };
 
-        // get the repo
-        $scope.repo = repo;
-        // get the pull requests
-        $RPC.call('pull', 'getAll', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            state: 'all'
-        }, function(err, pulls) {
+        $scope.closed = {
+            value: [],
+            meta: null
+        };
 
-            $scope.pulls = pulls;
-
+        var getDetails = function(pulls) {
             // get stars of each pull request
-            $scope.pulls.value.forEach(function(pull) {
+            pulls.value.forEach(function(pull) {
+
                 $RPC.call('star', 'all', {
                     repo: $scope.repo.value.id,
                     comm: pull.head.sha
@@ -32,29 +32,132 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                         pull.stars = status.value;
                     }
                 });
-            });
 
-            // get status of each pull request
-            $scope.pulls.value.forEach(function(pull) {
                 $HUB.call('issues', 'repoIssues', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
-                    labels: 'review.ninja,pull-request-'+pull.number,
-                    state: 'all'
+                    labels: 'review.ninja, pull-request-' + pull.number,
+                    state: 'open',
+                    per_page: 1
                 }, function(err, issues) {
-                    console.log(pull.user.login+': '+pull.title);
-                    console.log(issues.value);
-                    if(issues.value.length > 0) {
-                        pull.hasIssues = true;
-                        pull.allIssuesResolved = true;
-                        issues.value.forEach(function(issue) {
-                            if(issue.state == 'open') {
-                                pull.allIssuesResolved = false;
-                            } 
-                        });
+                    if(!err) {
+                        pull.open_issue = issues;
                     }
+
                 });
+
+                $HUB.call('issues', 'repoIssues', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    labels: 'review.ninja, pull-request-' + pull.number,
+                    state: 'closed',
+                    per_page: 1
+                }, function(err, issues) {
+                    if(!err) {
+                        pull.closed_issue = issues;
+                    }
+
+                });
+
+
             });
+
+            return pulls;
+        };
+
+        $HUB.wrap('pullRequests', 'getAll', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            state: 'open'
+        }, function(err, pulls) {
+
+            if(!err) {
+                pulls = getDetails(pulls);
+
+                $scope.open.value = $scope.open.value.concat(pulls.value);
+                $scope.open.meta = pulls.meta;
+   
+                $HUB.call('page','hasNextPage', $scope.open.meta, function(err,res,meta){
+
+                    $scope.hasMoreOpen = res.value;
+                    
+                });
+
+            }   
+
         });
+
+
+        $HUB.wrap('pullRequests', 'getAll', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            state: 'closed'
+        }, function(err, pulls) {
+
+            if(!err) {
+                pulls = getDetails(pulls);
+
+                $scope.closed.value = $scope.closed.value.concat(pulls.value);
+                $scope.closed.meta = pulls.meta;
+
+               
+                $HUB.call('page','hasNextPage', $scope.closed.meta, function(err,res,meta){
+
+                    $scope.hasMoreClosed = res.value;
+                    
+                });
+
+            }   
+
+        });
+
+        $scope.openMore = function(){
+
+            $scope.spinner = $HUB.call('page', 'getNextPage', $scope.open.meta, function(err, res, meta) {
+
+                if(!err){
+                    getDetails(res);
+                    $scope.open.value = $scope.open.value.concat(res.value);
+                    $scope.open.meta = res.meta;
+
+                    $HUB.call('page','hasNextPage', $scope.open.meta, function(err,res,meta){
+
+                        if(!err){
+                                            
+                            $scope.hasMoreOpen = res.value;
+                        }
+
+                    });
+                }
+
+            });
+        };
+
+        $scope.closeMore = function(){
+
+            $scope.spinner = $HUB.call('page', 'getNextPage', $scope.closed.meta, function(err, res, meta) {
+
+                if(!err){
+
+                    getDetails(res);
+                    $scope.closed.value = $scope.closed.value.concat(res.value);
+                    $scope.closed.meta = res.meta;
+
+                    $HUB.call('page','hasNextPage', $scope.closed.meta, function(err,res,meta){
+
+                        if(!err){
+                            $scope.hasMoreClosed = res.value;
+                        }
+                        
+                    });
+                }
+
+
+            });
+        };
+
+        // get the repo
+        $scope.repo = repo;
+
     }
 ]);

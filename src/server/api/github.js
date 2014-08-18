@@ -41,7 +41,7 @@ module.exports = {
                 return done('Wrapper not found');
             }
 
-            wrap[req.args.fun](req.args.arg, res, function(err, res) {
+            wrap[req.args.fun](req, res, function(err, res) {
                 done(err, {
                     data: res,
                     meta: meta
