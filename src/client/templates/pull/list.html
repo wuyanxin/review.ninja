@@ -24,7 +24,7 @@
 
 <tabset>
   <tab>
-    <tab-heading><i class="fa fa-exclamation-circle"></i> {{ open.value.length }} open</tab-heading>
+    <tab-heading><i class="fa fa-exclamation-circle"></i> {{ open.value.length }}<span ng-show="hasMoreOpen">+</span> open</tab-heading>
     
     <table class="table table-hover">
       <tr ng-repeat="issue in open.value" ui-sref="repo.pull.issue({ issue: issue.number })">
@@ -41,7 +41,7 @@
   </tab>
 
   <tab>
-    <tab-heading><i class="fa fa-check"></i> {{ closed.value.length }} closed</tab-heading>
+    <tab-heading><i class="fa fa-check"></i> {{ closed.value.length }}<span ng-show="hasMoreClosed">+</span> closed</tab-heading>
     
     <table class="table table-hover">
       <tr ng-repeat="issue in closed.value" ui-sref="repo.pull.issue({ issue: issue.number })">

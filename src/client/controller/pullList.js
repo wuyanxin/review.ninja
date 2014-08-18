@@ -8,8 +8,7 @@
 
 module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'open', 'closed', 'Issue',
     function($scope, $state, $stateParams, $HUB, $RPC, open, closed, Issue) {
-        console.log('OPEN');
-        console.log(open);
+
         // get the open issues
         $scope.open = open;
 
