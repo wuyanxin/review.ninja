@@ -4,7 +4,6 @@ var parse = require('parse-diff');
 // models
 var Star = require('mongoose').model('Star');
 var Conf = require('mongoose').model('Conf');
-var github = require('../api/github');
 
 module.exports = {
 
@@ -55,11 +54,10 @@ module.exports = {
 
                         for(var key=0; key<conf.watch.length; key++){
 
-                            var r = req.args.arg.user + ':' + conf.watch[key];
-                            var re = new RegExp(r, 'g');
+                            var watch_branch = conf.watch[key];
+                            var re = new RegExp(watch_branch, 'g');
 
-                            if(re.exec(pull.base.label) || re.exec(pull.head.label)){
-                                console.log('WATCHED');
+                            if(re.exec(pull.base.ref) || re.exec(pull.head.ref)){
                                 pull.watched = true;
                                 break;
                             }

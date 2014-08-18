@@ -93,8 +93,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
             repo: $stateParams.repo,
             state: 'closed'
         }, function(err, pulls) {
-            console.log('PULLS');
-            console.log(pulls.meta);
+
             if(!err) {
                 pulls = getDetails(pulls);
 
