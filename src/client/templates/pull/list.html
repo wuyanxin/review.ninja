@@ -6,9 +6,9 @@
   <div class="panel-body">
     <form role="form">
       <div class="form-group">
-        <input type="text" ng-model="issue.title" class="form-control" placeholder="Title">
+        <input type="text" ng-model="newIssue.title" class="form-control" placeholder="Title">
       </div>
-      <textarea class="form-control" ng-model="issue.body" rows="3" placeholder="Leave a comment"></textarea>
+      <textarea class="form-control" ng-model="newIssue.body" rows="3" placeholder="Leave a comment"></textarea>
     </form>
     <small class="pull-right" ng-show="reference.type!=='selection'">Select a line to pin this issue.</small>
     <span class="pull-right" ng-show="reference.type==='selection'"><i class="fa fa-circle" style="color:#8a6d3b;"></i></span>
@@ -17,7 +17,7 @@
     
     <div class="pull-right">
       <button type="button" class="btn btn-sm btn-link" ng-click="createComment=false">Cancel</button>
-      <button type="button" class="btn btn-sm btn-primary" ng-click="create()">Create</button>
+      <button type="button" class="btn btn-sm btn-primary" ng-click="create(issue)">Create</button>
     </div>
   </div>
 </div>

@@ -6,8 +6,8 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Issue',
-    function($scope, $rootScope, $stateParams, $HUB, $RPC, repo, pull, socket, Issue) {
+module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Issue',
+    function($scope, $stateParams, $HUB, $RPC, repo, pull, socket, Issue) {
 
         // get the repo
         $scope.repo = repo.value;
@@ -18,12 +18,8 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '
         $scope.head = $scope.pull.head.sha;
 
         // file reference
-        $scope.reference = { sha: null, ref: null, type: null, disabled: null };
-
-        // note: work around for strage angular binding issue
-        $scope.update = function(reference) {
-            $scope.reference = reference;
-        };
+        $scope.reference = {};
+        $scope.selection = null;
 
         // get the files (for the diff view)
         $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
