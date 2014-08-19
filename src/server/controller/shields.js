@@ -30,8 +30,6 @@ router.all('/badge/:user/:repo/:refs?', function(req, res) {
             refs: refs
         }, function(err, gcomm, mcomm) {
 
-            console.log(arguments);
-
             status = mcomm ? mcomm.status : 'none';
 
             res.redirect('http://img.shields.io/badge/review.ninja-' + status + '-' + COLORS[status] + '.svg');

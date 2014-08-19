@@ -125,10 +125,12 @@ module.exports = {
 
         github[obj][fun](arg, function(err, res) {
 
-            var meta;
+            var meta = {};
 
             try {
-                meta = res.meta;
+                meta.link = res.meta.link;
+                meta.hasNextPage = !!github.hasNextPage(res.meta.link);
+                meta.hasPreviousPage = !!github.hasPreviousPage(res.meta.link);
                 delete res.meta;
             } catch (ex) {
                 meta = null;
