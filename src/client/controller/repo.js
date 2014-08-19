@@ -10,15 +10,42 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
 
     function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
 
-        $scope.open = {
-            value: [],
-            meta: null
-        };
+        // get the repo
+        $scope.repo = repo;
 
-        $scope.closed = {
-            value: [],
-            meta: null
-        };
+        // $HUB.wrap('pullRequests', 'getAll', {
+        //     user: $stateParams.user,
+        //     repo: $stateParams.repo,
+        //     state: 'open'
+        // }, function(err, pulls) {
+
+        //     if(!err) {
+        //         pulls = getDetails(pulls);
+
+        //         $scope.open.value = $scope.open.value.concat(pulls.value);
+        //         $scope.open.meta = pulls.meta;
+   
+        //         $HUB.call('page','hasNextPage', $scope.open.meta, function(err,res,meta){
+
+        //             $scope.hasMoreOpen = res.value;
+                    
+        //         });
+
+        //     }   
+
+        // });
+
+        $scope.open = $HUB.wrap('pullRequests', 'getAll', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            state: 'open'
+        });
+
+        $scope.closed = $HUB.wrap('pullRequests', 'getAll', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            state: 'closed'
+        });
 
         var getDetails = function(pulls) {
             // get stars of each pull request
@@ -65,99 +92,10 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
             return pulls;
         };
 
-        $HUB.wrap('pullRequests', 'getAll', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            state: 'open'
-        }, function(err, pulls) {
+        //
+        // actions
+        //
 
-            if(!err) {
-                pulls = getDetails(pulls);
-
-                $scope.open.value = $scope.open.value.concat(pulls.value);
-                $scope.open.meta = pulls.meta;
-   
-                $HUB.call('page','hasNextPage', $scope.open.meta, function(err,res,meta){
-
-                    $scope.hasMoreOpen = res.value;
-                    
-                });
-
-            }   
-
-        });
-
-
-        $HUB.wrap('pullRequests', 'getAll', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            state: 'closed'
-        }, function(err, pulls) {
-
-            if(!err) {
-                pulls = getDetails(pulls);
-
-                $scope.closed.value = $scope.closed.value.concat(pulls.value);
-                $scope.closed.meta = pulls.meta;
-
-               
-                $HUB.call('page','hasNextPage', $scope.closed.meta, function(err,res,meta){
-
-                    $scope.hasMoreClosed = res.value;
-                    
-                });
-
-            }   
-
-        });
-
-        $scope.openMore = function(){
-
-            $scope.spinner = $HUB.call('page', 'getNextPage', $scope.open.meta, function(err, res, meta) {
-
-                if(!err){
-                    getDetails(res);
-                    $scope.open.value = $scope.open.value.concat(res.value);
-                    $scope.open.meta = res.meta;
-
-                    $HUB.call('page','hasNextPage', $scope.open.meta, function(err,res,meta){
-
-                        if(!err){
-                                            
-                            $scope.hasMoreOpen = res.value;
-                        }
-
-                    });
-                }
-
-            });
-        };
-
-        $scope.closeMore = function(){
-
-            $scope.spinner = $HUB.call('page', 'getNextPage', $scope.closed.meta, function(err, res, meta) {
-
-                if(!err){
-
-                    getDetails(res);
-                    $scope.closed.value = $scope.closed.value.concat(res.value);
-                    $scope.closed.meta = res.meta;
-
-                    $HUB.call('page','hasNextPage', $scope.closed.meta, function(err,res,meta){
-
-                        if(!err){
-                            $scope.hasMoreClosed = res.value;
-                        }
-                        
-                    });
-                }
-
-
-            });
-        };
-
-        // get the repo
-        $scope.repo = repo;
 
     }
 ]);

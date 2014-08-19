@@ -15,21 +15,20 @@ module.factory('ResultSet', ['$injector', function($injector) {
 
         var self = this;
 
-        this.loaded = true;
-        this.loading = false;
+        self.loaded = true;
+        self.loading = false;
 
-        this.error = error;
-        this.value = value;
+        self.error = error;
+        self.value = value;
 
         if(meta) {
 
             $HUB = $injector.get('$HUB');
 
-            this.hasNextPage = meta.hasNextPage;
+            self.hasNextPage = meta.hasNextPage;
+            self.hasPreviousPage = meta.hasPreviousPage;
 
-            this.hasPreviousPage = meta.hasPreviousPage;
-
-            this.getNextPage = this.hasNextPage ? function(done) {
+            self.getNextPage = self.hasNextPage ? function(done) {
 
                 $HUB.call('page', 'getNextPage', { link: meta.link }, function(err, res) {
 
@@ -42,7 +41,7 @@ module.factory('ResultSet', ['$injector', function($injector) {
 
             } : null;
 
-            this.getPreviousPage = this.hasPreviousPage ? function(done) {
+            self.getPreviousPage = self.hasPreviousPage ? function(done) {
 
                 $HUB.call('page', 'getPreviousPage', { link: meta.link }, function(err, res) {
 

@@ -44,7 +44,9 @@
               </td>
             </tr>
           </table>
-            <button type="button" class="btn btn-default btn-md" ng-click="openMore()" ng-show="hasMoreOpen" style="float:right">More</button>
+
+          <button type="button" class="btn btn-default" ng-click="open.getPreviousPage()" ng-show="open.hasPreviousPage">Previous</button>
+          <button type="button" class="btn btn-default" ng-click="open.getNextPage()" ng-show="open.hasNextPage">Next</button>
 
         </tab>
 
@@ -81,7 +83,9 @@
               </td>
             </tr>
           </table>
-            <button type="button" class="btn btn-default btn-md" ng-click="closeMore()" style="float:right" ng-show="hasMoreClosed">More</button>
+          
+          <button type="button" class="btn btn-default" ng-click="closed.getPreviousPage()" ng-show="closed.hasPreviousPage">Previous</button>
+          <button type="button" class="btn btn-default" ng-click="closed.getNextPage()" ng-show="closed.hasNextPage">Next</button>
 
         </tab>
         </tabset>
