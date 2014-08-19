@@ -2,24 +2,6 @@
 // API
 // *****************************************************
 
-function ResultSet() {
-
-    this.loaded = false;
-    this.loading = true;
-
-}
-
-ResultSet.prototype.set = function(error, value, meta) {
-
-    this.loaded = true;
-    this.loading = false;
-
-    this.error = error;
-    this.value = value;
-    this.meta = meta;
-
-};
-
 
 module.factory('$RAW', ['$http',
     function($http) {
@@ -44,11 +26,12 @@ module.factory('$RAW', ['$http',
 ]);
 
 
-module.factory('$RPC', ['$RAW', '$log',
-    function($RAW, $log) {
+module.factory('$RPC', ['$RAW', 'ResultSet', '$log',
+    function($RAW, ResultSet, $log) {
+
         return {
             call: function(m, f, d, c) {
-                var res = new ResultSet();
+                var res = ResultSet.init();
                 $RAW.call(m, f, d, function(error, value) {
                     res.set(error, value);
                     $log.debug('$RPC', m, f, d, res, res.error);
@@ -63,11 +46,11 @@ module.factory('$RPC', ['$RAW', '$log',
 ]);
 
 
-module.factory('$HUB', ['$RAW', '$log',
-    function($RAW, $log) {
+module.factory('$HUB', ['$RAW', 'ResultSet', '$log',
+    function($RAW, ResultSet, $log) {
 
         var exec = function(type, args, call) {
-            var res = new ResultSet();
+            var res = ResultSet.init();
             $RAW.call('github', type, args, function(error, value) {
 
                 res.set(error, value ? value.data : null, value ? value.meta : null);
