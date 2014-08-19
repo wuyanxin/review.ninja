@@ -10,10 +10,20 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
     function($scope, $state, $stateParams, $HUB, $RPC, open, closed, Issue) {
 
         // get the open issues
-        $scope.open = open.value;
+        $scope.open = open;
 
         // get the closed issues
-        $scope.closed = closed.value;
+        $scope.closed = closed;
+
+        //check if more open issues are there
+        $HUB.call('page','hasNextPage',$scope.open.meta, function(err, res, data) {
+            $scope.hasMoreOpen = res.value;
+        });
+
+        //check for more closed issues
+        $HUB.call('page','hasNextPage', $scope.closed.meta, function(err, res, data) {
+            $scope.hasMoreClosed = res.value;
+        });
 
         // obj for createing new issue
         $scope.issue = {};
@@ -22,10 +32,10 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
         $scope.update({ sha: null, ref: null, type: null, disabled: null });
 
         // parse the comments
-        $scope.open.forEach(function(issue) {
+        $scope.open.value.forEach(function(issue) {
             issue = Issue.parse(issue);
         });
-        $scope.closed.forEach(function(issue) {
+        $scope.closed.value.forEach(function(issue) {
             issue = Issue.parse(issue);
         });
 
@@ -35,6 +45,40 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
         //
         // actions
         //
+
+        $scope.moreOpen = function() {
+
+            $HUB.call('page', 'getNextPage', $scope.open.meta, function(err, res, data) {
+                
+                res.value.forEach(function(issue) {
+                    issue = Issue.parse(issue);
+                });
+                
+                $scope.open.value = $scope.open.value.concat(res.value);
+                $scope.open.meta = res.meta;
+
+                $HUB.call('page', 'hasNextPage', $scope.open.meta, function(err, res, data) {
+                    $scope.hasMoreOpen = res.value;
+                });
+            });
+        };
+
+        $scope.moreClosed = function() {
+
+            $HUB.call('page', 'getNextPage', $scope.closed.meta, function(err, res, data) {
+
+                res.value.forEach(function(issue) {
+                    issue = Issue.parse(issue);
+                });
+                
+                $scope.closed.value = $scope.closed.value.concat(res.value);
+                $scope.closed.meta = res.meta;
+
+                $HUB.call('page','hasNextPage', $scope.closed.meta, function(err, res, data) {
+                    $scope.hasMoreClosed = res.value;
+                });
+            });
+        };
 
         $scope.create = function() {
 
