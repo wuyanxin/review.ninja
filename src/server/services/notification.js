@@ -26,7 +26,7 @@ module.exports = function() {
                         repo: repo.uuid
                     }, function(err, conf) {
 
-                        if(err || !conf){
+                        if(err || !conf || !conf.watch){
                             return logger.log(err);
                         }
 
@@ -34,20 +34,19 @@ module.exports = function() {
 
                         for(var key=0; key<conf.watch.length; key++){
 
-                            var r = user + ':' + conf.watch[key];
-                            var re = new RegExp(r, 'g');
+                            var watch_branch = conf.watch[key];
+                            var re = new RegExp(watch_branch, 'g');
 
-                            if(re.exec(pull.base.label) || re.exec(pull.head.label)){
+                            if(re.exec(pull.base.ref) || re.exec(pull.head.ref)){
 
                                 watching = true;
                                 break;
                             }
                         }
 
-
-                        if( ((notification_type === 'star' && conf.notifications.star) || 
+                        if( watching&& ( (notification_type === 'star' && conf.notifications.star) || 
                             (notification_type === 'issue' && conf.notifications.issue) || 
-                            (notification_type === 'pull_request' && conf.notifications.pull_request)) &&watching ){
+                            (notification_type === 'pull_request' && conf.notifications.pull_request) )){
 
                             var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
 
