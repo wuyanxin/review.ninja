@@ -66,6 +66,7 @@ module.exports = function(req, res) {
                     var merged = req.body.pull_request.merged;
 
                     if(merged) {
+                        
                         io.emit('merged pull-request-'+req.body.number, merged);
                     }
 
