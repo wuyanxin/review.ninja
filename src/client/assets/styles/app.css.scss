@@ -211,3 +211,28 @@ $code-font-size: 12px;
 .bold {
   font-weight: bold;
 }
+
+li.repo {
+  padding: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #E8E8E8;
+  }
+}
+
+li.repo.active {
+  background-color: #E8E8E8;
+}
+
+.repos {
+  max-height: 180px;
+  overflow-y: scroll;
+}
+
+.org-img {
+  float: left;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}

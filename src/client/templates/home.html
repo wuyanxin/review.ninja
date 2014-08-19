@@ -1,45 +1,40 @@
 <div class="container-fluid">
-
 	<div class="row">
-
-		<!-- the left sidebar -->
-		<div class="col-xs-1 col-md-4 sidebar">
-
-			<table class="table">
-				<tr>
-					<td>
-						<a href=""
-						   placement="bottom",
-						   container="body"
-						   args="{repos:repos, toggle:toggle}"
-						   template="/templates/popovers/add-repo.html"
-						   popover>
-
-						   <span class="hidden-xs hidden-sm"><i class="fa fa-plus-circle"></i> Add Repository</span>
-    					   <span class="visible-xs visible-sm small"><i class="fa fa-lg fa-plus-circle center-block"></i></span>
-						</a>
-					</td>
-				</tr>
-			</table>
-
-		</div>
-
+    <div class="col-md-2 col-md-offset-3">
+      <h1><img src="{{currentImage}}&s=200" /></h1>
+      <p><strong>{{currentName}}</strong></p>
+      <p>{{currentLogin}}</p>
+      <div>
+        <img class="org-img" ng-click="loadUserRepos(user.value)" src="{{user.value.avatar_url}}&s=40" tooltip="{{user.value.login}}" tooltip-placement="bottom" />
+        <img ng-repeat="org in orgs.value" class="org-img" ng-click="loadOrgRepos(org)" src="{{org.avatar_url}}&s=40" tooltip="{{org.login}}" tooltip-placement="bottom" />
+      </div>
+    </div>
 		<!-- the main section -->
-		<div class="col-xs-23 col-md-20 main">
+		<div class="col-md-4 main">
 
 			<!-- <i class="fa fa-spin fa-spinner fa-3x center-block"></i> -->
 
+      <h2>Repositories</h2>
+
+      <input ng-change="searchRepo()" ng-model="search" class="form-control" placeholder="E.g. twbs/bootstrap" />
+
+      <ul class="list-unstyled repos">
+        <li class="repo" ng-repeat="repo in repos | orderBy: 'full_name'" ng-click="$parent.selectedRepo=repo" ng-class="{active: selectedRepo==repo}">{{ repo.full_name }}</li>
+      </ul>
+
+      <div class="form-group">
+        <button class="btn btn-primary btn-block" ng-click="addRepo(selectedRepo)">ADD REPO</button>
+      </div>
+      <div class="clearfix"></div>
+
 			<table class="table">
-				<tr ng-repeat="repo in repos | deep:'ninja.ninja' | orderBy:'full_name'">
+				<tr ng-repeat="repo in enabledRepos | deep:'ninja.ninja' | orderBy:'full_name'">
 					<td><a ui-sref="repo.list({ user:repo.owner.login, repo:repo.name })">{{ repo.full_name }}</a></td>
 					<td style="text-align:right;">
-						<a href="" ng-click="toggle(repo)" ng-show="repo.permissions.admin"><i class="fa fa-times"></i></a>
+						<a href="" ng-click="removeRepo(repo)" ng-show="repo.permissions.admin"><i class="fa fa-times"></i></a>
 					</td>
 				</tr>
 			</table>
-					
 		</div>
-
 	</div>
-
 </div>
