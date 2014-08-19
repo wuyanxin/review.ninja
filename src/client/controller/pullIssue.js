@@ -12,8 +12,15 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
         // get the issue
         $scope.issue = Issue.parse(issue.value);
 
-        // set the reference
-        $scope.update( Issue.reference() );
+        // add the reference
+        if($scope.issue.ref && $scope.issue.sha) {
+            $scope.reference[$scope.issue.ref] = { ref: $scope.issue.ref, sha: $scope.issue.sha, issue: $scope.issue.number };
+        }
+
+        // switch the comparison view
+        if($scope.issue.sha) {
+            $scope.compComm($scope.issue.sha);
+        }
 
         // get the comments
         $HUB.call('issues', 'getComments', {
@@ -23,11 +30,6 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
         }, function(err, comments) {
             $scope.issue.comments = comments.value;
         });
-
-        // update the comparison view
-        if($scope.reference.type==='issue' && $scope.reference.sha) {
-            $scope.compComm($scope.reference.sha);
-        }
 
         //
         // actions
@@ -40,11 +42,12 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
             $HUB.call('issues', 'edit', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                number: $stateParams.issue,
+                number: issue.number,
                 state: state
             }, function(err, issue) {
                 if(!err) {
                     $scope.issue = Issue.parse(issue.value);
+                    // todo: update reference
                 }
             });
         };

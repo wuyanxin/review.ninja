@@ -26,17 +26,23 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
         });
 
         // obj for createing new issue
-        $scope.issue = {};
-
-        // file reference
-        $scope.update({ sha: null, ref: null, type: null, disabled: null });
+        $scope.newIssue = {};
 
         // parse the comments
         $scope.open.value.forEach(function(issue) {
             issue = Issue.parse(issue);
+
+            if(issue.ref && issue.sha) {
+                $scope.reference[issue.ref] = { ref: issue.ref, sha: issue.sha, issue: issue.number };
+            }
         });
         $scope.closed.value.forEach(function(issue) {
             issue = Issue.parse(issue);
+
+            // should we flag disabled issues?
+            // if(issue.ref && issue.sha) {
+            //     $scope.reference[issue.ref] = { ref: issue.ref, sha: issue.sha, issue: issue.number };
+            // }
         });
 
         // update the comparison view
@@ -87,16 +93,18 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
                 repo: $stateParams.repo,
                 number: $stateParams.number,
                 repo_uuid: $scope.repo.id,
-                title: $scope.issue.title,
-                body: $scope.issue.body,
+                title: $scope.newIssue.title,
+                body: $scope.newIssue.body,
                 sha: $scope.pull.head.sha,
-                reference: $scope.reference.ref
+                reference: $scope.selection
             }, function(err, issue) {
 
                 // to do: error handling
 
                 if(!err) {
-                    $state.go('repo.pull.issue', { issue: issue.value.number });
+                    $state.go('repo.pull.issue', { issue: issue.value.number }).then(function() {
+                        // todo: update the selection
+                    });
                 }
             });
         };
