@@ -118,6 +118,19 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
             });
         };
 
+        $scope.refreshPullRequest = function() {
+
+            $HUB.call('pullRequests', 'get', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.number
+            }, function(err, pull) {
+                if(!err) {
+                    $scope.pull = pull.value;
+                }
+            });
+        };
+
         //
         // Websockets
         //
@@ -128,6 +141,10 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':unstarred', function() {
             $scope.refresh();
+        });
+        
+        socket.on('merged pull-request-'+$stateParams.number, function() {
+            $scope.refreshPullRequest();
         });
     }
 ]);

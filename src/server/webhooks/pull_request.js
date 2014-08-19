@@ -63,7 +63,12 @@ module.exports = function(req, res) {
                 },
                 closed: function() {
                     // a pull request you have been reviewing has closed
-                    // nothing to do
+                    var merged = req.body.pull_request.merged;
+
+                    if(merged) {
+                        io.emit('merged pull-request-'+req.body.number, merged);
+                    }
+
                 },
                 reopened: function() {
                     // a pull request you have reviewed has a been reopened
