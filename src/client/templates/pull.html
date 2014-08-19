@@ -22,7 +22,7 @@
           </button>
           <small ng-show="pull.merged">This pull request was merged by {{ pull.merged_by.login }} <span moment="pull.merged_at"></span>.</small>
           <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-primary" ng-click="toggleStar()">
+            <button type="button" class="btn btn-primary" ng-click="toggle()">
               &nbsp;<i class="fa fa-star" ng-class="{ fill: star.value }"></i>&nbsp;
             </button>
             <button type="button" class="btn btn-default disabled">{{ pull.stars.length }}</button>
