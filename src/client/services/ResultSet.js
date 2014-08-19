@@ -13,6 +13,8 @@ module.factory('ResultSet', ['$injector', function($injector) {
 
     ResultSet.prototype.set = function(error, value, meta) {
 
+        var self = this;
+
         this.loaded = true;
         this.loading = false;
 
@@ -21,16 +23,18 @@ module.factory('ResultSet', ['$injector', function($injector) {
 
         if(meta) {
 
-            // this is dangerous - 
-            // should look into a different way to do this
             $HUB = $injector.get('$HUB');
 
             this.hasNextPage = meta.hasNextPage;
+
             this.hasPreviousPage = meta.hasPreviousPage;
 
             this.getNextPage = this.hasNextPage ? function(done) {
 
-                return $HUB.call('page', 'getNextPage', { link: meta.link }, function(err, res) {
+                $HUB.call('page', 'getNextPage', { link: meta.link }, function(err, res) {
+
+                    angular.extend(self, res);
+
                     if (typeof done === 'function') {
                         done(err, res);
                     }
@@ -40,7 +44,10 @@ module.factory('ResultSet', ['$injector', function($injector) {
 
             this.getPreviousPage = this.hasPreviousPage ? function(done) {
 
-                return $HUB.call('page', 'getPreviousPage', { link: meta.link }, function(err, res) {
+                $HUB.call('page', 'getPreviousPage', { link: meta.link }, function(err, res) {
+
+                    angular.extend(self, res);
+
                     if (typeof done === 'function') {
                         done(err, res);
                     }
