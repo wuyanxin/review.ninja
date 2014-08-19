@@ -4,7 +4,7 @@
 
 module.factory('Issue', function() {
 
-    var sha, ref;
+    // var sha, ref;
 
     var regex = /\|commit\|file reference\|\r\n\|------\|--------------\|\r\n\|(\b[0-9a-f]{40}\b)\|(\[(.*)?\].*?|[`]none[`])\|/;
 
@@ -17,15 +17,15 @@ module.factory('Issue', function() {
             issue.body = match ? issue.body.replace(match[0], '').trim() : issue.body;
 
             if(match) {
-                sha = match[1];
-                ref = match[1] + '/' + match[3];
+                issue.sha = match[1];
+                issue.ref = match[1] + '/' + match[3];
             }
 
             return issue;
-        },
-
-        reference: function() {
-            return { sha: sha, ref: ref, type: 'issue', disabled: true };
         }
+
+        // reference: function() {
+        //     return { sha: sha, ref: ref, type: 'issue', disabled: true };
+        // }
     };
 });

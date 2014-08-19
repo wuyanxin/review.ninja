@@ -22,7 +22,7 @@
           </button>
           <small ng-show="pull.merged">This pull request was merged by {{ pull.merged_by.login }} <span moment="pull.merged_at"></span>.</small>
           <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-primary" ng-click="toggle()">
+            <button type="button" class="btn btn-primary" ng-click="toggleStar()">
               &nbsp;<i class="fa fa-star" ng-class="{ fill: star.value }"></i>&nbsp;
             </button>
             <button type="button" class="btn btn-default disabled">{{ pull.stars.length }}</button>
@@ -66,11 +66,11 @@
           <tab heading="Diff">
 
             <graph class="git" 
+                   issue="issue" 
                    base-sha="pull.base.sha" 
                    head-sha="pull.head.sha" 
                    active-sha="base" 
-                   compare="compComm(base)" 
-                   reference="reference">
+                   compare="compComm(base)">
             </graph>
 
             <div class="clearfix"></div>
@@ -81,9 +81,9 @@
                   status="file.status" 
                   file-sha="file.sha"
                   base-sha="base"
-                  head-sha="head"
-                  reference="reference"
-                  update="update(reference)">
+                  head-sha="head" 
+                  selection="$parent.$parent.selection"
+                  reference="$parent.$parent.reference">
             </diff>
 
           </tab>
@@ -91,8 +91,8 @@
           <tab heading="Files">
             <browser tree="tree.value" 
                      head-sha="head"
-                     reference="reference"
-                     update="update(reference)">
+                     selection="$parent.selection"
+                     reference="$parent.reference">
             </browser>
           </tab>
 

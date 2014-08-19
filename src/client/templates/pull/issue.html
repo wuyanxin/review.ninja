@@ -10,10 +10,10 @@
 </h5>
 
 <div class="pull-right">
-    <button type="button" class="btn btn-sm btn-default" ng-click="toggle(issue)" ng-show="issue.state==='open'">
+    <button type="button" class="btn btn-sm btn-default" ng-click="toggleState(issue)" ng-show="issue.state==='open'">
         Close issue
     </button>
-    <button type="button" class="btn btn-sm btn-default" ng-click="toggle(issue)" ng-show="issue.state==='closed'">
+    <button type="button" class="btn btn-sm btn-default" ng-click="toggleState(issue)" ng-show="issue.state==='closed'">
         Reopen issue
     </button>
     <button type="button" class="btn btn-sm btn-primary">
