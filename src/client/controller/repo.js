@@ -7,7 +7,6 @@
 // *****************************************************
 
 module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo',
-
     function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
 
         $scope.open = {
