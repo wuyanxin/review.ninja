@@ -47,6 +47,7 @@
               </td>
             </tr>
           </table>
+          <p class="well text-center empty-notice" ng-show="open.value.length == 0">There are no open pull requests.</p>
 
           <button type="button" class="btn btn-default" ng-click="open.getMore()" ng-show="open.hasMore">Next</button>
 
@@ -88,6 +89,7 @@
               </td>
             </tr>
           </table>
+          <p class="well text-center empty-notice" ng-show="closed.value.length == 0">There are no closed pull requests.</p>
           
           <button type="button" class="btn btn-default" ng-click="closed.getMore()" ng-show="closed.hasMore">Next</button>
           <i class="fa fa-spinner fa-spin" ng-show="closed.loading"></i>
