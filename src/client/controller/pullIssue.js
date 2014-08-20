@@ -65,24 +65,18 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
             });
         };
 
-        $scope.refreshComments = function(comment_id) {
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $scope.issue.id, function(comment_id) {
 
-                $HUB.call('issues', 'getComment', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    id: comment_id
-                }, function(err, data) {
+            $HUB.call('issues', 'getComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                id: comment_id
+            }, function(err, data) {
 
-                    if(!err) {
-                      $scope.issue.comments.value = $scope.issue.comments.value.concat(data.value);
-                    }
-                });
-        };
-
-        socket.on('new issue_comment for '+ $scope.issue.id, function(comment_id) {
-
-            $scope.refreshComments(comment_id);
+                if(!err) {
+                  $scope.issue.comments.value = $scope.issue.comments.value.concat(data.value);
+                }
+            });        
         });
-
     }
 ]);

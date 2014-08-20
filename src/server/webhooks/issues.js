@@ -104,16 +104,16 @@ module.exports = function(req, res) {
     //
     // do we need to do this?
     //
-    // function has_review(labels) {
+    function has_review(labels) {
 
-    //     for(var i=0; i<labels.length; i++) {
-    //         if(labels[i].name === 'review.ninja'){
-    //             return true;
-    //         }
-    //     }
+        for(var i=0; i<labels.length; i++) {
+            if(labels[i].name === 'review.ninja'){
+                return true;
+            }
+        }
 
-    //     return false;
-    // }
+        return false;
+    }
 
 
     Repo.with({
@@ -144,7 +144,7 @@ module.exports = function(req, res) {
 
                 opened: function() {
 
-                    // if( has_review(labels) ) {
+                    if( has_review(labels) ) {
 
                         var pull_request_number = get_pull_request_number(labels);
 
@@ -170,13 +170,13 @@ module.exports = function(req, res) {
                                 notification.new_issue(user, sender, pull_request_number, review_url, repo, repo_name);
                             });
                         }
-                    // }
+                    }
 
                 },
 
                 closed: function() {
 
-                    // if( has_review(labels) ) {
+                    if( has_review(labels) ) {
 
                         var pull_request_number = get_pull_request_number(labels);
 
@@ -214,7 +214,7 @@ module.exports = function(req, res) {
 
                             });
                         }
-                    // }
+                    }
                 },
 
                 reopened: function() {

@@ -132,7 +132,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
             $scope.refreshStars();
         });
         
-        socket.on('merged pull-request-'+$stateParams.number, function() {
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number +':merged', function() {
             $scope.refreshPullRequest();
         });
     }

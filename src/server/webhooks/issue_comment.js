@@ -51,13 +51,15 @@ module.exports = function(req, res) {
             var issue = req.body.issue;
             var comment = req.body.comment;
             var labels = issue.labels;
+            var repository = req.body.repository;
+            var owner = repository.owner.login;
 
             var actions = {
 
                 created: function() {
                     // check the label
                     if(has_pull_request_label(labels)) {
-                        io.emit('new issue_comment for ' + issue.id, comment.id);
+                        io.emit(owner + ':' + repository.name + ':issue-comment-' + issue.id, comment.id);
                     }
                 }
             };
