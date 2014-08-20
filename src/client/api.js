@@ -103,7 +103,6 @@ module.factory('$HUB', ['$RAW', '$log',
                 return exec('call', new ResultSet(), { obj: o, fun: f, arg: d }, c);
             },
             wrap: function(o, f, d, c) {
-                res = new ResultSet();
                 return exec('wrap', new ResultSet(), { obj: o, fun: f, arg: d }, c);
             }
         };
