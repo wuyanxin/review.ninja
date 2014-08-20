@@ -120,24 +120,28 @@ module.factory('$HUB', ['$RAW', '$log',
 module.factory('$HUBService', ['$q', '$HUB',
     function($q, $HUB) {
 
-        var exec = function(type, o, f, d) {
+        var exec = function(type, o, f, d, c) {
             var deferred = $q.defer();
             $HUB[type](o, f, d, function(err, obj) {
-                if (err) {
-                    deferred.reject();
-                } else {
+                
+                if (typeof c === 'function') {
+                    c(err, obj);
+                }
+
+                if(!err) {
                     deferred.resolve(obj);
                 }
+                return deferred.reject();
             });
             return deferred.promise;
         };
 
         return {
-            call: function(o, f, d) {
-                return exec('call', o, f, d);
+            call: function(o, f, d, c) {
+                return exec('call', o, f, d, c);
             },
-            wrap: function(o, f, d) {
-                return exec('wrap', o, f, d);
+            wrap: function(o, f, d, c) {
+                return exec('wrap', o, f, d, c);
             }
         };
     }
@@ -152,14 +156,13 @@ module.factory('$HUBService', ['$q', '$HUB',
 module.factory('$RPCService', ['$q', '$RPC',
     function($q, $RPC) {
         return {
-            call: function(o, f, d) {
+            call: function(o, f, d, c) {
                 var deferred = $q.defer();
                 $RPC.call(o, f, d, function(err, obj) {
-                    if (err) {
-                        deferred.reject();
-                    } else {
+                    if(!err) {
                         deferred.resolve(obj);
                     }
+                    return deferred.reject();
                 });
                 return deferred.promise;
             }

@@ -6,16 +6,11 @@
 // resolve: open, closed 
 // *****************************************************
 
-module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'Issue',
-    function($scope, $state, $stateParams, $HUB, $RPC, issue, Issue) {
+module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue',
+    function($scope, $state, $stateParams, $HUB, $RPC, issue) {
 
         // get the issue
-        $scope.issue = Issue.parse(issue.value);
-
-        // add the reference
-        if($scope.issue.ref && $scope.issue.sha) {
-            $scope.reference[$scope.issue.ref] = { ref: $scope.issue.ref, sha: $scope.issue.sha, issue: $scope.issue.number };
-        }
+        $scope.issue = issue.value;
 
         // switch the comparison view
         if($scope.issue.sha) {
@@ -28,7 +23,9 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
             repo: $stateParams.repo,
             number: $stateParams.issue
         }, function(err, comments) {
-            $scope.issue.comments = comments.value;
+            if(!err) {
+                $scope.issue.comments = comments;
+            }
         });
 
         //

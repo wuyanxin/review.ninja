@@ -91,7 +91,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
             });
         };
 
-        $scope.refresh = function() {
+        $scope.refreshStars = function() {
             $RPC.call('star', 'all', {
                 repo: $scope.repo.id,
                 comm: $scope.pull.head.sha
@@ -125,17 +125,14 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
         //
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':starred', function() {
-            
-            $scope.refresh();
+            $scope.refreshStars();
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':unstarred', function() {
-           
-            $scope.refresh();
+            $scope.refreshStars();
         });
         
         socket.on('merged pull-request-'+$stateParams.number, function() {
-
             $scope.refreshPullRequest();
         });
     }

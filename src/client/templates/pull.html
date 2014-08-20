@@ -81,18 +81,14 @@
                   status="file.status" 
                   file-sha="file.sha"
                   base-sha="base"
-                  head-sha="head" 
-                  selection="$parent.$parent.selection"
-                  reference="$parent.$parent.reference">
+                  head-sha="head">
             </diff>
 
           </tab>
 
           <tab heading="Files">
             <browser tree="tree.value" 
-                     head-sha="head"
-                     selection="$parent.selection"
-                     reference="$parent.reference">
+                     head-sha="head">
             </browser>
           </tab>
 
@@ -103,13 +99,14 @@
   </div>
 
   <!-- the right sidebar -->
-  <div class="col-sm-3 sidebar">
-    <div class="hidden-xs" ui-scrollfix="+42">
+  <div class="col-sm-3 hidden-xs sidebar">
+    <div class="scroll" ui-scrollfix="+42">
       <section class="issue" ui-view></section>
     </div>
-    <div class="visible-xs">
+    <!-- this is causing the controller to load twice-->
+    <!-- <div class="visible-xs">
       <section class="issue" ui-view></section>
-    </div>
+    </div> -->
   </div>
   
 </div>

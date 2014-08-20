@@ -1,11 +1,17 @@
 <table class="code">
 	<tr ng-repeat="line in content track by $index"
-        ng-class="{ disabled: match(line), 
-                    selected: match(line) || selected(line) }">
+        ng-class="{ selected: references[baseRef(line)] || references[headRef(line)] || selected()===headRef(line) }">
 
         <td class="select">
-            <i class="fa fa-circle" ng-click="select(line)" ng-show="selected(line)"></i>
-            <i class="fa fa-exclamation-circle" ng-click="go(line)" ng-show="match(line)"></i>
+            <i class="fa fa-circle" 
+               ng-click="select(line)" 
+               ng-show="selected()===headRef(line)">
+            </i>
+
+            <i class="fa fa-exclamation-circle" 
+               ng-click="go(references[baseRef(line)].issue || references[headRef(line)].issue)" 
+               ng-show="selected()!==headRef(line) && (references[baseRef(line)].issue || references[headRef(line)].issue)">
+            </i>
         </td>
 
 		<td class="number" ng-click="select(line)"><pre>{{ line.head }}</pre></td>
