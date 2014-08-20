@@ -67,7 +67,7 @@ module.exports = function(req, res) {
 
                     if(merged) {
                         
-                        io.emit('merged pull-request-'+req.body.number, merged);
+                        io.emit(user + ':' + repository.name + ':pull-request-'+req.body.number +':merged', merged);
                     }
 
                 },

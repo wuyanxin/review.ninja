@@ -8,7 +8,15 @@
     </span> 
     &nbsp;{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span>
 </h5>
-
+<table>
+    <tr ng-repeat="comment in issue.comments.value" style="height:100px">
+        <td><img ng-src= '{{comment.user.avatar_url}}&s=50' style="float:left; width:50px;">
+        <strong ><span>{{ comment.body }}</span></strong>
+        <br>
+        <i> <span moment="comment.created_at"></span></i></td>
+    </tr>
+</table>
+<input type="input" ng-model= "comment_text" class="form-control" placeholder="Comment" style="margin-top:100px">
 <div class="pull-right">
     <button type="button" class="btn btn-sm btn-default" ng-click="toggle(issue)" ng-show="issue.state==='open'">
         Close issue
@@ -16,7 +24,7 @@
     <button type="button" class="btn btn-sm btn-default" ng-click="toggle(issue)" ng-show="issue.state==='closed'">
         Reopen issue
     </button>
-    <button type="button" class="btn btn-sm btn-primary">
+    <button type="button" class="btn btn-sm btn-primary" ng-click="comment()">
         Comment
     </button>
 </div>
