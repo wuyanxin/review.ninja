@@ -38,15 +38,14 @@ module.exports = function() {
                             var re = new RegExp(watch_branch, 'g');
 
                             if(re.exec(pull.base.ref) || re.exec(pull.head.ref)){
-
                                 watching = true;
                                 break;
                             }
                         }
 
-                        if( watching&& ( (notification_type === 'star' && conf.notifications.star) || 
+                        if( watching && ((notification_type === 'star' && conf.notifications.star) || 
                             (notification_type === 'issue' && conf.notifications.issue) || 
-                            (notification_type === 'pull_request' && conf.notifications.pull_request) )){
+                            (notification_type === 'pull_request' && conf.notifications.pull_request)) ){
 
                             var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
 
