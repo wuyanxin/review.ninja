@@ -159,6 +159,11 @@ module.factory('$RPCService', ['$q', '$RPC',
             call: function(o, f, d, c) {
                 var deferred = $q.defer();
                 $RPC.call(o, f, d, function(err, obj) {
+
+                    if (typeof c === 'function') {
+                        c(err, obj);
+                    }
+                
                     if(!err) {
                         deferred.resolve(obj);
                     }
