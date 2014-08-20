@@ -82,7 +82,7 @@ module.exports = {
 
                     });
                     
-                    notification.star(req.args.user, req.user.login, req.args.number, repo, req.args.repo);
+                    notification.star(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
                 }
                 
                 done(err, star);
@@ -129,7 +129,7 @@ module.exports = {
                             
                         });
                         
-                        notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo);
+                        notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
                     }
                     
                     done(err, star);
