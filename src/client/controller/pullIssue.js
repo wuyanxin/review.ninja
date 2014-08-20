@@ -6,12 +6,13 @@
 // resolve: open, closed 
 // *****************************************************
 
-module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue',
-    function($scope, $state, $stateParams, $HUB, $RPC, issue) {
+module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',
+    function($scope, $state, $stateParams, $HUB, $RPC, issue, socket) {
+
 
         // get the issue
         $scope.issue = issue.value;
-
+        console.log($scope.issue.id);
         // switch the comparison view
         if($scope.issue.sha) {
             $scope.compComm($scope.issue.sha);
@@ -49,17 +50,39 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
             });
         };
 
-        // $scope.comment = function() {
-        //     $HUB.call('issues', 'createComment', {
-        //         user: $stateParams.user,
-        //         repo: $stateParams.repo,
-        //         number: $scope.currentIssue.number,
-        //         body: $scope.newCommentBody
-        //     }, function(err, data) {
-        //         var comment = data.value;
-        //         $scope.currentIssue.comments.value.push(comment);
-        //         $scope.newCommentBody = '';
-        //     });
-        // };
+        $scope.comment = function() {
+
+            $HUB.call('issues', 'createComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.issue,
+                body: $scope.comment_text
+            }, function(err, data) {
+
+                if(!err) {
+                    $scope.comment_text = '';
+                }
+            });
+        };
+
+        $scope.refreshComments = function(comment_id) {
+
+                $HUB.call('issues', 'getComment', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    id: comment_id
+                }, function(err, data) {
+
+                    if(!err) {
+                      $scope.issue.comments.value = $scope.issue.comments.value.concat(data.value);
+                    }
+                });
+        };
+
+        socket.on('new issue_comment for '+ $scope.issue.id, function(comment_id) {
+
+            $scope.refreshComments(comment_id);
+        });
+
     }
 ]);
