@@ -1,4 +1,5 @@
 // modules
+var async = require('async');
 var parse = require('parse-diff');
 
 // models
@@ -18,16 +19,16 @@ module.exports = {
             }
 
             done(err, pull);
-
         });
     },
     
     getFiles: function(req, files, done) {
-        files.forEach(function(file) {
+        async.each(files, function(file, call) {
             file.patch = parse(file.patch);
+            return call(null);
+        }, function() {
+            done(null, files);
         });
-
-        done(null, files);
     },
 
     getAll: function(req, pulls, done) {
@@ -44,31 +45,35 @@ module.exports = {
             Conf.findOne({
                 user: req.user.id,
                 repo: repo
-            }, function(err,conf){
+            }, function(err, conf) {
 
+                // set the watched pulls
                 if(!err && conf) {
-
-                    pulls.forEach(function(pull){
-
+                    async.each(pulls, function(pull, call) {
                         pull.watched = false;
-
-                        for(var key=0; key<conf.watch.length; key++){
-
-                            var watch_branch = conf.watch[key];
-                            var re = new RegExp(watch_branch, 'g');
-
-                            if(re.exec(pull.base.ref) || re.exec(pull.head.ref)){
+                        for(var i=0; i<conf.watch.length; i++) {
+                            var re = RegExp(conf.watch[i], 'g');
+                            if(re.exec(pull.base.ref) || re.exec(pull.head.ref)) {
                                 pull.watched = true;
                                 break;
                             }
                         }
-
+                        return call(null);
                     });
-                    
                 }
 
-                done(err, pulls);
-
+                // set the stars
+                async.each(pulls, function(pull, call) {
+                    Star.find({repo: pull.base.repo.id, comm: pull.head.sha}, function(err, stars) {
+                        pull.stars = [];
+                        if(!err) {
+                            pull.stars = stars;
+                        }
+                        return call(null);
+                    });
+                }, function() {
+                    done(err, pulls);
+                });
             });
 
     }

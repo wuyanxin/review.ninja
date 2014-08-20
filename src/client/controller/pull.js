@@ -100,6 +100,11 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
                     $scope.pull.stars = stars.value;
                 }
             });
+
+            $scope.star = $RPC.call('star', 'get', {
+                repo: $scope.repo.id,
+                comm: $scope.pull.head.sha
+            });
         };
 
         $scope.refreshPullRequest = function() {

@@ -2,6 +2,24 @@
 // API
 // *****************************************************
 
+function ResultSet() {
+
+    this.loaded = false;
+    this.loading = true;
+
+}
+
+ResultSet.prototype.set = function(error, value) {
+
+    this.loaded = true;
+    this.loading = false;
+
+    this.error = error;
+    this.affix = value;
+    this.value = (this.value instanceof Array && value instanceof Array) ? this.value.concat(value) : value;
+
+};
+
 
 module.factory('$RAW', ['$http',
     function($http) {
@@ -26,12 +44,12 @@ module.factory('$RAW', ['$http',
 ]);
 
 
-module.factory('$RPC', ['$RAW', 'ResultSet', '$log',
-    function($RAW, ResultSet, $log) {
+module.factory('$RPC', ['$RAW', '$log',
+    function($RAW, $log) {
 
         return {
             call: function(m, f, d, c) {
-                var res = ResultSet.init();
+                var res = new ResultSet();
                 $RAW.call(m, f, d, function(error, value) {
                     res.set(error, value);
                     $log.debug('$RPC', m, f, d, res, res.error);
@@ -46,15 +64,33 @@ module.factory('$RPC', ['$RAW', 'ResultSet', '$log',
 ]);
 
 
-module.factory('$HUB', ['$RAW', 'ResultSet', '$log',
-    function($RAW, ResultSet, $log) {
+module.factory('$HUB', ['$RAW', '$log',
+    function($RAW, $log) {
 
-        var exec = function(type, args, call) {
-            var res = ResultSet.init();
+        var exec = function(type, res, args, call) {
             $RAW.call('github', type, args, function(error, value) {
 
-                res.set(error, value ? value.data : null, value ? value.meta : null);
+                var data = value ? value.data : null;
+                var meta = value ? value.meta : null;
+
+                res.set(error, data);
+
+                if(meta) {
+                    res.hasMore = meta.hasMore;
+
+                    res.getMore = meta.hasMore ? function() {
+
+                        res.loaded = false;
+                        res.loading = true;
+                        args.arg.page = args.arg.page + 1 || 2;
+
+                        exec(type, res, args, call);
+
+                    } : null;
+                }
+                
                 $log.debug('$HUB', args, res, res.error);
+
                 if (typeof call === 'function') {
                     call(res.error, res);
                 }
@@ -64,10 +100,11 @@ module.factory('$HUB', ['$RAW', 'ResultSet', '$log',
 
         return {
             call: function(o, f, d, c) {
-                return exec('call', { obj: o, fun: f, arg: d }, c);
+                return exec('call', new ResultSet(), { obj: o, fun: f, arg: d }, c);
             },
             wrap: function(o, f, d, c) {
-                return exec('wrap', { obj: o, fun: f, arg: d }, c);
+                res = new ResultSet();
+                return exec('wrap', new ResultSet(), { obj: o, fun: f, arg: d }, c);
             }
         };
     }

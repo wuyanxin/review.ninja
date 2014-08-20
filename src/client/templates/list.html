@@ -14,14 +14,17 @@
         <tab heading="Open">
 
           <table class="table">
-            <tr ng-repeat="pull in open.value" ng-class="{'success':pull.watched}">
+            <tr ng-repeat="pull in open.value" ng-class="{'success': pull.watched}">
               <td>
                 <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x" ng-class="{'done': pull.allIssuesResolved && pull.hasIssues, 'issues': !pull.allIssuesResolved && pull.hasIssues}"></i>
+                  <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-stack-1x fa-inverse fa-code-fork"></i>
                 </span>
               </td>
-              <td><a ui-sref="repo.pull.list({ number:pull.number })">{{ pull.title }}</a><br /><img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small></td>
+              <td>
+                <a ui-sref="repo.pull.list({ number: pull.number })">{{ pull.title }}</a><br />
+                <img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
+              </td>
               <td>
                 <?xml version="1.0" encoding="utf-8"?>
                 <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -45,22 +48,24 @@
             </tr>
           </table>
 
-          <button type="button" class="btn btn-default" ng-click="open.getPreviousPage()" ng-show="open.hasPreviousPage">Previous</button>
-          <button type="button" class="btn btn-default" ng-click="open.getNextPage()" ng-show="open.hasNextPage">Next</button>
+          <button type="button" class="btn btn-default" ng-click="open.getMore()" ng-show="open.hasMore">Next</button>
 
         </tab>
 
 
         <tab heading="Closed" style="text-size:12px">
           <table class="table">
-            <tr ng-repeat="pull in closed.value">
+            <tr ng-repeat="pull in closed.value" ng-class="{'success': pull.watched}">
               <td>
                 <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x" ng-class="{'done': pull.allIssuesResolved && pull.hasIssues, 'issues': !pull.allIssuesResolved && pull.hasIssues}"></i>
+                  <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-stack-1x fa-inverse fa-code-fork"></i>
                 </span>
               </td>
-              <td><a ui-sref="repo.pull.list({ number:pull.number })">{{ pull.title }}</a><br /><img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small></td>
+              <td>
+                <a ui-sref="repo.pull.list({ number: pull.number })">{{ pull.title }}</a><br />
+                <img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
+              </td>
               <td>
                 <?xml version="1.0" encoding="utf-8"?>
                 <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -84,12 +89,11 @@
             </tr>
           </table>
           
-          <button type="button" class="btn btn-default" ng-click="closed.getPreviousPage()" ng-show="closed.hasPreviousPage">Previous</button>
-          <button type="button" class="btn btn-default" ng-click="closed.getNextPage()" ng-show="closed.hasNextPage">Next</button>
+          <button type="button" class="btn btn-default" ng-click="closed.getMore()" ng-show="closed.hasMore">Next</button>
+          <i class="fa fa-spinner fa-spin" ng-show="closed.loading"></i>
 
         </tab>
         </tabset>
-          <i class="fa fa-spin fa-spinner fa-3x center-block" ng-show="spinner.loading" style="text-align:center; display:block; margin:0 auto;"></i>
       </div>
 
     </div>

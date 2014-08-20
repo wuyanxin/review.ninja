@@ -23,7 +23,6 @@ module.exports = {
         });
 
         // augument the client
-
         github.repos.one = function(msg, callback) {
 
             var self = github;
@@ -62,48 +61,6 @@ module.exports = {
             });
         };
 
-
-        // augument the client
-
-        ['hasFirstPage',
-            'hasLastPage',
-            'hasNextPage',
-            'hasPreviousPage'
-        ].forEach(function(f) {
-
-            github.page = github.page || {};
-
-            github.page[f] = function(args, done) {
-                try {
-                    done(null, !!github[f](args.link));
-                } catch (ex) {
-                    done(ex.toString());
-                }
-            };
-
-        });
-
-        // augument the client
-
-        ['getFirstPage',
-            'getLastPage',
-            'getNextPage',
-            'getPreviousPage'
-        ].forEach(function(f) {
-
-            github.page = github.page || {};
-
-            github.page[f] = function(args, done) {
-
-                try {
-                    github[f](args.link, done);
-                } catch (ex) {
-                    done(ex.toString());
-                }
-            };
-
-        });
-
         if (!obj || !github[obj]) {
             return done('obj required/obj not found');
         }
@@ -129,8 +86,7 @@ module.exports = {
 
             try {
                 meta.link = res.meta.link;
-                meta.hasNextPage = !!github.hasNextPage(res.meta.link);
-                meta.hasPreviousPage = !!github.hasPreviousPage(res.meta.link);
+                meta.hasMore = !!github.hasNextPage(res.meta.link);
                 delete res.meta;
             } catch (ex) {
                 meta = null;
