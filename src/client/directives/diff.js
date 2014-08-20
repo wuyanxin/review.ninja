@@ -2,8 +2,8 @@
 // Diff File Directive
 // *****************************************************
 
-module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
-    function($stateParams, $state, $HUB, $RPC) {
+module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
+    function($stateParams, $state, $HUB, $RPC, Reference) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
@@ -13,9 +13,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 status: '=',
                 fileSha: '=',
                 baseSha: '=',
-                headSha: '=',
-                selection: '=',
-                reference: '='
+                headSha: '='
             },
             link: function(scope, elem, attrs) {
 
@@ -24,6 +22,10 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 scope.open = true;
 
                 scope.expanded = false;
+
+                scope.selected = Reference.selected;
+
+                scope.references = Reference.get();
 
                 // To Do:
                 // fix this
@@ -102,28 +104,23 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 // actions
                 //
 
-                scope.match = function(line) {
-                    return ( scope.reference[(scope.baseSha + '/' + scope.path + '#L' + line.base)] ||
-                             scope.reference[(scope.headSha + '/' + scope.path + '#L' + line.head)] );
+                scope.baseRef = function(line) {
+                    return (scope.baseSha + '/' + scope.path + '#L' + line.base);
                 };
 
-                scope.selected = function(line) {
-                    return scope.selection === scope.headSha + '/' + scope.path + '#L' + line.head;
+                scope.headRef = function(line) {
+                    return (scope.headSha + '/' + scope.path + '#L' + line.head);
                 };
 
                 scope.select = function(line) {
-                    if(line.head && !scope.match(line)) {
-                        scope.selection = !scope.selected(line) ? scope.headSha + '/' + scope.path + '#L' + line.head : null;
+                    if(line.head) {
+                        Reference.select(scope.headRef(line));
                     }
                 };
 
-                scope.go = function(line) {
-                    $state.go('repo.pull.issue', { issue: scope.match(line).issue }).then(function() {
-                        // here we can set a special property on line
-                        // to distinguish form other "issue" lines
-                    });
+                scope.go = function(issue) {
+                    $state.go('repo.pull.issue', { issue: issue });
                 };
-
             }
         };
     }

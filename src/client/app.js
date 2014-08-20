@@ -1,4 +1,4 @@
-module = angular.module('app', 
+var module = angular.module('app', 
     ['ninja.filters', 
      'ninja.config',
      'ui.utils',
@@ -7,7 +7,7 @@ module = angular.module('app',
      'angulartics', 
      'angulartics.google.analytics']);
 
-filters = angular.module('ninja.filters', []);
+var filters = angular.module('ninja.filters', []);
 
 // *************************************************************
 // Delay start 
@@ -72,6 +72,43 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 number: $stateParams.number
                             });
                         }
+                    ],
+
+                    // should these be in the resolves?
+                    open: ['$stateParams', '$HUBService', 'Issue', 'Reference',
+                        function($stateParams, $HUBService, Issue, Reference) {
+                            return $HUBService.call('issues', 'repoIssues', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                labels: 'review.ninja, pull-request-' + $stateParams.number,
+                                state: 'open',
+                                // per_page: 1
+                            }, function(err, res) {
+                                if(!err) {
+                                    res.affix.forEach(function(issue) {
+                                        issue = Issue.parse(issue);
+                                        Reference.add(issue);
+                                    });
+                                }
+                            });
+                        }
+                    ],
+                    closed: ['$stateParams', '$HUBService', 'Issue', 
+                        function($stateParams, $HUBService, Issue) {
+                            return $HUBService.call('issues', 'repoIssues', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                labels: 'review.ninja, pull-request-' + $stateParams.number,
+                                state: 'closed',
+                                // per_page: 2
+                            }, function(err, res) {
+                                if(!err) {
+                                    res.affix.forEach(function(issue) {
+                                        issue = Issue.parse(issue);
+                                    });
+                                }
+                            });
+                        }
                     ]
                 }
             })
@@ -80,26 +117,12 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/list.html',
                 controller: 'PullListCtrl',
                 resolve: {
-                    open: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
-                            return $HUBService.call('issues', 'repoIssues', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'open'
-                            });
-                        }
-                    ],
-                    closed: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
-                            return $HUBService.call('issues', 'repoIssues', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'closed'
-                            });
-                        }
-                    ]
+                    open: ['open', function(open) {
+                        return open; // inherited from parent state
+                    }],
+                    closed: ['closed', function(closed) {
+                        return closed; // inherited from parent state
+                    }],
                 }
             })
             .state('repo.pull.issue', {
@@ -107,12 +130,23 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/issue.html',
                 controller: 'PullIssueCtrl',
                 resolve: {
-                    issue: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
+                    open: ['open', function(open) {
+                        return open; // inherited from parent state
+                    }],
+                    closed: ['closed', function(closed) {
+                        return closed; // inherited from parent state
+                    }],
+                    issue: ['$stateParams', '$HUBService', 'Issue', 'Reference',
+                        function($stateParams, $HUBService, Issue, Reference) {
                             return $HUBService.call('issues', 'getRepoIssue', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 number: $stateParams.issue
+                            }, function(err, issue) {
+                                if(!err) {
+                                    issue.value = Issue.parse(issue.value);
+                                    Reference.add(issue.value);
+                                }
                             });
                         }
                     ]

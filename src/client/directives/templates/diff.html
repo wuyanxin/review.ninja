@@ -19,12 +19,18 @@
             		ng-class="{ addition: line.add, 
                         		deletion: line.del, 
                         		chunk: line.chunk, 
-                        		disabled: match(line), 
-                        		selected: match(line) || selected(line) }">
+                        		selected: references[baseRef(line)] || references[headRef(line)] || selected()===headRef(line) }">
 
 					<td class="select">
-						<i class="fa fa-circle" ng-click="select(line)" ng-show="selected(line)"></i>
-						<i class="fa fa-exclamation-circle" ng-click="go(line)" ng-show="match(line)"></i>
+						<i class="fa fa-circle" 
+						   ng-click="select(line)" 
+						   ng-show="selected()===headRef(line)">
+						</i>
+
+						<i class="fa fa-exclamation-circle" 
+						   ng-click="go(references[baseRef(line)].issue || references[headRef(line)].issue)" 
+						   ng-show="selected()!==headRef(line) && (references[baseRef(line)].issue || references[headRef(line)].issue)">
+						</i>
 					</td>
 
 					<td class="number" ng-click="select(line)"><pre>{{ line.base }}</pre></td>

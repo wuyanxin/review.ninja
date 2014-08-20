@@ -24,7 +24,7 @@
 
 <tabset>
   <tab>
-    <tab-heading><i class="fa fa-exclamation-circle"></i> {{ open.value.length }}<span ng-show="hasMoreOpen">+</span> open</tab-heading>
+    <tab-heading><i class="fa fa-exclamation-circle"></i> {{ open.value.length }}<span ng-show="open.hasMore">+</span> open</tab-heading>
     
     <table class="table table-hover">
       <tr ng-repeat="issue in open.value" ui-sref="repo.pull.issue({ issue: issue.number })">
@@ -37,11 +37,11 @@
         <td width="50px;"><i class="fa fa-comments"></i> {{ issue.comments }}</td>
       </tr>
     </table>
-    <button type="button" class="btn btn-danger" ng-click="moreOpen()" ng-show="hasMoreOpen" style="float:right">More</button>
+    <button type="button" class="btn btn-default pull-right" ng-click="open.getMore()" ng-show="open.hasMore">More</button>
   </tab>
 
   <tab>
-    <tab-heading><i class="fa fa-check"></i> {{ closed.value.length }}<span ng-show="hasMoreClosed">+</span> closed</tab-heading>
+    <tab-heading><i class="fa fa-check"></i> {{ closed.value.length }}<span ng-show="closed.hasMore">+</span> closed</tab-heading>
     
     <table class="table table-hover">
       <tr ng-repeat="issue in closed.value" ui-sref="repo.pull.issue({ issue: issue.number })">
@@ -54,6 +54,6 @@
         <td width="50px;"><i class="fa fa-comments"></i> {{ issue.comments }}</td>
       </tr>
     </table>
-    <button type="button" class="btn btn-danger" ng-click="moreClosed()" ng-show="hasMoreClosed" style="float:right">More</button>
+    <button type="button" class="btn btn-default pull-right" ng-click="closed.getMore()" ng-show="closed.hasMore">More</button>
   </tab>
 </tabset>
