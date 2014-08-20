@@ -12,7 +12,7 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
 
         // get the issue
         $scope.issue = issue.value;
-        console.log($scope.issue.id);
+
         // switch the comparison view
         if($scope.issue.sha) {
             $scope.compComm($scope.issue.sha);

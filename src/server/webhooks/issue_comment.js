@@ -13,10 +13,8 @@ var status = require('../services/status');
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = function(req, res) {
-    console.log('COMMENTING');
 
     var uuid = req.body.repository.id;
-
 
     ///////
     //helper function
