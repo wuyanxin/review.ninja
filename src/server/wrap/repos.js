@@ -4,26 +4,15 @@ var parse = require('parse-diff');
 var Repo = require('mongoose').model('Repo');
 
 module.exports = {
-
-    one: function(req, repo, done) {
-
-        if (!repo.permissions.pull) {
-            return done({
-                code: 403,
-                text: 'Forbidden'
-            });
-        }
-
-        Repo.with({
-            uuid: repo.id
-        }, function(err, repo) {
-            done(err, repo);
-        });
-    },
     
     compareCommits: function(req, comp, done) {
         comp.files.forEach(function(file) {
-            file.patch = parse(file.patch);
+            try {
+                file.patch = parse(file.patch);
+            }
+            catch(ex) {
+                file.patch = null;
+            }
         });
 
         done(null, comp);

@@ -23,12 +23,16 @@ module.exports = {
     },
     
     getFiles: function(req, files, done) {
-        async.each(files, function(file, call) {
-            file.patch = parse(file.patch);
-            return call(null);
-        }, function() {
-            done(null, files);
+        files.forEach(function(file) {
+            try {
+                file.patch = parse(file.patch);
+            }
+            catch(ex) {
+                file.patch = null;
+            }
         });
+
+        done(null, files);
     },
 
     getAll: function(req, pulls, done) {
@@ -48,8 +52,8 @@ module.exports = {
             }, function(err, conf) {
 
                 // set the watched pulls
-                if(!err && conf) {
-                    async.each(pulls, function(pull, call) {
+                if(conf) {
+                    pulls.forEach(function(pull) {
                         pull.watched = false;
                         for(var i=0; i<conf.watch.length; i++) {
                             var re = RegExp(conf.watch[i], 'g');
@@ -58,7 +62,6 @@ module.exports = {
                                 break;
                             }
                         }
-                        return call(null);
                     });
                 }
 
@@ -75,6 +78,5 @@ module.exports = {
                     done(err, pulls);
                 });
             });
-
     }
 };
