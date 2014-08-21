@@ -29,7 +29,7 @@
 						   ng-show="Reference.isSelected(headRef(line))">
 						</i>
 
-						<i class="fa fa-exclamation-circle" 
+						<i id="#issue" class="fa fa-exclamation-circle" 
 						   ng-click="go( Reference.get(baseRef(line)), Reference.get(headRef(line)) )" 
 						   ng-show="Reference.isIssue(baseRef(line)) || Reference.isIssue(headRef(line))">
 						</i>

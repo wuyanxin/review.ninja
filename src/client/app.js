@@ -201,6 +201,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                     issue.value = Issue.parse(issue.value);
                                     Reference.clear();
                                     Reference.add(issue.value);
+                                    Reference.set(issue.value);
                                 }
                             });
                         }

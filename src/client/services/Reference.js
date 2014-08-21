@@ -2,9 +2,11 @@
 // Reference Factory
 // *****************************************************
 
+// todo: replace with angular $emit, $broadcast, $on event emitters
+
 module.factory('Reference', ['$state', '$stateParams', function($state, $stateParams) {
 
-    var selected;
+    var selected, activeIssue;
 
     var references = {};
 
@@ -50,22 +52,30 @@ module.factory('Reference', ['$state', '$stateParams', function($state, $statePa
             }
         },
 
+        set: function(issue) {
+            activeIssue = issue;
+        },
+
+        active: function() {
+            return activeIssue;
+        },
+
+        select: function(ref) {
+            selected = selected !== ref ? ref : null;
+        },
+
         clear: function() {
+            activeIssue = null;
             references = {};
         },
 
         isIssue: function(ref) {
 
-            if($state.current.name!=='repo.pull.issue.detail' && references[ref]) {
+            if(references[ref]) {
                 return true;
             }
             
-            if($state.current.name==='repo.pull.issue.detail' && contains(ref, parseInt($stateParams.issue, 10))) {
-                return true;
-            }
-
             return false;
-
         },
 
         isSelected: function(ref) {
@@ -75,14 +85,6 @@ module.factory('Reference', ['$state', '$stateParams', function($state, $statePa
             }
 
             return false;
-        },
-
-        selected: function() {
-            return selected;
-        },
-
-        select: function(ref) {
-            selected = selected !== ref ? ref : null;
         }
     };
 }]);
