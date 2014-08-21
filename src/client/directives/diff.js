@@ -127,8 +127,8 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     }
 
                     if(headRefs) {
-                        for(var i=0; i<headRefs.length; i++) {
-                            issues.push(headRefs[i].issue);
+                        for(var j=0; j<headRefs.length; j++) {
+                            issues.push(headRefs[j].issue);
                         }
                     }
 
