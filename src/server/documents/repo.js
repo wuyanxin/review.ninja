@@ -3,8 +3,6 @@ var withHelper = require('./with');
 
 var RepoSchema = mongoose.Schema({
     uuid: Number,
-    user: String,
-    name: String,
     token: String,
     ninja: Boolean
 });

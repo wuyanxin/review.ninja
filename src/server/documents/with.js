@@ -26,7 +26,6 @@ module.exports = exports = function(schema, options) {
         }
 
         return done('Schema::with invalid arguments', keys, args);
-
     };
 
 
