@@ -44,7 +44,7 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
                 // todo: error handling
 
                 if(!err) {
-                    $state.go('repo.pull.issue', { issue: issue.value.number });
+                    $state.go('repo.pull.issue.detail', { issue: issue.value.number });
                 }
             });
         };

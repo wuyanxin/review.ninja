@@ -14,17 +14,11 @@ module.directive('file', ['$state', 'Reference', function($state, Reference) {
             },
             link: function(scope, elem, attrs) {
 
-                scope.selected = Reference.selected;
-
-                scope.references = Reference.get();
+                scope.Reference = Reference;
 
                 // 
                 // actions
                 //
-
-                scope.baseRef = function(line) {
-                    return (scope.baseSha + '/' + scope.path + '#L' + line.base);
-                };
 
                 scope.headRef = function(line) {
                     return (scope.headSha + '/' + scope.path + '#L' + line.head);
@@ -36,8 +30,22 @@ module.directive('file', ['$state', 'Reference', function($state, Reference) {
                     }
                 };
 
-                scope.go = function(issue) {
-                    $state.go('repo.pull.issue', { issue: issue });
+                scope.go = function(headRefs) {
+
+                    var issues = [];
+
+                    if(headRefs) {
+                        for(var i=0; i<headRefs.length; i++) {
+                            issues.push(headRefs[i].issue);
+                        }
+                    }
+
+                    if(issues.length === 1) {
+                        $state.go('repo.pull.issue.detail', { issue: issues[0] });
+                    }
+                    else {
+                        $state.go('repo.pull.issue.master', { issues: issues });
+                    }
                 };
             }
         };

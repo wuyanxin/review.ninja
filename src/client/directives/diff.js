@@ -23,9 +23,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
 
                 scope.expanded = false;
 
-                scope.selected = Reference.selected;
-
-                scope.references = Reference.get();
+                scope.Reference = Reference;
 
                 // To Do:
                 // fix this
@@ -118,8 +116,28 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     }
                 };
 
-                scope.go = function(issue) {
-                    $state.go('repo.pull.issue', { issue: issue });
+                scope.go = function(baseRefs, headRefs) {
+
+                    var issues = [];
+
+                    if(baseRefs) {
+                        for(var i=0; i<baseRefs.length; i++) {
+                            issues.push(baseRefs[i].issue);
+                        }
+                    }
+
+                    if(headRefs) {
+                        for(var j=0; j<headRefs.length; j++) {
+                            issues.push(headRefs[j].issue);
+                        }
+                    }
+
+                    if(issues.length === 1) {
+                        $state.go('repo.pull.issue.detail', { issue: issues[0] });
+                    }
+                    else {
+                        $state.go('repo.pull.issue.master', { issues: issues });
+                    }
                 };
             }
         };

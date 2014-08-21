@@ -22,7 +22,7 @@
                 </span>
               </td>
               <td>
-                <a ui-sref="repo.pull.list({ number: pull.number })">{{ pull.title }}</a><br />
+                <a ui-sref="repo.pull.issue.master({ number: pull.number })">{{ pull.title }}</a><br />
                 <img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
               </td>
               <td>
@@ -64,7 +64,7 @@
                 </span>
               </td>
               <td>
-                <a ui-sref="repo.pull.list({ number: pull.number })">{{ pull.title }}</a><br />
+                <a ui-sref="repo.pull.issue.master({ number: pull.number })">{{ pull.title }}</a><br />
                 <img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
               </td>
               <td>

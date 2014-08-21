@@ -19,17 +19,19 @@
             		ng-class="{ addition: line.add, 
                         		deletion: line.del, 
                         		chunk: line.chunk, 
-                        		selected: references[baseRef(line)] || references[headRef(line)] || selected()===headRef(line) }">
+                        		selected: Reference.isIssue(baseRef(line)) || 
+                        		          Reference.isIssue(headRef(line)) ||
+                        		          Reference.isSelected(headRef(line)) }">
 
 					<td class="select">
 						<i class="fa fa-circle" 
 						   ng-click="select(line)" 
-						   ng-show="selected()===headRef(line)">
+						   ng-show="Reference.isSelected(headRef(line))">
 						</i>
 
 						<i class="fa fa-exclamation-circle" 
-						   ng-click="go(references[baseRef(line)].issue || references[headRef(line)].issue)" 
-						   ng-show="selected()!==headRef(line) && (references[baseRef(line)].issue || references[headRef(line)].issue)">
+						   ng-click="go( Reference.get(baseRef(line)), Reference.get(headRef(line)) )" 
+						   ng-show="Reference.isIssue(baseRef(line)) || Reference.isIssue(headRef(line))">
 						</i>
 					</td>
 
