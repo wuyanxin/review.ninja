@@ -28,7 +28,6 @@
     "passport-github": "^0.1.5",
     "redis": "^0.10.3",
     "request": "^2.37.0",
-    "rollbar": "^0.3.8",
     "socket.io": "^1.0.6",
     "universal-analytics": "0.3.4",
     "valid-url": "^1.0.9"

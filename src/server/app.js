@@ -5,7 +5,6 @@ var glob = require('glob');
 var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
-var rollbar = require('rollbar');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration 
@@ -20,10 +19,6 @@ global.config = require('./../config');
 var app = express();
 var api = {};
 var webhooks = {};
-
-// Setup rollbar
-if (process.env.NODE_ENV === 'production')
-    app.use(rollbar.errorHandler('51d783b209fd4c24927dc5e0b1270aef'));
 
 config.server.static.forEach(function(p) {
     app.use(express.static(p));
