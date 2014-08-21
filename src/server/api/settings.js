@@ -1,5 +1,5 @@
 // models
-var Conf = require('mongoose').model('Conf');
+var Settings = require('mongoose').model('Settings');
 
 module.exports = {
 
@@ -9,17 +9,14 @@ module.exports = {
 
         @models
 
-        + Conf, where user=user-uuid, repo=repo-uuid
+        + Settings, where user=user-uuid, repo=repo-uuid
 
         @github (if needed)
 
     ************************************************************************************************************/
     
-    // RENAME TO GET
-    // SHOULD USE CONF.WITH INSTEAD OF CONF.FINDONE
-
-    all: function(req, done) {
-        Conf.findOne({
+    get: function(req, done) {
+        Settings.with({
             user: req.user.id,
             repo: req.args.repo
         }, function(err, conf) {
@@ -33,7 +30,7 @@ module.exports = {
     // EXPLICITY DEFINE JSON SCHEMA IN MODEL
 
     addWatch: function(req, done) {
-        Conf.with({
+        Settings.with({
             user: req.user.id,
             repo: req.args.repo
         }, function(err, conf) {
@@ -57,7 +54,7 @@ module.exports = {
                 }
             }
 
-            Conf.with({
+            Settings.with({
                 user: req.user.id,
                 repo: req.args.repo
             }, {
@@ -69,7 +66,7 @@ module.exports = {
     },
 
     removeWatch: function(req, done) {
-        Conf.with({
+        Settings.with({
             user: req.user.id,
             repo: req.args.repo
         }, function(err, conf) {
@@ -86,7 +83,7 @@ module.exports = {
                 }
             }
 
-            Conf.with({
+            Settings.with({
                 user: req.user.id,
                 repo: req.args.repo
             }, {
@@ -104,7 +101,7 @@ module.exports = {
             star: req.args.notifications.star
         };
 
-        Conf.with({
+        Settings.with({
             user: req.user.id,
             repo: req.args.repo
         }, {

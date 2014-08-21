@@ -1,17 +1,17 @@
 var mongoose = require('mongoose');
 var withHelper = require('./with');
 
-var ConfSchema = mongoose.Schema({
+var SettingsSchema = mongoose.Schema({
     user: String,
     repo: String,
     notifications: {type: Object, default: {pull_request: false, issue: false, star: false}},
     watch: Array
 });
 
-ConfSchema.plugin(withHelper);
+SettingsSchema.plugin(withHelper);
 
-var Conf = mongoose.model('Conf', ConfSchema);
+var Settings = mongoose.model('Settings', SettingsSchema);
 
 module.exports = {
-    Conf: Conf
+    Settings: Settings
 };

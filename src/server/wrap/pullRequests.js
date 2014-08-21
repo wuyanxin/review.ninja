@@ -4,7 +4,7 @@ var parse = require('parse-diff');
 
 // models
 var Star = require('mongoose').model('Star');
-var Conf = require('mongoose').model('Conf');
+var Settings = require('mongoose').model('Settings');
 
 module.exports = {
 
@@ -46,7 +46,7 @@ module.exports = {
                 repo = null;
             }
 
-            Conf.findOne({
+            Settings.findOne({
                 user: req.user.id,
                 repo: repo
             }, function(err, conf) {

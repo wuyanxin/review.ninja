@@ -1,6 +1,4 @@
 var github = require('../services/github');
-var mailchimp = require('../services/chimp');
-
 var passport = require('passport');
 var Strategy = require('passport-github').Strategy;
 var merge = require('merge');
