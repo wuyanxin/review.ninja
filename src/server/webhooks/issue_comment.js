@@ -13,12 +13,6 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    var uuid = req.body.repository.id;
-
-    ///////
-    //helper function
-    //
-
     function has_pull_request_label(labels) {
 
         for(var i=0; i<labels.length; i++){
@@ -35,7 +29,7 @@ module.exports = function(req, res) {
     }
 
     Repo.with({
-        uuid: uuid
+        uuid: req.args.repository.id
     }, function(err, repo) {
 
         if (err) {
@@ -44,30 +38,24 @@ module.exports = function(req, res) {
 
         if (repo.ninja) {
 
-            // to be reviewed by review.ninja so let's go on
-
-            var action = req.body.action;
-            var issue = req.body.issue;
-            var comment = req.body.comment;
-            var labels = issue.labels;
-            var repository = req.body.repository;
-            var owner = repository.owner.login;
-
             var actions = {
-
                 created: function() {
-                    // check the label
-                    if(has_pull_request_label(labels)) {
-                        io.emit(owner + ':' + repository.name + ':issue-comment-' + issue.id, comment.id);
+                    if(has_pull_request_label(req.args.issue.labels)) {
+
+                        var event = req.args.repository.owner.login + ':' + 
+                                    req.args.repository.name + ':' +
+                                    'issue-comment-' + req.args.issue.id;
+
+                        io.emit(event, req.args.comment.id);
                     }
                 }
             };
 
-            if (!actions[action]) {
+            if (!actions[req.args.action]) {
                 return;
             }
 
-            actions[action]();
+            actions[req.args.action]();
         }
     });
 

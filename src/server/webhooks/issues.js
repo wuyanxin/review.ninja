@@ -190,8 +190,9 @@ module.exports = function(req, res) {
                 },
 
                 reopened: function() {
-                    // an issue has been reopened
-                    // send messages to responsible users?
+                    // udpate the status 
+                    // send email if pull req is open and unmerged 
+                    // (logic belongs in notification service)
                 }
             };
 
