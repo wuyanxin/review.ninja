@@ -5,8 +5,13 @@ var app = require('../app');
 var Repo = require('mongoose').model('Repo');
 
 module.exports = function() {
+
     function createWebhook(user, repo, token, done) {
-        var webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
+
+        var webhook_url = 'http://' + 
+                          config.server.http.host + ':' + config.server.http.port + 
+                          '/github/webhook';
+        
         github.call({
             obj: 'repos',
             fun: 'createHook',
@@ -15,7 +20,7 @@ module.exports = function() {
                 repo: repo,
                 name: 'web',
                 config: { url: webhook_url, content_type: 'json' },
-                events: ['pull_request','issues'],
+                events: ['pull_request','issues', 'issue_comment'],
                 active: true
             },
             token: token
@@ -38,68 +43,21 @@ module.exports = function() {
         @github
 
         + repos.one
-
-        ************************************************************************************************************/
-
-        // get: function(req, done) {
-
-        //     github.call({
-        //         obj: 'repos',
-        //         fun: 'one',
-        //         arg: {
-        //             id: req.args.uuid
-        //         },
-        //         token: req.user.token
-        //     }, function(err, repo) {
-
-        //         if (err) {
-        //             return done({
-        //                 code: 404,
-        //                 text: 'Not found'
-        //             });
-        //         }
-
-        //         if (!repo.permissions.pull) {
-        //             return done({
-        //                 code: 403,
-        //                 text: 'Forbidden'
-        //             });
-        //         }
-
-        //         Repo.with({
-        //             uuid: req.args.uuid
-        //         }, function(err, repo) {
-
-        //             done(err, repo);
-
-        //         });
-
-        //     });
-
-        // },
-
-        /************************************************************************************************************
-
-        @models
-
-        + Repo, where repo=repo-uuid
-
-        @github
-
-        + repos.one
         + repos.createHook
 
     ************************************************************************************************************/
 
         add: function(req, done) {
 
-            github.call({obj: 'repos', fun: 'one', arg: {id: req.args.uuid}, token: req.user.token}, function(err, github_repo) {
+            github.call({
+                obj: 'repos', 
+                fun: 'one', 
+                arg: { id: req.args.uuid }, 
+                token: req.user.token
+            }, function(err, github_repo) {
 
                 if(err) {
-                    return done({
-                        code: 404, 
-                        text: 'Not found'
-                    });
+                    return done(err, github_repo);
                 }
 
                 if (!github_repo.permissions.admin) {
@@ -134,13 +92,15 @@ module.exports = function() {
 
         rmv: function(req, done) {
 
-            github.call({obj: 'repos', fun: 'one', arg: {id: req.args.uuid}, token: req.user.token}, function(err, github_repo) {
+            github.call({
+                obj: 'repos', 
+                fun: 'one', 
+                arg: { id: req.args.uuid }, 
+                token: req.user.token
+            }, function(err, github_repo) {
 
                 if(err) {
-                    return done({
-                        code: 404, 
-                        text: 'Not found'
-                    });
+                    return done(err, github_repo);
                 }
 
                 if (!github_repo.permissions.admin) {
@@ -192,7 +152,7 @@ module.exports = function() {
 
         },
 
-        hookExists: function(req, done) {
+        getHook: function(req, done) {
             github.call({
                 obj: 'repos',
                 fun: 'getHooks',
@@ -202,17 +162,17 @@ module.exports = function() {
                 },
                 token: req.user.token
             }, function(err, hooks) {
-                var hookExists = false;
+                var hook;
                 var hook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
                 if(!err) {
                     hooks.forEach(function(hook) {
                         if(hook.config.url === hook_url) {
-                            hookExists = true;
+                            hook = hook;
                         }
                     });
                 }
 
-                done(err, {hookExists: hookExists});
+                done(err, {hook: hook});
             });
         },
 
@@ -226,15 +186,21 @@ module.exports = function() {
                 },
                 token: req.user.token
             }, function(err, github_repo) {
-                if(!err) {
-                    Repo.with({
-                        uuid: github_repo.id
-                    }, function(err, repo) {
-                        if(!err) {
-                            createWebhook(req.args.user, req.args.repo, repo.token, done);
-                        }
-                    });
+
+                if(err) {
+                    return done(err, github_repo);
                 }
+
+                Repo.with({
+                    uuid: github_repo.id
+                }, function(err, repo) {
+
+                    if(err) {
+                        return done(err, repo);
+                    }
+
+                    createWebhook(req.args.user, req.args.repo, repo.token, done);
+                });
             });
         }
     };

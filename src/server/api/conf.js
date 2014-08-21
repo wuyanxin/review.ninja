@@ -3,13 +3,20 @@ var Conf = require('mongoose').model('Conf');
 
 module.exports = {
 
-/************************************************************************************************************
+    /************************************************************************************************************
 
-	@models
+        Provide brief description here
 
-	+ Conf, where user=user-uuid, repo=repo-uuid
+        @models
 
-************************************************************************************************************/
+        + Conf, where user=user-uuid, repo=repo-uuid
+
+        @github (if needed)
+
+    ************************************************************************************************************/
+    
+    // RENAME TO GET
+    // SHOULD USE CONF.WITH INSTEAD OF CONF.FINDONE
 
     all: function(req, done) {
         Conf.findOne({
@@ -20,12 +27,19 @@ module.exports = {
         });
     },
 
+
+    // + SET WATCHED
+    // - ADDWATCH, REMOVEWATCH
+    // EXPLICITY DEFINE JSON SCHEMA IN MODEL
+
     addWatch: function(req, done) {
         Conf.with({
             user: req.user.id,
             repo: req.args.repo
         }, function(err, conf) {
 
+            // LIPSTICK - EXPLAIN WHATS GOING ON HERE
+            // CREATE NEW CONF AND SAVE
             if(!conf) {
                 conf = {
                     watch: []

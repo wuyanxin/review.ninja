@@ -15,23 +15,35 @@ module.exports = {
 
         var fileReference = '`none`';
         if(req.args.reference) {
-            fileReference = '['+req.args.reference.replace(req.args.sha+'/', '')+'](https://' + config.github.host + '/' + req.args.user + '/' + req.args.repo + '/blob/' + req.args.reference + ')';
+
+            var url = 'https://' + 
+                      config.github.host + '/' + 
+                      req.args.user + '/' + 
+                      req.args.repo + '/' +
+                      'blob/' + 
+                      req.args.reference;
+
+            fileReference = '[' + req.args.reference.replace(req.args.sha + '/', '') + ']' + '(' + url + ')';
         }
             
-        var body = '|commit|file reference|\r\n';
-        body +=    '|------|--------------|\r\n';
-        body +=    '|'+req.args.sha+'|'+fileReference+'|';
+        var body = req.args.body + '\r\n\r\n';
+        body += '|commit|file reference|\r\n';
+        body += '|------|--------------|\r\n';
+        body += '|' + req.args.sha + '|' + fileReference + '|';
 
-        body += '\r\n\r\n' + req.args.body;
-
-		github.call({obj: 'issues', fun: 'create', arg: {
-			user: req.args.user,
-			repo: req.args.repo,
-			body: body,
-			title: req.args.title,
-			labels: ['review.ninja', 'pull-request-' + req.args.number]
-		}, token: req.user.token}, function(err, obj) {
-			done(null, obj);
+		github.call({
+            obj: 'issues', 
+            fun: 'create', 
+            arg: {
+    			user: req.args.user,
+    			repo: req.args.repo,
+    			body: body,
+    			title: req.args.title,
+    			labels: ['review.ninja', 'pull-request-' + req.args.number]
+		    }, 
+            token: req.user.token
+        }, function(err, issue) {
+			done(err, issue);
 		});
 	}
 };

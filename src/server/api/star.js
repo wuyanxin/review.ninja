@@ -65,9 +65,16 @@ module.exports = {
                 return done(err, repo);
             }
 
-            Star.create({repo: req.args.repo_uuid, comm: req.args.sha, user: req.user.id, name: req.user.login}, function(err, star) {
+            Star.create({
+                repo: req.args.repo_uuid, 
+                comm: req.args.sha, 
+                user: req.user.id, 
+                name: req.user.login
+            }, function(err, star) {
 
-                if(!err) {
+                done(err, star);
+
+                if(star) {
 
                     io.emit(req.args.user + ':' + req.args.repo + ':pull-request-' + req.args.number + ':starred', {});
 
@@ -84,8 +91,6 @@ module.exports = {
                     
                     notification.star(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
                 }
-                
-                done(err, star);
             });
 
         });
@@ -101,7 +106,8 @@ module.exports = {
     ************************************************************************************************************/
 
     rmv: function(req, done) {
-        Repo.with({uuid: req.args.repo_uuid}, function(err,repo){
+        Repo.with({uuid: req.args.repo_uuid}, function(err, repo) {
+
             Star.with({
                 repo: req.args.repo_uuid,
                 comm: req.args.sha,
@@ -109,12 +115,14 @@ module.exports = {
             }, function(err, star) {
 
                 if(err){
-                    return done(err, repo);
+                    return done(err, star);
                 }
 
                 star.remove(function(err, star) {
 
-                    if(!err) {
+                    done(err, star);
+
+                    if(star) {
 
                         io.emit(req.args.user + ':' + req.args.repo + ':pull-request-' + req.args.number + ':unstarred', {});
 
@@ -131,8 +139,6 @@ module.exports = {
                         
                         notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
                     }
-                    
-                    done(err, star);
                 });
             });
         });

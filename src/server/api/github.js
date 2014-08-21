@@ -31,11 +31,16 @@ module.exports = {
             token: req.user.token
         }), function(err, res, meta) {
 
-            var wrap = require( path.join('../wrap', req.args.obj) );
-
             if(err) {
-                return done(err);
+                return done(err, {
+                    data: res,
+                    meta: meta
+                });
             }
+
+            // try catch block here
+
+            var wrap = require( path.join('../wrap', req.args.obj) );
 
             if(!wrap[req.args.fun]) {
                 return done('Wrapper not found');
