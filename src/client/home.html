@@ -51,13 +51,21 @@
 		</div>
 	</div>
 
-  <div ng-controller="EnsureHookCtrl" ng-show="!hookExists" class="container-fluid">
-    <div class="row">
+  <div ng-controller="EnsureHookCtrl" class="container-fluid">
+    <div class="row" ng-show="!hookExists">
       <div class="col-md-12 alert alert-warning">
         <button type="button" class="close" data-dismiss="alert">
           <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
         </button>
-        <strong>Warning!</strong> There are no webhooks setup <a>click here to let us set them up automatically.</a>
+        <strong>Warning!</strong> There are no webhooks setup <a ng-click="createWebhook()" class="ng-click-link">click here to let us set them up automatically.</a>
+      </div>
+    </div>
+    <div class="row" ng-show="hookCreated">
+      <div class="col-md-12 alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <strong>Success!</strong> The webhooks were successfully created for this repository.</a>
       </div>
     </div>
   </div>

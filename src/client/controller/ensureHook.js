@@ -13,7 +13,7 @@ module.controller('EnsureHookCtrl', ['$rootScope', '$scope', '$stateParams', '$H
             if($stateParams.user && $stateParams.repo) {
                 $RPC.call('repo', 'hookExists', {
                     user: $stateParams.user,
-                    repo: $stateParams.repo,
+                    repo: $stateParams.repo
                 }, function(err, result) {
                     $scope.hookExists = result.value.hookExists;
                 });
@@ -22,5 +22,17 @@ module.controller('EnsureHookCtrl', ['$rootScope', '$scope', '$stateParams', '$H
                 $scope.hookExists = true;
             }
         });
+
+        $scope.createWebhook = function() {
+            $RPC.call('repo', 'createHook', {
+                user: $stateParams.user,
+                repo: $stateParams.repo
+            }, function(err, result) {
+                if(!err) {
+                    $scope.hookExists = true;
+                    $scope.hookCreated = true;
+                }
+            });
+        };
     }
 ]);
