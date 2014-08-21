@@ -51,6 +51,17 @@
 		</div>
 	</div>
 
+  <div ng-controller="EnsureHookCtrl" ng-show="!hookExists" class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <strong>Warning!</strong> There are no webhooks setup <a>click here to let us set them up automatically.</a>
+      </div>
+    </div>
+  </div>
+
 	<section ui-view></section>
 
 	<!-- COMPONENT SCRIPTS -->
@@ -101,6 +112,7 @@
 	<script src="/controller/pullList.js"></script>
 	<script src="/controller/pullIssue.js"></script>
 	<script src="/controller/settings.js"></script>
+	<script src="/controller/ensureHook.js"></script>
 
 	<!-- INTERCEPTORS -->
 	<script src="/interceptors/401.js"></script>
