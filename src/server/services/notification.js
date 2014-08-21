@@ -1,7 +1,6 @@
-nodemailer = require('nodemailer');
-logger = require('../log');
-fs = require('fs');
-ejs = require('ejs');
+var nodemailer = require('nodemailer');
+var fs = require('fs');
+var ejs = require('ejs');
 
 var Conf = require('mongoose').model('Conf');
 var User = require('mongoose').model('User');
@@ -16,7 +15,7 @@ module.exports = function() {
             get_collaborators(user,repo_name,repo.token, function(err, collaborators) {
 
                 if(err) {
-                    return logger.log(err);
+                    return;
                 }
 
                 collaborators.forEach(function(collaborator){
@@ -27,7 +26,7 @@ module.exports = function() {
                     }, function(err, conf) {
 
                         if(err || !conf || !conf.watch){
-                            return logger.log(err);
+                            return;
                         }
 
                         var watching = false;
@@ -61,7 +60,7 @@ module.exports = function() {
                             smtpTransport.sendMail(mailOptions, function(err, response) {
                                
                                 if (err) {
-                                    return logger.log(err);
+                                    return;
                                 }
 
                                 smtpTransport.close();

@@ -44,10 +44,6 @@ module.exports = {
                     },
                     token: args.token
                 }, function(err, res) {
-                    if(err) {
-                        logger.log(err);
-                    }
-
                     done(err, res);
                 });
             });

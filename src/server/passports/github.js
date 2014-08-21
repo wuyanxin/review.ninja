@@ -1,5 +1,3 @@
-var logger = require('../log');
-
 var github = require('../services/github');
 var mailchimp = require('../services/chimp');
 
@@ -18,7 +16,6 @@ passport.use(new Strategy({
         scope: config.github.scopes
     },
     function(accessToken, refreshToken, profile, done) {
-        logger.log('Github OAuth Login');
         github.call({
             obj: 'user',
             fun: 'getEmails',

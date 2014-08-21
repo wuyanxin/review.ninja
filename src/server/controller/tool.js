@@ -1,8 +1,6 @@
 var async = require('async');
 var express = require('express');
 
-var logger = require('../log');
-
 var github = require('../services/github');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,12 +33,10 @@ router.all('/vote/:uuid/:comm', function(req, res) {
     Tool.findById(uuid, function(err, tool) {
 
         if (err) {
-            logger.log('Mongoose[Tool] err', ['tool', 'mongoose', '500']);
             return res.send(500);
         }
 
         if (!tool) {
-            logger.log('Tool not found', ['tool', '404']);
             return res.send(404, 'Tool not found');
         }
 

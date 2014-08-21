@@ -1,4 +1,3 @@
-var logger = require('../log');
 // models
 var Repo = require('mongoose').model('Repo');
 var User = require('mongoose').model('User');
@@ -21,7 +20,7 @@ module.exports = function(req, res) {
     }, function(err, repo) {
 
         if (err) {
-            return logger.log(err);
+            return;
         }
 
         if (repo.ninja) {
@@ -78,7 +77,7 @@ module.exports = function(req, res) {
             };
 
             if (!actions[action]) {
-                return logger.log('unsupported action for pull requests');
+                return;
             }
 
             actions[action]();

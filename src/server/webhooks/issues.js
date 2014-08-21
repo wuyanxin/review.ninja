@@ -1,4 +1,3 @@
-var logger = require('../log');
 // models
 var Repo = require('mongoose').model('Repo');
 var User = require('mongoose').model('User');
@@ -94,7 +93,7 @@ module.exports = function(req, res) {
     }, function(err, repo) {
 
         if (err) {
-            return logger.log(err);
+            return;
         }
 
         if (repo.ninja) {
@@ -126,7 +125,7 @@ module.exports = function(req, res) {
                             get_pull_request(user, repo_name, pull_request_number, repo.token, function(err, pull_request) {
 
                                 if(err) {
-                                    return logger.log(err);
+                                    return;
                                 }
 
                                 status.update({
@@ -158,7 +157,7 @@ module.exports = function(req, res) {
                             get_issues(user, repo_name, label.name, repo.token, function(err, issues){
                                         
                                 if(err){
-                                    return logger.log(err);
+                                    return;
                                 }
                                 if(issues.length){
                                     return;
@@ -168,7 +167,7 @@ module.exports = function(req, res) {
                                 get_pull_request(user, repo_name, pull_request_number, repo.token, function(err, pull_request){
 
                                     if(err){
-                                        return logger.log(err);
+                                        return;
                                     }
 
                                     status.update({
@@ -197,7 +196,7 @@ module.exports = function(req, res) {
             };
 
             if (!actions[action]) {
-                return logger.log('unsupported action for issues');
+                return;
             }
 
             actions[action]();

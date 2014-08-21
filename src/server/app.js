@@ -40,6 +40,7 @@ app.use('/api', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 
 // setup render engine
+// REMOVE THIS - WE WILL NOT RENDER THESE PAGES
 app.set('views', path.join(__dirname + '../../client'));
 app.engine('html', require('ejs').renderFile);
 
@@ -68,7 +69,7 @@ async.series([
 
         async.eachSeries(config.server.documents, function(p, callback) {
             glob(p, function(err, file) {
-                if (file && file.length && file.length > 0) {
+                if (file && file.length) {
                     file.forEach(function(f) {
                         try {
                             global.models = merge(global.models, require(f));
@@ -94,7 +95,7 @@ async.series([
 
         async.eachSeries(config.server.passport, function(p, callback) {
             glob(p, function(err, file) {
-                if (file && file.length && file.length > 0) {
+                if (file && file.length) {
                     file.forEach(function(f) {
                         console.log('✓ '.bold.green + path.relative(process.cwd(), f));
                         require(f);
@@ -115,7 +116,7 @@ async.series([
 
         async.eachSeries(config.server.controller, function(p, callback) {
             glob(p, function(err, file) {
-                if (file && file.length && file.length > 0) {
+                if (file && file.length) {
                     file.forEach(function(f) {
                         try {
                             app.use('/', require(f));
@@ -141,7 +142,7 @@ async.series([
 
         async.eachSeries(config.server.api, function(p, callback) {
             glob(p, function(err, file) {
-                if (file && file.length && file.length > 0) {
+                if (file && file.length) {
                     file.forEach(function(f) {
                         console.log('✓ '.bold.green + path.relative(process.cwd(), f));
                         api[path.basename(f, '.js')] = require(f);
@@ -162,7 +163,7 @@ async.series([
 
         async.eachSeries(config.server.webhooks, function(p, callback) {
             glob(p, function(err, file) {
-                if (file && file.length && file.length > 0) {
+                if (file && file.length) {
                     file.forEach(function(f) {
                         console.log('✓ '.bold.green + path.relative(process.cwd(), f));
                         webhooks[path.basename(f, '.js')] = require(f);
@@ -181,24 +182,13 @@ async.series([
 // Handle api calls
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-var logger = require('./log');
-
 app.all('/api/:obj/:fun', function(req, res) {
     res.set('Content-Type', 'application/json');
     api[req.params.obj][req.params.fun](req, function(err, obj) {
-        if (err) {
-            console.log(('✖ ' + req.params.obj + ':' + req.params.fun).bold.red);
-            console.log(err);
-            res.send(err.code > 0 ? err.code : 500, JSON.stringify(err.text || err));
-        } else {
-            logger.log({
-                api: req.params.obj,
-                fun: req.params.fun,
-                arg: req.args,
-                res: obj
-            }, ['api', req.params.obj, req.params.fun]);
-            return obj ? res.send(JSON.stringify(obj)) : res.send();
+        if(err) {
+            return res.send(err.code > 0 ? err.code : 500, JSON.stringify(err.text || err));
         }
+        obj ? res.send(JSON.stringify(obj)) : res.send();
     });
 });
 
@@ -209,13 +199,11 @@ app.all('/api/:obj/:fun', function(req, res) {
 app.all('/github/webhook', function(req, res) {
     var event = req.headers['x-github-event'];
     try {
-        if (webhooks[event]) {
-            webhooks[event](req, res);
-            return;
+        if (!webhooks[event]) {
+            return res.send(400, 'Unsupported event');
         }
-        res.send(400, 'Unsupported event');
+        webhooks[event](req, res);
     } catch (err) {
-        logger.log(err);
         res.send(500, 'Internal Server Error');
     }
 });
