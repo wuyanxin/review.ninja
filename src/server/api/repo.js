@@ -127,6 +127,7 @@ module.exports = {
 
     + repos.one
     + repos.createHook
+review_ninja_npm_dependencies
 
 ************************************************************************************************************/
 
@@ -188,6 +189,30 @@ module.exports = {
             });
         });
 
+    },
+
+    hookExists: function(req, done) {
+        github.call({
+            obj: 'repos',
+            fun: 'getHooks',
+            arg: {
+                user: req.args.user,
+                repo: req.args.repo
+            },
+            token: req.user.token
+        }, function(err, hooks) {
+            var hook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
+            var hookExists = false;
+            if(!err) {
+                hooks.forEach(function(hook) {
+                    if(hook === hook_url) {
+                        hookExists = true;
+                    }
+                });
+            }
+
+            done(err, {hookExists: hookExists});
+        });
     }
 
 };
