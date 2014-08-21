@@ -6,7 +6,7 @@ module.exports = {
 
         Star.find({repo: args.repo_uuid, comm: args.sha}, function(err, stars) {
 
-            stars = stars ? stars : [];
+            stars = stars || [];
 
             github.call({
                 obj: 'issues', 
@@ -20,16 +20,9 @@ module.exports = {
                 token: args.token
             }, function(err, issues) {
 
-                issues = issues ? issues : [];
+                issues = issues || [];
 
-                var status = 'pending';
-
-                if(issues.length) {
-                    status = 'failure';
-                }
-                else if(stars.length) {
-                    status = 'success';
-                }
+                var status = issues.length ? 'failure' : stars.length ? 'success' : 'pending';
 
                 github.call({
                     obj: 'statuses',
@@ -39,7 +32,7 @@ module.exports = {
                         repo: args.repo,
                         sha: args.sha,
                         state: status,
-                        description: 'Review Ninja: ' + stars.length + ' stars, ' + issues.length + ' issues.',
+                        description: 'Review Ninja: ' + stars.length + ' stars, ' + issues.length + ' issues',
                         target_url: 'http://' + config.server.http.host + ':' + config.server.http.port + '/' + args.user + '/' + args.repo + '/pull/' + args.number
                     },
                     token: args.token

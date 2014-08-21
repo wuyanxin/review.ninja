@@ -1,18 +1,11 @@
 var GitHubApi = require('github');
-var ua = require('universal-analytics');
-
 module.exports = {
 
     call: function(call, done) {
 
-        if (config.client.gacode) {
-            var visitor = ua(config.client.gacode);
-            visitor.event('GitHub Api Call', call.obj + '/' + call.fun, call.token).send();
-        }
-
         var obj = call.obj;
         var fun = call.fun;
-        var arg = call.arg;
+        var arg = call.arg || {};
         var token = call.token;
 
         var github = new GitHubApi({
@@ -61,19 +54,15 @@ module.exports = {
             });
         };
 
-        if (!obj || !github[obj]) {
+        if(!obj || !github[obj]) {
             return done('obj required/obj not found');
         }
 
-        if (!fun || !github[obj][fun]) {
+        if(!fun || !github[obj][fun]) {
             return done('fun required/fun not found');
         }
 
-        if (!arg) {
-            arg = {};
-        }
-
-        if (token) {
+        if(token) {
             github.authenticate({
                 type: 'oauth',
                 token: token

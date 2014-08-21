@@ -28,7 +28,6 @@
     "redis": "^0.10.3",
     "request": "^2.37.0",
     "socket.io": "^1.0.6",
-    "universal-analytics": "0.3.4",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
