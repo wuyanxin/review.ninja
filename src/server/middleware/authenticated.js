@@ -1,8 +1,7 @@
-var sugar = require('array-sugar');
 
 module.exports = function(req, res, next) {
 
-    if (req.isAuthenticated() || config.whitelist.contains(req.url)) {
+    if (req.isAuthenticated()) {
         return next();
     }
 
