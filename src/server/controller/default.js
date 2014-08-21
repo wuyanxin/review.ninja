@@ -8,6 +8,8 @@ var router = express.Router();
 
 router.all('/*', function(req, res) {
 
+    // DON'T RENDER THESE ANYMORE
+
     if (req.isAuthenticated()) {
         return res.render('home.html', {
             user: req.user

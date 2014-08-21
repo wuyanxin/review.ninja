@@ -11,7 +11,7 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	add: function(req, done) {
+    add: function(req, done) {
 
         var fileReference = '`none`';
         if(req.args.reference) {
@@ -31,19 +31,19 @@ module.exports = {
         body += '|------|--------------|\r\n';
         body += '|' + req.args.sha + '|' + fileReference + '|';
 
-		github.call({
+        github.call({
             obj: 'issues', 
             fun: 'create', 
             arg: {
-    			user: req.args.user,
-    			repo: req.args.repo,
-    			body: body,
-    			title: req.args.title,
-    			labels: ['review.ninja', 'pull-request-' + req.args.number]
-		    }, 
+                user: req.args.user,
+                repo: req.args.repo,
+                body: body,
+                title: req.args.title,
+                labels: ['review.ninja', 'pull-request-' + req.args.number]
+            }, 
             token: req.user.token
         }, function(err, issue) {
-			done(err, issue);
-		});
-	}
+            done(err, issue);
+        });
+    }
 };

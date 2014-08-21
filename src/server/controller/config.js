@@ -7,10 +7,8 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/config',
-    function(req, res, next) {
-        res.write(JSON.stringify(config.client));
-        res.end();
-        next();
+    function(req, res) {
+        res.end(JSON.stringify(config.client));
     }
 );
 
