@@ -4,15 +4,6 @@
     margin: 0;
     height: 100%;
 
-    .scroll {
-        height: 100%;
-
-        section {
-            height: 100%;
-            overflow-y: scroll;
-        }
-    }
-
     .ui-scrollfix {
         position: fixed;
         width: inherit;
@@ -21,6 +12,8 @@
     }
 
     section {
+        height: 100%;
+        overflow-y: scroll;
         padding: $padding-large-vertical $padding-large-horizontal;
     } 
 }

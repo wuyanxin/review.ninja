@@ -25,11 +25,19 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
     function($stateProvider, $urlRouterProvider, $locationProvider, $analyticsProvider) {
 
         $stateProvider
+
+            // 
+            // Home state 
+            //
             .state('home', {
                 url: '/',
                 templateUrl: '/templates/home.html',
                 controller: 'HomeCtrl'
             })
+
+            //
+            // Repo state (abstract)
+            //
             .state('repo', {
                 abstract: true,
                 url: '/:user/:repo',
@@ -45,6 +53,10 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                     ]
                 }
             })
+
+            //
+            // Repo master state
+            //
             .state('repo.list', {
                 url: '',
                 templateUrl: '/templates/list.html',
@@ -55,6 +67,10 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                     }]
                 }
             })
+
+            //
+            // Repo detail state (pull request list)
+            //
             .state('repo.pull', {
                 abstract: true,
                 url: '/pull/:number',
@@ -72,9 +88,17 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 number: $stateParams.number
                             });
                         }
-                    ],
+                    ]
+                }
+            })
 
-                    // should these be in the resolves?
+            //
+            // Repo issue state (abstract)
+            //
+            .state('repo.pull.issue', {
+                abstract: true,
+                templateUrl: '/templates/issue.html',
+                resolve: {
                     open: ['$stateParams', '$HUBService', 'Issue', 'Reference',
                         function($stateParams, $HUBService, Issue, Reference) {
                             return $HUBService.call('issues', 'repoIssues', {
@@ -85,7 +109,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 // per_page: 1
                             }, function(err, res) {
                                 if(!err) {
-                                    res.affix.forEach(function(issue) {
+                                    Reference.clear();
+                                    res.value.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                         Reference.add(issue);
                                     });
@@ -112,20 +137,49 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                     ]
                 }
             })
-            .state('repo.pull.list', {
-                url: '',
+
+            //
+            // Repo issue master state
+            //
+            .state('repo.pull.issue.master', {
+                url: '?issues',
                 templateUrl: '/templates/pull/list.html',
                 controller: 'PullListCtrl',
                 resolve: {
-                    open: ['open', function(open) {
-                        return open; // inherited from parent state
+                    open: ['open', '$stateParams', 'Reference', function(open, $stateParams, Reference) {
+
+                        var retOpen = {};
+                        retOpen = angular.extend(retOpen, open);
+
+                        var issues = $stateParams.issues ? $stateParams.issues.split(',') : null;                        
+
+                        if(issues) {
+                            var value = [];
+                            open.value.forEach(function(issue) {
+                                if(issues.indexOf(issue.number.toString()) > -1) {
+                                    value.push(issue);
+                                }
+                            });
+                            retOpen.value = value;
+                        }
+
+                        Reference.clear();
+                        retOpen.value.forEach(function(issue) {
+                            Reference.add(issue);
+                        });
+
+                        return retOpen; // inherited from parent state
                     }],
                     closed: ['closed', function(closed) {
                         return closed; // inherited from parent state
                     }],
                 }
             })
-            .state('repo.pull.issue', {
+
+            //
+            // Repo issue detail state
+            //
+            .state('repo.pull.issue.detail', {
                 url: '/:issue',
                 templateUrl: '/templates/pull/issue.html',
                 controller: 'PullIssueCtrl',
@@ -145,6 +199,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                             }, function(err, issue) {
                                 if(!err) {
                                     issue.value = Issue.parse(issue.value);
+                                    Reference.clear();
                                     Reference.add(issue.value);
                                 }
                             });
@@ -152,6 +207,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                     ]
                 }
             })
+
             .state('repo.settings', {
                 url: '/settings',
                 templateUrl: '/templates/settings.html',

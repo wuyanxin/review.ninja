@@ -34,12 +34,15 @@
         margin-left: -20px;
         cursor: pointer;
         color: $code-line-select-color;
-
-        visibility: hidden;
         position: absolute;
+
+        i {
+            position: absolute;
+            visibility: hidden;
+        }
     }
 
-    tr.selected .select {
+    tr.selected .select i {
         visibility: visible;
     }
 
