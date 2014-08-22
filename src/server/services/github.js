@@ -9,10 +9,10 @@ module.exports = {
         var token = call.token;
 
         var github = new GitHubApi({
-            protocol: config.github.protocol,
-            version: config.github.version,
-            host: config.github.api,
-            pathPrefix: config.github.pathPrefix
+            protocol: config.server.github.protocol,
+            version: config.server.github.version,
+            host: config.server.github.api,
+            pathPrefix: config.server.github.enterprise ? '/api/v3' : null
         });
 
         // augument the client

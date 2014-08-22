@@ -23,17 +23,17 @@ module.exports = function() {
                     Settings.findOne({
                         user: collaborator.uuid,
                         repo: repo.uuid
-                    }, function(err, conf) {
+                    }, function(err, settings) {
 
-                        if(err || !conf || !conf.watch){
+                        if(err || !settings || !settings.watched){
                             return;
                         }
 
                         var watching = false;
 
-                        for(var key=0; key<conf.watch.length; key++){
+                        for(var key=0; key<settings.watched.length; key++){
 
-                            var watch_branch = conf.watch[key];
+                            var watch_branch = settings.watched[key];
                             var re = new RegExp(watch_branch, 'g');
 
                             if(re.exec(pull.base.ref) || re.exec(pull.head.ref)){
@@ -42,9 +42,9 @@ module.exports = function() {
                             }
                         }
 
-                        if( watching && ((notification_type === 'star' && conf.notifications.star) || 
-                            (notification_type === 'issue' && conf.notifications.issue) || 
-                            (notification_type === 'pull_request' && conf.notifications.pull_request)) ){
+                        if( watching && ((notification_type === 'star' && settings.notifications.star) || 
+                            (notification_type === 'issue' && settings.notifications.issue) || 
+                            (notification_type === 'pull_request' && settings.notifications.pull_request)) ){
 
                             var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
 

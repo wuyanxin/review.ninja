@@ -13,6 +13,9 @@ router.all('/*', function(req, res) {
     }
 
     // todo: redirect to marketing page
+    if (config.server.github.enterprise) {
+        return res.render('login.enterprise.html');
+    }
 
     return res.sendfile('login.html', {root: __dirname + './../../client'});
 });

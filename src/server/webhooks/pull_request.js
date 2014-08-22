@@ -4,6 +4,7 @@ var User = require('mongoose').model('User');
 
 //services
 var github = require('../services/github');
+var url = require('../services/url');
 var notification = require('../services/notification');
 var status = require('../services/status');
 
@@ -34,7 +35,7 @@ module.exports = function(req, res) {
             var repo_name = repository.name;
             var slug = repository.full_name;
             var sender = req.body.sender;
-            var review_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/' + repository.full_name + '/pull/' + req.body.number;
+            var review_url = url.reviewPullRequest(user, repo_name, req.body.number);
             var latest_commit_sha = req.body.pull_request.head.sha;
 
             args = {
