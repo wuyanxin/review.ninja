@@ -2,7 +2,7 @@ var nodemailer = require('nodemailer');
 var fs = require('fs');
 var ejs = require('ejs');
 
-var Conf = require('mongoose').model('Conf');
+var Settings = require('mongoose').model('Settings');
 var User = require('mongoose').model('User');
 var github = require('./github');
 
@@ -20,7 +20,7 @@ module.exports = function() {
 
                 collaborators.forEach(function(collaborator){
 
-                    Conf.findOne({
+                    Settings.findOne({
                         user: collaborator.uuid,
                         repo: repo.uuid
                     }, function(err, conf) {
