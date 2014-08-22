@@ -37,8 +37,8 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 
         // get the star
         $scope.star = $RPC.call('star', 'get', {
-            repo: $scope.repo.id,
-            comm: $scope.pull.head.sha
+            sha: $scope.pull.head.sha,
+            repo_uuid: $scope.repo.id
         });
 
 
@@ -93,8 +93,8 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
 
         $scope.refreshStars = function() {
             $RPC.call('star', 'all', {
-                repo: $scope.repo.id,
-                comm: $scope.pull.head.sha
+                sha: $scope.pull.head.sha,
+                repo_uuid: $scope.repo.id
             }, function(err, stars) {
                 if(!err) {
                     $scope.pull.stars = stars.value;
@@ -102,8 +102,8 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
             });
 
             $scope.star = $RPC.call('star', 'get', {
-                repo: $scope.repo.id,
-                comm: $scope.pull.head.sha
+                sha: $scope.pull.head.sha,
+                repo_uuid: $scope.repo.id
             });
         };
 

@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var withHelper = require('./with');
 
 var SettingsSchema = mongoose.Schema({
-    user: String,
-    repo: String,
+    user: Number,
+    repo: Number,
     notifications: {
         pull_request: {type: Boolean, default: false},
         issue: {type: Boolean, default: false},

@@ -2,17 +2,17 @@ var mongoose = require('mongoose');
 var withHelper = require('./with');
 
 var StarSchema = mongoose.Schema({
+    sha: String,
     repo: Number,
-    comm: String,
-    user: String,
+    user: Number,
     name: String,
 });
 
 StarSchema.plugin(withHelper);
 
 StarSchema.index({
+    sha: 1,
     repo: 1,
-    comm: 1,
     user: 1
 }, {
     unique: true

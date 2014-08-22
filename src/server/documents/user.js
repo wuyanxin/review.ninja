@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var withHelper = require('./with');
 
 var UserSchema = mongoose.Schema({
-    uuid: String,
+    uuid: Number,
     token: String
 });
 

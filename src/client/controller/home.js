@@ -46,7 +46,7 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC',
             repos.value.forEach(function(repo) {
                 // get ninja repo
                 $RPC.call('repo', 'get', {
-                    uuid: repo.id
+                    repo_uuid: repo.id
                 }, function(err, ninja) {
                     repo.ninja = ninja.value || {
                         ninja: false
@@ -64,7 +64,7 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC',
             $RPC.call('repo', 'add', {
                 user: repo.owner.login,
                 repo: repo.name,
-                uuid: repo.id
+                repo_uuid: repo.id
             }, function(err, ninja) {
                 if (!err) {
                     repo.ninja = ninja.value;
@@ -82,7 +82,7 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC',
             $RPC.call('repo', 'rmv', {
                 user: repo.owner.login,
                 repo: repo.name,
-                uuid: repo.id
+                repo_uuid: repo.id
             }, function(err, ninja) {
                 if (!err) {
                     repo.ninja = ninja.value;

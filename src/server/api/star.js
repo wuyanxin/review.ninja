@@ -11,16 +11,14 @@ module.exports = {
 
     @models
 
-    + Star, where repo=repo-uuid, comm=comm-uuid
+    + Star, where repo=repo_uuid, sha=sha
 
     ************************************************************************************************************/
 
     all: function(req, done) {
 
-        Star.find({repo: req.args.repo, comm: req.args.comm}, function(err, star) {
-
-            done(err, star);
-
+        Star.find({sha: req.args.sha, repo: req.args.repo_uuid}, function(err, stars) {
+            done(err, stars);
         });
 
     },
@@ -30,20 +28,18 @@ module.exports = {
 
     @models
 
-    + Star, where repo=repo-uuid, comm=comm-uuid, user=user-uuid
+    + Star, where repo=repo_uuid, sha=sha, user=user_uuid
 
     ************************************************************************************************************/
 
     get: function(req, done) {
 
         Star.with({
-            repo: req.args.repo,
-            comm: req.args.comm,
-            user: req.user.id
+            sha: req.args.sha,
+            user: req.user.id,
+            repo: req.args.repo_uuid
         }, function(err, star) {
-
             done(err, star);
-
         });
 
     },
@@ -65,9 +61,9 @@ module.exports = {
             }
 
             Star.create({
-                repo: req.args.repo_uuid, 
-                comm: req.args.sha, 
+                sha: req.args.sha, 
                 user: req.user.id, 
+                repo: req.args.repo_uuid,
                 name: req.user.login
             }, function(err, star) {
 
@@ -80,10 +76,10 @@ module.exports = {
                     status.update({ 
                         user: req.args.user, 
                         repo: req.args.repo, 
-                        repo_uuid: req.args.repo_uuid, 
                         sha: req.args.sha, 
+                        repo_uuid: req.args.repo_uuid, 
                         number: req.args.number, 
-                        token: req.user.token
+                        token: repo ? repo.token : req.user.token
                     }, function(err, res) {
 
                     });
@@ -108,9 +104,9 @@ module.exports = {
         Repo.with({uuid: req.args.repo_uuid}, function(err, repo) {
 
             Star.with({
-                repo: req.args.repo_uuid,
-                comm: req.args.sha,
-                user: req.user.id
+                sha: req.args.sha,
+                user: req.user.id,
+                repo: req.args.repo_uuid
             }, function(err, star) {
 
                 if(err){
@@ -131,7 +127,7 @@ module.exports = {
                             repo_uuid: req.args.repo_uuid, 
                             sha: req.args.sha, 
                             number: req.args.number, 
-                            token: req.user.token
+                            token: repo ? repo.token : req.user.token
                         }, function(err, res) {
                             
                         });
@@ -141,6 +137,5 @@ module.exports = {
                 });
             });
         });
-
     }
 };

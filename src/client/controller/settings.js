@@ -12,12 +12,12 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         $scope.repo = repo;
 
         $scope.settings = $RPC.call('settings', 'get', {
-            repo: repo.value.id
+            repo_uuid: repo.value.id
         });
 
         $scope.setWatched = function() {
             $RPC.call('settings', 'setWatched', {
-                repo: repo.value.id,
+                repo_uuid: repo.value.id,
                 watched: $scope.settings.value.watched
             }, function(err, settings) {
                 if(!err) {
@@ -41,11 +41,12 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
 
         $scope.setNotifications = function() {
             $RPC.call('settings', 'setNotifications', {
-                repo: repo.value.id,
+                repo_uuid: repo.value.id,
                 notifications: $scope.settings.value.notifications
             }, function(err, settings) {
-                $scope.settings = settings;
-
+                if(!err) {
+                    $scope.settings = settings;
+                }
             });
         };
     }]);

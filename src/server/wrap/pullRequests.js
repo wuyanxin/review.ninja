@@ -10,7 +10,7 @@ module.exports = {
 
     get: function(req, pull, done) {
 
-        Star.find({repo: pull.base.repo.id, comm: pull.head.sha}, function(err, stars) {
+        Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
 
             pull.stars = [];
 
@@ -46,28 +46,28 @@ module.exports = {
                 repo = null;
             }
 
-            Settings.findOne({
+            Settings.with({
                 user: req.user.id,
                 repo: repo
-            }, function(err, conf) {
+            }, function(err, settings) {
 
                 // set the watched pulls
-                if(conf) {
+                if(settings) {
                     pulls.forEach(function(pull) {
                         pull.watched = false;
-                        for(var i=0; i<conf.watch.length; i++) {
-                            var re = RegExp(conf.watch[i], 'g');
+
+                        settings.watched.forEach(function(watch) {
+                            var re = RegExp(watch, 'g');
                             if(re.exec(pull.base.ref) || re.exec(pull.head.ref)) {
                                 pull.watched = true;
-                                break;
                             }
-                        }
+                        });
                     });
                 }
 
                 // set the stars
                 async.each(pulls, function(pull, call) {
-                    Star.find({repo: pull.base.repo.id, comm: pull.head.sha}, function(err, stars) {
+                    Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
                         pull.stars = [];
                         if(!err) {
                             pull.stars = stars;

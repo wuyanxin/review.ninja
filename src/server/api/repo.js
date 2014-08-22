@@ -38,7 +38,7 @@ module.exports = function() {
 
         @models
 
-        + Repo, where repo=repo-uuid
+        + Repo, where repo=repo_uuid
 
         @github
 
@@ -51,9 +51,7 @@ module.exports = function() {
             github.call({
                 obj: 'repos',
                 fun: 'one',
-                arg: {
-                    id: req.args.uuid
-                },
+                arg: { id: req.args.repo_uuid },
                 token: req.user.token
             }, function(err, repo) {
 
@@ -69,7 +67,7 @@ module.exports = function() {
                 }
 
                 Repo.with({
-                    uuid: req.args.uuid
+                    uuid: req.args.repo_uuid
                 }, function(err, repo) {
                     done(err, repo);
                 });
@@ -82,7 +80,7 @@ module.exports = function() {
 
         @models
 
-        + Repo, where repo=repo-uuid
+        + Repo, where repo=repo_uuid
 
         @github
 
@@ -96,7 +94,7 @@ module.exports = function() {
             github.call({
                 obj: 'repos', 
                 fun: 'one', 
-                arg: { id: req.args.uuid }, 
+                arg: { id: req.args.repo_uuid }, 
                 token: req.user.token
             }, function(err, github_repo) {
 
@@ -111,7 +109,7 @@ module.exports = function() {
                     });
                 }
 
-                Repo.with({ uuid: req.args.uuid }, { token: req.user.token, ninja: true }, function(err, repo) {
+                Repo.with({ uuid: req.args.repo_uuid }, { token: req.user.token, ninja: true }, function(err, repo) {
                     done(err, repo);
                     createWebhook(github_repo.owner.login, github_repo.name, req.user.token);
                 });
@@ -124,7 +122,7 @@ module.exports = function() {
 
         @models
 
-        + Repo, where repo=repo-uuid
+        + Repo, where repo=repo_uuid
 
         @github
 
@@ -139,7 +137,7 @@ module.exports = function() {
             github.call({
                 obj: 'repos', 
                 fun: 'one', 
-                arg: { id: req.args.uuid }, 
+                arg: { id: req.args.repo_uuid }, 
                 token: req.user.token
             }, function(err, github_repo) {
 
@@ -154,7 +152,7 @@ module.exports = function() {
                     });
                 }
 
-                Repo.with({ uuid: req.args.uuid }, { ninja: false }, function(err, repo) {
+                Repo.with({ uuid: req.args.repo_uuid }, { ninja: false }, function(err, repo) {
 
                     done(err, repo);
 

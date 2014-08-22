@@ -9,29 +9,23 @@ module.exports = {
 
         @models
 
-        + Settings, where user=user-uuid, repo=repo-uuid
+        + Settings, where user=user_uuid, repo=repo_uuid
 
         @github (if needed)
 
     ************************************************************************************************************/
     
     get: function(req, done) {
-        var args = {
-            user: req.user.id,
-            repo: req.args.repo
-        };
 
-        Settings.with(args, function(err, settings) {
+        Settings.with({user: req.user.id, repo: req.args.repo_uuid}, function(err, settings) {
 
-            // occurs when user does not have any
-            // settings on this repo yet
-            if(!settings) {
-                Settings.with(args, {}, function(err, settings) {
-                    done(err, settings);
-                });
-                return;
+            if(settings) {
+                return done(err, settings);
             }
-            done(err, settings);
+
+            Settings.with({user: req.user.id, repo: req.args.repo_uuid}, {}, function(err, settings) {
+                done(err, settings);
+            });
         });
     },
 
@@ -48,7 +42,7 @@ module.exports = {
 
         Settings.with({
             user: req.user.id,
-            repo: req.args.repo
+            repo: req.args.repo_uuid
         }, {
             watched: result
         }, function(err, settings) {
@@ -59,7 +53,7 @@ module.exports = {
     setNotifications: function(req, done) {
         Settings.with({
             user: req.user.id,
-            repo: req.args.repo
+            repo: req.args.repo_uuid
         }, {
             notifications: req.args.notifications
         }, function(err, settings) {
