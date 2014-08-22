@@ -1,3 +1,4 @@
+var url = require('./url');
 var github = require('./github');
 var Star = require('mongoose').model('Star');
 
