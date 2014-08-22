@@ -10,17 +10,16 @@ var assert = require('assert');
 var sinon = require('sinon');
 
 
-var logger = require('../../../server/log');
 var mongoose = require('mongoose');
 // models
 var User = require('../../../server/documents/user');
 var Repo2 = require('../../../server/documents/repo');
 var Star = require('../../../server/documents/star');
-var conf = require('../../../server/documents/conf');
+var Settings = require('../../../server/documents/settings');
 
 mongoose.model('User');
 mongoose.model('Star');
-mongoose.model('Conf');
+mongoose.model('Settings');
 var Repo=mongoose.model('Repo');
 
 //services

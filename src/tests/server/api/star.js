@@ -8,7 +8,7 @@ var sinon = require('sinon');
 var Star = require('../../../server/documents/star').Star;
 var Repo = require('../../../server/documents/repo').Repo;
 var Comm = require('../../../server/documents/comm').Comm;
-var conf = require('../../../server/documents/conf');
+var Settings = require('../../../server/documents/settings');
 require('../../../server/documents/user');
 var notification = require('../../../server/services/notification');
 
