@@ -15,9 +15,19 @@ passport.use(new Strategy({
         scope: config.server.github.scopes
     },
     function(accessToken, refreshToken, profile, done) {
-        done(null, merge(profile._json, {
+        models.User.update({
+            uuid: profile.id
+        }, {
+            name: profile.username,
+            email: '', // needs fix
             token: accessToken
-        }));
+        }, {
+            upsert: true
+        }, function(err, num, res) {
+            done(null, merge(profile._json, {
+                token: accessToken
+            }));
+        });
     }
 ));
 
