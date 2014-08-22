@@ -30,6 +30,11 @@ module.exports = {
             port: process.env.HOST_PORT
         },
 
+        security: {
+            sessionSecret: process.env.SESSION_SECRET || 'review.ninja',
+            cookieMaxAge: 60 * 60 * 1000
+        },
+
         smtp: {
             enabled: !!process.env.SMTP_HOST,
             host: process.env.SMTP_HOST,

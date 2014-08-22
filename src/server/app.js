@@ -42,9 +42,9 @@ config.server.static.forEach(function(p) {
 app.use(require('body-parser').json());
 app.use(require('cookie-parser')());
 app.use(require('cookie-session')({
-    secret: 'review.ninja!',
+    secret: config.server.security.sessionSecret,
     cookie: {
-        maxAge: 60 * 60 * 1000
+        maxAge: config.server.security.cookieMaxAge
     }
 }));
 app.use(passport.initialize());
