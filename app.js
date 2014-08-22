@@ -7,7 +7,6 @@ var http = require('http');
 var app = require('./src/server/app.js');
 
 server = http.createServer(app).listen(config.server.localport).on('listening', function() {
-
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////
