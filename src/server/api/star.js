@@ -1,6 +1,5 @@
 // models
 var Repo = require('mongoose').model('Repo');
-var Comm = require('mongoose').model('Comm');
 var Star = require('mongoose').model('Star');
 
 var status = require('../services/status');
