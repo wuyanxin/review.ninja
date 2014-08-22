@@ -49,14 +49,14 @@ module.exports = {
             Settings.findOne({
                 user: req.user.id,
                 repo: repo
-            }, function(err, conf) {
+            }, function(err, settings) {
 
                 // set the watched pulls
-                if(conf) {
+                if(settings) {
                     pulls.forEach(function(pull) {
                         pull.watched = false;
-                        for(var i=0; i<conf.watch.length; i++) {
-                            var re = RegExp(conf.watch[i], 'g');
+                        for(var i=0; i<settings.watched.length; i++) {
+                            var re = RegExp(settings.watched[i], 'g');
                             if(re.exec(pull.base.ref) || re.exec(pull.head.ref)) {
                                 pull.watched = true;
                                 break;
