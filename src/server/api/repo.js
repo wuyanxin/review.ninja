@@ -1,5 +1,6 @@
 // module
 var github = require('../services/github');
+var url = require('../services/url');
 var app = require('../app');
 // models
 var Repo = require('mongoose').model('Repo');
@@ -7,11 +8,6 @@ var Repo = require('mongoose').model('Repo');
 module.exports = function() {
 
     function createWebhook(user, repo, token, done) {
-
-        var webhook_url = 'http://' + 
-                          config.server.http.host + ':' + config.server.http.port + 
-                          '/github/webhook';
-        
         github.call({
             obj: 'repos',
             fun: 'createHook',
@@ -19,7 +15,7 @@ module.exports = function() {
                 user: user,
                 repo: repo,
                 name: 'web',
-                config: { url: webhook_url, content_type: 'json' },
+                config: { url: url.webhook, content_type: 'json' },
                 events: ['pull_request','issues', 'issue_comment'],
                 active: true
             },
@@ -169,11 +165,8 @@ module.exports = function() {
                     }, function(err, hooks) {
                         
                         if(!err) {
-
-                            var webhook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
-                           
                             hooks.forEach(function(hook) {
-                                if (hook.config.url === webhook_url) {
+                                if (hook.config.url === url.webhook) {
                                     github.call({
                                         obj: 'repos', 
                                         fun: 'deleteHook', 
@@ -207,10 +200,9 @@ module.exports = function() {
                 token: req.user.token
             }, function(err, hooks) {
                 var hook;
-                var hook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
                 if(!err) {
                     hooks.forEach(function(webhook) {
-                        if(webhook.config.url === hook_url) {
+                        if(webhook.config.url === url.webhook) {
                             hook = webhook;
                         }
                     });

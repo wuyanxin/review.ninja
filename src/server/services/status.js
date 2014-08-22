@@ -33,7 +33,7 @@ module.exports = {
                         sha: args.sha,
                         state: status,
                         description: 'Review Ninja: ' + stars.length + ' stars, ' + issues.length + ' issues',
-                        target_url: 'http://' + config.server.http.host + ':' + config.server.http.port + '/' + args.user + '/' + args.repo + '/pull/' + args.number
+                        target_url: url.reviewPullRequest(args.user, args.repo, args.number)
                     },
                     token: args.token
                 }, function(err, res) {

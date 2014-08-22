@@ -1,5 +1,6 @@
 // module
 var github = require('../services/github');
+var url = require('../services/url');
 
 module.exports = {
 
@@ -15,14 +16,7 @@ module.exports = {
 
         var fileReference = '`none`';
         if(req.args.reference) {
-
-            var url = 'https://' + 
-                      config.server.github.host + '/' + 
-                      req.args.user + '/' + 
-                      req.args.repo + '/' +
-                      'blob/' + 
-                      req.args.reference;
-
+            var url = url.githubFileReference(req.args.user, req.args.repo, req.args.reference);
             fileReference = '[' + req.args.reference.replace(req.args.sha + '/', '') + ']' + '(' + url + ')';
         }
             
