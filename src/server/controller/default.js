@@ -8,19 +8,13 @@ var router = express.Router();
 
 router.all('/*', function(req, res) {
 
-    // DON'T RENDER THESE ANYMORE
-
     if (req.isAuthenticated()) {
-        return res.render('home.html', {
-            user: req.user
-        });
+        return res.sendfile('home.html', {root: __dirname + './../../client'});
     }
 
-    if (config.github.enterprise) {
-        return res.render('login.enterprise.html');
-    }
+    // todo: redirect to marketing page
 
-    return res.render('login.html');
+    return res.sendfile('login.html', {root: __dirname + './../../client'});
 });
 
 module.exports = router;
