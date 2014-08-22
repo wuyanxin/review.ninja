@@ -24,9 +24,9 @@ module.exports = function() {
                 active: true
             },
             token: token
-        }, function(err, data) {
+        }, function(err, hook) {
             if(done) {
-                done(err, data);
+                done(err, hook);
             }
         });
     }
@@ -165,14 +165,14 @@ module.exports = function() {
                 var hook;
                 var hook_url = 'http://' + config.server.http.host + ':' + config.server.http.port + '/github/webhook';
                 if(!err) {
-                    hooks.forEach(function(hook) {
-                        if(hook.config.url === hook_url) {
-                            hook = hook;
+                    hooks.forEach(function(webhook) {
+                        if(webhook.config.url === hook_url) {
+                            hook = webhook;
                         }
                     });
                 }
 
-                done(err, {hook: hook});
+                done(err, hook);
             });
         },
 

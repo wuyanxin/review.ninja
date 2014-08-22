@@ -1,25 +1,27 @@
-
 // *****************************************************
-// Hook Ensurance Controller
-//
-// tmpl: inline
-// path: always with the navbar
+// Root Controller
 // *****************************************************
 
-module.controller('EnsureHookCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC',
+module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', 
     function($rootScope, $scope, $stateParams, $HUB, $RPC) {
-        $scope.hookExists = true;
+
+        $rootScope.user = $HUB.call('user', 'get', {});
+
+        $scope.hook = true;
+
         $rootScope.$on('$stateChangeSuccess', function(event, toState, fromState, fromParams, error) {
+
+            $scope.hook = true;
+
             if($stateParams.user && $stateParams.repo) {
-                $RPC.call('repo', 'hookExists', {
+                $RPC.call('repo', 'getHook', {
                     user: $stateParams.user,
                     repo: $stateParams.repo
-                }, function(err, result) {
-                    $scope.hookExists = result.value.hookExists;
+                }, function(err, hook) {
+                    if(!err) {
+                        $scope.hook = hook.value;
+                    }
                 });
-            }
-            if(!$stateParams.user && !$stateParams.repo) {
-                $scope.hookExists = true;
             }
         });
 
@@ -27,12 +29,13 @@ module.controller('EnsureHookCtrl', ['$rootScope', '$scope', '$stateParams', '$H
             $RPC.call('repo', 'createHook', {
                 user: $stateParams.user,
                 repo: $stateParams.repo
-            }, function(err, result) {
+            }, function(err, hook) {
                 if(!err) {
-                    $scope.hookExists = true;
-                    $scope.hookCreated = true;
+                    $scope.hook = hook.value;
+                    $scope.created = true;
                 }
             });
         };
+
     }
 ]);
