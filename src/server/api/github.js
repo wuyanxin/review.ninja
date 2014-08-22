@@ -38,20 +38,22 @@ module.exports = {
                 });
             }
 
-            // try catch block here
+            try {
+                var wrap = require( path.join('../wrap', req.args.obj) );
 
-            var wrap = require( path.join('../wrap', req.args.obj) );
-
-            if(!wrap[req.args.fun]) {
-                return done('Wrapper not found');
+                wrap[req.args.fun](req, res, function(err, res) {
+                    done(err, {
+                        data: res,
+                        meta: meta
+                    });
+                });
             }
-
-            wrap[req.args.fun](req, res, function(err, res) {
+            catch(ex) {
                 done(err, {
                     data: res,
                     meta: meta
                 });
-            });
+            }
         });
     }
 };
