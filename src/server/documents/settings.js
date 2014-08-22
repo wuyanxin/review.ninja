@@ -5,7 +5,7 @@ var SettingsSchema = mongoose.Schema({
     user: String,
     repo: String,
     notifications: {type: Object, default: {pull_request: false, issue: false, star: false}},
-    watch: Array
+    watched: Array
 });
 
 SettingsSchema.plugin(withHelper);

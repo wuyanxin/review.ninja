@@ -15,29 +15,28 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             repo: repo.value.id
         });
 
-        $scope.addBranchRegex = function() {
-            $RPC.call('settings', 'addWatch', {
+        $scope.setWatched = function() {
+            $RPC.call('settings', 'setWatched', {
                 repo: repo.value.id,
-                watch: $scope.branchRegex
+                watched: $scope.settings.value.watched
             }, function(err, settings) {
                 if(!err) {
                     $scope.settings = settings;
-                    $scope.branchRegex = '';
-                    $scope.showAddNotification = false;
                 }
             });
         };
 
-        $scope.removeBranchRegex = function(regex) {
-            $RPC.call('settings', 'removeWatch', {
-                repo: repo.value.id,
-                watch: regex
-            }, function(err, settings) {
-                if(!err) {
-                    $scope.settings = settings;
-                    $scope.branchRegex = '';
-                }
-            });
+        $scope.addWatched = function() {
+            $scope.settings.value.watched.push($scope.newWatched);
+            $scope.showAddNotification = false;
+            $scope.newWatched = '';
+            $scope.setWatched();
+        };
+
+        $scope.removeWatched = function(watched) {
+            var index = $scope.settings.value.watched.indexOf(watched);
+            $scope.settings.value.watched.splice(index, 1);
+            $scope.setWatched();
         };
 
         $scope.setNotifications = function() {
