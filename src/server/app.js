@@ -12,21 +12,6 @@ var path = require('path');
 
 global.config = require('./../config');
 
-if(config.server.http.protocol != 'http' && config.server.http.protocol != 'https') {
-    throw 'PROTOCOL must be "http" or "https"';
-}
-
-if(config.server.github.protocol != 'http' && config.server.github.protocol != 'https') {
-    throw 'GITHUB_PROTOCOL must be "http" or "https"';
-}
-
-var url = require('./services/url');
-
-console.log('Host:       ' + url.baseUrl);
-console.log('GitHub:     ' + url.githubBase);
-console.log('GitHub-Api: ' + url.githubApiBase);
-console.log();
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Express application
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,10 +19,6 @@ console.log();
 var app = express();
 var api = {};
 var webhooks = {};
-
-config.server.static.forEach(function(p) {
-    app.use(express.static(p));
-});
 
 app.use(require('body-parser').json());
 app.use(require('cookie-parser')());
@@ -54,8 +35,38 @@ app.use(passport.session());
 app.use('/api', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 
-
 async.series([
+
+    function(callback) {
+        console.log('checking configs'.bold);
+
+        if(config.server.http.protocol != 'http' && config.server.http.protocol != 'https') {
+            throw 'PROTOCOL must be "http" or "https"';
+        }
+
+        if(config.server.github.protocol != 'http' && config.server.github.protocol != 'https') {
+            throw 'GITHUB_PROTOCOL must be "http" or "https"';
+        }
+
+        console.log('✓ '.bold.green + 'configs seem ok');
+
+        var url = require('./services/url');
+
+        console.log('Host:       ' + url.baseUrl);
+        console.log('GitHub:     ' + url.githubBase);
+        console.log('GitHub-Api: ' + url.githubApiBase);
+        callback();
+    },
+
+    function(callback) {
+        
+        console.log('bootstrap static files'.bold);
+
+        config.server.static.forEach(function(p) {
+            app.use(express.static(p));
+        });
+        callback();
+    },
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Bootstrap mongoose
@@ -160,7 +171,7 @@ async.series([
                 }
                 callback();
             });
-        }, callback());
+        }, callback);
     },
 
     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,11 +192,11 @@ async.series([
                 }
                 callback();
             });
-        }, callback());
+        }, callback);
     }
 
 ], function(err, res) {
-    console.log('✓ '.bold.green + 'bootstrapped');
+    console.log('\n✓ '.bold.green + 'bootstrapped, '.bold + 'app listening on localhost:' + config.server.localport);
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
