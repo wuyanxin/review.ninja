@@ -12,6 +12,21 @@ var path = require('path');
 
 global.config = require('./../config');
 
+if(config.server.http.protocol != 'http' && config.server.http.protocol != 'https') {
+    throw 'PROTOCOL must be "http" or "https"';
+}
+
+if(config.server.github.protocol != 'http' && config.server.github.protocol != 'https') {
+    throw 'GITHUB_PROTOCOL must be "http" or "https"';
+}
+
+var url = require('./services/url');
+
+console.log('Host:       ' + url.baseUrl);
+console.log('GitHub:     ' + url.githubBase);
+console.log('GitHub-Api: ' + url.githubApiBase);
+console.log();
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Express application
 //////////////////////////////////////////////////////////////////////////////////////////////////

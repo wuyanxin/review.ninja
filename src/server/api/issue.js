@@ -17,7 +17,7 @@ module.exports = {
         if(req.args.reference) {
 
             var url = 'https://' + 
-                      config.github.host + '/' + 
+                      config.server.github.host + '/' + 
                       req.args.user + '/' + 
                       req.args.repo + '/' +
                       'blob/' + 
