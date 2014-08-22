@@ -36,11 +36,21 @@ module.exports = {
     },
 
     setWatched: function(req, done) {
+        // unique the watched array
+        // taken from stackoverflow: http://stackoverflow.com/questions/1890203/unique-for-arrays-in-javascript
+        var hash = {}, result = [], arr = req.args.watched;
+        for ( var i = 0, l = arr.length; i < l; ++i ) {
+            if ( !hash.hasOwnProperty(arr[i]) ) { //it works with objects! in FF, at least
+                hash[arr[i]] = true;
+                result.push(arr[i]);
+            }
+        }
+
         Settings.with({
             user: req.user.id,
             repo: req.args.repo
         }, {
-            watched: req.args.watched
+            watched: result
         }, function(err, settings) {
             done(err, settings);
         });

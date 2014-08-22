@@ -4,8 +4,12 @@ var withHelper = require('./with');
 var SettingsSchema = mongoose.Schema({
     user: String,
     repo: String,
-    notifications: {type: Object, default: {pull_request: false, issue: false, star: false}},
-    watched: Array
+    notifications: {
+        pull_request: {type: Boolean, default: false},
+        issue: {type: Boolean, default: false},
+        star: {type: Boolean, default: false}
+    },
+    watched: [String]
 });
 
 SettingsSchema.plugin(withHelper);
