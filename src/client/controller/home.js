@@ -45,8 +45,8 @@ module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC',
             $scope.enabledRepos = [];
             repos.value.forEach(function(repo) {
                 // get ninja repo
-                $HUB.wrap('repos', 'one', {
-                    id: repo.id
+                $RPC.call('repo', 'get', {
+                    uuid: repo.id
                 }, function(err, ninja) {
                     repo.ninja = ninja.value || {
                         ninja: false

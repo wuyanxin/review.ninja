@@ -43,6 +43,50 @@ module.exports = function() {
         @github
 
         + repos.one
+
+        ************************************************************************************************************/
+
+        get: function(req, done) {
+
+            github.call({
+                obj: 'repos',
+                fun: 'one',
+                arg: {
+                    id: req.args.uuid
+                },
+                token: req.user.token
+            }, function(err, repo) {
+
+                if (err) {
+                    return done(err, repo);
+                }
+
+                if (!repo.permissions.pull) {
+                    return done({
+                        code: 403,
+                        text: 'Forbidden'
+                    });
+                }
+
+                Repo.with({
+                    uuid: req.args.uuid
+                }, function(err, repo) {
+                    done(err, repo);
+                });
+
+            });
+
+        },
+
+        /************************************************************************************************************
+
+        @models
+
+        + Repo, where repo=repo-uuid
+
+        @github
+
+        + repos.one
         + repos.createHook
 
     ************************************************************************************************************/
