@@ -264,7 +264,7 @@ module.exports = function() {
                         return done(err, repo);
                     }
 
-                    createWebhook(req.args.user, req.args.repo, repo.token, function(err, hook) {
+                    createWebhook(req.args.user, req.args.repo, req.user.token, function(err, hook) {
                         done(err, hook);
                     });
                 });

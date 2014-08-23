@@ -15,9 +15,13 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
 
             if($stateParams.user && $stateParams.repo) {
 
-                $scope.hook = $RPC.call('repo', 'getHook', {
+                $scope.getHook = $RPC.call('repo', 'getHook', {
                     user: $stateParams.user,
                     repo: $stateParams.repo
+                }, function(err, hook) {
+                    if(!err) {
+                        $scope.hook = hook.value;
+                    }
                 });
             }
         });
@@ -28,6 +32,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
                 repo: $stateParams.repo
             }, function(err, hook) {
                 if(!err) {
+                    $scope.hook = hook.value;
                     $scope.created = true;
                 }
             });
