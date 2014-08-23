@@ -4,12 +4,16 @@ require('trace.ninja');
 var assert = require('assert');
 var sinon = require('sinon');
 
+// config
+global.config = require('../../../config');
+
 // models
+var User = require('../../../server/documents/user').User;
 var Star = require('../../../server/documents/star').Star;
 var Repo = require('../../../server/documents/repo').Repo;
-var Comm = require('../../../server/documents/comm').Comm;
-var Settings = require('../../../server/documents/settings');
-require('../../../server/documents/user');
+var Settings = require('../../../server/documents/settings').Settings;
+
+// services
 var notification = require('../../../server/services/notification');
 
 // api

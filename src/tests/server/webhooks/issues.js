@@ -1,31 +1,29 @@
 require('trace.ninja');
 
+var http = require('http');
 var request = require('supertest');
 var express = require('express');
-var http = require('http');
-
 var bodyParser = require('body-parser');
+
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
-var config = require('../../../config');
 
-var mongoose = require('mongoose');
+// config
+global.config = require('../../../config');
+
 // models
-var User2 = require('../../../server/documents/user');
-var Repo2 = require('../../../server/documents/repo');
-var Star = require('../../../server/documents/star');
-var Settings = require('../../../server/documents/settings');
-mongoose.model('User');
-mongoose.model('Star');
-mongoose.model('Settings');
+var User = require('../../../server/documents/user').User;
+var Repo = require('../../../server/documents/repo').Repo;
+var Star = require('../../../server/documents/star').Star;
+var Settings = require('../../../server/documents/settings').Settings;
 
-var Repo=mongoose.model('Repo');
-var User = mongoose.model('User');
-//services
+// services
 var github = require('../../../server/services/github');
 var status = require('../../../server/services/status');
 var notification = require('../../../server/services/notification');
+
+// webhooks
 var Issue = require('../../../server/webhooks/issues');
 
 
