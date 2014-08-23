@@ -650,7 +650,7 @@ describe('issue webhook', function(){
 
 
 afterEach(function(){
-  stub_github_call.restore();
+  // stub_github_call.restore();
   stub_github_status_api.restore();
   stub_user_find.restore();
   stub_repo_with.restore();

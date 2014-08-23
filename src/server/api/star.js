@@ -86,8 +86,6 @@ module.exports = {
                     name: req.user.login
                 }, function(err, star) {
 
-                    done(err, star);
-
                     if(star) {
 
                         io.emit(req.args.user + ':' + req.args.repo + ':pull-request-' + req.args.number + ':starred', {});
@@ -106,6 +104,8 @@ module.exports = {
                         // commenting out until this is refactored
                         // notification.star(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
                     }
+
+                    done(err, star);
                 });
             });
 
@@ -136,8 +136,6 @@ module.exports = {
 
                 star.remove(function(err, star) {
 
-                    done(err, star);
-
                     if(star) {
 
                         io.emit(req.args.user + ':' + req.args.repo + ':pull-request-' + req.args.number + ':unstarred', {});
@@ -156,6 +154,8 @@ module.exports = {
                         // commenting out until this is refactored
                         // notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
                     }
+
+                    done(err, star);
                 });
             });
         });
