@@ -44,9 +44,9 @@ module.exports = function(req, res) {
             obj:'pullRequests',
             fun:'get',
             arg: {
-                user: 'reviewninja',
-                repo: 'foo',
-                number:4
+                user: user,
+                repo: repo,
+                number:number
             }
         }, function(err, pull_request){
             done(err, pull_request);
