@@ -47,7 +47,7 @@ module.exports = {
         },
 
         mongodb: {
-            uri: process.env.MONGODB || 'mongodb://reviewninja:reviewninja@localhost:27017/reviewninja'
+            uri: process.env.MONGODB
         },
 
         marketingPage: 'http://get.review.ninja',
