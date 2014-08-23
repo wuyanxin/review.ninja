@@ -12,11 +12,12 @@ router.all('/*', function(req, res) {
         return res.sendfile('home.html', {root: __dirname + './../../client'});
     }
 
-    // todo: redirect to marketing page
+    // enterprise marketing page
     if (config.server.github.enterprise) {
-        return res.render('login.enterprise.html');
+        return res.sendfile('login.html', {root: __dirname + './../../client'});
     }
 
+    // return res.redirect(config.server.marketingPage);
     return res.sendfile('login.html', {root: __dirname + './../../client'});
 });
 
