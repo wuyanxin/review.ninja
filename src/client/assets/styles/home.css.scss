@@ -6,8 +6,13 @@
     
     .search {
 
+        .scroll {
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+
         table {
-            margin: 0;
+            // margin: 0;
 
             td:hover {
                 cursor: pointer;

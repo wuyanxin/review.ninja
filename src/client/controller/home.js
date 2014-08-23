@@ -10,7 +10,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.repos = [];
 
-        $scope.results = [];
+        $scope.results = [], $scope.userRepos = [];
 
         $RPC.call('user', 'get', {}, function(err, user) {
             if(!err) {
@@ -24,17 +24,22 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             }
         });
 
+        //
+        // NOTE:
+        //  if ever a user has over 100 orgs
+        //  we will have to address this problem
+        //
         $scope.orgs = $HUB.call('user', 'getOrgs', {
-
-            //
-            // NOTE:
-            //  if ever a user has over 100 orgs
-            //  we will have to address this problem
-            //
             per_page: 100
         });
 
-        $scope.teams = $HUB.call('user', 'getTeams', {});
+        $scope.userRepos = $HUB.call('repos', 'getAll', {}, function(err, repos) {
+            if(!err) {
+                $scope.results = $scope.results.concat(repos.affix);
+            }
+        });
+
+        // $scope.teams = $HUB.call('user', 'getTeams', {});
 
         //
         // Actions
@@ -70,15 +75,9 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.search = function() {
 
-            if(!$scope.query.length) {
-                $scope.results = [];
-            }
-
             if($scope.query.length >= 3 && !$scope.searching.loading) {
 
-                $scope.results = [];
-
-                var query = $scope.query + '+in:name+user:' + $rootScope.user.value.login;
+                var query = $scope.query + '+in:name';
 
                 $scope.orgs.value.forEach(function(org) {
                     query += '+user:' + org.login;
@@ -88,7 +87,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                     q: query
                 }, function(err, repos) {
                     if(!err && $scope.query.length >= 3) {
-                        $scope.results = repos.value;
+                        $scope.results = $scope.userRepos.value.concat(repos.value);
                     }
                 });
             }

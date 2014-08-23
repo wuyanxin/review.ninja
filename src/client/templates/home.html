@@ -21,17 +21,28 @@
         </div>
       </div>
 
-      <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="searching.loading"></i>
-
-      <small ng-show="query.length>=3 && !results.length && !searching.loading" class="center-block">
+      <!-- <small ng-show="query.length>=3 && !results.length && !searching.loading" class="center-block">
         No repositories to show
-      </small>
+      </small> -->
 
-      <table class="table table-hover table-condensed">
-        <tr ng-repeat="repo in results | orderBy: 'full_name'" ng-click="add(repo)">
-          <td><small>{{ repo.full_name }}</small></td>
-        </tr>
-      </table>
+      <div class="scroll">
+        <div class="form-group" ng-show="searching.loading || userRepos.loading">
+          <i class="fa fa-2x fa-spinner fa-spin center-block"></i>
+        </div>
+
+        <table class="table table-hover table-condensed">
+          <tr ng-repeat="repo in results | filter:{name: query} | orderBy: 'full_name'" ng-click="add(repo)">
+            <td><small>{{ repo.full_name }}</small></td>
+          </tr>
+        </table>
+
+        <button type="button" 
+                class="btn btn-sm btn-default" 
+                ng-show="query.length>=3 && !searching.loading && userRepos.hasMore" 
+                ng-click="userRepos.getMore()">
+          Search more
+        </button>
+      </div>
     </div>
 
 		<table class="table">
