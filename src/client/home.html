@@ -50,6 +50,14 @@
   </div>
 
   <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 alert alert-warning" ng-show="getHook.error">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <strong>Warning!</strong> Webhooks are missing for this repository and will need to be set up by an administrator.
+      </div>
+    </div>
     <div class="row" ng-show="!hook">
       <div class="col-md-12 alert alert-warning">
         <strong>Warning!</strong> Webhooks are missing for this repository. 
@@ -66,7 +74,13 @@
     </div>
   </div>
 
-  <section ui-view></section>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <section class="main" ui-view></section>
+      </div>
+    </div>
+  </div>
 
   <!-- COMPONENT SCRIPTS -->
   <script src="//cdn.socket.io/socket.io-1.0.4.js"></script>

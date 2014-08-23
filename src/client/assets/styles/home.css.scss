@@ -1,0 +1,23 @@
+.home {
+
+    i.fa-plus-circle {
+            cursor: pointer;
+        }
+    
+    .search {
+
+        .scroll {
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+
+        table {
+            // margin: 0;
+
+            td:hover {
+                cursor: pointer;
+                background-color: $gray-lighter;
+            }
+        }
+    }
+}

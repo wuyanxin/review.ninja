@@ -1,40 +1,58 @@
-<div class="container-fluid">
-	<div class="row">
-    <div class="col-md-2 col-md-offset-3">
-      <h1><img src="{{currentImage}}&s=200" /></h1>
-      <p><strong>{{currentName}}</strong></p>
-      <p>{{currentLogin}}</p>
-      <div>
-        <img class="org-img" ng-click="loadUserRepos(user.value)" src="{{user.value.avatar_url}}&s=40" tooltip="{{user.value.login}}" tooltip-placement="bottom" />
-        <img ng-repeat="org in orgs.value" class="org-img" ng-click="loadOrgRepos(org)" src="{{org.avatar_url}}&s=40" tooltip="{{org.login}}" tooltip-placement="bottom" />
+
+<div class="row home">
+
+  <div class="col-md-2 col-md-offset-3">
+    <img src="{{ user.value.avatar_url }}" class="img-responsive hidden-xs hidden-sm" />
+    <img src="{{ user.value.avatar_url }}?s=200" class="visible-xs visible-sm" width="200px;"/>
+    <p class="lead">
+      {{ user.value.name || user.value.login }}<br />
+      <small ng-show="user.value.name">{{ user.value.login }}</small>
+    </p>
+  </div>
+
+	<div class="col-md-4">
+    <p class="lead">Repositories <small><i class="fa fa-plus-circle" ng-click="show=!show"></i></small></p>
+
+    <div class="well well-sm search" ng-show="show">
+      <div class="form-group">
+        <div class="input-group">
+          <input ng-change="search()" ng-model="query" class="form-control" placeholder="eg. bootstrap" />
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        </div>
+      </div>
+
+      <!-- <small ng-show="query.length>=3 && !results.length && !searching.loading" class="center-block">
+        No repositories to show
+      </small> -->
+
+      <div class="scroll">
+        <div class="form-group" ng-show="searching.loading || userRepos.loading">
+          <i class="fa fa-2x fa-spinner fa-spin center-block"></i>
+        </div>
+
+        <table class="table table-hover table-condensed">
+          <tr ng-repeat="repo in results | filter:{name: query} | orderBy: 'full_name'" ng-click="add(repo)">
+            <td><small>{{ repo.full_name }}</small></td>
+          </tr>
+        </table>
+
+        <button type="button" 
+                class="btn btn-sm btn-default" 
+                ng-show="query.length>=3 && !searching.loading && userRepos.hasMore" 
+                ng-click="userRepos.getMore()">
+          Search more
+        </button>
       </div>
     </div>
-		<!-- the main section -->
-		<div class="col-md-4 main">
 
-			<!-- <i class="fa fa-spin fa-spinner fa-3x center-block"></i> -->
-
-      <h2>Repositories</h2>
-
-      <input ng-change="searchRepo()" ng-model="search" class="form-control" placeholder="E.g. twbs/bootstrap" />
-
-      <ul class="list-unstyled repos">
-        <li class="repo" ng-repeat="repo in repos | orderBy: 'full_name'" ng-click="$parent.selectedRepo=repo" ng-class="{active: selectedRepo==repo}">{{ repo.full_name }}</li>
-      </ul>
-
-      <div class="form-group">
-        <button class="btn btn-primary btn-block" ng-click="addRepo(selectedRepo)">ADD REPO</button>
-      </div>
-      <div class="clearfix"></div>
-
-			<table class="table">
-				<tr ng-repeat="repo in enabledRepos | deep:'ninja.ninja' | orderBy:'full_name'">
-					<td><a ui-sref="repo.list({ user:repo.owner.login, repo:repo.name })">{{ repo.full_name }}</a></td>
-					<td style="text-align:right;">
-						<a href="" ng-click="removeRepo(repo)" ng-show="repo.permissions.admin"><i class="fa fa-times"></i></a>
-					</td>
-				</tr>
-			</table>
-		</div>
+		<table class="table">
+			<tr ng-repeat="repo in repos | filter:{ninja: true} | orderBy:'full_name'">
+				<td><a ui-sref="repo.list({ user:repo.owner.login, repo:repo.name })">{{ repo.full_name }}</a></td>
+				<td style="text-align:right;">
+					<a href="" ng-click="remove(repo)" ng-show="repo.permissions.admin"><i class="fa fa-times"></i></a>
+				</td>
+			</tr>
+		</table>
 	</div>
+
 </div>

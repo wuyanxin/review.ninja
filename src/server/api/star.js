@@ -2,6 +2,7 @@
 var Repo = require('mongoose').model('Repo');
 var Star = require('mongoose').model('Star');
 
+var github = require('../services/github');
 var status = require('../services/status');
 var notification = require('../services/notification');
 
@@ -60,37 +61,56 @@ module.exports = {
                 return done(err, repo);
             }
 
-            Star.create({
-                sha: req.args.sha, 
-                user: req.user.id, 
-                repo: req.args.repo_uuid,
-                name: req.user.login
-            }, function(err, star) {
-                
-                done(err, star);
+            github.call({
+                obj: 'repos', 
+                fun: 'one', 
+                arg: { id: req.args.repo_uuid }, 
+                token: req.user.token
+            }, function(err, repo) {
 
-                if(star) {
-
-                    io.emit(req.args.user + ':' + req.args.repo + ':pull-request-' + req.args.number + ':starred', {});
-
-                    status.update({ 
-                        user: req.args.user, 
-                        repo: req.args.repo, 
-                        sha: req.args.sha, 
-                        repo_uuid: req.args.repo_uuid, 
-                        number: req.args.number, 
-                        token: repo ? repo.token : req.user.token
-                    }, function(err, res) {
-
-                    });
-                    
-                    var args = {
-                        starrer: req.user.login,
-                        number: req.args.number
-                    };
-
-                    notification.sendmail(req.args.user, 'star', repo, req.args.repo, req.args.number, args);
+                if(err) {
+                    return done(err, repo);
                 }
+
+                if(!repo.permissions.pull) {
+                    return done({
+                        code: 403,
+                        text: 'Forbidden'
+                    });
+                }
+
+                Star.create({
+                    sha: req.args.sha, 
+                    user: req.user.id, 
+                    repo: req.args.repo_uuid,
+                    name: req.user.login
+                }, function(err, star) {
+
+                    done(err, star);
+
+                    if(star) {
+
+                        io.emit(req.args.user + ':' + req.args.repo + ':pull-request-' + req.args.number + ':starred', {});
+
+                        status.update({ 
+                            user: req.args.user, 
+                            repo: req.args.repo, 
+                            sha: req.args.sha, 
+                            repo_uuid: req.args.repo_uuid, 
+                            number: req.args.number, 
+                            token: req.user.token
+                        }, function(err, res) {
+
+                        });
+                        var args = {
+                          starrer: req.user.login,
+                          number: req.args.number
+                        };
+
+                        notification.sendmail(req.args.user, 'star', repo, req.args.repo, req.args.number, args);    
+                    }
+                });
+
             });
 
         });
@@ -132,12 +152,13 @@ module.exports = {
                             repo_uuid: req.args.repo_uuid, 
                             sha: req.args.sha, 
                             number: req.args.number, 
-                            token: repo ? repo.token : req.user.token
+                            token: req.user.token
                         }, function(err, res) {
                             
                         });
                         
-                        notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
+                        // commenting out until this is refactored
+                        // notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
                     }
                 });
             });
