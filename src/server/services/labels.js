@@ -16,7 +16,7 @@ module.exports = {
         }
 
         return pull_request_number;
-        
+
 	}
 
-}
+};

@@ -48,19 +48,24 @@ module.exports = function(req, res) {
                     status.update(args, function(err, data) {
                     });
 
-                    notification.sendmail(req.body.repository.owner.login, 'pull_request_opened', repo, req.body.repository.name, req.body.number, notification_args);
-                    // notification.pull_request_opened(
-                    //                                 req.body.repository.owner.login,
-                    //                                 notification_args, repo,
-                    //                                 req.body.repository.name);
+                    notification.sendmail(req.body.repository.owner.login,
+                                          'pull_request_opened',
+                                          repo, req.body.repository.name,
+                                          req.body.number,
+                                          notification_args);
+
                 },
                 synchronize: function() {
-                    console.log('synchrnoized');
+
                     status.update(args, function(err, data) {
                     });
-                    notification.sendmail(req.body.repository.owner.login, 'pull_request_synchronized', repo, req.body.repository.name, req.body.number, notification_args);
+                    notification.sendmail(
+                                          req.body.repository.owner.login,
+                                          'pull_request_synchronized',
+                                          repo, req.body.repository.name,
+                                          req.body.number,
+                                          notification_args);
 
-                    // notification.pull_request_synchronized(req.body.repository.owner.login, notification_args, repo, req.body.repository.name);
                 },
                 closed: function() {
                     // a pull request you have been reviewing has closed

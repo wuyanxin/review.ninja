@@ -63,13 +63,6 @@ module.exports = function(req, res) {
 
         if (repo.ninja) {
 
-            // to be reviewed by review.ninja so let's go on
-
-            var sender = req.body.sender;
-            var user = req.body.repository.owner.login;
-            var repo_name = req.body.repository.name;
-            var review_url = req.body.issue.url;
-
             var args = {
                 issue_number: req.body.issue.id,
                 sender: req.body.sender,
@@ -81,7 +74,6 @@ module.exports = function(req, res) {
             var actions = {
 
                 opened: function() {
-                    console.log('opened');
 
                     var pull_request_number = labels.pull_request_label(req.body.issue.labels);
 

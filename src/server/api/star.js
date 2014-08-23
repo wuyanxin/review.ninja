@@ -53,26 +53,20 @@ module.exports = {
     ************************************************************************************************************/
 
     set: function(req, done) {
-        console.log('starring');
+
         Repo.with({uuid: req.args.repo_uuid}, function(err, repo) {
 
             if(err){
                 return done(err, repo);
             }
-            console.log('SHA');
-            console.log(req.args.sha);
-            console.log(req.user.id);
-            console.log(req.args.repo_uuid);
-            console.log(req.user.login);
+
             Star.create({
                 sha: req.args.sha, 
                 user: req.user.id, 
                 repo: req.args.repo_uuid,
                 name: req.user.login
             }, function(err, star) {
-                console.log('STAR');
-                console.log(err);
-                console.log(star);
+                
                 done(err, star);
 
                 if(star) {

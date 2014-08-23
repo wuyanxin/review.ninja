@@ -74,67 +74,66 @@ module.exports = function() {
                     primary = emails[key];
                     break;
                 }
-            };
+            }
 
             done(err,primary);
-        });;
+        });
     }
 
 
-        var eventType = {
+    var eventType = {
 
-            pull_request_opened: 'pull_request',
+        pull_request_opened: 'pull_request',
 
-            pull_request_synchronized: 'pull_request',
+        pull_request_synchronized: 'pull_request',
 
-            star: 'star',
+        star: 'star',
 
-            unstar: 'unstar',
+        unstar: 'unstar',
 
-            new_issue: 'issue',
+        new_issue: 'issue',
 
-            closed_issue: 'issue'
-        };
+        closed_issue: 'issue'
+    };
 
-        var notification_args = {
+    var notification_args = {
 
-            pull_request_opened: {
-                subject:'A new pull request is ready for review',
-                template:'src/server/templates/pullReqOpened.ejs'
-            },
+        pull_request_opened: {
+            subject:'A new pull request is ready for review',
+            template:'src/server/templates/pullReqOpened.ejs'
+        },
 
-            pull_request_synchronized: {
-                subject:  'New commits added to pull request',
-                template: 'src/server/templates/pullReqSync.ejs'
-            },
+        pull_request_synchronized: {
+            subject:  'New commits added to pull request',
+            template: 'src/server/templates/pullReqSync.ejs'
+        },
 
-            star: {
-                subject: 'Your pull request has been starred',
-                template: 'src/server/templates/starred.ejs'
-            },
+        star: {
+            subject: 'Your pull request has been starred',
+            template: 'src/server/templates/starred.ejs'
+        },
 
-            unstar: {
-                subject: 'Your pull request has been unstarred',
-                template: 'src/server/templates/unstarred.ejs'
-            },
+        unstar: {
+            subject: 'Your pull request has been unstarred',
+            template: 'src/server/templates/unstarred.ejs'
+        },
 
-            new_issue: {
-                subject: 'A new issue has been raised',
-                template: 'src/server/templates/new_issue.ejs'
-            },
+        new_issue: {
+            subject: 'A new issue has been raised',
+            template: 'src/server/templates/new_issue.ejs'
+        },
 
-            closed_issue: {
-                subject: 'All issues have been closed',
-                template: 'src/server/templates/issue_closed.ejs'
-            }
+        closed_issue: {
+            subject: 'All issues have been closed',
+            template: 'src/server/templates/issue_closed.ejs'
+        }
 
-        };
+    };
 
     return {
 
         sendmail: function (user, notification_type, repo, repo_name, pull_req_number, args) {
-            console.log('send mail');
-            console.log(pull_req_number);
+
             get_pull_request(pull_req_number, user, repo_name, repo.token, function(err, pull) {
 
                 if(err) {
@@ -184,7 +183,7 @@ module.exports = function() {
                                 if( watching && ((eventType[notification_type] === 'star' && settings.notifications.star) || 
                                     (eventType[notification_type] === 'issue' && settings.notifications.issue) || 
                                     (eventType[notification_type] === 'pull_request' && settings.notifications.pull_request)) ){
-                                    console.log('its going');
+
                                     var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
 
                                     var template = fs.readFileSync(notification_args[notification_type].template, 'utf-8');
@@ -196,17 +195,14 @@ module.exports = function() {
                                         html: ejs.render(template, args)
                                     };
 
-                                    console.log('Dont break ');
-                                    console.log(mailOptions);
-
-                                    // smtpTransport.sendMail(mailOptions, function(err, response) {
+                                    smtpTransport.sendMail(mailOptions, function(err, response) {
                                        
-                                    //     if (err) {
-                                    //         return;
-                                    //     }
+                                        if (err) {
+                                            return;
+                                        }
 
-                                    //     smtpTransport.close();
-                                    // });
+                                        smtpTransport.close();
+                                    });
                                 }                
                             });
 
