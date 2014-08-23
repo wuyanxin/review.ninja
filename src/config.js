@@ -50,6 +50,8 @@ module.exports = {
             uri: process.env.MONGODB || 'mongodb://reviewninja:reviewninja@localhost:27017/reviewninja'
         },
 
+        marketingPage: 'http://www.review.ninja/',
+
         static: [
             __dirname + '/bower',
             __dirname + '/client'
