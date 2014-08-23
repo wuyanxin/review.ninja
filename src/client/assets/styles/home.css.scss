@@ -1,0 +1,18 @@
+.home {
+
+    i.fa-plus-circle {
+            cursor: pointer;
+        }
+    
+    .search {
+
+        table {
+            margin: 0;
+
+            td:hover {
+                cursor: pointer;
+                background-color: $gray-lighter;
+            }
+        }
+    }
+}

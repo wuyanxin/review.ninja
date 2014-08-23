@@ -5,7 +5,7 @@ $navbar-margin-bottom: none;
 // this is deprecated in bootstrap 3
 // is there a better way to do this?
 // is there a way to only do this on the pull request page?
-$screen-sm: 1040px;
+// $screen-sm: 1040px;
 
 /* import bootstrap */
 @import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
@@ -19,6 +19,7 @@ $code-font-size: 12px;
 
 /* import our files */
 @import "main.css.scss";
+@import "home.css.scss";
 @import "sidebar.css.scss";
 @import "code.css.scss";
 @import "diff.css.scss";

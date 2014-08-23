@@ -4,6 +4,7 @@ var url = require('../services/url');
 var app = require('../app');
 // models
 var Repo = require('mongoose').model('Repo');
+var User = require('mongoose').model('User');
 
 module.exports = function() {
 
@@ -21,7 +22,7 @@ module.exports = function() {
             },
             token: token
         }, function(err, hook) {
-            if(done) {
+            if(typeof done === 'function') {
                 done(err, hook);
             }
         });
@@ -55,7 +56,7 @@ module.exports = function() {
                     return done(err, repo);
                 }
 
-                if (!repo.permissions.pull) {
+                if(!repo.permissions.pull) {
                     return done({
                         code: 403,
                         text: 'Forbidden'
@@ -64,7 +65,8 @@ module.exports = function() {
 
                 Repo.with({
                     uuid: req.args.repo_uuid
-                }, function(err, repo) {
+                }, function(err, ninja) {
+                    repo.ninja = ninja ? ninja.ninja : null;
                     done(err, repo);
                 });
 
@@ -92,22 +94,44 @@ module.exports = function() {
                 fun: 'one', 
                 arg: { id: req.args.repo_uuid }, 
                 token: req.user.token
-            }, function(err, github_repo) {
+            }, function(err, repo) {
 
                 if(err) {
-                    return done(err, github_repo);
+                    return done(err, repo);
                 }
 
-                if (!github_repo.permissions.admin) {
+                if(!repo.permissions.pull) {
                     return done({
                         code: 403,
                         text: 'Forbidden'
                     });
                 }
 
-                Repo.with({ uuid: req.args.repo_uuid }, { token: req.user.token, ninja: true }, function(err, repo) {
+                Repo.with({ uuid: req.args.repo_uuid }, { token: req.user.token, ninja: true }, function(err, ninja) {
+                    repo.ninja = ninja ? ninja.ninja : null;
                     done(err, repo);
-                    createWebhook(github_repo.owner.login, github_repo.name, req.user.token);
+
+                    if(repo.permissions.admin) {
+                        createWebhook(repo.owner.login, repo.name, req.user.token);
+                    }
+                });
+
+                // add to user repos array
+                // should this be some sort of transaction?
+                User.with({ uuid: req.user.id }, function(err, user) {
+                    if(user) {
+                        var found = false;
+                        user.repos.forEach(function(repo) {
+                            if(repo === req.args.repo_uuid) {
+                                found = true;
+                            }
+                        });
+
+                        if(!found) {
+                            user.repos.push(req.args.repo_uuid);
+                            user.save();
+                        }
+                    }
                 });
 
             });
@@ -135,29 +159,34 @@ module.exports = function() {
                 fun: 'one', 
                 arg: { id: req.args.repo_uuid }, 
                 token: req.user.token
-            }, function(err, github_repo) {
+            }, function(err, repo) {
 
                 if(err) {
-                    return done(err, github_repo);
+                    return done(err, repo);
                 }
 
-                if (!github_repo.permissions.admin) {
+                if (!repo.permissions.admin) {
                     return done({
                         code: 403,
                         text: 'Forbidden'
                     });
                 }
 
-                Repo.with({ uuid: req.args.repo_uuid }, { ninja: false }, function(err, repo) {
+                Repo.with({ uuid: req.args.repo_uuid }, { ninja: false }, function(err, ninja) {
 
+                    console.log('*************');
+                    console.log(ninja);
+                    console.log('*************');
+
+                    repo.ninja = ninja ? ninja.ninja : null;
                     done(err, repo);
 
                     github.call({
                         obj: 'repos', 
                         fun: 'getHooks', 
                         arg: {
-                            user: github_repo.owner.login, 
-                            repo: github_repo.name
+                            user: repo.owner.login, 
+                            repo: repo.name
                         }, 
                         token: req.user.token
                     }, function(err, hooks) {
@@ -169,8 +198,8 @@ module.exports = function() {
                                         obj: 'repos', 
                                         fun: 'deleteHook', 
                                         arg: {
-                                            user: github_repo.owner.login, 
-                                            repo: github_repo.name, 
+                                            user: repo.owner.login, 
+                                            repo: repo.name, 
                                             id: hook.id
                                         }, 
                                         token: req.user.token
@@ -219,21 +248,25 @@ module.exports = function() {
                     repo: req.args.repo
                 },
                 token: req.user.token
-            }, function(err, github_repo) {
+            }, function(err, repo) {
 
                 if(err) {
-                    return done(err, github_repo);
+                    return done(err, repo);
                 }
 
                 Repo.with({
-                    uuid: github_repo.id
-                }, function(err, repo) {
+                    uuid: repo.id
+                }, function(err, ninja) {
+
+                    repo.ninja = ninja ? ninja.ninja : null;
 
                     if(err) {
                         return done(err, repo);
                     }
 
-                    createWebhook(req.args.user, req.args.repo, repo.token, done);
+                    createWebhook(req.args.user, req.args.repo, repo.token, function(err, hook) {
+                        done(err, hook);
+                    });
                 });
             });
         }

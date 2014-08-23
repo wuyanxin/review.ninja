@@ -5,101 +5,91 @@
 // path: /
 // *****************************************************
 
-module.controller('HomeCtrl', ['$scope', '$stateParams', '$HUB', '$RPC',
-    function($scope, $stateParams, $HUB, $RPC) {
+module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC) {
 
         $scope.repos = [];
 
-        // TO DO:
-        // - think about pagination
-        // - how to display loading
+        $scope.results = [];
 
-        // get all user repos
-
-        $scope.user = $HUB.call('user', 'get', {}, function(err, user) {
-            $scope.currentImage = user.value.avatar_url;
-            $scope.currentName = user.value.name;
-            $scope.currentLogin = user.value.login;
-            $scope.loadUserRepos(user.value);
+        $RPC.call('user', 'get', {}, function(err, user) {
+            if(!err) {
+                user.value.repos.forEach(function(uuid) {
+                    $RPC.call('repo', 'get', { repo_uuid: uuid }, function(err, repo) {
+                        if(!err && repo.value.ninja) {
+                            $scope.repos.push(repo.value);
+                        }
+                    });
+                });
+            }
         });
 
-        $scope.orgs = $HUB.call('user', 'getOrgs');
+        $scope.orgs = $HUB.call('user', 'getOrgs', {
 
-        $scope.loadOrgRepos = function(org) {
-            $scope.currentImage = org.avatar_url;
-            $HUB.call('repos', 'getFromOrg', {
-                org: org.login
-            }, function(err, repos) {
-                $scope.refreshRepos(repos);
-            });
-        };
+            //
+            // NOTE:
+            //  if ever a user has over 100 orgs
+            //  we will have to address this problem
+            //
+            per_page: 100
+        });
 
-        $scope.loadUserRepos = function(user) {
-            $scope.currentImage = user.avatar_url;
-            $HUB.call('repos', 'getAll', {}, function(err, repos) {
-                $scope.refreshRepos(repos);
-            });
-        };
-
-        $scope.refreshRepos = function(repos) {
-            $scope.enabledRepos = [];
-            repos.value.forEach(function(repo) {
-                // get ninja repo
-                $RPC.call('repo', 'get', {
-                    repo_uuid: repo.id
-                }, function(err, ninja) {
-                    repo.ninja = ninja.value || {
-                        ninja: false
-                    };
-                    $scope.enabledRepos.push(repo);
-                });
-            });
-        };
+        $scope.teams = $HUB.call('user', 'getTeams', {});
 
         //
         // Actions
         //
 
-        $scope.addRepo = function(repo) {
+        $scope.add = function(repo) {
             $RPC.call('repo', 'add', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
             }, function(err, ninja) {
                 if (!err) {
-                    repo.ninja = ninja.value;
-                    if(repo.owner.type === 'Organization') {
-                        $scope.loadOrgRepos(repo.owner);
-                    }
-                    if(repo.owner.type === 'User') {
-                        $scope.loadUserRepos(repo.owner);
-                    }
+                    // should go to this repo
+                    $state.go('repo.list', {user: repo.owner.login, repo:repo.name});
                 }
             });
         };
 
-        $scope.removeRepo = function(repo) {
+        $scope.remove = function(repo) {
+
             $RPC.call('repo', 'rmv', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
             }, function(err, ninja) {
                 if (!err) {
-                    repo.ninja = ninja.value;
+                    repo.ninja = ninja.value.ninja;
                 }
             });
         };
 
-        $scope.searchRepo = function() {
-            if($scope.search.length >= 3) {
-                var userQuery = 'user:'+$scope.user.value.login;
+        $scope.searching = {};
+
+        $scope.search = function() {
+
+            if(!$scope.query.length) {
+                $scope.results = [];
+            }
+
+            if($scope.query.length >= 3 && !$scope.searching.loading) {
+
+                $scope.results = [];
+
+                var query = $scope.query + '+in:name+user:' + $rootScope.user.value.login;
+
                 $scope.orgs.value.forEach(function(org) {
-                    userQuery += '+user:'+org.login;
+                    query += '+user:' + org.login;
                 });
-                $HUB.call('search', 'repos', {
-                    q: $scope.search+'+in:name+'+userQuery
+
+                $scope.searching = $HUB.wrap('search', 'repos', {
+                    q: query
                 }, function(err, repos) {
-                    $scope.repos = repos.value.items;
+                    if(!err && $scope.query.length >= 3) {
+                        $scope.results = repos.value;
+                    }
                 });
             }
         };
