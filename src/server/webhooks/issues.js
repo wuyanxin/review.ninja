@@ -6,6 +6,7 @@ var User = require('mongoose').model('User');
 var github = require('../services/github');
 var notification = require('../services/notification');
 var status = require('../services/status');
+var labels = require('../services/labels');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Issue Webhook Handler
@@ -19,7 +20,7 @@ module.exports = function(req, res) {
     // Helper functions
     //
 
-    function get_issues(user, repo, pull_request_label, token, done) {
+    function get_issues(user, repo, pull_request_number, token, done) {
         
         github.call({
             obj: 'issues',
@@ -27,7 +28,7 @@ module.exports = function(req, res) {
             arg: {
                 user: user,
                 repo: repo,
-                labels: 'review.ninja, ' + pull_request_label,
+                labels: 'review.ninja, ' + 'pull-request-' + pull_request_number,
                 state:'open'
             },
             token: token
@@ -43,50 +44,14 @@ module.exports = function(req, res) {
             obj:'pullRequests',
             fun:'get',
             arg: {
-                user: user,
-                repo: repo,
-                number:number
-            },
-            token:token
+                user: 'reviewninja',
+                repo: 'foo',
+                number:4
+            }
         }, function(err, pull_request){
             done(err, pull_request);
         });
     }
-
-
-    function get_pull_request_number(labels) {
-
-        var pull_request_number = null;
-
-        for(var i=0; i<labels.length; i++){
-
-            var reg = /pull-request-(\d*)?/;
-            var match = reg.exec(labels[i].name); 
-
-            if (match) {
-                pull_request_number = match[1];
-                break;
-            }
-        }
-
-        return pull_request_number;
-    }
-
-
-    //
-    // do we need to do this?
-    //
-    function has_review(labels) {
-
-        for(var i=0; i<labels.length; i++) {
-            if(labels[i].name === 'review.ninja'){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
     Repo.with({
         uuid: uuid
@@ -100,37 +65,78 @@ module.exports = function(req, res) {
 
             // to be reviewed by review.ninja so let's go on
 
-            var action = req.body.action;
-            var issue = req.body.issue;
-            var number = req.body.issue.number;
-            var labels = req.body.issue.labels;
-            var state = req.body.issue.state;
-            var assignee = req.body.issue.assignee;
             var sender = req.body.sender;
             var user = req.body.repository.owner.login;
             var repo_name = req.body.repository.name;
             var review_url = req.body.issue.url;
 
+            var args = {
+                issue_number: req.body.issue.id,
+                sender: req.body.sender,
+                review_url: req.body.issue.url,
+                number: labels.pull_request_label(req.body.issue.labels)
+            };
+
 
             var actions = {
 
                 opened: function() {
+                    console.log('opened');
 
-                    if( has_review(labels) ) {
+                    var pull_request_number = labels.pull_request_label(req.body.issue.labels);
 
-                        var pull_request_number = get_pull_request_number(labels);
+                    if( pull_request_number ) {
 
-                        if( pull_request_number ) {
+                        get_pull_request(
+                                req.body.repository.owner.login, req.body.repository.name, pull_request_number, repo.token, function(err, pull_request) {
 
-                            get_pull_request(user, repo_name, pull_request_number, repo.token, function(err, pull_request) {
+                            if(err) {
+                                return;
+                            }
 
-                                if(err) {
+                            status.update({
+                                user: req.body.repository.owner.login,
+                                repo: req.body.repository.name,
+                                repo_uuid: uuid,
+                                sha: pull_request.head.sha,
+                                number: pull_request.number,
+                                token: repo.token
+                            }, function(err, data) {
+                                
+                            });
+
+                            notification.sendmail(req.body.repository.owner.login, 'new_issue', repo, req.body.repository.name, pull_request_number, args);
+                        });
+                    }
+
+                },
+
+                closed: function() {
+
+
+                    var pull_request_number = labels.pull_request_label(req.body.issue.labels);
+
+                    if( pull_request_number ) {
+
+                        get_issues(req.body.repository.owner.login, req.body.repository.name, pull_request_number, repo.token, function(err, issues){
+
+                            if(err){
+                                return;
+                            }
+                            if(issues.length){
+                                return;
+                            }
+
+
+                            get_pull_request(req.body.repository.owner.login, req.body.repository.name, pull_request_number, repo.token, function(err, pull_request) {
+
+                                if(err){
                                     return;
                                 }
 
                                 status.update({
-                                    user: user,
-                                    repo: repo_name,
+                                    user: req.body.repository.owner.login,
+                                    repo: req.body.repository.name,
                                     repo_uuid: uuid,
                                     sha: pull_request.head.sha,
                                     number: pull_request.number,
@@ -139,54 +145,12 @@ module.exports = function(req, res) {
                                     
                                 });
 
-                                notification.new_issue(user, sender, pull_request_number, review_url, repo, repo_name, pull_request_number);
+                                notification.sendmail(req.body.repository.owner.login, 'closed_issue', repo, req.body.repository.name, pull_request_number, args);
                             });
-                        }
+
+                        });
                     }
-
-                },
-
-                closed: function() {
-
-                    if( has_review(labels) ) {
-
-                        var pull_request_number = get_pull_request_number(labels);
-
-                        if( pull_request_number ) {
-
-                            get_issues(user, repo_name, label.name, repo.token, function(err, issues){
-                                        
-                                if(err){
-                                    return;
-                                }
-                                if(issues.length){
-                                    return;
-                                }
-
-
-                                get_pull_request(user, repo_name, pull_request_number, repo.token, function(err, pull_request){
-
-                                    if(err){
-                                        return;
-                                    }
-
-                                    status.update({
-                                        user: user,
-                                        repo: repo_name,
-                                        repo_uuid: uuid,
-                                        sha: pull_request.head.sha,
-                                        number: pull_request.number,
-                                        token: repo.token
-                                    }, function(err, data) {
-                                        
-                                    });
-
-                                    notification.issues_closed(user, sender, pull_request_number, review_url, repo, repo_name, pull_request_number);
-                                });
-
-                            });
-                        }
-                    }
+                    
                 },
 
                 reopened: function() {
@@ -196,11 +160,11 @@ module.exports = function(req, res) {
                 }
             };
 
-            if (!actions[action]) {
+            if (!actions[req.body.action]) {
                 return;
             }
 
-            actions[action]();
+            actions[req.body.action]();
         }
     });
 

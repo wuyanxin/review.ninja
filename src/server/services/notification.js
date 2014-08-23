@@ -1,76 +1,12 @@
 var nodemailer = require('nodemailer');
 var fs = require('fs');
 var ejs = require('ejs');
+var github = require('./github');
 
 var Settings = require('mongoose').model('Settings');
 var User = require('mongoose').model('User');
-var github = require('./github');
 
 module.exports = function() {
-
-    function sendmail(user, subj, tmpl, notification_type, repo, repo_name, pull_req_number, args) {
-
-        get_pull_request(pull_req_number, user, repo_name, repo.token, function(err, pull) {
-
-            get_collaborators(user,repo_name,repo.token, function(err, collaborators) {
-
-                if(err) {
-                    return;
-                }
-
-                collaborators.forEach(function(collaborator){
-
-                    Settings.findOne({
-                        user: collaborator.uuid,
-                        repo: repo.uuid
-                    }, function(err, settings) {
-
-                        if(err || !settings || !settings.watched){
-                            return;
-                        }
-
-                        var watching = false;
-
-                        for(var key=0; key<settings.watched.length; key++){
-
-                            var watch_branch = settings.watched[key];
-                            var re = new RegExp(watch_branch, 'g');
-
-                            if(re.exec(pull.base.ref) || re.exec(pull.head.ref)){
-                                watching = true;
-                                break;
-                            }
-                        }
-
-                        if( watching && ((notification_type === 'star' && settings.notifications.star) || 
-                            (notification_type === 'issue' && settings.notifications.issue) || 
-                            (notification_type === 'pull_request' && settings.notifications.pull_request)) ){
-
-                            var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
-
-                            var template = fs.readFileSync(tmpl, 'utf-8');
-
-                            var mailOptions = {
-                                from: 'Review Ninja <noreply@review.ninja>',
-                                to: collaborator.email,
-                                subject: subj,
-                                html: ejs.render(template, args)
-                            };
-
-                            smtpTransport.sendMail(mailOptions, function(err, response) {
-                               
-                                if (err) {
-                                    return;
-                                }
-
-                                smtpTransport.close();
-                            });
-                        }                
-                    });
-                });
-            });
-        });
-    }
 
     function get_collaborators(user, repo, token, done) {
 
@@ -118,69 +54,166 @@ module.exports = function() {
 
     }
 
+    function get_primary_email(token, done) {
+
+        github.call({
+            obj: 'user',
+            fun: 'getEmails',
+            arg : {
+                headers: {
+                    'accept': 'application/vnd.github.v3+json'
+                }
+            },
+            token: token
+        }, function(err, emails) {
+
+            var primary = null;
+            for(var key=0; key < emails.length; key++) {
+
+                if(emails[key].primary && emails[key].verified) {
+                    primary = emails[key];
+                    break;
+                }
+            };
+
+            done(err,primary);
+        });;
+    }
+
+
+        var eventType = {
+
+            pull_request_opened: 'pull_request',
+
+            pull_request_synchronized: 'pull_request',
+
+            star: 'star',
+
+            unstar: 'unstar',
+
+            new_issue: 'issue',
+
+            closed_issue: 'issue'
+        };
+
+        var notification_args = {
+
+            pull_request_opened: {
+                subject:'A new pull request is ready for review',
+                template:'src/server/templates/pullReqOpened.ejs'
+            },
+
+            pull_request_synchronized: {
+                subject:  'New commits added to pull request',
+                template: 'src/server/templates/pullReqSync.ejs'
+            },
+
+            star: {
+                subject: 'Your pull request has been starred',
+                template: 'src/server/templates/starred.ejs'
+            },
+
+            unstar: {
+                subject: 'Your pull request has been unstarred',
+                template: 'src/server/templates/unstarred.ejs'
+            },
+
+            new_issue: {
+                subject: 'A new issue has been raised',
+                template: 'src/server/templates/new_issue.ejs'
+            },
+
+            closed_issue: {
+                subject: 'All issues have been closed',
+                template: 'src/server/templates/issue_closed.ejs'
+            }
+
+        };
+
     return {
 
-        pull_request_opened: function(user, slug, number, sender, review_url, repo, repo_name) {
-            // start a review: send messages to appropriate users
-            var args = {
-                slug: slug,
-                number: number,
-                sender: sender,
-                review_url: review_url
-            };
+        sendmail: function (user, notification_type, repo, repo_name, pull_req_number, args) {
+            console.log('send mail');
+            console.log(pull_req_number);
+            get_pull_request(pull_req_number, user, repo_name, repo.token, function(err, pull) {
 
-            sendmail(user, 'A new pull request is ready for review', 'src/server/templates/pullReqOpened.ejs', 'pull_request', repo, repo_name, number, args);
+                if(err) {
+                    return;
+                }
 
+                if(pull.state!='open') {
+                    return;
+                }
 
-        },
-        pull_request_synchronized: function(user, slug, number, sender, review_url, repo, repo_name) {
-            // a pull request you have been reviewing has a new commit
-            var args = {
-                slug: slug,
-                number: number,
-                sender: sender,
-                review_url: review_url
-            };   
+                get_collaborators(user,repo_name,repo.token, function(err, collaborators) {
 
-            sendmail(user, 'New commits added to pull request', 'src/server/templates/pullReqSync.ejs', 'pull_request', repo, repo_name, number, args);
+                    if(err) {
+                        return;
+                    }
 
+                    collaborators.forEach(function(collaborator){
 
-        },
-        star: function(user, starrer, number, repo, repo_name, pull_req_number){
-            var args = {
-                starrer: starrer,
-                number: number
-            };
+                        get_primary_email(collaborator.token, function(err, email) {
 
-            sendmail(user, 'Your pull request has been starred', 'src/server/templates/starred.ejs', 'star', repo, repo_name, pull_req_number, args);
-        },
+                            if(err || !email) {
+                                return;
+                            }
 
-        unstar: function(user, starrer, number, repo, repo_name, pull_req_number){
-            var args = {
-                starrer: starrer,
-                number: number
-            };
+                            Settings.findOne({
+                                user: collaborator.uuid,
+                                repo: repo.uuid
+                            }, function(err, settings) {
 
-            sendmail(user, 'Your pull request has been unstarred', 'src/server/templates/unstarred.ejs', 'star', repo, repo_name, pull_req_number, args);
-        },
-        new_issue: function(user, sender, issue_number, review_url, repo, repo_name, pull_req_number){
+                                if(err || !settings || !settings.watched){
+                                    return;
+                                }
 
-            var args = {
-                review_url: review_url,
-                issue_number: issue_number,
-                sender: sender
-            };
+                                var watching = false;
 
-            sendmail(user, 'A new issue has been raised', 'src/server/templates/new_issue.ejs', 'issue', repo, repo_name, pull_req_number, args);
-        },
-        issues_closed: function(user, sender,number, review_url, repo, repo_name, pull_req_number){
-            var args = {
-                review_url: review_url,
-                number: number,
-                sender: sender
-            };
+                                for(var key=0; key<settings.watched.length; key++){
 
-            sendmail(user, 'All issues have been closed', 'src/server/templates/issue_closed.ejs', 'issue', repo, repo_name, pull_req_number, args);
+                                    var watch_branch = settings.watched[key];
+                                    var re = new RegExp(watch_branch, 'g');
+
+                                    if(re.exec(pull.base.ref) || re.exec(pull.head.ref)){
+                                        watching = true;
+                                        break;
+                                    }
+                                }
+
+                                if( watching && ((eventType[notification_type] === 'star' && settings.notifications.star) || 
+                                    (eventType[notification_type] === 'issue' && settings.notifications.issue) || 
+                                    (eventType[notification_type] === 'pull_request' && settings.notifications.pull_request)) ){
+                                    console.log('its going');
+                                    var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
+
+                                    var template = fs.readFileSync(notification_args[notification_type].template, 'utf-8');
+
+                                    var mailOptions = {
+                                        from: 'Review Ninja <noreply@review.ninja>',
+                                        to: collaborator.email,
+                                        subject: notification_args[notification_type].subject,
+                                        html: ejs.render(template, args)
+                                    };
+
+                                    console.log('Dont break ');
+                                    console.log(mailOptions);
+
+                                    // smtpTransport.sendMail(mailOptions, function(err, response) {
+                                       
+                                    //     if (err) {
+                                    //         return;
+                                    //     }
+
+                                    //     smtpTransport.close();
+                                    // });
+                                }                
+                            });
+
+                        });
+                    });
+                });
+            });
         }
     };
 }();
