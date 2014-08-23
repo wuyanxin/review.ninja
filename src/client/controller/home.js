@@ -10,7 +10,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.repos = [];
 
-        $scope.results = [], $scope.userRepos = [];
+        $scope.results = [];
 
         $RPC.call('user', 'get', {}, function(err, user) {
             if(!err) {
@@ -38,8 +38,6 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                 $scope.results = $scope.results.concat(repos.affix);
             }
         });
-
-        // $scope.teams = $HUB.call('user', 'getTeams', {});
 
         //
         // Actions
