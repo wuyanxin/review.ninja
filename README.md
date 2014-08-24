@@ -30,10 +30,12 @@ Contribute
 
 To contribute, take a look at our [vagrant.review.ninja](https://github.com/reviewninja/vagrant.review.ninja) repo, it explains you how to get setup and running easily through a combination of vagrant and salt ;)
 
+Contributions to this project are very welcome, but can only be accepted if the contributions themselves are given to the project under the Apache License 2.0. Contributions other than those given under Apache License 2.0 will be rejected.
+
 License
 =======
 
-Copyright 2014 review.ninja
+Copyright 2014 by [SAP AG](www.sap.com) and made available under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). 
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
