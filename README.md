@@ -25,6 +25,11 @@ Try Review Ninja
 Review Ninja is in the very early stages of active development, and you can expect significant API and UX/UI
 changes. To sign up for our newsletter go to http://review.ninja/ .
 
+Contribute
+----------
+
+To contribute, take a look at our [vagrant.review.ninja](https://github.com/reviewninja/vagrant.review.ninja) repo, it explains you how to get setup and running easily through a combination of vagrant and salt ;)
+
 License
 =======
 
