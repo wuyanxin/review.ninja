@@ -13,15 +13,26 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         $scope.results = [];
 
         $RPC.call('user', 'get', {}, function(err, user) {
-            if(!err) {
-                user.value.repos.forEach(function(uuid) {
-                    $RPC.call('repo', 'get', { repo_uuid: uuid }, function(err, repo) {
-                        if(!err && repo.value.ninja) {
-                            $scope.repos.push(repo.value);
-                        }
-                    });
+
+            var count = 0;
+            var repos = user.value ? user.value.repos : [];
+
+            $scope.checked = !repos.length ? true : false;
+
+            repos.forEach(function(uuid) {
+                $RPC.call('repo', 'get', { repo_uuid: uuid }, function(err, repo) {
+
+                    // flag we have checked
+                    if(++count === repos.length) {
+                        $scope.checked = true;
+                    }
+
+                    if(!err && repo.value.ninja) {
+                        $scope.checked = true;
+                        $scope.repos.push(repo.value);
+                    }
                 });
-            }
+            });
         });
 
         //
@@ -33,7 +44,9 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             per_page: 100
         });
 
-        $scope.userRepos = $HUB.call('repos', 'getAll', {}, function(err, repos) {
+        $scope.userRepos = $HUB.call('repos', 'getAll', {
+            per_page: 100
+        }, function(err, repos) {
             if(!err) {
                 $scope.results = $scope.results.concat(repos.affix);
             }
@@ -44,13 +57,12 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         //
 
         $scope.add = function(repo) {
-            $RPC.call('repo', 'add', {
+            $scope.adding = $RPC.call('repo', 'add', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
             }, function(err, ninja) {
                 if (!err) {
-                    // should go to this repo
                     $state.go('repo.list', {user: repo.owner.login, repo:repo.name});
                 }
             });

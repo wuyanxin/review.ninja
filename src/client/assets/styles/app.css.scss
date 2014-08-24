@@ -1,11 +1,45 @@
 
 /* overwrite bootstrap styles */
-$navbar-margin-bottom: none;
 
-// this is deprecated in bootstrap 3
-// is there a better way to do this?
-// is there a way to only do this on the pull request page?
-// $screen-sm: 1040px;
+// colours
+$brand-primary: #3e9a94;
+
+// components
+$border-radius-small: 0px;
+$border-radius-base: 0px;
+$border-radius-large: 0px;
+$component-active-bg: #ececec;
+$component-active-color: #555;
+
+// buttons
+$btn-default-bg: #d0eaea;
+$btn-default-color: $brand-primary;
+$btn-default-border: transparent;
+
+// wells
+$well-bg: #f9f9f9;
+
+// list group
+$list-group-hover-bg: #ececec;
+$list-group-border: transparent;
+
+// table
+$table-bg: #f9f9f9;
+$table-bg-hover: #ececec;
+$table-cell-padding: 20px 10px;
+$table-border-color: none;
+
+// navbar {
+$navbar-default-bg: #333;
+$navbar-default-color: #ccc;
+$navbar-default-link-color: #ccc;
+$navbar-default-link-hover-color: #ccc;
+$navbar-default-link-active-color: #ccc;
+$navbar-margin-bottom: 0px;
+
+// headings
+$headings-font-weight: 100;
+$headings-color: #666;
 
 /* import bootstrap */
 @import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
@@ -27,14 +61,26 @@ $code-font-size: 12px;
 @import "issue.css.scss";
 @import "tabs.css.scss";
 @import "git.css.scss";
+@import "well.css.scss";
+@import "navbar.css.scss";
+@import "table.css.scss";
+@import "list-group.css.scss";
 
 /* global styles */
+
+h1, h2, h3, h4, h5 {
+  margin-top: 0px;
+}
 
 .center-block {
   display: block;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
+}
+
+small {
+  vertical-align: middle;
 }
 
 
@@ -199,45 +245,45 @@ $code-font-size: 12px;
 //   color: #E8AE0C;
 // }
 
-.default-font {
-  font-size: 14px;
-  font-weight: normal;
-  text-decoration: none;
-}
+// .default-font {
+//   font-size: 14px;
+//   font-weight: normal;
+//   text-decoration: none;
+// }
 
-.settings .row {
-  margin-bottom: 20px;
-}
+// .settings .row {
+//   margin-bottom: 20px;
+// }
 
-.bold {
-  font-weight: bold;
-}
+// .bold {
+//   font-weight: bold;
+// }
 
-li.repo {
-  padding: 5px;
-  cursor: pointer;
+// li.repo {
+//   padding: 5px;
+//   cursor: pointer;
 
-  &:hover {
-    background-color: #E8E8E8;
-  }
-}
+//   &:hover {
+//     background-color: #E8E8E8;
+//   }
+// }
 
-li.repo.active {
-  background-color: #E8E8E8;
-}
+// li.repo.active {
+//   background-color: #E8E8E8;
+// }
 
-.repos {
-  max-height: 180px;
-  overflow-y: scroll;
-}
+// .repos {
+//   max-height: 180px;
+//   overflow-y: scroll;
+// }
 
-.org-img {
-  float: left;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-}
+// .org-img {
+//   float: left;
+//   width: 40px;
+//   height: 40px;
+//   cursor: pointer;
+// }
 
-.ng-click-link {
-  cursor: pointer;
-}
+// .ng-click-link {
+//   cursor: pointer;
+// }
