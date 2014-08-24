@@ -87,7 +87,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
             if($scope.query.length >= 3 && !$scope.searching.loading) {
 
-                var query = $scope.query + '+in:name';
+                var query = $scope.query + '+in:name+fork:true';
 
                 $scope.orgs.value.forEach(function(org) {
                     query += '+user:' + org.login;
