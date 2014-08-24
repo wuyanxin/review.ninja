@@ -43,11 +43,15 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 url: '/:user/:repo',
                 templateUrl: '/templates/repo.html',
                 resolve: {
-                    repo: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
+                    repo: ['$rootScope', '$stateParams', '$HUBService',
+                        function($rootScope, $stateParams, $HUBService) {
                             return $HUBService.call('repos', 'get', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo
+                            }, function(err, repo) {
+                                if(!err) {
+                                    $rootScope.$emit('repos:get', repo.value);
+                                }
                             });
                         }
                     ]

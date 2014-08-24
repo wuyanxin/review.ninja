@@ -51,17 +51,15 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12 alert alert-warning" ng-show="getHook.error">
-        <button type="button" class="close" data-dismiss="alert">
-          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-        </button>
-        <strong>Warning!</strong> Webhooks are missing for this repository and will need to be set up by an administrator.
+      <div class="col-md-12 alert alert-warning" ng-show="hook.loaded && !hook.value && !repo.permissions.admin">
+        <strong>Warning!</strong> A webhook is missing for this repository and will need to be set up by an administrator.
       </div>
     </div>
-    <div class="row" ng-show="!hook">
+    <div class="row" ng-show="hook.loaded && !hook.value && repo.permissions.admin">
       <div class="col-md-12 alert alert-warning">
-        <strong>Warning!</strong> Webhooks are missing for this repository. 
-        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="createWebhook()">Add Webhooks</button>
+        <strong>Warning!</strong> A webhook is missing for this repository. 
+        <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="creating.loading"></i>
+        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="createWebhook()" ng-show="!creating.loading">Add Webhook</button>
       </div>
     </div>
     <div class="row" ng-show="created">
@@ -69,7 +67,7 @@
         <button type="button" class="close" data-dismiss="alert">
           <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
         </button>
-        <strong>Success!</strong> The webhooks were successfully created.</a>
+        <strong>Success!</strong> The webhook was created successfully.</a>
       </div>
     </div>
   </div>
