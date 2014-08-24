@@ -174,13 +174,25 @@ module.exports = function() {
 
                 Repo.with({ uuid: req.args.repo_uuid }, { ninja: false }, function(err, ninja) {
 
-                    console.log('*************');
-                    console.log(ninja);
-                    console.log('*************');
-
                     repo.ninja = ninja ? ninja.ninja : null;
                     done(err, repo);
 
+                    // remove from user array
+                    User.with({ uuid: req.user.id }, function(err, user) {
+                        if(user) {
+                            var repos = [];
+                            user.repos.forEach(function(repo) {
+                                if(repo !== req.args.repo_uuid) {
+                                    repos.push(repo);
+                                }
+                            });
+
+                            user.repos = repos;
+                            user.save();
+                        }
+                    });
+
+                    //remove the webhook
                     github.call({
                         obj: 'repos', 
                         fun: 'getHooks', 

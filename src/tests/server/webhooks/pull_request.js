@@ -1,34 +1,30 @@
 require('trace.ninja');
 
+var http = require('http');
 var request = require('supertest');
 var express = require('express');
-var http = require('http');
-
 var bodyParser = require('body-parser');
+
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
 
+// config
+global.config = require('../../../config');
 
-var mongoose = require('mongoose');
 // models
-var User = require('../../../server/documents/user');
-var Repo2 = require('../../../server/documents/repo');
-var Star = require('../../../server/documents/star');
-var Settings = require('../../../server/documents/settings');
-
-mongoose.model('User');
-mongoose.model('Star');
-mongoose.model('Settings');
-var Repo=mongoose.model('Repo');
+var User = require('../../../server/documents/user').User;
+var Repo = require('../../../server/documents/repo').Repo;
+var Star = require('../../../server/documents/star').Star;
+var Settings = require('../../../server/documents/settings').Settings;
 
 //services
 var github = require('../../../server/services/github');
 var notification = require('../../../server/services/notification');
-var Pull_Request = require('../../../server/webhooks/pull_request');
 var status = require('../../../server/services/status');
 
-require('../../../config');
+// webhook
+var PullRequest = require('../../../server/webhooks/pull_request');
 
 describe('pull_request:opened', function(){
 
@@ -501,7 +497,7 @@ describe('pull_request:opened', function(){
         }
     };
 
-    var pull_request = new Pull_Request (req,res);
+    var pull_request = new PullRequest(req,res);
 
 
 

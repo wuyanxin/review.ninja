@@ -3,10 +3,16 @@ require('trace.ninja');
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
-var github = require('../../../server/services/github');
+
+// config
+global.config = require('../../../config');
 
 // models
+var User = require('../../../server/documents/user').User;
 var Repo = require('../../../server/documents/repo').Repo;
+
+// services
+var github = require('../../../server/services/github');
 
 // api
 var repo = require('../../../server/api/repo');
