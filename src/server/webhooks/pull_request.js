@@ -83,11 +83,9 @@ module.exports = function(req, res) {
                 }
             };
 
-            if (!actions[req.body.action]) {
-                return;
+            if (actions[req.body.action]) {
+                actions[req.body.action]();
             }
-
-            actions[req.body.action]();
         }
     });
 

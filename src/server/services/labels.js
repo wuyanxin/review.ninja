@@ -1,6 +1,6 @@
 module.exports = {
-	
-	pull_request_label : function(labels) {
+
+    pull_request_label : function(labels) {
 
         var pull_request_number = null;
 
@@ -13,10 +13,9 @@ module.exports = {
                 pull_request_number = match[1];
                 break;
             }
-        }
-
+        }   
         return pull_request_number;
 
-	}
+    }
 
 };

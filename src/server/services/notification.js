@@ -84,15 +84,10 @@ module.exports = function() {
     var eventType = {
 
         pull_request_opened: 'pull_request',
-
         pull_request_synchronized: 'pull_request',
-
         star: 'star',
-
         unstar: 'unstar',
-
         new_issue: 'issue',
-
         closed_issue: 'issue'
     };
 
@@ -158,7 +153,7 @@ module.exports = function() {
                                 return;
                             }
 
-                            Settings.findOne({
+                            Settings.with({
                                 user: collaborator.uuid,
                                 repo: repo.uuid
                             }, function(err, settings) {

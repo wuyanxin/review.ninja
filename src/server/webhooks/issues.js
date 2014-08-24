@@ -105,7 +105,6 @@ module.exports = function(req, res) {
 
                 closed: function() {
 
-
                     var pull_request_number = labels.pull_request_label(req.body.issue.labels);
 
                     if( pull_request_number ) {
@@ -152,11 +151,9 @@ module.exports = function(req, res) {
                 }
             };
 
-            if (!actions[req.body.action]) {
-                return;
+            if (actions[req.body.action]) {
+                actions[req.body.action]();
             }
-
-            actions[req.body.action]();
         }
     });
 
