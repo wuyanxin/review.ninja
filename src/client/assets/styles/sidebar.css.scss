@@ -1,0 +1,19 @@
+.sidebar {
+
+    padding: 0;
+    margin: 0;
+    height: 100%;
+
+    .ui-scrollfix {
+        position: fixed;
+        width: inherit;
+        height: 100%;
+        top: 10px;
+    }
+
+    section {
+        height: 100%;
+        overflow-y: scroll;
+        padding: $padding-large-vertical $padding-large-horizontal;
+    } 
+}

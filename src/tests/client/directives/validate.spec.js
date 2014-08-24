@@ -1,68 +1,67 @@
-
 // validate test
 describe('Validate Directive', function() {
 
-	var scope;
-	var compile;
-	var validate;
+    var scope;
+    var compile;
+    var validate;
 
-	beforeEach(angular.mock.module('app'));
+    beforeEach(angular.mock.module('app'));
 
-	beforeEach(angular.mock.module('templates'));
+    beforeEach(angular.mock.module('templates'));
 
-	beforeEach(angular.mock.inject(function ($injector, $rootScope, $compile, $httpBackend) {
-		scope = $rootScope.$new();
-		compile = $compile;
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $httpBackend) {
+        scope = $rootScope.$new();
+        compile = $compile;
 
-    $httpBackend.when('GET', '/config').respond({
-      data: {
-        gacode: 'google-analytics-code'
-      }
+        $httpBackend.when('GET', '/config').respond({
+            data: {
+                gacode: 'google-analytics-code'
+            }
+        });
+    }));
+
+    // should be valid
+    it('should be valid', function() {
+
+        scope.arg = 'john';
+        scope.against = ['david', 'elizabeth', 'ian', 'lauren', 'jackie'];
+
+        var element = compile('<validate arg="arg" against="against" valid="valid"></validate>')(scope);
+
+        scope.$digest();
+
+        scope.valid.should.be.exactly(true);
     });
-	}));
 
-	// should be valid
-	it('should be valid', function() {
+    // should be invalid
+    it('should be invalid', function() {
 
-		scope.arg = 'john';
-		scope.against = ['david', 'elizabeth', 'ian', 'lauren', 'jackie'];
+        scope.arg = 'david';
+        scope.against = ['david', 'elizabeth', 'ian', 'lauren', 'jackie'];
 
-		var element = compile('<validate arg="arg" against="against" valid="valid"></validate>')(scope);
+        var element = compile('<validate arg="arg" against="against" valid="valid"></validate>')(scope);
 
-		scope.$digest();
+        scope.$digest();
 
-		scope.valid.should.be.exactly(true);
-	});
+        scope.valid.should.be.exactly(false);
+    });
 
-	// should be invalid
-	it('should be invalid', function() {
+    // should be valid with empty array
+    it('should be valid with edge cases', function() {
 
-		scope.arg = 'david';
-		scope.against = ['david', 'elizabeth', 'ian', 'lauren', 'jackie'];
+        var element;
 
-		var element = compile('<validate arg="arg" against="against" valid="valid"></validate>')(scope);
+        scope.arg = 'john';
 
-		scope.$digest();
+        element = compile('<validate arg="arg" against="[]" valid="valid"></validate>')(scope);
+        scope.$digest();
 
-		scope.valid.should.be.exactly(false);
-	});
+        scope.valid.should.be.exactly(true);
 
-	// should be valid with empty array
-	it('should be valid with edge cases', function() {
+        element = compile('<validate arg="arg" valid="valid"></validate>')(scope);
+        scope.$digest();
 
-		var element;
-
-		scope.arg = 'john';
-
-		element = compile('<validate arg="arg" against="[]" valid="valid"></validate>')(scope);
-		scope.$digest();
-
-		scope.valid.should.be.exactly(true);
-
-		element = compile('<validate arg="arg" valid="valid"></validate>')(scope);
-		scope.$digest();
-
-		scope.valid.should.be.exactly(true);
-	});
+        scope.valid.should.be.exactly(true);
+    });
 
 });

@@ -1,52 +1,49 @@
-<div style="overflow-x:scroll;">
-	<table class="table" style="margin-bottom:0; font-size:13px;">
-		<tbody ng-repeat="line in lines track by $index" style="border:none;">
-			<tr class="highlight" ng-class="{meta:line.type=='meta'}">
-				<td class="comment" style="display:none; position:absolute; width:30px; margin-left:-30px; padding:5px 8px; border:none;">
-					<a href=""><i ng-click="$parent.comment=$index" ng-show="line.type!='meta'" class="fa fa-comments"></i></a>
-				</td>
-				<td class="dark" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="width:45px; position:absolute; background:#fff; padding:5px 8px; text-align:right; color:#aaa; border:none; border-right:1px solid;">
-					<pre style="color:#aaa;">{{ line.base || ' ' }}</pre>
-				</td>
-				<td class="dark" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="width:45px; position:absolute; background:#fff; padding:5px 8px; margin-left:45px; text-align:right; color:#aaa; border:none; border-right:1px solid;">
-					<pre style="color:#aaa;">{{ line.head || ' ' }}</pre>
-				</td>
-				<td class="light" ng-class="{addition:line.type=='addition', deletion:line.type=='deletion', highlight:line.type!='meta'}" style="padding:5px 10px 5px 100px; border:none;">
-					<pre>{{ line.line }}</pre>
-				</td>
-			</tr>
-			<tr ng-show="comment===$index || comments[$index]">
-				<td colspan="4" style="border-top:1px solid #aaa; border-bottom:1px solid #aaa; padding:10px 10px 10px 100px;">
-					<div ng-repeat="comment in comments[$index]" class="panel panel-default" style="max-width:600px; margin-bottom:10px;">
-						<div class="panel-heading">
-							<img ng-src="{{ comment.user.avatar_url }}" width="14px" />
-							{{ comment.user.login }} <small moment="comment.created_at"></small>
-						</div>
-						<div class="panel-body">
-							{{ comment.body }}
-						</div>
-					</div>
+<accordion class="diff">
+	<accordion-group is-open="open">
+		<accordion-heading>
+			<strong>{{ path }}</strong>
+			<button class="btn btn-xs btn-default pull-right" style="margin-left:5px;">
+				&nbsp;<i class="fa" ng-class="{ 'fa-plus':!open, 'fa-minus':open }"></i>&nbsp;
+			</button>
+			<button class="btn btn-xs btn-default pull-right" ng-click="expanded=!expanded; $event.stopPropagation();">
+				{{ expanded ? 'contract' : 'expand' }}
+			</button>
+		</accordion-heading>
+		<div ng-show="status==='renamed' && !patch.length" style="padding:5px 10px;">
+			This file was renamed.
+		</div>
+		<div ng-show="patch.length">
 
-					<button ng-show="comment!==$index" ng-click="$parent.comment=$index" type="button" class="btn btn-default btn-sm">Add a line note</button>
+			<table class="code">
+        		<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
+            		ng-class="{ addition: line.add, 
+                        		deletion: line.del, 
+                        		chunk: line.chunk, 
+                        		selected: Reference.isIssue(baseRef(line)) || 
+                        		          Reference.isIssue(headRef(line)) ||
+                        		          Reference.isSelected(headRef(line)) }">
 
-					<div ng-show="comment===$index" class="panel panel-default" style="max-width:600px; margin-bottom:10px;">
-						<div class="panel-heading">
-							Comment
-							<i class="fa fa-lg fa-comments pull-right"></i>
-						</div>
-						<div class="panel-body">
-							<textarea class="form-control" rows="3" ng-model="comment_body"></textarea>
-						</div>
-						<div class="panel-footer" style="height:50px;">
-							<input type="checkbox" ng-model="comment_issue"> Also create an issue
-							<span class="pull-right">
-								<button ng-click="$parent.comment=null" type="button" class="btn btn-default btn-sm">Cancel</button>
-								<button ng-click="onComment({body:comment_body, issue:comment_issue, path:path, position:$index, line:line.head})" type="button" class="btn btn-primary btn-sm">Comment</button>
-							</span>
-						</div>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+					<td class="select">
+						<i class="fa fa-circle" 
+						   ng-click="select(line)" 
+						   ng-show="Reference.isSelected(headRef(line))">
+						</i>
+
+						<i id="#issue" class="fa fa-exclamation-circle" 
+						   ng-click="go( Reference.get(baseRef(line)), Reference.get(headRef(line)) )" 
+						   ng-show="Reference.isIssue(baseRef(line)) || Reference.isIssue(headRef(line))">
+						</i>
+					</td>
+
+					<td class="number" ng-click="select(line)"><pre>{{ line.base }}</pre></td>
+					<td class="number" ng-click="select(line)"><pre>{{ line.head }}</pre></td>
+
+					<td><pre>{{ line.content }}</pre></td>
+
+				</tr>
+
+			</table>
+
+		</div>
+	</accordion-group>
+</accordion>

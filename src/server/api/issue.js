@@ -1,5 +1,6 @@
 // module
 var github = require('../services/github');
+var url = require('../services/url');
 
 module.exports = {
 
@@ -11,36 +12,32 @@ module.exports = {
 
 ************************************************************************************************************/
 
-	add: function(req, done) {
+    add: function(req, done) {
 
-		var body = req.args.body;
+        var fileReference = '`none`';
+        if(req.args.reference) {
+            var url = url.githubFileReference(req.args.user, req.args.repo, req.args.reference);
+            fileReference = '[' + req.args.reference.replace(req.args.sha + '/', '') + ']' + '(' + url + ')';
+        }
+            
+        var body = req.args.body + '\r\n\r\n';
+        body += '|commit|file reference|\r\n';
+        body += '|------|--------------|\r\n';
+        body += '|' + req.args.sha + '|' + fileReference + '|';
 
-		if(req.args.comm) {
-
-			body += '\n\n';
-
-			body += '| Commit |' + req.args.comm + ' |\n';
-			body += '| ------ | -------------------- |\n';
-
-			if(req.args.path) {
-				body += '| File | ' + req.args.path + ' |\n';
-			}
-
-			if(req.args.line) {
-				body += '| Line | ' + req.args.line + ' |\n';
-			}
-
-		}
-
-		github.call({obj: 'issues', fun: 'create', arg: {
-			user: req.args.user,
-			repo: req.args.repo,
-			body: body,
-			title: req.args.title,
-			labels: ['review.ninja']
-		}, token: req.user.token}, function(err, obj) {
-			done(null, null);
-		});
-
-	}
+        github.call({
+            obj: 'issues', 
+            fun: 'create', 
+            arg: {
+                user: req.args.user,
+                repo: req.args.repo,
+                body: body,
+                title: req.args.title,
+                labels: ['review.ninja', 'pull-request-' + req.args.number]
+            }, 
+            token: req.user.token
+        }, function(err, issue) {
+            done(err, issue);
+        });
+    }
 };

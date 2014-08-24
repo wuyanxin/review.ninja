@@ -1,57 +1,60 @@
-
 // deep test
 describe('Deep Filter', function() {
 
-	var deep;
+    var deep;
 
-	beforeEach(angular.mock.module('ninja.filters'));
+    beforeEach(angular.mock.module('ninja.filters'));
 
-	beforeEach(angular.mock.inject(function ($filter) {
-		deep = $filter('deep');
-	}));
+    beforeEach(angular.mock.inject(function($filter) {
+        deep = $filter('deep');
+    }));
 
-	it('should match all items', function() {
+    it('should match all items', function() {
 
-		var items = [
-			{
-				name: 'one',
-				deep: { val: true }
-			},
-			{
-				name: 'two',
-				deep: { val: true }
-			},
-			{
-				name: 'three',
-				deep: { val: true }
-			}
-		];
+        var items = [{
+            name: 'one',
+            deep: {
+                val: true
+            }
+        }, {
+            name: 'two',
+            deep: {
+                val: true
+            }
+        }, {
+            name: 'three',
+            deep: {
+                val: true
+            }
+        }];
 
-		var result = deep(items, 'deep.val');
+        var result = deep(items, 'deep.val');
 
-		result.length.should.equal(3);
-	});
+        result.length.should.equal(3);
+    });
 
-	it('should match no items', function() {
+    it('should match no items', function() {
 
-		var items = [
-			{
-				name: 'one',
-				deep: { val: true }
-			},
-			{
-				name: 'two',
-				deep: { val: true }
-			},
-			{
-				name: 'three',
-				deep: { val: true }
-			}
-		];
+        var items = [{
+            name: 'one',
+            deep: {
+                val: true
+            }
+        }, {
+            name: 'two',
+            deep: {
+                val: true
+            }
+        }, {
+            name: 'three',
+            deep: {
+                val: true
+            }
+        }];
 
-		var result = deep(items, 'deep.val', false);
+        var result = deep(items, 'deep.val', false);
 
-		result.length.should.equal(0);
-	});
+        result.length.should.equal(0);
+    });
 
 });

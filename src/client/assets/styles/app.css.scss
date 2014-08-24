@@ -1,0 +1,289 @@
+
+/* overwrite bootstrap styles */
+
+// colours
+$brand-primary: #3e9a94;
+
+// components
+$border-radius-small: 0px;
+$border-radius-base: 0px;
+$border-radius-large: 0px;
+$component-active-bg: #ececec;
+$component-active-color: #555;
+
+// buttons
+$btn-default-bg: #d0eaea;
+$btn-default-color: $brand-primary;
+$btn-default-border: transparent;
+
+// wells
+$well-bg: #f9f9f9;
+
+// list group
+$list-group-hover-bg: #ececec;
+$list-group-border: transparent;
+
+// table
+$table-bg: #f9f9f9;
+$table-bg-hover: #ececec;
+$table-cell-padding: 20px 10px;
+$table-border-color: none;
+
+// navbar {
+$navbar-default-bg: #333;
+$navbar-default-color: #ccc;
+$navbar-default-link-color: #ccc;
+$navbar-default-link-hover-color: #ccc;
+$navbar-default-link-active-color: #ccc;
+$navbar-margin-bottom: 0px;
+
+// headings
+$headings-font-weight: 100;
+$headings-color: #666;
+
+/* import bootstrap */
+@import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
+
+/* define our own styles */
+// $main-bg: #fff;
+
+$code-line-number-color: #aaa;
+$code-line-select-color: #8a6d3b;
+$code-font-size: 12px;
+
+/* import our files */
+@import "main.css.scss";
+@import "home.css.scss";
+@import "sidebar.css.scss";
+@import "code.css.scss";
+@import "diff.css.scss";
+@import "browser.css.scss";
+@import "issue.css.scss";
+@import "tabs.css.scss";
+@import "git.css.scss";
+@import "well.css.scss";
+@import "navbar.css.scss";
+@import "table.css.scss";
+@import "list-group.css.scss";
+
+/* global styles */
+
+h1, h2, h3, h4, h5 {
+  margin-top: 0px;
+}
+
+.center-block {
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+small {
+  vertical-align: middle;
+}
+
+
+/*
+ * TO DO:
+ * 1) convert this to sass
+ * 2) move to seperate files
+ */
+
+/*
+ * The diff table
+ * (when this is less wrap in table.diff)
+ */
+
+// table.diff {
+//   font-size: 11px;
+//   margin-bottom:0;
+
+//   /* disallow selection */
+//   -webkit-touch-callout: none;
+//   -webkit-user-select: none;
+//   -khtml-user-select: none;
+//   -moz-user-select: none;
+//   -ms-user-select: none;
+//   user-select: none;
+// }
+
+// table.diff>thead>tr>th,
+// table.diff>tbody>tr>th,
+// table.diff>tfoot>tr>th,
+// table.diff>thead>tr>td,
+// table.diff>tbody>tr>td,
+// table.diff>tfoot>tr>td {
+//   padding: 2px 8px;
+//   border:none;
+//   cursor: pointer;
+// }
+
+// .addition {
+// 	background-color: #dfd;
+// }
+
+// .addition.dark {
+// 	background-color: #ceffce !important;
+// }
+
+// .deletion {
+// 	background-color: #ffdddd;
+// }
+
+// .deletion.dark {
+// 	background-color: #f7c8c8 !important;
+// }
+
+// tr.highlight:hover td.highlight,
+// tr.selected td.highlight {
+// 	background-color: #f8eec7 !important;
+// }
+
+// tr.selected td.comment {
+// 	display: block !important;
+// }
+
+// .meta pre {
+// 	color:#aaa;
+// }
+
+// pre {
+// 	padding:0; 
+// 	margin:0; 
+// 	background:none; 
+// 	border:none;
+// }
+
+// .tab-pane {
+// 	margin-top: 20px;
+// }
+
+// .nav-tabs a {
+// 	cursor: pointer;
+// }
+
+// .done {
+//   color: #5cb85c;
+// }
+
+// .issues {
+//   color: #E8AE0C;
+// }
+
+// .asdf {
+//   color: gre;
+// }
+
+// .mergeable {
+//   padding-left: 30px;
+// }
+
+// .mergeable-text {
+//   font-size: 10px;
+// }
+
+// .sidebar {
+//   position: fixed;
+//   top: 51px;
+//   bottom: 0;
+//   right: 0;
+//   z-index: 1000;
+//   display: block;
+//   padding: 20px;
+//   overflow-x: hidden;
+//   overflow-y: auto;
+//   background-color: #f5f5f5;
+//   border-left: 1px solid #eee;
+// }
+
+// .sidebar-left {
+//   position: fixed;
+//   top: 51px;
+//   bottom: 0;
+//   z-index: 1000;
+//   display: block;
+//   padding: 20px;
+//   overflow-x: hidden;
+//   overflow-y: auto;
+//   background-color: #f5f5f5;
+//   border-left: 1px solid #eee;
+// }
+
+// .new-issue-sidebar,
+// .issue-sidebar {
+//   background-color: #eee;
+//   border: 1px solid #f0f0f0;
+// }
+
+// .new-issue-sidebar {
+//   padding-top: 20px;
+// }
+
+// .lead {
+//   margin-top: 0px;
+// }
+
+// p.lead a,
+// p.lead a:hover {
+//   color: #333;
+// }
+
+// p.lead a:hover {
+//   text-decoration: underline;
+// }
+
+// li.issue a {
+//   color: #333;
+// }
+
+// li.issue .closed-issue .fa-circle {
+//   color: #5cb85c;
+// }
+
+// li.issue .open-issue .fa-circle {
+//   color: #E8AE0C;
+// }
+
+// .default-font {
+//   font-size: 14px;
+//   font-weight: normal;
+//   text-decoration: none;
+// }
+
+// .settings .row {
+//   margin-bottom: 20px;
+// }
+
+// .bold {
+//   font-weight: bold;
+// }
+
+// li.repo {
+//   padding: 5px;
+//   cursor: pointer;
+
+//   &:hover {
+//     background-color: #E8E8E8;
+//   }
+// }
+
+// li.repo.active {
+//   background-color: #E8E8E8;
+// }
+
+// .repos {
+//   max-height: 180px;
+//   overflow-y: scroll;
+// }
+
+// .org-img {
+//   float: left;
+//   width: 40px;
+//   height: 40px;
+//   cursor: pointer;
+// }
+
+// .ng-click-link {
+//   cursor: pointer;
+// }

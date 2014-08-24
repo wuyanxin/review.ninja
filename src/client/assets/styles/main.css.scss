@@ -1,0 +1,12 @@
+.main {
+    
+    padding: 20px inherit;
+
+    .lead a {
+        color: inherit;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

@@ -6,118 +6,69 @@
 // resolve: repo 
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo',
+    function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
 
-	// get the repo
-	$scope.repo = repo;
+        // get the repo
+        $scope.repo = repo;
 
-	$scope.origin = location.origin;
+        // get the open pull requests
+        $scope.open = $HUB.wrap('pullRequests', 'getAll', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            state: 'open'
+        }, function(err, res) {
+            if(!err) {
+                res.affix.forEach(function(pull) {
+                    pull = getDetails(pull);
+                });   
+            }
+        });
 
-	// get the branches
-	$scope.branches = $HUB.call('repos', 'getBranches', {
-		user: $stateParams.user,
-		repo: $stateParams.repo
-	});
+        // get the closed pull requests
+        $scope.closed = $HUB.wrap('pullRequests', 'getAll', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            state: 'closed'
+        }, function(err, res) {
+            if(!err) {
+                res.affix.forEach(function(pull) {
+                    pull = getDetails(pull);
+                });   
+            }
+        });
 
-	// get the commits
-	$scope.commits = $HUB.call('repos', 'getCommits', {
-		user: $stateParams.user,
-		repo: $stateParams.repo
-	}, function() {
-		$scope.commits.value.forEach(function(comm) {
+        //
+        // actions
+        //
 
-			$RPC.call('star', 'all', {
-				repo: $scope.repo.value.id,
-				comm: comm.sha
-			}, function(err, stars) {
-				if(!err) {
-					comm.stars = stars.value;
-				}
-			});
+        var getDetails = function(pull) {
 
-			
-		});
-	});
+            $HUB.call('issues', 'repoIssues', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                labels: 'review.ninja, pull-request-' + pull.number,
+                state: 'open',
+                per_page: 1
+            }, function(err, issues) {
+                if(!err) {
+                    pull.open_issue = issues;
+                }
+            });
 
-	// get the pull requests (open and closed)
-	$HUB.call('pullRequests', 'getAll', {
-		user: $stateParams.user,
-		repo: $stateParams.repo,
-		state: 'open'
-	}, function(err, open) {
+            $HUB.call('issues', 'repoIssues', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                labels: 'review.ninja, pull-request-' + pull.number,
+                state: 'closed',
+                per_page: 1
+            }, function(err, issues) {
+                if(!err) {
+                    pull.closed_issue = issues;
+                }
+            });
 
-		$HUB.call('pullRequests', 'getAll', {
-			user: $stateParams.user,
-			repo: $stateParams.repo,
-			state: 'closed'
-		}, function(err, closed) {
-			
-			$scope.pulls = (open.value || []).concat(closed.value || []);
-
-			// get status of each pull request
-			$scope.pulls.forEach(function(pull) {
-
-				$RPC.call('star', 'all', {
-					repo: $scope.repo.value.id,
-					comm: pull.head.sha
-				}, function(err, status) {
-					if(!err) {
-						pull.stars = status.value;
-					}
-				});
-			});
-		});
-	});
-
-	// get the bots
-	$scope.botNames = [];
-
-	$scope.bots = $RPC.call('tool', 'all', {
-		repo: $scope.repo.value.id
-	}, function() {
-		$scope.bots.value.forEach(function(bot) {
-			$scope.botNames.push(bot.name);
-		});
-	});
-
-
-	//
-	// Actions
-	//
-
-	$scope.addBot = function(name) {
-
-		$RPC.call('tool', 'add', {
-			name: name,
-			repo: $scope.repo.value.id
-		}, function(err, bot) {
-			if(!err) {
-
-				$scope.bots.value.push(bot.value);
-				$scope.botNames.push(bot.value.name);
-
-				var addBotModal = $modal.open({
-					templateUrl: '/templates/modals/bot.html',
-					controller: 'AddBotCtrl',
-					resolve: {
-						bot: function() {
-							return bot.value;
-						}
-					}
-				});
-			}
-		});
-	};
-
-}]);
-
-module.controller('AddBotCtrl', ['$scope', '$stateParams', '$modalInstance', 'bot', function($scope, $stateParams, $modalInstance, bot) {
-
-	$scope.bot = bot;
-
-	$scope.origin = location.origin;
-
-	$scope.done = function() {
-		$modalInstance.dismiss('cancel');
-	};
-}]);
+            return pull;
+        };
+    }
+]);

@@ -2,68 +2,61 @@
 // File Browser Directive
 // *****************************************************
 
-module.directive('browser', ['$stateParams', '$HUB', '$RPC', function($stateParams, $HUB, $RPC) {
-	return {
-		restrict: 'E',
-		templateUrl: '/directives/templates/browser.html',
-		scope: {
-			data: '=',
-			comment: '&',
-			comments: '='
-		},
-		link: function(scope, elem, attrs) {
+module.directive('browser', ['$stateParams', '$HUB', '$RPC',
+    function($stateParams, $HUB, $RPC) {
+        return {
+            restrict: 'E',
+            templateUrl: '/directives/templates/browser.html',
+            scope: {
+                tree: '=',
+                update: '&',
+                headSha: '='
+            },
+            link: function(scope, elem, attrs) {
 
-			scope.stack = [];
+                scope.stack=[], scope.path=[];
 
-			scope.path = [];
+                scope.up = function() {
 
-			scope.$watch('data.value', function(newVal, oldVal) {
+                    if(scope.stack.length) {
+                        scope.file = null;
+                        scope.path.pop();
+                        scope.tree = scope.stack.pop();
+                    }
+                };
 
-				if(newVal) {
-					scope.tree = scope.data.value;
-				}
-			});
+                scope.down = function(node) {
 
-			scope.up = function() {
+                    if(node.type === 'tree') {
 
-				scope.file = null;
+                        $HUB.call('gitdata', 'getTree', {
+                            user: $stateParams.user,
+                            repo: $stateParams.repo,
+                            sha: node.sha,
+                        }, function(err, res) {
+                            if(!err) {
+                                scope.path.push(node.path);
+                                scope.stack.push(scope.tree);
+                                scope.tree = res.value;
+                            }
+                        });
+                    } 
+                    else if(node.type === 'blob') {
 
-				scope.path.pop();
-
-				var tree = scope.stack.pop();
-
-				if(tree) {
-					scope.data = $HUB.call('gitdata', 'getTree', {
-						user: $stateParams.user,
-						repo: $stateParams.repo,
-						sha: tree.sha,
-					});
-				}
-			};
-
-			scope.down = function(node) {
-
-				scope.path.push(node.path);
-
-				scope.stack.push(scope.tree);
-
-				if(node.type == 'tree') {
-
-					scope.data = $HUB.call('gitdata', 'getTree', {
-						user: $stateParams.user,
-						repo: $stateParams.repo,
-						sha: node.sha,
-					});
-				}
-				else if(node.type == 'blob') {
-
-					scope.file = $RPC.call('comm', 'file', {
-						user: $stateParams.user,
-						repo: $stateParams.repo,
-						sha: node.sha
-					});
-				}
-			};
-		}
-	};
-}]);
+                        $HUB.wrap('gitdata', 'getBlob', {
+                            user: $stateParams.user,
+                            repo: $stateParams.repo,
+                            sha: node.sha
+                        }, function(err, res) {
+                            if(!err) {
+                                scope.path.push(node.path);
+                                scope.stack.push(scope.tree);
+                                scope.file = res.value;
+                            }
+                        });
+                    }
+                };
+            }
+        };
+    }
+]);

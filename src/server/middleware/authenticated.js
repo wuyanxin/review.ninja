@@ -1,10 +1,9 @@
-var sugar = require('array-sugar');
 
 module.exports = function(req, res, next) {
 
-	if (req.isAuthenticated() || config.whitelist.contains(req.url)) {
-		return next();
-	}
+    if (req.isAuthenticated()) {
+        return next();
+    }
 
-	res.send(401, 'Authentication required');
+    res.send(401, 'Authentication required');
 };

@@ -2,81 +2,144 @@
 // Diff File Directive
 // *****************************************************
 
-module.directive('diff', ['$stateParams', '$HUB', '$RPC', function($stateParams, $HUB, $RPC) {
-	return {
-		restrict: 'E',
-		templateUrl: '/directives/templates/diff.html',
-		scope: {
-			path: '=',
-			content: '=',
-			comments: '=',
-			onComment: '&comment'
-		},
-		link: function(scope, elem, attrs) {
+module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
+    function($stateParams, $state, $HUB, $RPC, Reference) {
+        return {
+            restrict: 'E',
+            templateUrl: '/directives/templates/diff.html',
+            scope: {
+                path: '=',
+                patch: '=',
+                status: '=',
+                fileSha: '=',
+                baseSha: '=',
+                headSha: '='
+            },
+            link: function(scope, elem, attrs) {
 
-			scope.$watch('content', function(newVal, oldVal) {
-				if(newVal) {
+                scope.file = null;
 
-					var lines = scope.content.trim().replace(/\t/g, '    ').split('\n');
+                scope.open = true;
 
-					var base = 0;
-					var head = 0;
+                scope.expanded = false;
 
-					scope.lines = [];
+                scope.Reference = Reference;
 
-					for(var i=0; i<lines.length; i++) {
+                // To Do:
+                // fix this
 
-						var line = lines[i].substring(1, lines[i].length) || ' ';
+                scope.$watch('patch', function() {
 
-						switch( lines[i][0] ) {
-							case '@':
+                    if(scope.patch && scope.patch.length) {
 
-								var meta = lines[i].match(/@@(.*?)@@/g)[0];
+                        $HUB.wrap('gitdata', 'getBlob', {
+                            user: $stateParams.user,
+                            repo: $stateParams.repo,
+                            sha: scope.fileSha
+                        }, function(err, res) {
 
-								var range = meta.substring(3, meta.length-3);
+                            if(!err) {
 
-								var baseRange = range.split(' ')[0];
-								var headRange = range.split(' ')[1];
+                                var file=[], chunks=[];
 
-								baseRange = baseRange.substring(1, baseRange.length);
-								headRange = headRange.substring(1, headRange.length);
+                                var index = 0;
 
-								base = parseInt(baseRange.split(',')[0], 10);
-								head = parseInt(headRange.split(',')[0], 10);
+                                // find the chunks
+                                while (index < scope.patch.length) {
 
-								scope.lines.push({
-									type: 'meta',
-									line: meta
-								});
+                                    if(scope.patch[index].chunk) {
 
-								break;
-							case '+':
-								scope.lines.push({
-									type: 'addition',
-									line: line,
-									head: head++
-								});
-								break;
-							case '-':
-								scope.lines.push({
-									type: 'deletion',
-									line: line,
-									base: base++
-								});
-								break;
-							case '\\':
-								break;
-							default:
-								scope.lines.push({
-									line: line,
-									head: head++,
-									base: base++
-								});
-								break;
-						}
-					}
-				}
-			});
-		}
-	};
-}]);
+                                        var start=0, end=0, c=[];
+
+                                        while( ++index<scope.patch.length && !scope.patch[index].chunk ) {
+
+                                            start = start ? start : scope.patch[index].head;
+
+                                            end = scope.patch[index].head ? scope.patch[index].head : end;
+
+                                            c.push(scope.patch[index]);
+                                        }
+
+                                        chunks.push({ start:start, end:end, chunk:c });
+
+                                        continue;
+                                    }
+
+                                    index = index + 1;
+                                }
+
+
+                                index = 0;
+
+                                // insert the chunks
+                                while (index < res.value.content.length) {
+
+                                    if( chunks[0] && res.value.content[index].head===chunks[0].start ) {
+
+                                        chunk = chunks.shift();
+
+                                        file = file.concat( chunk.chunk );
+
+                                        index = chunk.end;
+
+                                        continue;
+                                    }
+
+                                    file.push( res.value.content[index] );
+
+                                    index = index + 1;
+                                }
+
+                                scope.file = file;
+                            }
+
+                        });
+                    }
+
+                });
+
+                // 
+                // actions
+                //
+
+                scope.baseRef = function(line) {
+                    return (scope.baseSha + '/' + scope.path + '#L' + line.base);
+                };
+
+                scope.headRef = function(line) {
+                    return (scope.headSha + '/' + scope.path + '#L' + line.head);
+                };
+
+                scope.select = function(line) {
+                    if(line.head) {
+                        Reference.select(scope.headRef(line));
+                    }
+                };
+
+                scope.go = function(baseRefs, headRefs) {
+
+                    var issues = [];
+
+                    if(baseRefs) {
+                        for(var i=0; i<baseRefs.length; i++) {
+                            issues.push(baseRefs[i].issue);
+                        }
+                    }
+
+                    if(headRefs) {
+                        for(var j=0; j<headRefs.length; j++) {
+                            issues.push(headRefs[j].issue);
+                        }
+                    }
+
+                    if(issues.length === 1) {
+                        $state.go('repo.pull.issue.detail', { issue: issues[0] });
+                    }
+                    else {
+                        $state.go('repo.pull.issue.master', { issues: issues });
+                    }
+                };
+            }
+        };
+    }
+]);

@@ -1,0 +1,17 @@
+.home {
+
+    i.fa-plus-circle {
+        cursor: pointer;
+    }
+    
+    .search {
+        .scroll {
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+
+        // .scroll::-webkit-scrollbar {
+        //     display: none;
+        // }
+    }
+}

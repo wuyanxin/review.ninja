@@ -1,103 +1,140 @@
 <html>
+
 <head>
-	<title>Review Ninja</title>
+  <title>Review Ninja</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="apple-touch-icon" href="/assets/images/icon-alt-152.png">
-	<link rel="apple-touch-icon-precomposed" href="/assets/images/icon-152.png">
+  <link rel="apple-touch-icon" href="/assets/images/icon-alt-152.png">
+  <link rel="apple-touch-icon-precomposed" href="/assets/images/icon-152.png">
 
-	<!-- COMPONENT STYLESHEETS -->
-	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-	<link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.css" rel="stylesheet">
-	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+  <!-- COMPONENT STYLESHEETS -->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.css" rel="stylesheet">
 
-	<!-- APP STYLESHEET -->
-	<link href="/assets/styles/app.css" rel="stylesheet">
+  <!-- APP STYLESHEET -->
+  <link href="/assets/styles/app.css" rel="stylesheet">
 </head>
-<body>
 
-	<div class="navbar navbar-default navbar-static-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/"><img src="/assets/images/favicon-32.png" width="26px"></a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<!-- <li class="active">
-						<a href="/">Home</a>
-					</li> -->
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a href="/logout" target="_self">Sign out</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+<body ng-controller="RootCtrl">
 
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/" style="padding-top:13px;"><img src="/assets/images/logo.png"></a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right" ng-show="user.loaded">
+          <li><a href="">Features</a></li>
+          <li><a href="">Documentation</a></li>
+          <li><a href="">Contact</a></li>
+          <li>&nbsp;&nbsp;</li>
+          <li class="dropdown">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+              <img ng-src="{{ user.value.avatar_url }}?s=20" width="20px" class="img-circle" />
+              {{ user.value.login }} <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="/logout" target="_self">Sign out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-	<div class="container" style="margin-bottom:20px;">
-		<section ui-view></section>
-	</div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 alert alert-warning" ng-show="getHook.error">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <strong>Warning!</strong> Webhooks are missing for this repository and will need to be set up by an administrator.
+      </div>
+    </div>
+    <div class="row" ng-show="!hook">
+      <div class="col-md-12 alert alert-warning">
+        <strong>Warning!</strong> Webhooks are missing for this repository. 
+        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="createWebhook()">Add Webhooks</button>
+      </div>
+    </div>
+    <div class="row" ng-show="created">
+      <div class="col-md-12 alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <strong>Success!</strong> The webhooks were successfully created.</a>
+      </div>
+    </div>
+  </div>
 
-	<div class="container" style="text-align:right; color:#777;">
-		<hr style="margin-bottom:10px;" />
-		<p><i class="fa fa-heart"></i> from the GitHub team @ SAP</p>
-	</div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <section class="main" ui-view></section>
+      </div>
+    </div>
+  </div>
 
-	<!-- COMPONENT SCRIPTS -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular-route.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js"></script>
-	<script src="/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
-	<script src="//www.google-analytics.com/analytics.js"></script>
-	<script src="/angulartics/dist/angulartics.min.js"></script>
-	<script src="/angulartics/dist/angulartics-ga.min.js"></script>
+  <!-- COMPONENT SCRIPTS -->
+  <script src="//cdn.socket.io/socket.io-1.0.4.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+  <script src="/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-animate.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-utils/0.1.1/angular-ui-utils.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
+  <script src="//www.google-analytics.com/analytics.js"></script>
+  <script src="/angulartics/dist/angulartics.min.js"></script>
+  <script src="/angulartics/dist/angulartics-ga.min.js"></script>
 
-	<!-- APP -->
-	<script src="/modules/config.js"></script>
-	<script src="/app.js"></script>
-	<script src="/api.js"></script>
+  <!-- APP -->
+  <script src="/modules/config.js"></script>
+  <script src="/app.js"></script>
+  <script src="/api.js"></script>
 
-	<!-- FILTERS -->
-	<script src="/filters/pluralize.js"></script>
-	<script src="/filters/deep.js"></script>
+  <!-- FILTERS -->
+  <script src="/filters/pluralize.js"></script>
+  <script src="/filters/deep.js"></script>
+  <script src="/filters/stargazer-accumulator.js"></script>
 
-	<!-- SERVICES -->
-	<script src="/services/commitComment.js"></script>
+  <!-- SERVICES -->
+  <script src="/services/socket.js"></script>
+  <script src="/services/Issue.js"></script>
+  <script src="/services/Reference.js"></script>
 
-	<!-- DIRECTIVES -->
-	<script src="/directives/browser.js"></script>
-	<script src="/directives/diff.js"></script>
-	<script src="/directives/file.js"></script>
-	<script src="/directives/focus.js"></script>
-	<script src="/directives/moment.js"></script>
-	<script src="/directives/validate.js"></script>
-	<script src="/directives/vote.js"></script>
+  <!-- DIRECTIVES -->
+  <script src="/directives/browser.js"></script>
+  <script src="/directives/diff.js"></script>
+  <script src="/directives/file.js"></script>
+  <script src="/directives/focus.js"></script>
+  <script src="/directives/graph.js"></script>
+  <script src="/directives/moment.js"></script>
+  <script src="/directives/validate.js"></script>
+  <script src="/directives/vote.js"></script>
 
-	<!-- CONTROLLERS -->
-	<script src="/controller/home.js"></script>
-	<script src="/controller/repo.js"></script>
-	<script src="/controller/comm.js"></script>
-	<script src="/controller/pull.js"></script>
+  <!-- CONTROLLERS -->
+  <script src="/controller/root.js"></script>
+  <script src="/controller/home.js"></script>
+  <script src="/controller/repo.js"></script>
+  <script src="/controller/pull.js"></script>
+  <script src="/controller/pullList.js"></script>
+  <script src="/controller/pullIssue.js"></script>
+  <script src="/controller/settings.js"></script>
 
-	<!-- INTERCEPTORS -->
-	<script src="/interceptors/401.js"></script>
+  <!-- INTERCEPTORS -->
+  <script src="/interceptors/401.js"></script>
+
 </body>
+
 </html>
