@@ -1,0 +1,17 @@
+.btn {
+
+    &.btn-link {
+        color: $brand-primary-muted;
+    }
+
+    &.btn-link:hover {
+        color: $brand-primary;
+        text-decoration: none;
+    }
+
+    &.btn-link.active {
+        background: none;
+        box-shadow: none;
+        color: $brand-primary;
+    }
+}

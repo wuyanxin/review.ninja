@@ -38,6 +38,9 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
             }
         });
 
+        // set the default state
+        $scope.type = 'open';
+
         //
         // actions
         //
@@ -52,7 +55,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 per_page: 1
             }, function(err, issues) {
                 if(!err) {
-                    pull.open_issue = issues;
+                    pull.open_issue = issues.value.length ? issues.value[0] : null;
                 }
             });
 
@@ -64,7 +67,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 per_page: 1
             }, function(err, issues) {
                 if(!err) {
-                    pull.closed_issue = issues;
+                    pull.closed_issue = issues.value.length ? issues.value[0] : null;
                 }
             });
 

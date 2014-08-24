@@ -3,6 +3,10 @@
 
 // colours
 $brand-primary: #3e9a94;
+$brand-primary-muted: #abd5d5;
+$brand-warning: #ffa159;
+$brand-info: #d0eaea;
+$link-color: #3c3c3d;
 
 // components
 $border-radius-small: 0px;
@@ -12,8 +16,8 @@ $component-active-bg: #ececec;
 $component-active-color: #555;
 
 // buttons
-$btn-default-bg: #d0eaea;
-$btn-default-color: $brand-primary;
+$btn-info-bg: #d0eaea;
+$btn-info-color: $brand-primary;
 $btn-default-border: transparent;
 
 // wells
@@ -58,18 +62,42 @@ $code-font-size: 12px;
 @import "code.css.scss";
 @import "diff.css.scss";
 @import "browser.css.scss";
-@import "issue.css.scss";
 @import "tabs.css.scss";
 @import "git.css.scss";
 @import "well.css.scss";
 @import "navbar.css.scss";
 @import "table.css.scss";
 @import "list-group.css.scss";
+@import "pull-list.css.scss";
+@import "btn.css.scss";
 
 /* global styles */
 
 h1, h2, h3, h4, h5 {
   margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+.bread-crumb {
+    color: $brand-primary;
+    font-weight: 400;
+
+    &:hover {
+        color: #2c827c;
+        cursor: pointer;
+    }
+}
+
+.text-primary.muted {
+    color: $brand-primary-muted;
+}
+
+.text-warning {
+    color: $brand-warning;
+}
+
+.text-info {
+    color: $brand-info;
 }
 
 .center-block {
@@ -81,6 +109,12 @@ h1, h2, h3, h4, h5 {
 
 small {
   vertical-align: middle;
+}
+
+i.fa-times,
+i.fa-plus-circle,
+i.fa-info-circle {
+    cursor: pointer;
 }
 
 

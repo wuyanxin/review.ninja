@@ -27,9 +27,6 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
 
         $scope.create = function() {
 
-            // this could be an example
-            // of a "prewrap"
-
             $RPC.call('issue', 'add', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,

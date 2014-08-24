@@ -31,7 +31,7 @@
       <div style="height:36px;">
         <i class="fa fa-2x fa-spinner fa-spin" ng-show="searching.loading || userRepos.loading || adding.loading" style="margin-left:5px;"></i>
         <div class="pull-right">
-          <button type="button" class="btn btn-default" ng-click="show=false; active=null;">Close</button>
+          <button type="button" class="btn btn-info" ng-click="show=false; active=null;">Close</button>
           <button type="button" class="btn btn-primary" ng-click="add(active)" ng-disabled="!active">Add repository</button>
         </div>
       </div>
@@ -45,7 +45,8 @@
 
 		<table class="table table-hover">
 			<tr ng-repeat="repo in repos | filter:{ninja: true} | orderBy:'full_name'" 
-          ui-sref="repo.list({ user:repo.owner.login, repo:repo.name })">
+          ui-sref="repo.list({ user:repo.owner.login, repo:repo.name })"
+          class="select">
 
 				<td><i class="fa fa-bookmark-o"></i>&nbsp; {{ repo.owner.login }} / {{ repo.name }}</td>
 
@@ -56,7 +57,7 @@
              tooltip-placement="bottom" 
              tooltip="Remove">
           </i>
-				</td>
+        </td>
 
 			</tr>
 		</table>

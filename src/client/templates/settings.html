@@ -1,53 +1,74 @@
 <div class="row">
-  <div class="settings col-md-8 col-md-offset-2 main">
-    <p class="lead"><a ui-sref="repo.list()">{{ repo.value.full_name }}</a></p>
+  <div class="settings col-md-8 col-md-offset-2">
 
-    <h3><i class="fa fa-cog"></i> Settings</h3>
-
-    <!--<div class="row">
-      <div class="col-md-12">
-        <h4>Bots <a class="fa-stack text-success" ng-click="showAddBot=!showAddBot" ng-init="showAddBot=false"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></a></h4>
-        <div class="form well" ng-show="showAddBot">
-          <div class="form-group">
-            <label>Name</label>
-            <input class="form-control" ng-model="botName" placeholder="E.g. CI-System" />
-          </div>
-          <button class="btn btn-success btn-block" ng-click="addBot()"><i class="fa fa-plus"></i> ADD</button>
-        </div>
-        <table class="table table-hover">
-          <tr ng-repeat="bot in bots.value">
-            <td>{{ bot.name }}</td>
-            <td>{{ origin }}/vote/{{ bot._id }}/:sha</td>
-            <td><a ng-click="botSetEnabled(bot)" href="" ng-class="{bold: bot.enabled}">On</a> / <a ng-click="botSetDisabled(bot)" href="" ng-class="{bold: !bot.enabled}">Off</a></td>
-            <td><button class="btn btn-danger btn-xs pull-right" ng-click="removeBot(bot, $index)">remove</button></td>
-          </tr>
-        </table>
-      </div>
-    </div>-->
     <div class="row">
       <div class="col-md-12">
-        <h4>Notifications <a class="fa-stack text-success" ng-click="showAddNotification=!showAddNotification" ng-init="showAddNotification=false"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></a></h4>
-        <div class="form well" ng-show="showAddNotification">
-          <div class="form-group">
-            <label>Branch to watch</label>
-            <input class="form-control" ng-model="newWatched" placeholder="E.g. feature/new" />
-            <p class="help-block">You can also use regular expressions to specify multiple branches at once.</p>
-          </div>
-          <button class="btn btn-success btn-block" ng-click="addWatched()"><i class="fa fa-plus"></i> ADD</button>
-        </div>
-        <table class="table table-hover" ng-show="settings && settings.value.watched.length > 0">
-          <tr ng-repeat="watched in settings.value.watched">
-            <td>{{ watched }}</td>
-            <td><button class="btn btn-danger btn-xs pull-right" ng-click="removeWatched(watched)">remove</button></td>
-          </tr>
-        </table>
-        <div class="well" ng-hide="settings && settings.value.watched.length > 0">
-          <p class="text-center">You have no notifications setup, you can get started and <a ng-click="showAddNotification=true" href="">add one right now</a>.</p>
-        </div>
-        <label><input type="checkbox" ng-model="settings.value.notifications.pull_request" ng-change="setNotifications()" /> Pull Request</label>
-        <label><input type="checkbox" ng-model="settings.value.notifications.issue" ng-change="setNotifications()" /> Issue</label>
-        <label><input type="checkbox" ng-model="settings.value.notifications.star" ng-change="setNotifications()" /> Star</label>
+
+        <h4>
+          <span class="bread-crumb" ui-sref="repo.list()">{{ repo.value.full_name }}</span> 
+        </h4>
+        
+        <h2><i class="fa fa-cog"></i> Settings</h2>
+
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-12">
+            
+            <h4 style="font-weight:400;">
+              Email notifications <i class="fa fa-plus-circle text-primary" ng-click="show=true"></i>
+              <i class="fa fa-info-circle text-info pull-right"></i>
+            </h4>
+
+            <div class="well" ng-show="show">
+              <form role="form" ng-submit="addWatch(newWatch)">
+                <div class="form-group">
+                  <label>Branch pattern</label>
+                  <input ng-model="newWatch" class="form-control" placeholder="eg. feature/*" />
+                </div>
+
+                <div style="height:36px;">
+                  <i class="fa fa-2x fa-spinner fa-spin" ng-show="set.loading" style="margin-left:5px;"></i>
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-info" ng-click="show=false">Close</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="!newWatch.length">Add</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <table class="table table-hover" ng-show="settings.value.watched.length">
+              <tr ng-repeat="watched in settings.value.watched">
+                <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
+                <td style="text-align:right;">
+                  <i class="fa fa-times" 
+                     ng-click="removeWatch(watched)" 
+                     tooltip-placement="bottom" 
+                     tooltip="Remove">
+                  </i>
+                </td>
+              </tr>
+            </table>
+
+            <!-- <div class="well" ng-hide="settings && settings.value.watched.length > 0">
+              <p class="text-center">You have no notifications setup, you can get started and <a ng-click="showAddNotification=true" href="">add one right now</a>.</p>
+            </div> -->
+
+            <div class="well well-sm">
+              <label class="checkbox-inline">
+                <input type="checkbox" ng-model="settings.value.notifications.pull_request" ng-change="setNotifications()" /> Pull Request
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" ng-model="settings.value.notifications.issue" ng-change="setNotifications()" /> Issue
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" ng-model="settings.value.notifications.star" ng-change="setNotifications()" /> Star
+              </label>
+            </div>
+
+      </div>
+    </div>
+
   </div>
 </div>
