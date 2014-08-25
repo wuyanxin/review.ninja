@@ -14,22 +14,20 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    var repo_uuid = req.args.repository.id;
-
     Repo.with({
-        uuid: repo_uuid
+        uuid: req.args.repository.id
     }, function(err, repo) {
 
-        if (err) {
+        if(err) {
             return;
         }
 
-        if (repo.ninja) {
+        if(repo.ninja) {
 
             var args = {
                 user: req.args.repository.owner.login,
                 repo: req.args.repository.name,
-                repo_uuid: repo_uuid,
+                repo_uuid: req.args.repository.id,
                 sha: req.args.pull_request.head.sha,
                 number: req.args.number,
                 token: repo.token
@@ -45,8 +43,7 @@ module.exports = function(req, res) {
             var actions = {
                 opened: function() {
 
-                    status.update(args, function(err, data) {
-                    });
+                    status.update(args, function(err, data) {});
 
                     notification.sendmail('pull_request_opened',
                                           req.args.repository.owner.login,
@@ -59,8 +56,8 @@ module.exports = function(req, res) {
                 },
                 synchronize: function() {
 
-                    status.update(args, function(err, data) {
-                    });
+                    status.update(args, function(err, data) {});
+
                     notification.sendmail(
                                           'pull_request_synchronized',
                                           req.args.repository.owner.login,
@@ -73,13 +70,11 @@ module.exports = function(req, res) {
                 },
                 closed: function() {
                     // a pull request you have been reviewing has closed
-                    var merged = req.args.pull_request.merged;
 
-                    if(merged) {
+                    if(req.args.pull_request.merged) {
                         
-                        io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-'+req.args.number +':merged', merged);
+                        io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-'+req.args.number +':merged', req.args.pull_request.merged);
                     }
-
                 },
                 reopened: function() {
                     // a pull request you have reviewed has a been reopened

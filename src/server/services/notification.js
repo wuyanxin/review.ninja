@@ -140,7 +140,7 @@ module.exports = function() {
                     return;
                 }
 
-                if(pull.state!='open') {
+                if(pull.state !== 'open') {
                     return;
                 }
 
@@ -169,7 +169,8 @@ module.exports = function() {
 
                                 var watch = pullRequest.isWatched(pull, settings);
 
-                                if( watch && ((eventType[notification_type] === 'star' && settings.notifications.star) || 
+                                if( watch && (
+                                    (eventType[notification_type] === 'star' && settings.notifications.star) || 
                                     (eventType[notification_type] === 'issue' && settings.notifications.issue) || 
                                     (eventType[notification_type] === 'pull_request' && settings.notifications.pull_request)) ){
 

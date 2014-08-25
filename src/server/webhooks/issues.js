@@ -112,10 +112,11 @@ module.exports = function(req, res) {
 
                         get_issues(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, issues){
 
-                            if(err){
+                            if(err) {
                                 return;
                             }
-                            if(issues.length){
+
+                            if(issues.length) {
                                 return;
                             }
 
