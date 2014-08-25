@@ -2,16 +2,16 @@
 var async = require('async');
 var parse = require('parse-diff');
 
+// services
+var pullRequest = require('../services/pullRequest');
+
 // models
 var Star = require('mongoose').model('Star');
 var Settings = require('mongoose').model('Settings');
 
 module.exports = {
-
     get: function(req, pull, done) {
-
         Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
-
             pull.stars = [];
 
             if(!err) {
@@ -36,47 +36,33 @@ module.exports = {
     },
 
     getAll: function(req, pulls, done) {
+        var repo;
 
-            var repo;
+        try {
+            repo = pulls[0].base.repo.id;
+        }
+        catch(ex) {
+            repo = null;
+        }
 
-            try {
-                repo = pulls[0].base.repo.id;
-            }
-            catch(ex) {
-                repo = null;
-            }
+        Settings.with({
+            user: req.user.id,
+            repo: repo
+        }, function(err, settings) {
+            pullRequest.setWatched(pulls, settings);
 
-            Settings.with({
-                user: req.user.id,
-                repo: repo
-            }, function(err, settings) {
-
-                // set the watched pulls
-                if(settings) {
-                    pulls.forEach(function(pull) {
-                        pull.watched = false;
-
-                        settings.watched.forEach(function(watch) {
-                            var re = RegExp(watch, 'g');
-                            if(re.exec(pull.base.ref) || re.exec(pull.head.ref)) {
-                                pull.watched = true;
-                            }
-                        });
-                    });
-                }
-
-                // set the stars
-                async.each(pulls, function(pull, call) {
-                    Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
-                        pull.stars = [];
-                        if(!err) {
-                            pull.stars = stars;
-                        }
-                        return call(null);
-                    });
-                }, function() {
-                    done(err, pulls);
+            // set the stars
+            async.each(pulls, function(pull, callback) {
+                Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
+                    pull.stars = [];
+                    if(!err) {
+                        pull.stars = stars;
+                    }
+                    return callback(null);
                 });
+            }, function() {
+                done(err, pulls);
             });
+        });
     }
 };

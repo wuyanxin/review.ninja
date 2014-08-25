@@ -82,7 +82,6 @@ module.exports = function() {
 
 
     var eventType = {
-
         pull_request_opened: 'pull_request',
         pull_request_synchronized: 'pull_request',
         star: 'star',
@@ -162,18 +161,7 @@ module.exports = function() {
                                     return;
                                 }
 
-                                var watching = false;
-
-                                for(var key=0; key<settings.watched.length; key++){
-
-                                    var watch_branch = settings.watched[key];
-                                    var re = new RegExp(watch_branch, 'g');
-
-                                    if(re.exec(pull.base.ref) || re.exec(pull.head.ref)){
-                                        watching = true;
-                                        break;
-                                    }
-                                }
+                                var watching = pullRequest.isWatched(pull, settings);
 
                                 if( watching && ((eventType[notification_type] === 'star' && settings.notifications.star) || 
                                     (eventType[notification_type] === 'issue' && settings.notifications.issue) || 
