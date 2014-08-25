@@ -6,11 +6,15 @@
 // resolve: open, closed 
 // *****************************************************
 
-module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'open', 'closed', 'Issue', 'Reference',
-    function($scope, $state, $stateParams, $HUB, $RPC, open, closed, Issue, Reference) {
+module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'open', 'closed', 'Issue',
+    function($scope, $state, $stateParams, $HUB, $RPC, open, closed, Issue) {
 
         // get the open issues
         $scope.open = open;
+
+        // emit to parent controller (repo.pull)
+        $scope.$emit('issue:set', null);
+        $scope.$emit('reference:set', open.value);
 
         // get the closed issues
         $scope.closed = closed;
@@ -27,6 +31,14 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
 
         $scope.create = function() {
 
+            // this will expand to  
+            // multiple lines in the future
+            var reference;
+
+            for(var ref in $scope.selection) {
+                reference = ref;
+            }
+
             $RPC.call('issue', 'add', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
@@ -35,7 +47,7 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
                 title: $scope.newIssue.title,
                 body: $scope.newIssue.body,
                 sha: $scope.pull.head.sha,
-                reference: Reference.selected()
+                reference: reference
             }, function(err, issue) {
 
                 // todo: error handling

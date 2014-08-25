@@ -9,9 +9,12 @@
 module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',
     function($scope, $state, $stateParams, $HUB, $RPC, issue, socket) {
 
-
         // get the issue
         $scope.issue = issue.value;
+
+        // emit to parent controller (repo.pull)
+        $scope.$emit('issue:set', issue.value);
+        $scope.$emit('reference:set', [issue.value]);
 
         // switch the comparison view
         if($scope.issue.sha) {

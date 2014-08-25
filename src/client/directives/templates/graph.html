@@ -47,9 +47,9 @@
     <!-- the issue commit cirlce -->
     <circle class="git-commit" 
         cx="136.9" cy="78.4" r="13.7" 
-        ng-show="issue().sha && issue().sha!==baseSha && issue().sha!==headSha" 
-        ng-class="{ active: activeSha===issue().sha }" 
-        ng-click="compare({ base: issue().sha })" 
+        ng-show="issueSha && issueSha!==baseSha && issueSha!==headSha" 
+        ng-class="{ active: activeSha===issueSha }" 
+        ng-click="compare({ base: issueSha })" 
         popover="this is where this issue was created" 
         popover-trigger="mouseenter" 
         popover-append-to-body="true" 
