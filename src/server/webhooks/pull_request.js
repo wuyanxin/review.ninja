@@ -26,25 +26,20 @@ module.exports = function(req, res) {
 
         if (repo.ninja) {
 
-            // to be reviewed by review.ninja so let's go on
-
-            var action = req.body.action;
-            var pull_request_number = req.body.number;
-            var repository = req.body.repository;
-            var user = repository.owner.login;
-            var repo_name = repository.name;
-            var slug = repository.full_name;
-            var sender = req.body.sender;
-            var review_url = url.reviewPullRequest(user, repo_name, req.body.number);
-            var latest_commit_sha = req.body.pull_request.head.sha;
-
-            args = {
-                user: user,
-                repo: repo_name,
+            var args = {
+                user: req.body.repository.owner.login,
+                repo: req.body.repository.name,
                 repo_uuid: repo_uuid,
-                sha: latest_commit_sha,
-                number: pull_request_number,
+                sha: req.body.pull_request.head.sha,
+                number: req.body.number,
                 token: repo.token
+            };
+
+            var notification_args = {
+                slug: req.body.repository.full_name,
+                number: req.body.number,
+                sender: req.body.sender,
+                review_url: url.reviewPullRequest(req.body.repository.owner.login, req.body.repository.name, req.body.number)
             };
 
             var actions = {
@@ -53,13 +48,24 @@ module.exports = function(req, res) {
                     status.update(args, function(err, data) {
                     });
 
-                    notification.pull_request_opened(user, slug, pull_request_number, sender, review_url, repo, repo_name);
+                    notification.sendmail(req.body.repository.owner.login,
+                                          'pull_request_opened',
+                                          repo, req.body.repository.name,
+                                          req.body.number,
+                                          notification_args);
+
                 },
                 synchronize: function() {
+
                     status.update(args, function(err, data) {
                     });
+                    notification.sendmail(
+                                          req.body.repository.owner.login,
+                                          'pull_request_synchronized',
+                                          repo, req.body.repository.name,
+                                          req.body.number,
+                                          notification_args);
 
-                    notification.pull_request_synchronized(user, slug, pull_request_number, sender, review_url, repo, repo_name);
                 },
                 closed: function() {
                     // a pull request you have been reviewing has closed
@@ -67,7 +73,7 @@ module.exports = function(req, res) {
 
                     if(merged) {
                         
-                        io.emit(user + ':' + repository.name + ':pull-request-'+req.body.number +':merged', merged);
+                        io.emit(req.body.repository.owner.login + ':' + req.body.repository.name + ':pull-request-'+req.body.number +':merged', merged);
                     }
 
                 },
@@ -77,11 +83,9 @@ module.exports = function(req, res) {
                 }
             };
 
-            if (!actions[action]) {
-                return;
+            if (actions[req.body.action]) {
+                actions[req.body.action]();
             }
-
-            actions[action]();
         }
     });
 

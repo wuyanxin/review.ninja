@@ -196,6 +196,10 @@ before(function(){
             });
         });
 
+        notification_stub = sinon.stub(notification,'sendmail', function(user, notification_type, repo, repo_name, pull_req_number, args) {
+            done();
+        });
+
         star.set({
             args: {
                 sha: '1234',
@@ -218,7 +222,6 @@ before(function(){
             assert.equal(res.user, 2);
             assert.equal(res.name, 'login');
 
-            done();
         });
 
 

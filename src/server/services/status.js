@@ -1,5 +1,6 @@
 var url = require('./url');
 var github = require('./github');
+var url = require('./url');
 var Star = require('mongoose').model('Star');
 
 module.exports = {

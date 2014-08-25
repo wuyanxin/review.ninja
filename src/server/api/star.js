@@ -100,13 +100,17 @@ module.exports = {
                         }, function(err, res) {
 
                         });
-                        
-                        // commenting out until this is refactored
-                        // notification.star(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
+                        var args = {
+                          starrer: req.user.login,
+                          number: req.args.number
+                        };
+
+                        notification.sendmail(req.args.user, 'star', repo, req.args.repo, req.args.number, args);    
                     }
 
                     done(err, star);
                 });
+
             });
 
         });
