@@ -6,8 +6,8 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Issue',
-    function($scope, $stateParams, $HUB, $RPC, repo, pull, socket, Issue) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Issue',
+    function($scope, $rootScope, $stateParams, $HUB, $RPC, repo, pull, socket, Issue) {
 
         // get the repo
         $scope.repo = repo.value;
@@ -17,9 +17,12 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
         $scope.base = $scope.pull.base.sha;
         $scope.head = $scope.pull.head.sha;
 
+        // selected issues
+        $scope.issue = {};
+
         // file reference
         $scope.reference = {};
-        $scope.selection = null;
+        $scope.selection = {};
 
         // get the files (for the diff view)
         $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
@@ -39,6 +42,38 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
         $scope.star = $RPC.call('star', 'get', {
             sha: $scope.pull.head.sha,
             repo_uuid: $scope.repo.id
+        });
+
+        //
+        // Events
+        //
+
+        $scope.$on('issue:set', function(event, issue) {
+            $scope.issue = issue;
+        });
+
+        $scope.$on('reference:set', function(event, issues) {
+
+            var reference = [];
+
+            issues.forEach(function(issue) {
+                if(issue.sha && issue.ref) {
+
+                    var key = issue.sha + '/' + issue.ref;
+
+                    if(!reference[key]) {
+                        reference[key] = [];
+                    }
+
+                    reference[key].push({ 
+                        ref: issue.ref, 
+                        sha: issue.sha, 
+                        issue: issue.number 
+                    });
+                }
+            });
+
+            $scope.reference = reference;
         });
 
 
@@ -108,7 +143,6 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
         };
 
         $scope.refreshPullRequest = function() {
-
             $HUB.call('pullRequests', 'get', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,

@@ -104,20 +104,17 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 abstract: true,
                 templateUrl: '/templates/issue.html',
                 resolve: {
-                    open: ['$stateParams', '$HUBService', 'Issue', 'Reference',
-                        function($stateParams, $HUBService, Issue, Reference) {
+                    open: ['$stateParams', '$HUBService', 'Issue',
+                        function($stateParams, $HUBService, Issue) {
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'open',
-                                // per_page: 1
+                                state: 'open'
                             }, function(err, res) {
                                 if(!err) {
-                                    Reference.clear();
                                     res.value.forEach(function(issue) {
                                         issue = Issue.parse(issue);
-                                        Reference.add(issue);
                                     });
                                 }
                             });
@@ -129,8 +126,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'closed',
-                                // per_page: 2
+                                state: 'closed'
                             }, function(err, res) {
                                 if(!err) {
                                     res.affix.forEach(function(issue) {
@@ -151,7 +147,10 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/list.html',
                 controller: 'PullListCtrl',
                 resolve: {
-                    open: ['open', '$stateParams', 'Reference', function(open, $stateParams, Reference) {
+                    open: ['open', '$stateParams', function(open, $stateParams) {
+
+                        // todo:
+                        // clean up this code
 
                         var retOpen = {};
                         retOpen = angular.extend(retOpen, open);
@@ -168,12 +167,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                             retOpen.value = value;
                         }
 
-                        Reference.clear();
-                        retOpen.value.forEach(function(issue) {
-                            Reference.add(issue);
-                        });
-
-                        return retOpen; // inherited from parent state
+                        return retOpen;
                     }],
                     closed: ['closed', function(closed) {
                         return closed; // inherited from parent state
@@ -195,8 +189,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                     closed: ['closed', function(closed) {
                         return closed; // inherited from parent state
                     }],
-                    issue: ['$stateParams', '$HUBService', 'Issue', 'Reference',
-                        function($stateParams, $HUBService, Issue, Reference) {
+                    issue: ['$stateParams', '$HUBService', 'Issue',
+                        function($stateParams, $HUBService, Issue) {
                             return $HUBService.call('issues', 'getRepoIssue', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
@@ -204,9 +198,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                             }, function(err, issue) {
                                 if(!err) {
                                     issue.value = Issue.parse(issue.value);
-                                    Reference.clear();
-                                    Reference.add(issue.value);
-                                    Reference.set(issue.value);
                                 }
                             });
                         }

@@ -2,7 +2,7 @@
 // File Directive
 // *****************************************************
 
-module.directive('file', ['$state', 'Reference', function($state, Reference) {
+module.directive('file', ['$state', function($state) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/file.html',
@@ -10,11 +10,11 @@ module.directive('file', ['$state', 'Reference', function($state, Reference) {
                 path: '=',
                 update: '&',
                 content: '=',
-                headSha: '='
+                headSha: '=',
+                selection: '=',
+                reference: '='
             },
             link: function(scope, elem, attrs) {
-
-                scope.Reference = Reference;
 
                 // 
                 // actions
@@ -26,7 +26,17 @@ module.directive('file', ['$state', 'Reference', function($state, Reference) {
 
                 scope.select = function(line) {
                     if(line.head) {
-                        Reference.select(scope.headRef(line));
+
+                        var ref = scope.headRef(line);
+
+                        if(scope.selection[ref]) {
+                            return delete scope.selection[ref];
+                        }
+
+                        for(var sel in scope.selection) {
+                            delete scope.selection[sel];
+                        }
+                        scope.selection[ref] = true;
                     }
                 };
 
@@ -41,11 +51,10 @@ module.directive('file', ['$state', 'Reference', function($state, Reference) {
                     }
 
                     if(issues.length === 1) {
-                        $state.go('repo.pull.issue.detail', { issue: issues[0] });
+                        return $state.go('repo.pull.issue.detail', { issue: issues[0] });
                     }
-                    else {
-                        $state.go('repo.pull.issue.master', { issues: issues });
-                    }
+
+                    $state.go('repo.pull.issue.master', { issues: issues });
                 };
             }
         };
