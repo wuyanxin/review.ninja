@@ -3,6 +3,7 @@ node_modules
 src/bower
 output
 venv
+.env
 report
 npm-debug.log
 test
