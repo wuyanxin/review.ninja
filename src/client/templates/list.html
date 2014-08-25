@@ -61,6 +61,18 @@
               <small>#{{ pull.number }} opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
             </td>
 
+            <td>
+              <table class="git-merge text-primary">
+                <tr>
+                  <td><small>{{ pull.base.ref }}</small></td>
+                  <td rowspan="2"><span class="mega-octicon octicon-git-pull-request octicon-rotate"></span></td>
+                </tr>
+                <tr>
+                  <td><small>{{ pull.head.label }}</small></td>
+                </tr>
+              </table>
+            </td>
+
             <td class="text-center" style="width:45px;">
               <span class="octicon octicon-large octicon-issue-opened text-warning" ng-show="pull.open_issue"></span>
               <span class="octicon octicon-large octicon-issue-closed text-primary" ng-show="pull.closed_issue && !pull.open_issue"></span>

@@ -63,6 +63,7 @@ $code-font-size: 12px;
 @import "browser.css.scss";
 @import "tabs.css.scss";
 @import "git.css.scss";
+@import "git-merge.css.scss";
 @import "well.css.scss";
 @import "navbar.css.scss";
 @import "table.css.scss";
@@ -101,6 +102,12 @@ h1, h2, h3, h4, h5 {
 
 .octicon-large {
   font-size: 1.33333333em;
+}
+
+.octicon-rotate {
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .center-block {
