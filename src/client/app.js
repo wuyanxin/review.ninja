@@ -4,6 +4,7 @@ var module = angular.module('app',
      'ui.utils',
      'ui.router', 
      'ui.bootstrap',
+     'infinite-scroll',
      'angulartics', 
      'angulartics.google.analytics']);
 

@@ -5,6 +5,10 @@
 filters.filter('deep', function() {
     return function(items, property, target) {
 
+        if(target === null) {
+            return items;
+        }
+
         var matched = [];
 
         var properties = property.split('.');

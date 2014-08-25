@@ -12,6 +12,13 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         // get the repo
         $scope.repo = repo;
 
+        // for the authors
+        $scope.authors = {};
+        $scope.author = null;
+
+        // set the default state
+        $scope.type = 'open';
+
         // get the open pull requests
         $scope.open = $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
@@ -21,7 +28,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
             if(!err) {
                 res.affix.forEach(function(pull) {
                     pull = getDetails(pull);
-                });   
+                    $scope.authors[pull.user.login] = true;
+                });  
             }
         });
 
@@ -34,12 +42,10 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
             if(!err) {
                 res.affix.forEach(function(pull) {
                     pull = getDetails(pull);
+                    $scope.authors[pull.user.login] = true;
                 });   
             }
         });
-
-        // set the default state
-        $scope.type = 'open';
 
         //
         // actions

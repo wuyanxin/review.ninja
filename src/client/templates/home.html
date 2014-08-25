@@ -1,5 +1,5 @@
 
-<div class="row home">
+<div class="row">
 
   <div class="col-md-2 col-md-offset-2">
     <div ng-show="user.loaded">
@@ -18,7 +18,7 @@
         <input ng-change="search()" ng-model="query" class="form-control" placeholder="Find Repository..." />
       </div>
 
-      <div class="list-group scroll" ng-show="matched.length">
+      <div class="list-group" style="max-height:200px; overflow-y:scroll;">
         <a href="" 
            class="list-group-item" 
            ng-class="{ active: active===repo }" 
@@ -28,13 +28,12 @@
         </a>
       </div>
 
-      <div style="height:36px;">
-        <i class="fa fa-2x fa-spinner fa-spin" ng-show="searching.loading || userRepos.loading || adding.loading" style="margin-left:5px;"></i>
-        <div class="pull-right">
-          <button type="button" class="btn btn-info" ng-click="show=false; active=null;">Close</button>
-          <button type="button" class="btn btn-primary" ng-click="add(active)" ng-disabled="!active">Add repository</button>
-        </div>
+      <i class="fa fa-2x fa-spinner fa-spin" ng-show="searching.loading || userRepos.loading || adding.loading" style="margin-left:5px;"></i>
+      <div class="pull-right">
+        <button type="button" class="btn btn-info" ng-click="show=false; active=null;">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="add(active)" ng-disabled="!active">Add repository</button>
       </div>
+      <div style="clear:both;"></div>
     </div>
 
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="!checked"></i>

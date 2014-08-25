@@ -12,7 +12,7 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
         // get the open issues
         $scope.open = open;
 
-        // // get the closed issues
+        // get the closed issues
         $scope.closed = closed;
 
         // obj for createing new issue

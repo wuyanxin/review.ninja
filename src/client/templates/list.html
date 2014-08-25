@@ -24,11 +24,32 @@
           <a href="" class="btn btn-link" ng-click="type='closed'" ng-class="{active: type==='closed'}">
             <i class="fa fa-check"></i> Closed
           </a>
+          <div class="btn-group pull-right">
+            <a href="" class="btn btn-link dropdown-toggle" ng-class="{active: author}" data-toggle="dropdown">
+              Author <small><i class="fa fa-chevron-down"></i></small>
+            </a>
+            <ul class="dropdown-menu" role="menu" ng-show="authors">
+              <li ng-show="author">
+                <a href="" ng-click="author=null">
+                  <i class="fa fa-times-circle-o"></i> Clear author
+                </a>
+              </li>
+              <li ng-show="author" class="divider"></li>
+              <li ng-repeat="(key, val) in authors">
+                <a href="" ng-click="$parent.author=key">
+                  <i ng-show="$parent.author===key"></i> {{ key }}
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <table class="table table-hover pull-list" ng-show="matched.length">
-          <tr ng-repeat="pull in (matched = (type==='open' ? open.value : closed.value))">
+        <table class="table table-hover pull-list" 
+               infinite-scroll="type==='open' ? open.getMore() : closed.getMore()" 
+               infinite-scroll-disabled="type==='open' ? !(!open.loading && !author) : !(!closed.loading && !author)"
+               ng-show="matched.length">
 
+          <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))">
             <td class="watched" ng-class="{active: pull.watched}"></td>
 
             <td style="width:50px;">
@@ -51,16 +72,21 @@
                 {{ pull.stars.length }}
               </span>
             </td>
-
           </tr>
+          
         </table>
 
-          <p class="well text-center" ng-show="type==='open' && !open.loading && !open.value.length">There are no open pull requests</p>
-          <p class="well text-center" ng-show="type==='closed' && !closed.loading && !closed.value.length">There are no closed pull requests</p>
+        <p class="well text-center" ng-show="type==='open' && !open.loading && !matched.length">
+          There are no open pull requests to show <a href="" ng-show="author" ng-click="author=null">clear author</a>
+        </p>
 
-          <i class="fa fa-2x fa-spinner fa-spin center-block"
-             ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)">
-          </i>
+        <p class="well text-center" ng-show="type==='closed' && !closed.loading && !matched.length">
+          There are no closed pull requests to show <a href="" ng-show="author" ng-click="author=null">clear author</a>
+        </p>
+
+        <i class="fa fa-2x fa-spinner fa-spin center-block"
+           ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)">
+        </i>
 
           <!-- <button type="button" class="btn btn-default" ng-click="open.getMore()" ng-show="open.hasMore">Next</button> -->
 

@@ -22,19 +22,18 @@
             </h4>
 
             <div class="well" ng-show="show">
-              <form role="form" ng-submit="addWatch(newWatch)">
+              <form role="form" ng-submit="addWatch(newWatch)" style="margin:0;">
                 <div class="form-group">
                   <label>Branch pattern</label>
                   <input ng-model="newWatch" class="form-control" placeholder="eg. feature/*" />
                 </div>
 
-                <div style="height:36px;">
-                  <i class="fa fa-2x fa-spinner fa-spin" ng-show="set.loading" style="margin-left:5px;"></i>
-                  <div class="pull-right">
-                    <button type="button" class="btn btn-info" ng-click="show=false">Close</button>
-                    <button type="submit" class="btn btn-primary" ng-disabled="!newWatch.length">Add</button>
-                  </div>
+                <i class="fa fa-2x fa-spinner fa-spin" ng-show="set.loading" style="margin-left:5px;"></i>
+                <div class="pull-right">
+                  <button type="button" class="btn btn-info" ng-click="show=false">Close</button>
+                  <button type="submit" class="btn btn-primary" ng-disabled="!newWatch.length">Add</button>
                 </div>
+                <div style="clear:both;"></div>
               </form>
             </div>
 
