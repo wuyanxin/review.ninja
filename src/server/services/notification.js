@@ -127,9 +127,9 @@ module.exports = function() {
 
     return {
 
-        sendmail: function (user, notification_type, token, repo_uuid, repo, pull_req_number, args) {
+        sendmail: function (notification_type, user, repo, repo_uuid, token, number, args) {
 
-            get_pull_request(pull_req_number, user, repo, token, function(err, pull) {
+            get_pull_request(number, user, repo, token, function(err, pull) {
 
                 if(err) {
                     return;

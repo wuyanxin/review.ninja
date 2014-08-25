@@ -98,7 +98,7 @@ module.exports = function(req, res) {
                                 
                             });
 
-                            notification.sendmail(req.args.repository.owner.login, 'new_issue', repo.token, repo.uuid, req.args.repository.name, pull_request_number, args);
+                            notification.sendmail('new_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
                         });
                     }
 
@@ -137,7 +137,7 @@ module.exports = function(req, res) {
                                     
                                 });
 
-                                notification.sendmail(req.args.repository.owner.login, 'closed_issue', repo.token, repo.uuid, req.args.repository.name, pull_request_number, args);
+                                notification.sendmail('closed_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
                             });
 
                         });

@@ -105,7 +105,7 @@ module.exports = {
                           number: req.args.number
                         };
 
-                        notification.sendmail(req.args.user, 'star', repo.token, repo.uuid, req.args.repo, req.args.number, args);
+                        notification.sendmail('star', req.args.user, req.args.repo, repo.uuid, repo.token, req.args.number, args);
                     }
 
                     done(err, star);
@@ -160,7 +160,7 @@ module.exports = {
                           number: req.args.number
                         };
 
-                        notification.sendmail(req.args.user, 'unstar', repo.token, repo.uuid, req.args.repo, req.args.number, args);
+                        notification.sendmail('unstar', req.args.user, req.args.repo, repo.uuid, repo.token, req.args.number, args);
 
                     }
 

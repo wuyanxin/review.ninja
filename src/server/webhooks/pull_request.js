@@ -48,11 +48,11 @@ module.exports = function(req, res) {
                     status.update(args, function(err, data) {
                     });
 
-                    notification.sendmail(req.args.repository.owner.login,
-                                          'pull_request_opened',
-                                          repo.token,
-                                          repo.uuid,
+                    notification.sendmail('pull_request_opened',
+                                          req.args.repository.owner.login,
                                           req.args.repository.name,
+                                          repo.uuid,
+                                          repo.token,
                                           req.args.number,
                                           notification_args);
 
@@ -62,11 +62,11 @@ module.exports = function(req, res) {
                     status.update(args, function(err, data) {
                     });
                     notification.sendmail(
-                                          req.args.repository.owner.login,
                                           'pull_request_synchronized',
-                                          repo.token,
-                                          repo.uuid,
+                                          req.args.repository.owner.login,
                                           req.args.repository.name,
+                                          repo.uuid,
+                                          repo.token,
                                           req.args.number,
                                           notification_args);
 
