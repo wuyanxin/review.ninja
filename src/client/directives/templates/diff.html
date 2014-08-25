@@ -23,15 +23,15 @@
                         		selected: selection[headRef(line)] || reference[baseRef(line)] || reference[headRef(line)] }">
 
 					<td class="select">
-						<i class="fa fa-circle" 
+						<i class="fa fa-circle text-warning" 
 						   ng-click="select(line)" 
 						   ng-show="selection[headRef(line)]">
 						</i>
 
-						<i class="fa fa-exclamation-circle" 
+						<span class="octicon octicon-issue-opened text-warning" 
 						   ng-click="go(reference[baseRef(line)], reference[headRef(line)])" 
 						   ng-show="reference[baseRef(line)] || reference[headRef(line)]">
-						</i>
+						</span>
 					</td>
 
 					<td class="number" ng-click="select(line)"><pre>{{ line.base }}</pre></td>
