@@ -14,7 +14,7 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    var repo_uuid = req.body.repository.id;
+    var repo_uuid = req.args.repository.id;
 
     Repo.with({
         uuid: repo_uuid
@@ -27,19 +27,19 @@ module.exports = function(req, res) {
         if (repo.ninja) {
 
             var args = {
-                user: req.body.repository.owner.login,
-                repo: req.body.repository.name,
+                user: req.args.repository.owner.login,
+                repo: req.args.repository.name,
                 repo_uuid: repo_uuid,
-                sha: req.body.pull_request.head.sha,
-                number: req.body.number,
+                sha: req.args.pull_request.head.sha,
+                number: req.args.number,
                 token: repo.token
             };
 
             var notification_args = {
-                slug: req.body.repository.full_name,
-                number: req.body.number,
-                sender: req.body.sender,
-                review_url: url.reviewPullRequest(req.body.repository.owner.login, req.body.repository.name, req.body.number)
+                slug: req.args.repository.full_name,
+                number: req.args.number,
+                sender: req.args.sender,
+                review_url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
             };
 
             var actions = {
@@ -48,10 +48,12 @@ module.exports = function(req, res) {
                     status.update(args, function(err, data) {
                     });
 
-                    notification.sendmail(req.body.repository.owner.login,
-                                          'pull_request_opened',
-                                          repo, req.body.repository.name,
-                                          req.body.number,
+                    notification.sendmail('pull_request_opened',
+                                          req.args.repository.owner.login,
+                                          req.args.repository.name,
+                                          repo.uuid,
+                                          repo.token,
+                                          req.args.number,
                                           notification_args);
 
                 },
@@ -60,20 +62,22 @@ module.exports = function(req, res) {
                     status.update(args, function(err, data) {
                     });
                     notification.sendmail(
-                                          req.body.repository.owner.login,
                                           'pull_request_synchronized',
-                                          repo, req.body.repository.name,
-                                          req.body.number,
+                                          req.args.repository.owner.login,
+                                          req.args.repository.name,
+                                          repo.uuid,
+                                          repo.token,
+                                          req.args.number,
                                           notification_args);
 
                 },
                 closed: function() {
                     // a pull request you have been reviewing has closed
-                    var merged = req.body.pull_request.merged;
+                    var merged = req.args.pull_request.merged;
 
                     if(merged) {
                         
-                        io.emit(req.body.repository.owner.login + ':' + req.body.repository.name + ':pull-request-'+req.body.number +':merged', merged);
+                        io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-'+req.args.number +':merged', merged);
                     }
 
                 },
@@ -83,8 +87,8 @@ module.exports = function(req, res) {
                 }
             };
 
-            if (actions[req.body.action]) {
-                actions[req.body.action]();
+            if (actions[req.args.action]) {
+                actions[req.args.action]();
             }
         }
     });

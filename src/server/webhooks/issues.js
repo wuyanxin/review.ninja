@@ -14,7 +14,7 @@ var pullRequest = require('../services/pullRequest');
 
 module.exports = function(req, res) {
 
-    var uuid = req.body.repository.id;
+    var uuid = req.args.repository.id;
 
     //
     // Helper functions
@@ -64,20 +64,21 @@ module.exports = function(req, res) {
         if (repo.ninja) {
 
             var args = {
-                issue_number: req.body.issue.id,
-                sender: req.body.sender,
-                review_url: req.body.issue.url,
-                number: pullRequest.byLabels(req.body.issue.labels)
+                issue_number: req.args.issue.id,
+                sender: req.args.sender,
+                review_url: req.args.issue.url,
+                number: pullRequest.byLabels(req.args.issue.labels)
             };
 
 
             var actions = {
                 opened: function() {
-                    var pull_request_number = pullRequest.byLabels(req.body.issue.labels);
+
+                    var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
 
                     if( pull_request_number ) {
-                        get_pull_request(req.body.repository.owner.login,
-                                         req.body.repository.name,
+                        get_pull_request(req.args.repository.owner.login,
+                                         req.args.repository.name,
                                          pull_request_number,
                                          repo.token,
                                          function(err, pull_request) {
@@ -87,8 +88,8 @@ module.exports = function(req, res) {
                             }
 
                             status.update({
-                                user: req.body.repository.owner.login,
-                                repo: req.body.repository.name,
+                                user: req.args.repository.owner.login,
+                                repo: req.args.repository.name,
                                 repo_uuid: uuid,
                                 sha: pull_request.head.sha,
                                 number: pull_request.number,
@@ -97,7 +98,7 @@ module.exports = function(req, res) {
                                 
                             });
 
-                            notification.sendmail(req.body.repository.owner.login, 'new_issue', repo, req.body.repository.name, pull_request_number, args);
+                            notification.sendmail('new_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
                         });
                     }
 
@@ -105,11 +106,11 @@ module.exports = function(req, res) {
 
                 closed: function() {
 
-                    var pull_request_number = pullRequest.byLabels(req.body.issue.labels);
+                    var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
 
                     if( pull_request_number ) {
 
-                        get_issues(req.body.repository.owner.login, req.body.repository.name, pull_request_number, repo.token, function(err, issues){
+                        get_issues(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, issues){
 
                             if(err){
                                 return;
@@ -119,15 +120,15 @@ module.exports = function(req, res) {
                             }
 
 
-                            get_pull_request(req.body.repository.owner.login, req.body.repository.name, pull_request_number, repo.token, function(err, pull_request) {
+                            get_pull_request(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, pull_request) {
 
                                 if(err){
                                     return;
                                 }
 
                                 status.update({
-                                    user: req.body.repository.owner.login,
-                                    repo: req.body.repository.name,
+                                    user: req.args.repository.owner.login,
+                                    repo: req.args.repository.name,
                                     repo_uuid: uuid,
                                     sha: pull_request.head.sha,
                                     number: pull_request.number,
@@ -136,7 +137,7 @@ module.exports = function(req, res) {
                                     
                                 });
 
-                                notification.sendmail(req.body.repository.owner.login, 'closed_issue', repo, req.body.repository.name, pull_request_number, args);
+                                notification.sendmail('closed_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
                             });
 
                         });
@@ -151,8 +152,8 @@ module.exports = function(req, res) {
                 }
             };
 
-            if (actions[req.body.action]) {
-                actions[req.body.action]();
+            if (actions[req.args.action]) {
+                actions[req.args.action]();
             }
         }
     });

@@ -66,13 +66,13 @@ module.exports = {
                 fun: 'one', 
                 arg: { id: req.args.repo_uuid }, 
                 token: req.user.token
-            }, function(err, repo) {
+            }, function(err, github_repo) {
 
                 if(err) {
-                    return done(err, repo);
+                    return done(err, github_repo);
                 }
 
-                if(!repo.permissions.pull) {
+                if(!github_repo.permissions.pull) {
                     return done({
                         code: 403,
                         text: 'Forbidden'
@@ -105,7 +105,7 @@ module.exports = {
                           number: req.args.number
                         };
 
-                        notification.sendmail(req.args.user, 'star', repo, req.args.repo, req.args.number, args);    
+                        notification.sendmail('star', req.args.user, req.args.repo, repo.uuid, repo.token, req.args.number, args);
                     }
 
                     done(err, star);
@@ -155,8 +155,13 @@ module.exports = {
                             
                         });
                         
-                        // commenting out until this is refactored
-                        // notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
+                        var args = {
+                          starrer: req.user.login,
+                          number: req.args.number
+                        };
+
+                        notification.sendmail('unstar', req.args.user, req.args.repo, repo.uuid, repo.token, req.args.number, args);
+
                     }
 
                     done(err, star);
