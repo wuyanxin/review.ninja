@@ -6,7 +6,7 @@ var User = require('mongoose').model('User');
 var github = require('../services/github');
 var notification = require('../services/notification');
 var status = require('../services/status');
-var labels = require('../services/labels');
+var pullRequest = require('../services/pullRequest');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Issue Webhook Handler
@@ -67,20 +67,20 @@ module.exports = function(req, res) {
                 issue_number: req.body.issue.id,
                 sender: req.body.sender,
                 review_url: req.body.issue.url,
-                number: labels.pull_request_label(req.body.issue.labels)
+                number: pullRequest.byLabels(req.body.issue.labels)
             };
 
 
             var actions = {
-
                 opened: function() {
-
-                    var pull_request_number = labels.pull_request_label(req.body.issue.labels);
+                    var pull_request_number = pullRequest.byLabels(req.body.issue.labels);
 
                     if( pull_request_number ) {
-
-                        get_pull_request(
-                                req.body.repository.owner.login, req.body.repository.name, pull_request_number, repo.token, function(err, pull_request) {
+                        get_pull_request(req.body.repository.owner.login,
+                                         req.body.repository.name,
+                                         pull_request_number,
+                                         repo.token,
+                                         function(err, pull_request) {
 
                             if(err) {
                                 return;
@@ -105,7 +105,7 @@ module.exports = function(req, res) {
 
                 closed: function() {
 
-                    var pull_request_number = labels.pull_request_label(req.body.issue.labels);
+                    var pull_request_number = pullRequest.byLabels(req.body.issue.labels);
 
                     if( pull_request_number ) {
 
