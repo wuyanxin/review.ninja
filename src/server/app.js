@@ -33,6 +33,7 @@ app.use(passport.session());
 
 // custom middleware
 app.use('/api', require('./middleware/param'));
+app.use('/github/webhook', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 
 async.series([
@@ -223,6 +224,7 @@ app.all('/github/webhook', function(req, res) {
         if (!webhooks[event]) {
             return res.send(400, 'Unsupported event');
         }
+
         webhooks[event](req, res);
     } catch (err) {
         res.send(500, 'Internal Server Error');

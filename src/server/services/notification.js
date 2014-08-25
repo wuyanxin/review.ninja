@@ -2,6 +2,7 @@ var nodemailer = require('nodemailer');
 var fs = require('fs');
 var ejs = require('ejs');
 var github = require('./github');
+var pullRequest = require('./pullRequest');
 
 var Settings = require('mongoose').model('Settings');
 var User = require('mongoose').model('User');
@@ -85,7 +86,7 @@ module.exports = function() {
         pull_request_opened: 'pull_request',
         pull_request_synchronized: 'pull_request',
         star: 'star',
-        unstar: 'unstar',
+        unstar: 'star',
         new_issue: 'issue',
         closed_issue: 'issue'
     };
@@ -126,9 +127,9 @@ module.exports = function() {
 
     return {
 
-        sendmail: function (user, notification_type, repo, repo_name, pull_req_number, args) {
+        sendmail: function (user, notification_type, token, repo_uuid, repo, pull_req_number, args) {
 
-            get_pull_request(pull_req_number, user, repo_name, repo.token, function(err, pull) {
+            get_pull_request(pull_req_number, user, repo, token, function(err, pull) {
 
                 if(err) {
                     return;
@@ -138,7 +139,7 @@ module.exports = function() {
                     return;
                 }
 
-                get_collaborators(user,repo_name,repo.token, function(err, collaborators) {
+                get_collaborators(user,repo, token, function(err, collaborators) {
 
                     if(err) {
                         return;
@@ -154,16 +155,16 @@ module.exports = function() {
 
                             Settings.with({
                                 user: collaborator.uuid,
-                                repo: repo.uuid
+                                repo: repo_uuid
                             }, function(err, settings) {
 
                                 if(err || !settings || !settings.watched){
                                     return;
                                 }
 
-                                var watching = pullRequest.isWatched(pull, settings);
+                                var watch = pullRequest.isWatched(pull, settings);
 
-                                if( watching && ((eventType[notification_type] === 'star' && settings.notifications.star) || 
+                                if( watch && ((eventType[notification_type] === 'star' && settings.notifications.star) || 
                                     (eventType[notification_type] === 'issue' && settings.notifications.issue) || 
                                     (eventType[notification_type] === 'pull_request' && settings.notifications.pull_request)) ){
 
@@ -173,13 +174,13 @@ module.exports = function() {
 
                                     var mailOptions = {
                                         from: 'Review Ninja <noreply@review.ninja>',
-                                        to: collaborator.email,
+                                        to: email.email,
                                         subject: notification_args[notification_type].subject,
                                         html: ejs.render(template, args)
                                     };
 
                                     smtpTransport.sendMail(mailOptions, function(err, response) {
-                                       
+
                                         if (err) {
                                             return;
                                         }

@@ -56,7 +56,7 @@ describe('pull_request:opened', function(){
 
     var req = 
         {
-            body:{
+            args:{
                 
   'action': 'opened',
   'number': 48,
