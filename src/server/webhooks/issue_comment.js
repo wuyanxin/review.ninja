@@ -32,17 +32,14 @@ module.exports = function(req, res) {
                         var event = req.args.repository.owner.login + ':' + 
                                     req.args.repository.name + ':' +
                                     'issue-comment-' + req.args.issue.id;
-
                         io.emit(event, req.args.comment.id);
                     }
                 }
             };
 
-            if (!actions[req.args.action]) {
-                return;
+            if (actions[req.args.action]) {
+                actions[req.args.action]();
             }
-
-            actions[req.args.action]();
         }
     });
 

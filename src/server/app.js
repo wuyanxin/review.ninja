@@ -224,7 +224,6 @@ app.all('/github/webhook', function(req, res) {
         if (!webhooks[event]) {
             return res.send(400, 'Unsupported event');
         }
-
         webhooks[event](req, res);
     } catch (err) {
         res.send(500, 'Internal Server Error');
