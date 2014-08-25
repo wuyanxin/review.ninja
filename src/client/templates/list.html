@@ -6,10 +6,10 @@
 
         <h4>
           <span class="bread-crumb" ui-sref="repo.list()">{{ repo.value.full_name }}</span> 
-          <i class="fa fa-cog bread-crumb pull-right" ui-sref="repo.settings()"></i>
+          <span class="octicon octicon-gear bread-crumb pull-right" ui-sref="repo.settings()"></span>
         </h4>
         
-        <h2><i class="fa fa-code-fork"></i> Pull Requests</h2>
+        <h2><span class="mega-octicon octicon-git-pull-request"></span> Pull Requests</h2>
 
       </div>
     </div>
@@ -19,10 +19,10 @@
 
         <div class="well well-sm">
           <a href="" class="btn btn-link" ng-click="type='open'" ng-class="{active: type==='open'}">
-            <i class="fa fa-exclamation-circle"></i> Open
+            <span class="octicon octicon-issue-opened"></span> Open
           </a>
           <a href="" class="btn btn-link" ng-click="type='closed'" ng-class="{active: type==='closed'}">
-            <i class="fa fa-check"></i> Closed
+            <span class="octicon octicon-issue-closed"></span> Closed
           </a>
           <div class="btn-group pull-right">
             <a href="" class="btn btn-link dropdown-toggle" ng-class="{active: author}" data-toggle="dropdown">
@@ -62,8 +62,8 @@
             </td>
 
             <td class="text-center" style="width:45px;">
-              <i class="fa fa-lg fa-exclamation-circle text-warning" ng-show="pull.open_issue"></i>
-              <i class="fa fa-lg fa-check text-primary muted" ng-show="pull.closed_issue && !pull.open_issue"></i>
+              <span class="octicon octicon-large octicon-issue-opened text-warning" ng-show="pull.open_issue"></span>
+              <span class="octicon octicon-large octicon-issue-closed text-primary" ng-show="pull.closed_issue && !pull.open_issue"></span>
             </td>
 
             <td class="text-center" style="width:45px;">
