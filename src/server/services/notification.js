@@ -1,4 +1,6 @@
 var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+var sendmailTransport = require('nodemailer-sendmail-transport');
 var fs = require('fs');
 var ejs = require('ejs');
 var github = require('./github');
@@ -8,6 +10,13 @@ var Settings = require('mongoose').model('Settings');
 var User = require('mongoose').model('User');
 
 module.exports = function() {
+
+    function buildTransporter() {
+        if(config.server.smtp.enabled) {
+            return nodemailer.createTransport(smtpTransport(config.server.smtp));
+        }
+        return nodemailer.createTransport(sendmailTransport());
+    }
 
     function get_collaborators(user, repo, token, done) {
 
@@ -34,8 +43,6 @@ module.exports = function() {
             });
         });
     }
-
-
 
     function get_pull_request(pull_req_number, user, repo, token, done) {
 
@@ -70,8 +77,7 @@ module.exports = function() {
 
             var primary = null;
             for(var key=0; key < emails.length; key++) {
-
-                if(emails[key].primary && emails[key].verified) {
+                if(emails[key].primary) {
                     primary = emails[key];
                     break;
                 }
@@ -80,7 +86,6 @@ module.exports = function() {
             done(err,primary);
         });
     }
-
 
     var eventType = {
         pull_request_opened: 'pull_request',
@@ -168,7 +173,7 @@ module.exports = function() {
                                     (eventType[notification_type] === 'issue' && settings.notifications.issue) || 
                                     (eventType[notification_type] === 'pull_request' && settings.notifications.pull_request)) ){
 
-                                    var smtpTransport = nodemailer.createTransport('SMTP', config.server.smtp);
+                                    var transporter = buildTransporter();
 
                                     var template = fs.readFileSync(notification_args[notification_type].template, 'utf-8');
 
@@ -179,17 +184,16 @@ module.exports = function() {
                                         html: ejs.render(template, args)
                                     };
 
-                                    smtpTransport.sendMail(mailOptions, function(err, response) {
+                                    transporter.sendMail(mailOptions, function(err, response) {
 
                                         if (err) {
                                             return;
                                         }
 
-                                        smtpTransport.close();
+                                        transporter.close();
                                     });
                                 }                
                             });
-
                         });
                     });
                 });
@@ -197,5 +201,3 @@ module.exports = function() {
         }
     };
 }();
-
-
