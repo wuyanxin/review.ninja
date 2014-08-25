@@ -1,6 +1,6 @@
 
 .table {
-    td {
+    > tbody > tr > td {
         border-bottom: 10px solid #fff;
     }
 }
