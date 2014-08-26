@@ -17,6 +17,7 @@ module.exports = {
         var fileReference = '`none`';
         if(req.args.reference) {
             var url = url.githubFileReference(req.args.user, req.args.repo, req.args.reference);
+            // req.args.reference is 'sha/path/to/file#Lline_number this line trims the sha
             fileReference = '[' + req.args.reference.replace(req.args.sha + '/', '') + ']' + '(' + url + ')';
         }
             
