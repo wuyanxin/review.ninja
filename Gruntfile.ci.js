@@ -8,7 +8,6 @@ module.exports = function(grunt) {
 
     var config = {
 
-        // Coverage
         mocha_istanbul: {
             coverage: {
                 src: 'src/tests/server', // the folder, not the files,
@@ -25,7 +24,6 @@ module.exports = function(grunt) {
                 src: 'output/coverage/lcov.info'
             }
         },
-
 
         // server tests
         mochaTest: {
@@ -60,40 +58,6 @@ module.exports = function(grunt) {
                     src: ['app.js', 'src/client/**/*.js', 'src/server/**/*.js', 'src/tests/**/*.js']
                 }
             }
-        },
-
-        // review.ninja
-        http: {
-            'post-mocha-results': {
-                options: {
-                    url: 'http://review.ninja/vote/' + MOCHA_TOOL_ID + '/' + TRAVIS_COMMIT,
-                    method: 'POST',
-                    ignoreErrors: true
-                },
-                files: {
-                    'report': 'output/mochaTest/server.out'
-                }
-            },
-            'post-karma-results': {
-                options: {
-                    url: 'http://review.ninja/vote/' + KARMA_TOOL_ID + '/' + TRAVIS_COMMIT,
-                    method: 'POST',
-                    ignoreErrors: true
-                },
-                files: {
-                    'report': 'output/karma/client.out'
-                }
-            },
-            'post-jshint-results': {
-                options: {
-                    url: 'http://review.ninja/vote/' + JSHINT_TOOL_ID + '/' + TRAVIS_COMMIT,
-                    method: 'POST',
-                    ignoreErrors: true
-                },
-                files: {
-                    'report': 'output/jshint/jshint.out'
-                }
-            }
         }
 
     };
@@ -101,32 +65,14 @@ module.exports = function(grunt) {
     // Initialize configuration
     grunt.initConfig(config);
 
-    // Report coverage to review.ninja once instanbul is finished
-    grunt.event.on('coverage', function(lcovFileContents, done) {
-
-        var options = {
-            outputFile: 'output/coverage/server.out',
-            minCoverage: 75
-        };
-
-        var onSuccess = function() {
-            // Something
-        };
-
-        require('reviewninja-coverage-reporter')
-            .report(options, lcovFileContents, onSuccess);
-
-        done();
-    });
-
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-http');
     grunt.loadNpmTasks('grunt-mocha-istanbul');
     grunt.loadNpmTasks('grunt-coveralls');
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('default', ['jshint', 'mochaTest', 'karma', 'http']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'coveralls:mocha']);
+
+    grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
 
 };
