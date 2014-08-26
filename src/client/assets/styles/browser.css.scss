@@ -1,26 +1,21 @@
 .browser {
 
-    a, i {
-        font-size: $code-font-size;
-    }
-
-    font-size: $code-font-size;
+    margin-top: -2px;
 
     .panel-body {
         padding: 0;
         overflow-x: scroll;
     }
     
-    table {
+    table.browse {
+
+        width: 100%;
         margin: 0;
 
-        tr.up td {
-            border-bottom: 1px solid $table-border-color;
-        }
-
-        tr:first-child td,
-        tr:nth-child(2) td {
-            border-top: none;
+        td {
+            margin: 0;
+            padding: 8px 10px;
+            border-bottom: 1px solid $gray-light;
         }
 
         .select i {

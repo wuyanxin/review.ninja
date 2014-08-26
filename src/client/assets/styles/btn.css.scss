@@ -14,4 +14,29 @@
         box-shadow: none;
         color: $brand-primary;
     }
+
+    &.btn-link.inverse {
+        color: $gray;
+        padding: 3px 0 0 5px;
+    }
+
+    &.btn-link.inverse:hover {
+        color: #ffffff;
+    }
+
+    &.btn-link.inverse.active {
+        color: #ffffff;
+    }
+}
+
+.btn-group.star {
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+        cursor: default;
+        box-shadow: none;
+        border-color: #378883;
+        background: $brand-primary;
+    }
 }

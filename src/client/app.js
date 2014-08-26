@@ -102,34 +102,22 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             //
             .state('repo.pull.issue', {
                 abstract: true,
+                url: '?state',
                 templateUrl: '/templates/issue.html',
                 resolve: {
-                    open: ['$stateParams', '$HUBService', 'Issue',
+                    issues: ['$stateParams', '$HUBService', 'Issue',
                         function($stateParams, $HUBService, Issue) {
+
+                            var state = $stateParams.state ? $stateParams.state : 'open';
+
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'open'
+                                state: state
                             }, function(err, res) {
                                 if(!err) {
                                     res.value.forEach(function(issue) {
-                                        issue = Issue.parse(issue);
-                                    });
-                                }
-                            });
-                        }
-                    ],
-                    closed: ['$stateParams', '$HUBService', 'Issue', 
-                        function($stateParams, $HUBService, Issue) {
-                            return $HUBService.call('issues', 'repoIssues', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'closed'
-                            }, function(err, res) {
-                                if(!err) {
-                                    res.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
                                 }
@@ -147,31 +135,28 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/list.html',
                 controller: 'PullListCtrl',
                 resolve: {
-                    open: ['open', '$stateParams', function(open, $stateParams) {
+                    issues: ['issues', '$stateParams', function(issues, $stateParams) {
 
                         // todo:
                         // clean up this code
 
-                        var retOpen = {};
-                        retOpen = angular.extend(retOpen, open);
+                        var filtered = {};
+                        filtered = angular.extend(filtered, issues);
 
-                        var issues = $stateParams.issues ? $stateParams.issues.split(',') : null;                        
+                        var filter = $stateParams.issues ? $stateParams.issues.split(',') : null;                        
 
-                        if(issues) {
+                        if(filter) {
                             var value = [];
-                            open.value.forEach(function(issue) {
-                                if(issues.indexOf(issue.number.toString()) > -1) {
+                            issues.value.forEach(function(issue) {
+                                if(filter.indexOf(issue.number.toString()) > -1) {
                                     value.push(issue);
                                 }
                             });
-                            retOpen.value = value;
+                            filtered.value = value;
                         }
 
-                        return retOpen;
-                    }],
-                    closed: ['closed', function(closed) {
-                        return closed; // inherited from parent state
-                    }],
+                        return filtered;
+                    }]
                 }
             })
 
@@ -183,12 +168,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/issue.html',
                 controller: 'PullIssueCtrl',
                 resolve: {
-                    open: ['open', function(open) {
-                        return open; // inherited from parent state
-                    }],
-                    closed: ['closed', function(closed) {
-                        return closed; // inherited from parent state
-                    }],
                     issue: ['$stateParams', '$HUBService', 'Issue',
                         function($stateParams, $HUBService, Issue) {
                             return $HUBService.call('issues', 'getRepoIssue', {

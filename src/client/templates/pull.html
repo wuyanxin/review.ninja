@@ -1,61 +1,28 @@
 
-<div class="row">
-  <div class="col-sm-9">
+<div class="row scaffold">
+  <div class="col-sm-9 main">
     <div class="row">
       <div class="col-sm-12">
 
-        <p class="lead">
-          <a ui-sref="repo.list()">{{ repo.full_name }}</a> 
-          <a ui-sref="repo.settings()"><i class="fa fa-cog"></i></a>
-        </p>
+        <ol class="breadcrumb">
+          <li><a ui-sref="repo.list()">{{ repo.owner.login }} / {{ repo.name }}</a></li>
+          <li class="pull-right"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
+        </ol>
 
-        <h4>{{ pull.title }}</h4>
-        <h5>
-          <img class="img-circle" ng-src="{{ pull.user.avatar_url }}" width="18px" /> 
-          <span moment="pull.created_at"></span>
-          <img ng-src="/badge/{{ repo.owner.login }}/{{ repo.name }}/{{ pull.head.sha }}">
-        </h5>
-
-        <div class="actions pull-right">
-          <button type="button" ng-show="!pull.merged" class="btn btn-sm btn-primary" ng-click="merge()">
-            Merge pull request
-          </button>
-          <small ng-show="pull.merged">This pull request was merged by {{ pull.merged_by.login }} <span moment="pull.merged_at"></span>.</small>
-          <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-primary" ng-click="toggle()">
-              &nbsp;<i class="fa fa-star" ng-class="{ fill: star.value }"></i>&nbsp;
+        <div class="row" style="margin-bottom:20px;">
+          <div class="col-sm-1" style="padding-right:0;">
+            <img class="img-responsive" ng-src="{{ pull.user.avatar_url }}&s=100" />
+          </div>
+          <div class="col-sm-8">
+            <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }}</h2>
+            <small>{{ user.value.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into {{ pull.base.ref }} from {{ pull.head.label }} <span moment="pull.created_at"></span></small>
+          </div>
+          <div class="col-sm-3 text-right">
+            <button type="button" class="btn btn-primary" ng-show="!pull.merged" ng-disabled="!pull.mergeable" ng-click="merge()">
+              <span class="octicon octicon-git-merge"></span> Merge pull request
             </button>
-            <button type="button" class="btn btn-default disabled">{{ pull.stars.length }}</button>
           </div>
         </div>
-
-        <!-- <div class="well row" style="margin: 0px 0px 20px 0px;">
-          <div class="col-md-9">
-            <h5>
-              <button class="btn btn-primary" tooltip-placement="bottom" tooltip-html-unsafe="{{ stargazers.value | stargazerAccumulator }}" ng-click="{true: unstar, false: star}[starred]()"><i class="fa fa-star"></i> {{ {true: 'Unstar', false: 'Star'}[starred] }} ({{ stargazers.value.length }})</button>
-              <span>
-                <span class="label pull-right" ng-class="{'label-default':status.value==='pending', 'label-success':status.value==='approved', 'label-danger':status.value==='rejected'}">
-                  {{ status.value }}
-                </span>
-
-                {{ pull.value.title }}
-                <span>
-                  <img class="img-circle" ng-src="{{ pull.value.user.avatar_url }}" width="18px" />
-                  {{ pull.value.user.login }} <small moment="pull.value.created_at"></small>
-                  <img ng-src="/badge/{{ repo.value.owner.login }}/{{ repo.value.name }}/{{ pull.value.head.sha }}">
-                </span>
-              </span>
-            </h5>
-          </div>
-          <div class="col-md-3">
-            <h5>
-              <button type="button" ng-show="!pull.value.merged" class="btn btn-primary btn-block" ng-click="merge()"> popover="{{ {true: 'If it has passed review, you can now merge!', false: 'We strongly encourage to only merge once it\'s passed code review.'}[stargazers.value.length>0] }}" popover-trigger="mouseenter" popover-placement="left" popover-title="{{ {true: 'Can be automatically merged!', false: 'Cannot be automatically merged!'}[pull.value.mergeable] }}" 
-                Merge pull request
-              </button>
-              <small ng-show="pull.value.merged">This pull request was merged by {{ pull.value.merged_by.login }} <span moment="pull.value.merged_at"></small>
-            </h5>
-          </div>
-        </div> -->
 
       </div>
     </div>
@@ -65,15 +32,34 @@
         <tabset>
           <tab heading="Diff">
 
-            <graph class="git" 
-                   base-sha="pull.base.sha" 
-                   head-sha="pull.head.sha" 
-                   issue-sha="issue.sha"
-                   active-sha="base" 
-                   compare="compComm(base)">
-            </graph>
+            <div class="well" style="margin-top:-4px;">
+              <div class="row">
+                <div class="col-sm-8">
+                  <p><small>Showing {{ pull.changed_files | pluralize:'changed file' }} with {{ pull.additions | pluralize:'addition' }} and {{ pull.deletions | pluralize:'deletion' }}</small></p>
 
-            <div class="clearfix"></div>
+                  <strong>Compare:</strong>
+
+                  <div class="clearfix"></div>
+                  <graph class="git" 
+                         base-sha="pull.base.sha" 
+                         head-sha="pull.head.sha" 
+                         issue-sha="issue.sha"
+                         active-sha="base" 
+                         compare="compComm(base)">
+                  </graph>
+                  <div class="clearfix"></div>
+                </div>
+
+                <div class="col-sm-4 text-right">
+                  <div class="btn-group star">
+                    <button type="button" class="btn btn-default" ng-click="toggle()">
+                      &nbsp;<i class="fa fa-star text-primary" ng-class="{ muted: !star.value }"></i>&nbsp;
+                    </button>
+                    <button type="button" class="btn btn-primary">{{ pull.stars.length }}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <diff ng-repeat="file in files.value" 
                   path="file.filename" 
@@ -105,7 +91,34 @@
   <!-- the right sidebar -->
   <div class="col-sm-3 hidden-xs sidebar">
     <div ui-scrollfix="+42">
-      <section ui-view></section>
+
+      <div class="panel panel-default inverse">
+        <div class="panel-heading">
+          Issues
+          <span class="fa-stack">
+            <i class="fa fa-circle fa-lg fa-stack-1x text-primary"></i>
+            <i class="fa fa-plus fa-stack-1x"></i>
+          </span>
+
+          <div class="pull-right">
+            <a ui-sref="repo.pull.issue.master({state:'open', issues:null})" 
+               class="btn btn-link inverse" ng-click="type='open'" 
+               ng-class="{active:(!$stateParams.state || $stateParams.state==='open')}">
+
+              <span class="octicon octicon-issue-opened"></span> Open
+            </a>
+            <a ui-sref="repo.pull.issue.master({state:'closed', issues:null})" 
+               class="btn btn-link inverse" ng-click="type='closed'" 
+               ng-class="{active:$stateParams.state==='closed'}">
+              <span class="octicon octicon-issue-closed"></span> Closed
+            </a>
+          </div>
+
+        </div>
+        <div class="panel-body">
+          <section ui-view></section>
+        </div>
+      </div>
     </div>
   </div>
 

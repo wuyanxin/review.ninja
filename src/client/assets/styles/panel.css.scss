@@ -1,0 +1,11 @@
+.panel.inverse {
+
+    border: none;
+    margin-bottom: 0px;
+
+    .panel-heading {
+        color: #ffffff;
+        background: $gray-darker;
+        border-bottom: none;
+    }
+}

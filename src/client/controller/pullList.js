@@ -6,18 +6,16 @@
 // resolve: open, closed 
 // *****************************************************
 
-module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'open', 'closed', 'Issue',
-    function($scope, $state, $stateParams, $HUB, $RPC, open, closed, Issue) {
+module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issues', 'Issue',
+    function($scope, $state, $stateParams, $HUB, $RPC, issues, Issue) {
 
         // get the open issues
-        $scope.open = open;
+        $scope.issues = issues;
 
         // emit to parent controller (repo.pull)
         $scope.$emit('issue:set', null);
-        $scope.$emit('reference:set', open.value);
+        $scope.$emit('reference:set', issues.value);
 
-        // get the closed issues
-        $scope.closed = closed;
 
         // obj for createing new issue
         $scope.newIssue = {};

@@ -1,5 +1,10 @@
+table {
+    background: none;
+}
 
 .table {
+    background: $gray-lighter;
+
     > tbody > tr > td {
         border-bottom: 10px solid #fff;
     }

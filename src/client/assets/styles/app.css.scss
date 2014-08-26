@@ -16,6 +16,9 @@ $brand-warning: #ffa159;
 $brand-info: #d0eaea;
 $link-color: #3c3c3d;
 
+// scaffolding
+// $body-bg: $gray-lighter;
+
 // typography
 $text-color: $gray-darker;
 $link-color: $gray-darker;
@@ -30,9 +33,12 @@ $input-border: $gray-light;
 $input-color: $gray-darker;
 $input-color-placeholder: $gray;
 
-// panels:
+// panels
+$panel-bg: transparent;
 $panel-default-text: $gray-darker;
-$panel-default-border: #ececec;
+$panel-default-border: $gray-light;
+$panel-default-text: $gray-darker;
+$panel-default-heading-bg: $gray-lighter;
 
 // dropdown
 $dropdown-link-color: $gray-darker;
@@ -48,10 +54,12 @@ $component-active-color: #555;
 // buttons
 $btn-info-bg: #d0eaea;
 $btn-info-color: $brand-primary;
-$btn-default-border: transparent;
+$btn-default-border: #ececec;
+$btn-default-color: $brand-primary;
 
 // wells
 $well-bg: $gray-lighter;
+$well-border: $gray-light;
 
 // list group
 $list-group-hover-bg: $gray-light;
@@ -61,7 +69,14 @@ $list-group-border: transparent;
 $table-bg: $gray-lighter;
 $table-bg-hover: $gray-light;
 $table-cell-padding: 20px 10px;
-$table-border-color: none;
+$table-border-color: transparent;
+
+// tabs
+$nav-tabs-active-link-hover-color: $brand-primary;
+$nav-tabs-border-color: $gray-light;
+$nav-tabs-link-hover-border-color: $gray-light;
+$nav-tabs-active-link-hover-border-color: $gray-light;
+$nav-tabs-active-link-hover-bg: $gray-lighter;
 
 // navbar
 $navbar-default-bg: #333333;
@@ -77,6 +92,9 @@ $breadcrumb-color: $brand-primary;
 $breadcrumb-active-color: $brand-primary;
 $breadcrumb-separator: " ";
 $breadcrumb-padding-horizontal: 0px;
+
+// code
+$pre-color: $gray-darker;
 
 /* import bootstrap */
 @import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
@@ -97,20 +115,39 @@ $code-font-size: 12px;
 @import "git.css.scss";
 @import "git-merge.css.scss";
 @import "list-group.css.scss";
-@import "main.css.scss";
 @import "navbar.css.scss";
+@import "panel.css.scss";
 @import "pull-list.css.scss";
 @import "sidebar.css.scss";
 @import "table.css.scss";
 @import "tabs.css.scss";
 @import "well.css.scss";
 
+.scaffold {
+  background: $gray-lighter;
+  min-height: 100vh;
+  min-height: calc(100vh - 52px);
+
+  .main {
+    background: $body-bg;
+    min-height: 100vh;
+    min-height: calc(100vh - 52px);
+    padding: 0 30px;
+  }
+
+  .sidebar {
+    padding: 0;
+    // max-height:100%;
+    // overflow-y: scroll;
+  }
+}
+
 /* typography */
 
-h1, h2, h3, h4, h5 {
-  margin-top: 0px;
-  margin-bottom: 15px;
-}
+// h1, h2, h3, h4, h5 {
+//   margin-top: 0px;
+//   margin-bottom: 15px;
+// }
 
 .text-primary.muted {
     color: $brand-primary-muted;
@@ -127,6 +164,7 @@ h1, h2, h3, h4, h5 {
 /* Font Awesome and Octicons */
 
 i.fa-times,
+i.fa-plus,
 i.fa-plus-circle,
 i.fa-info {
     cursor: pointer;
