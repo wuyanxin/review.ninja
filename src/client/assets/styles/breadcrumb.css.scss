@@ -1,0 +1,10 @@
+.breadcrumb {
+    a { 
+        color: $brand-primary;
+    }
+
+    a:hover {
+        text-decoration: none;
+        color: $brand-primary-hover;
+    }
+}

@@ -4,10 +4,10 @@
     <div class="row">
       <div class="col-md-12">
 
-        <h4>
-          <span class="bread-crumb" ui-sref="repo.list()">{{ repo.value.full_name }}</span> 
-          <span class="octicon octicon-gear bread-crumb pull-right" ui-sref="repo.settings()"></span>
-        </h4>
+        <ol class="breadcrumb">
+          <li><a ui-sref="repo.list()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
+          <li class="pull-right"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
+        </ol>
         
         <h2><span class="mega-octicon octicon-git-pull-request"></span> Pull Requests</h2>
 

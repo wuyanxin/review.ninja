@@ -4,9 +4,9 @@
     <div class="row">
       <div class="col-md-12">
 
-        <h4>
-          <span class="bread-crumb" ui-sref="repo.list()">{{ repo.value.full_name }}</span> 
-        </h4>
+        <ol class="breadcrumb">
+          <li><a ui-sref="repo.list()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
+        </ol>
         
         <h2><span class="mega-octicon octicon-gear"></span> Settings</h2>
 
@@ -17,8 +17,11 @@
       <div class="col-md-12">
             
             <h4 style="font-weight:400;">
-              Email notifications <i class="fa fa-plus-circle text-primary" ng-click="show=true"></i>
-              <i class="fa fa-info-circle text-primary pull-right"></i>
+              Email notifications <i class="fa fa-lg fa-plus-circle text-primary" ng-click="show=true"></i>
+              <span class="fa-stack pull-right">
+                <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
+                <i class="fa fa-info fa-stack-1x text-primary"></i>
+              </span>
             </h4>
 
             <div class="well" ng-show="show">
