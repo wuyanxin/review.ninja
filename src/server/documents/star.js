@@ -6,6 +6,7 @@ var StarSchema = mongoose.Schema({
     repo: Number,
     user: Number,
     name: String,
+    created_at: Date
 });
 
 StarSchema.plugin(withHelper);

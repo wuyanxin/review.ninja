@@ -44,6 +44,13 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '
             repo_uuid: $scope.repo.id
         });
 
+        // get the users for each star
+        $scope.pull.stars.forEach(function(star) {
+            star.user = $HUB.call('user', 'getFrom', {
+                user: star.name
+            });
+        });
+
         //
         // Events
         //
@@ -133,6 +140,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$stateParams', '$HUB', '
             }, function(err, stars) {
                 if(!err) {
                     $scope.pull.stars = stars.value;
+                    $scope.pull.stars.forEach(function(star) {
+                        star.user = $HUB.call('user', 'getFrom', {
+                            user: star.name
+                        });
+                    });
                 }
             });
 

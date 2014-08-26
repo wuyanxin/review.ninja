@@ -142,12 +142,30 @@ $code-font-size: 12px;
   }
 }
 
-/* typography */
+.star-dropdown {
 
-// h1, h2, h3, h4, h5 {
-//   margin-top: 0px;
-//   margin-bottom: 15px;
-// }
+  margin-bottom: 0;
+  padding-bottom: 0;
+
+  max-height: 350px;
+  overflow-y: scroll;
+
+  > li > a:hover {
+    cursor: default;
+    background-color: transparent !important;
+  }
+
+  .divider {
+    margin-bottom: 0;
+  }
+
+  .star-dropdown-item {
+    padding: 5px 0;
+    border-bottom: 1px solid $gray-light;
+  }
+}
+
+/* typography */
 
 .text-primary.muted {
     color: $brand-primary-muted;

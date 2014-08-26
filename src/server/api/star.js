@@ -83,7 +83,8 @@ module.exports = {
                     sha: req.args.sha, 
                     user: req.user.id, 
                     repo: req.args.repo_uuid,
-                    name: req.user.login
+                    name: req.user.login,
+                    created_at: Date.now()
                 }, function(err, star) {
 
                     if(star) {
