@@ -13,6 +13,37 @@ module.exports = {
 ************************************************************************************************************/
 
     add: function(req, done) {
+        if(!req.args.sha) {
+            return done({
+                code: 400,
+                text: 'sha must be set'
+            }, null);
+        }
+        if(!req.args.user) {
+            return done({
+                code: 400,
+                text: 'user must be set'
+            }, null);
+        }
+        if(!req.args.repo) {
+            return done({
+                code: 400,
+                text: 'repo must be set'
+            }, null);
+        }
+        if(!req.args.title) {
+            return done({
+                code: 400,
+                text: 'title must be set'
+            }, null);
+        }
+        if(!req.args.number) {
+            return done({
+                code: 400,
+                text: 'number must be set'
+            }, null);
+        }
+
         var fileReference = '`none`';
 
         if(req.args.reference) {
