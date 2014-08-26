@@ -88,5 +88,90 @@ describe('issue:add', function(done){
             done();
         });
     }); 
+
+    it('should return error code 400 if sha is not set', function(done){
+        var req = {
+            args: {
+                title: 'Test title',
+                body: 'Test body',
+                user: 'reviewninja',
+                repo: 'review.ninja',
+                number: 1
+            }
+        };
+
+        issue.add(req, function(err, res) {
+            assert.equal(err.code, 400);
+            done();
+        });
+    }); 
+
+    it('should return error code 400 if repo is not set', function(done){
+        var req = {
+            args: {
+                title: 'Test title',
+                body: 'Test body',
+                user: 'reviewninja',
+                sha: '*commitsha*',
+                number: 1
+            }
+        };
+
+        issue.add(req, function(err, res) {
+            assert.equal(err.code, 400);
+            done();
+        });
+    }); 
+
+    it('should return error code 400 if user is not set', function(done){
+        var req = {
+            args: {
+                title: 'Test title',
+                body: 'Test body',
+                repo: 'review.ninja',
+                sha: '*commitsha*',
+                number: 1
+            }
+        };
+
+        issue.add(req, function(err, res) {
+            assert.equal(err.code, 400);
+            done();
+        });
+    }); 
+
+    it('should return error code 400 if title is not set', function(done){
+        var req = {
+            args: {
+                body: 'Test body',
+                user: 'reviewninja',
+                repo: 'review.ninja',
+                sha: '*commitsha*',
+                number: 1
+            }
+        };
+
+        issue.add(req, function(err, res) {
+            assert.equal(err.code, 400);
+            done();
+        });
+    }); 
+
+    it('should return error code 400 if number is not set', function(done){
+        var req = {
+            args: {
+                title: 'Test title',
+                body: 'Test body',
+                user: 'reviewninja',
+                repo: 'review.ninja',
+                sha: '*commitsha*',
+            }
+        };
+
+        issue.add(req, function(err, res) {
+            assert.equal(err.code, 400);
+            done();
+        });
+    }); 
     
 });
