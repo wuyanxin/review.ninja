@@ -7,7 +7,6 @@ var Repo = require('mongoose').model('Repo');
 var User = require('mongoose').model('User');
 
 module.exports = function() {
-
     function createWebhook(user, repo, token, done) {
         github.call({
             obj: 'repos',
@@ -21,11 +20,7 @@ module.exports = function() {
                 active: true
             },
             token: token
-        }, function(err, hook) {
-            if(typeof done === 'function') {
-                done(err, hook);
-            }
-        });
+        }, done);
     }
 
 
@@ -215,17 +210,13 @@ module.exports = function() {
                                             id: hook.id
                                         }, 
                                         token: req.user.token
-                                    }, function(err, data) {
-
                                     });
                                 }
                             });
                         }
-
                     });
                 });
             });
-
         },
 
         getHook: function(req, done) {
@@ -276,9 +267,7 @@ module.exports = function() {
                         return done(err, repo);
                     }
 
-                    createWebhook(req.args.user, req.args.repo, req.user.token, function(err, hook) {
-                        done(err, hook);
-                    });
+                    createWebhook(req.args.user, req.args.repo, req.user.token, done);
                 });
             });
         }

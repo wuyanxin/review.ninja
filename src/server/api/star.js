@@ -17,11 +17,7 @@ module.exports = {
     ************************************************************************************************************/
 
     all: function(req, done) {
-
-        Star.find({sha: req.args.sha, repo: req.args.repo_uuid}, function(err, stars) {
-            done(err, stars);
-        });
-
+        Star.find({sha: req.args.sha, repo: req.args.repo_uuid}, done);
     },
 
 
@@ -34,15 +30,11 @@ module.exports = {
     ************************************************************************************************************/
 
     get: function(req, done) {
-
         Star.with({
             sha: req.args.sha,
             user: req.user.id,
             repo: req.args.repo_uuid
-        }, function(err, star) {
-            done(err, star);
-        });
-
+        }, done);
     },
 
     /************************************************************************************************************
