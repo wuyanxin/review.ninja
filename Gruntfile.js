@@ -1,7 +1,9 @@
 module.exports = function(grunt) {
 
     var config = {
+
         pkg: grunt.file.readJSON('package.json'),
+
         sass: {
             dist: {
                 files: {
@@ -9,12 +11,14 @@ module.exports = function(grunt) {
                 }
             }
         },
+
         watch: {
             css: {
                 files: 'src/client/assets/styles/*.scss',
                 tasks: ['sass']
             }
         },
+
         concurrent: {
             dev: {
                 tasks: ['nodemon', 'watch'],
@@ -23,6 +27,7 @@ module.exports = function(grunt) {
                 }
             }
         },
+
         nodemon: {
             debug: {
                 script: 'app.js'
@@ -60,14 +65,15 @@ module.exports = function(grunt) {
     // Initialize configuration
     grunt.initConfig(config);
 
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
+    grunt.loadNpmTasks('grunt-nodemon');
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('serve', ['sass', 'concurrent'])
+    grunt.registerTask('serve', ['sass', 'concurrent']);
+
     grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
 };
