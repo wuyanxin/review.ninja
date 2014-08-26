@@ -13,12 +13,12 @@ module.exports = {
 ************************************************************************************************************/
 
     add: function(req, done) {
-
         var fileReference = '`none`';
+
         if(req.args.reference) {
-            var url = url.githubFileReference(req.args.user, req.args.repo, req.args.reference);
+            var referenceUrl = url.githubFileReference(req.args.user, req.args.repo, req.args.reference);
             // req.args.reference is 'sha/path/to/file#Lline_number this line trims the sha
-            fileReference = '[' + req.args.reference.replace(req.args.sha + '/', '') + ']' + '(' + url + ')';
+            fileReference = '[' + req.args.reference.replace(req.args.sha + '/', '') + ']' + '(' + referenceUrl + ')';
         }
             
         var body = req.args.body + '\r\n\r\n';
@@ -37,8 +37,6 @@ module.exports = {
                 labels: ['review.ninja', 'pull-request-' + req.args.number]
             }, 
             token: req.user.token
-        }, function(err, issue) {
-            done(err, issue);
-        });
+        }, done);
     }
 };
