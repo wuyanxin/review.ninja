@@ -15,45 +15,6 @@ module.exports = {
             pathPrefix: config.server.github.enterprise ? '/api/v3' : null
         });
 
-        // augument the client
-        github.repos.one = function(msg, callback) {
-
-            var self = github;
-
-            self.httpSend(msg, {
-                url: '/repositories/:id',
-                params: {
-                    '$id': null
-                },
-                method: 'get'
-            }, function(err, res) {
-
-                if (err) {
-                    return callback(err);
-                }
-
-                var ret;
-
-                try {
-                    ret = res.data && JSON.parse(res.data);
-                } catch (ex) {
-                    return callback(ex);
-                }
-
-                if (!ret)
-                    ret = {};
-                if (!ret.meta)
-                    ret.meta = {};
-                ['x-ratelimit-limit', 'x-ratelimit-remaining', 'x-oauth-scopes', 'link', 'location', 'last-modified', 'etag', 'status'].forEach(function(header) {
-                    if (res.headers[header])
-                        ret.meta[header] = res.headers[header];
-                });
-
-                if (callback)
-                    callback(null, ret);
-            });
-        };
-
         if(!obj || !github[obj]) {
             return done('obj required/obj not found');
         }
@@ -81,6 +42,7 @@ module.exports = {
                 meta = null;
             }
 
+            console.log(obj + '.' + fun);
             done(err, res, meta);
 
         });
