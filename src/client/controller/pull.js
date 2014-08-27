@@ -98,8 +98,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     head: $scope.head,
-                    base: base
-                    
+                    base: $scope.base
                 }, function(err, res) {
                     if(!err) {
                         $scope.files.value = res.value.files;
@@ -126,9 +125,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 sha: $scope.pull.head.sha,
                 number: $stateParams.number,
                 repo_uuid: $scope.repo.id
-            }, function(err, res) {
+            }, function(err, star) {
                 if(!err) {
-                    $scope.star.value = fn==='set' ? res.value : null;
+                    console.log(star);
+                    $scope.star.value = fn==='set' ? star.value : null;
                 }
             });
         };
@@ -147,11 +147,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     });
                 }
             });
-
-            $scope.star = $RPC.call('star', 'get', {
-                sha: $scope.pull.head.sha,
-                repo_uuid: $scope.repo.id
-            });
         };
 
         $scope.refreshPullRequest = function() {
@@ -165,10 +160,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 }
             });
         };
-
-        //
-        // actions
-        //
 
         $scope.createIssue = function() {
 

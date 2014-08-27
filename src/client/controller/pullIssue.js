@@ -6,8 +6,8 @@
 // resolve: open, closed 
 // *****************************************************
 
-module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',
-    function($scope, $state, $stateParams, $HUB, $RPC, issue, socket) {
+module.controller('PullIssueCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, issue, socket) {
 
         // get the issue
         $scope.issue = issue.value;
@@ -55,9 +55,10 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
                     repo: $stateParams.repo,
                     number: $stateParams.issue,
                     body: $scope.comment
-                }, function(err, data) {
+                }, function(err, comment) {
                     if(!err) {
                         $scope.comment = null;
+                        $scope.comments.value.push(comment.value);
                     }
                 });
             }
@@ -69,7 +70,7 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
                 repo: $stateParams.repo,
                 id: id
             }, function(err, comment) {
-                if(!err) {
+                if(!err && comment.value.user.id!==$rootScope.user.value.id) {
                   $scope.comments.value.push(comment.value);
                 }
             });        
