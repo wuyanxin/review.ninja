@@ -16,7 +16,7 @@ ReviewNinja was built to integrate into GitHub.com as well as GitHub Enterprise.
 Why should I use ReviewNinja?
 ------------------------------
 
-ReviewNinja defines a clearer process for code review in GitHub. Review Ninja also provides a status overview, so team members in addition to development can understand the state of the project (e.g., product management).
+ReviewNinja defines a clearer process for code review in GitHub. ReviewNinja also provides a status overview, so team members in addition to development can understand the state of the project (e.g., product management).
 
 Try ReviewNinja
 ----------------
