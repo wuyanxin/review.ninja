@@ -2,15 +2,15 @@ module.exports = {
     byLabels: function(labels) {
         var pull_request_number = null;
 
-        for(var i=0; i<labels.length; i++){
-            var reg = /pull-request-(\d*)?/;
-            var match = reg.exec(labels[i].name); 
+        labels.forEach(function(label) {
+            var regex = /pull-request-(\d*)?/;
+            var match = regex.exec(label.name); 
 
             if (match) {
                 pull_request_number = match[1];
-                break;
             }
-        }   
+        });
+
         return pull_request_number;
     },
 
