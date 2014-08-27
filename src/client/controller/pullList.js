@@ -21,12 +21,20 @@ module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '
             });
         }
 
+        if(filtered.length) {
+            issues.value = filtered;
+        }
+
         // get the open issues
-        $scope.issues = filtered.length ? filtered : issues.value;
+        $scope.issues = issues;
 
         // emit to parent controller (repo.pull)
         $scope.$emit('issue:set', null);
-        $scope.$emit('reference:set', $scope.issues);
+
+        $scope.$watch('issues.value', function() {
+            $scope.$emit('reference:set', $scope.issues.value);
+        });
+
 
         // update the comparison view
         $scope.compComm($scope.pull.base.sha);

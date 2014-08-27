@@ -101,17 +101,9 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             // Repo issue state (abstract)
             //
             .state('repo.pull.issue', {
+                url: '?state',
                 abstract: true,
                 templateUrl: '/templates/issue.html',
-            })
-
-            //
-            // Repo issue master state
-            //
-            .state('repo.pull.issue.master', {
-                url: '?state&issues',
-                templateUrl: '/templates/pull/list.html',
-                controller: 'PullListCtrl',
                 resolve: {
                     issues: ['$HUBService', '$stateParams', 'Issue',
                         function($HUBService, $stateParams, Issue) {
@@ -125,7 +117,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 state: state
                             }, function(err, res) {
                                 if(!err) {
-                                    res.value.forEach(function(issue) {
+                                    res.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
                                 }
@@ -133,6 +125,21 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                         }
                     ]
                 }
+            })
+
+            //
+            // Repo issue master state
+            //
+            .state('repo.pull.issue.master', {
+                url: '?issues',
+                templateUrl: '/templates/pull/list.html',
+                controller: 'PullListCtrl',
+                resolve: {
+                    issues: ['issues', function(issues) {
+                        return issues;
+                    }]
+                }
+
             })
 
             //

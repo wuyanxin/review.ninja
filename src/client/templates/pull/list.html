@@ -1,5 +1,8 @@
-<table class="table table-hover">
-  <tr class="select" ng-repeat="issue in issues" ui-sref="repo.pull.issue.detail({ issue: issue.number })">
+<table class="table table-hover"
+       infinite-scroll="issues.getMore()"
+       infinite-scroll-disabled="$stateParams.issues ? true : issues.loading">
+
+  <tr class="select" ng-repeat="issue in issues.value" ui-sref="repo.pull.issue.detail({ issue: issue.number })">
     <td width="50px">
       <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
     </td>
@@ -16,4 +19,7 @@
       {{ issue.comments }}
     </td>
   </tr>
+
 </table>
+
+<i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="issues.loading"></i>

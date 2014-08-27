@@ -15,7 +15,7 @@
         <td></td>
         <td>
             <p style="margin-bottom:5px;">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span></p>
-            <span ng-show="issue.ref"><i class="fa fa-link text-warning"></i> This issue is linked to {{ issue.ref }}</span>
+            <span ng-show="issue.ref"><i class="fa fa-link text-warning"></i> This issue is linked to {{ issue.file }}, line #{{ issue.line }}</span>
         </td>
         <td></td>
     </tr>
@@ -23,7 +23,7 @@
 </table>
 
 <div infinite-scroll="comments.getMore()" 
-     infinite-scroll-disabled="!comments.hasMore"
+     infinite-scroll-disabled="comments.loading"
      style="padding:20px 10px; margin-bottom:20px;">
 
     <table style="width:100%" ng-show="issue.body">
