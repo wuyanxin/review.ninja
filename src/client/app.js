@@ -102,13 +102,21 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             //
             .state('repo.pull.issue', {
                 abstract: true,
-                url: '?state',
                 templateUrl: '/templates/issue.html',
-                resolve: {
-                    issues: ['$stateParams', '$HUBService', 'Issue',
-                        function($stateParams, $HUBService, Issue) {
+            })
 
-                            var state = $stateParams.state ? $stateParams.state : 'open';
+            //
+            // Repo issue master state
+            //
+            .state('repo.pull.issue.master', {
+                url: '?state&issues',
+                templateUrl: '/templates/pull/list.html',
+                controller: 'PullListCtrl',
+                resolve: {
+                    issues: ['$HUBService', '$stateParams', 'Issue',
+                        function($HUBService, $stateParams, Issue) {
+
+                            var state = ($stateParams.state==='open' || $stateParams.state==='closed') ? $stateParams.state : 'open';
 
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
@@ -124,39 +132,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                             });
                         }
                     ]
-                }
-            })
-
-            //
-            // Repo issue master state
-            //
-            .state('repo.pull.issue.master', {
-                url: '?issues',
-                templateUrl: '/templates/pull/list.html',
-                controller: 'PullListCtrl',
-                resolve: {
-                    issues: ['issues', '$stateParams', function(issues, $stateParams) {
-
-                        // todo:
-                        // clean up this code
-
-                        var filtered = {};
-                        filtered = angular.extend(filtered, issues);
-
-                        var filter = $stateParams.issues ? $stateParams.issues.split(',') : null;                        
-
-                        if(filter) {
-                            var value = [];
-                            issues.value.forEach(function(issue) {
-                                if(filter.indexOf(issue.number.toString()) > -1) {
-                                    value.push(issue);
-                                }
-                            });
-                            filtered.value = value;
-                        }
-
-                        return filtered;
-                    }]
                 }
             })
 

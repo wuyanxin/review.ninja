@@ -22,62 +22,55 @@ module.controller('PullIssueCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
         }
 
         // get the comments
-        $HUB.call('issues', 'getComments', {
+        $scope.comments = $HUB.call('issues', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.issue
-        }, function(err, comments) {
-            if(!err) {
-                $scope.issue.comments = comments;
-            }
         });
 
         //
         // actions
         //
 
-        $scope.toggle = function(issue) {
+        $scope.toggle = function() {
 
-            var state = issue.state==='open' ? 'closed' : 'open';
+            var state = $scope.issue.state==='open' ? 'closed' : 'open';
 
-            $HUB.call('issues', 'edit', {
+            $scope.toggling = $HUB.call('issues', 'edit', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                number: issue.number,
+                number: $scope.issue.number,
                 state: state
             }, function(err, issue) {
                 if(!err) {
-                    $scope.issue = Issue.parse(issue.value);
-                    // todo: update reference
+                    $scope.issue.state = issue.value.state;
                 }
             });
         };
 
-        $scope.comment = function() {
-
-            $HUB.call('issues', 'createComment', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: $stateParams.issue,
-                body: $scope.comment_text
-            }, function(err, data) {
-
-                if(!err) {
-                    $scope.comment_text = '';
-                }
-            });
+        $scope.addComment = function() {
+            if($scope.comment) {
+                $scope.commenting = $HUB.call('issues', 'createComment', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.issue,
+                    body: $scope.comment
+                }, function(err, data) {
+                    if(!err) {
+                        $scope.comment = null;
+                    }
+                });
+            }
         };
 
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $scope.issue.id, function(comment_id) {
-
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $scope.issue.id, function(id) {
             $HUB.call('issues', 'getComment', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                id: comment_id
-            }, function(err, data) {
-
+                id: id
+            }, function(err, comment) {
                 if(!err) {
-                  $scope.issue.comments.value = $scope.issue.comments.value.concat(data.value);
+                  $scope.comments.value.push(comment.value);
                 }
             });        
         });

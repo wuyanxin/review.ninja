@@ -94,7 +94,7 @@ $breadcrumb-separator: " ";
 $breadcrumb-padding-horizontal: 0px;
 
 // code
-$pre-color: $gray-darker;
+$pre-color: #333333;
 
 /* import bootstrap */
 @import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss";
@@ -118,15 +118,19 @@ $code-font-size: 12px;
 @import "navbar.css.scss";
 @import "panel.css.scss";
 @import "pull-list.css.scss";
-@import "sidebar.css.scss";
 @import "table.css.scss";
 @import "tabs.css.scss";
 @import "well.css.scss";
 
+
+//
+// Heights used in calculations below:
+// 52px: navbar height
+// 48px: issues panel header
+//
+
 .scaffold {
   background: $gray-lighter;
-  min-height: 100vh;
-  min-height: calc(100vh - 52px);
 
   .main {
     background: $body-bg;
@@ -137,8 +141,26 @@ $code-font-size: 12px;
 
   .sidebar {
     padding: 0;
-    // max-height:100%;
-    // overflow-y: scroll;
+    max-height: 100vh;
+    max-height: calc(100vh - 52px);
+    background: $gray-lighter;
+    overflow-y: hidden;
+
+    .ui-scrollfix {
+        position: fixed;
+        width: inherit;
+        top: 0;
+    }
+
+    section {
+      height: 100vh;
+      height: calc(100vh - 100px);
+      overflow-y: scroll;
+    }
+
+    section::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 
@@ -177,6 +199,10 @@ $code-font-size: 12px;
 
 .text-info {
     color: $brand-info;
+}
+
+.text-gray {
+  color: $gray-dark;
 }
 
 /* Font Awesome and Octicons */
