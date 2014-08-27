@@ -65,6 +65,24 @@ module.exports = function(grunt) {
     // Initialize configuration
     grunt.initConfig(config);
 
+    // Report coverage to review.ninja once instanbul is finished
+    grunt.event.on('coverage', function(lcovFileContents, done) {
+
+        var options = {
+            outputFile: 'output/coverage/server.out',
+            minCoverage: 75
+        };
+
+        var onSuccess = function() {
+            // Something
+        };
+
+        require('reviewninja-coverage-reporter')
+            .report(options, lcovFileContents, onSuccess);
+
+        done();
+    });
+
     grunt.loadNpmTasks('grunt-mocha-istanbul');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-mocha-test');
