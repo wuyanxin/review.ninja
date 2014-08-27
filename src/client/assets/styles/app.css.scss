@@ -13,7 +13,9 @@ $brand-primary: #3e9a94;
 $brand-primary-muted: #abd5d5;
 $brand-primary-hover: #2c827c;
 $brand-warning: #ffa159;
+$brand-danger: #cc3333;
 $brand-info: #d0eaea;
+$brand-merged: #6e5494;
 $link-color: #3c3c3d;
 
 // scaffolding
@@ -189,6 +191,10 @@ $code-font-size: 12px;
 
 /* typography */
 
+.text-body {
+  color: $text-color;
+}
+
 .text-primary.muted {
     color: $brand-primary-muted;
 }
@@ -197,12 +203,27 @@ $code-font-size: 12px;
     color: $brand-warning;
 }
 
+.text-danger {
+  color: $brand-danger;
+}
+
 .text-info {
     color: $brand-info;
 }
 
+.text-merged {
+  color: $brand-merged;
+}
+
 .text-gray {
   color: $gray-dark;
+}
+
+.merge-message {
+  border-left:5px solid; 
+  margin-top:10px; 
+  padding-left:10px;
+  line-height: normal;
 }
 
 /* Font Awesome and Octicons */

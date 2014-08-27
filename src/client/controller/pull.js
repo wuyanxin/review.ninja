@@ -51,6 +51,34 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             });
         });
 
+        // get the details
+        // it would be cool if the "issue" could
+        // be inherited from the parent list view
+        // to avoid having to call github
+        $scope.extra = $HUB.call('issues', 'repoIssues', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            labels: 'review.ninja, pull-request-' + $stateParams.number,
+            state: 'open',
+            per_page: 1
+        }, function(err, issues) {
+            if(!err) {
+                $scope.pull.open_issue = issues.value.length ? issues.value[0] : null;
+            }
+        });
+
+        // $HUB.call('issues', 'repoIssues', {
+        //     user: $stateParams.user,
+        //     repo: $stateParams.repo,
+        //     labels: 'review.ninja, pull-request-' + $stateParams.number,
+        //     state: 'closed',
+        //     per_page: 1
+        // }, function(err, issues) {
+        //     if(!err) {
+        //         $scope.pull.closed_issue = issues.value.length ? issues.value[0] : null;
+        //     }
+        // });
+
         //
         // Events
         //
