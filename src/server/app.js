@@ -33,6 +33,7 @@ app.use(passport.session());
 
 // custom middleware
 app.use('/api', require('./middleware/param'));
+app.use('/github/webhook', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 
 async.series([

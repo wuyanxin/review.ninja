@@ -2,8 +2,8 @@
 // Diff File Directive
 // *****************************************************
 
-module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
-    function($stateParams, $state, $HUB, $RPC, Reference) {
+module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
+    function($stateParams, $state, $HUB, $RPC) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
@@ -13,7 +13,9 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 status: '=',
                 fileSha: '=',
                 baseSha: '=',
-                headSha: '='
+                headSha: '=',
+                selection: '=',
+                reference: '='
             },
             link: function(scope, elem, attrs) {
 
@@ -22,8 +24,6 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 scope.open = true;
 
                 scope.expanded = false;
-
-                scope.Reference = Reference;
 
                 // To Do:
                 // fix this
@@ -41,7 +41,6 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                             if(!err) {
 
                                 var file=[], chunks=[];
-
                                 var index = 0;
 
                                 // find the chunks
@@ -54,20 +53,16 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                                         while( ++index<scope.patch.length && !scope.patch[index].chunk ) {
 
                                             start = start ? start : scope.patch[index].head;
-
                                             end = scope.patch[index].head ? scope.patch[index].head : end;
-
                                             c.push(scope.patch[index]);
                                         }
 
                                         chunks.push({ start:start, end:end, chunk:c });
-
                                         continue;
                                     }
 
                                     index = index + 1;
                                 }
-
 
                                 index = 0;
 
@@ -77,16 +72,12 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                                     if( chunks[0] && res.value.content[index].head===chunks[0].start ) {
 
                                         chunk = chunks.shift();
-
                                         file = file.concat( chunk.chunk );
-
                                         index = chunk.end;
-
                                         continue;
                                     }
 
                                     file.push( res.value.content[index] );
-
                                     index = index + 1;
                                 }
 
@@ -112,7 +103,17 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
 
                 scope.select = function(line) {
                     if(line.head) {
-                        Reference.select(scope.headRef(line));
+
+                        var ref = scope.headRef(line);
+
+                        if(scope.selection[ref]) {
+                            return delete scope.selection[ref];
+                        }
+
+                        for(var sel in scope.selection) {
+                            delete scope.selection[sel];
+                        }
+                        scope.selection[ref] = true;
                     }
                 };
 
@@ -133,11 +134,10 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     }
 
                     if(issues.length === 1) {
-                        $state.go('repo.pull.issue.detail', { issue: issues[0] });
+                        return $state.go('repo.pull.issue.detail', { issue: issues[0] });
                     }
-                    else {
-                        $state.go('repo.pull.issue.master', { issues: issues });
-                    }
+
+                    $state.go('repo.pull.issue.master', { issues: issues });
                 };
             }
         };

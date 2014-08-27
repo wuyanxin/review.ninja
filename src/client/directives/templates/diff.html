@@ -1,3 +1,4 @@
+
 <accordion class="diff">
 	<accordion-group is-open="open">
 		<accordion-heading>
@@ -19,20 +20,18 @@
             		ng-class="{ addition: line.add, 
                         		deletion: line.del, 
                         		chunk: line.chunk, 
-                        		selected: Reference.isIssue(baseRef(line)) || 
-                        		          Reference.isIssue(headRef(line)) ||
-                        		          Reference.isSelected(headRef(line)) }">
+                        		selected: selection[headRef(line)] || reference[baseRef(line)] || reference[headRef(line)] }">
 
 					<td class="select">
-						<i class="fa fa-circle" 
+						<i class="fa fa-circle text-warning" 
 						   ng-click="select(line)" 
-						   ng-show="Reference.isSelected(headRef(line))">
+						   ng-show="selection[headRef(line)]">
 						</i>
 
-						<i id="#issue" class="fa fa-exclamation-circle" 
-						   ng-click="go( Reference.get(baseRef(line)), Reference.get(headRef(line)) )" 
-						   ng-show="Reference.isIssue(baseRef(line)) || Reference.isIssue(headRef(line))">
-						</i>
+						<span class="octicon octicon-issue-opened text-warning" 
+						   ng-click="go(reference[baseRef(line)], reference[headRef(line)])" 
+						   ng-show="reference[baseRef(line)] || reference[headRef(line)]">
+						</span>
 					</td>
 
 					<td class="number" ng-click="select(line)"><pre>{{ line.base }}</pre></td>

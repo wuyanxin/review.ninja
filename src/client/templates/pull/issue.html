@@ -1,30 +1,95 @@
-<p class="lead"><a ui-sref="repo.pull.issue.master()"><i class="fa fa-chevron-left"></i></a> Issues</p>
 
-<h4>{{ issue.title }} <small>#{{ issue.number }}</small></h4>
-<h5>
-    <span class="label" ng-class="{ 'label-success':issue.state==='open',
-                                    'label-danger':issue.state==='closed'}">
-        <i class="fa fa-exclamation-circle"></i> {{ issue.state }}
-    </span> 
-    &nbsp;{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span>
-</h5>
-<table>
-    <tr ng-repeat="comment in issue.comments.value" style="height:100px">
-        <td><img ng-src= '{{comment.user.avatar_url}}&s=50' style="float:left; width:50px;">
-        <strong ><span>{{ comment.body }}</span></strong>
-        <br>
-        <i> <span moment="comment.created_at"></span></i></td>
+<table style="width:100%">
+
+    <tr>
+        <td style="padding-left:10px;">
+            <h3><a class="text-primary" ui-sref="repo.pull.issue.master()"><i class="fa fa-chevron-left"></i></a></h3>
+        </td>
+        <td><h3>{{ issue.title }} <span class="text-gray">#{{ issue.number }}<span></h3></td>
+        <td class="text-right" style="padding-right:10px;">
+          <h3 class="text-primary"><i class="fa fa-comments"></i> {{ comments.value.length }}</h3>
+        </td>
     </tr>
+
+    <tr>
+        <td></td>
+        <td>
+            <p style="margin-bottom:5px;">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span></p>
+            <span ng-show="issue.ref"><i class="fa fa-link text-warning"></i> This issue is linked to {{ issue.ref }}</span>
+        </td>
+        <td></td>
+    </tr>
+
 </table>
-<input type="input" ng-model= "comment_text" class="form-control" placeholder="Comment" style="margin-top:100px">
-<div class="pull-right">
-    <button type="button" class="btn btn-sm btn-default" ng-click="toggle(issue)" ng-show="issue.state==='open'">
-        Close issue
-    </button>
-    <button type="button" class="btn btn-sm btn-default" ng-click="toggle(issue)" ng-show="issue.state==='closed'">
-        Reopen issue
-    </button>
-    <button type="button" class="btn btn-sm btn-primary" ng-click="comment()">
-        Comment
-    </button>
+
+<div infinite-scroll="comments.getMore()" 
+     infinite-scroll-disabled="!comments.hasMore"
+     style="padding:20px 10px; margin-bottom:20px;">
+
+    <table style="width:100%" ng-show="issue.body">
+        <tr>
+            <td style="width:42px; padding-right:10px; vertical-align:top;">
+                <img ng-src="{{ issue.user.avatar_url }}&s=42" width="42px" />
+            </td>
+            <td>
+                <div class="panel panel-default comment">
+                    <div class="panel-heading">
+                        <strong>{{ issue.user.login }}</strong> commented <span moment="issue.created_at"></span>
+                    </div>
+                    <div class="panel-body">
+                        {{ issue.body }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width:100%">
+        <tr ng-repeat="comment in comments.value">
+            <td style="width:42px; padding-right:10px; vertical-align:top;">
+                <img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" />
+            </td>
+            <td>
+                <div class="panel panel-default comment">
+                    <div class="panel-heading">
+                        <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
+                    </div>
+                    <div class="panel-body">
+                        {{ comment.body }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="comments.loading"></i>
+
+    <form role="form" ng-submit="addComment()">
+        <table style="width:100%" ng-show="!comments.loading && !comments.hasMore">
+            <tr>
+                <td style="width:42px; padding-right:10px; vertical-align:top;">
+                    <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
+                </td>
+                <td>
+                    <div class="panel panel-default comment">
+                        <div class="panel-heading"><strong>{{ user.value.login }}</strong></div>
+                        <div class="panel-body" style="padding:0;">
+                            <textarea class="form-control" ng-model="comment" rows="4" placeholder="Leave a comment"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="pull-right">
+                      <i class="fa fa-lg fa-spinner fa-spin" ng-show="toggling.loading || commenting.loading" style="margin-right:10px;"></i>
+                      <button type="button" class="btn btn-info" ng-click="toggle()" ng-disabled="toggling.loading">
+                        {{ issue.state==='open' ? 'Close' : 'Reopen' }} issue
+                      </button>
+                      <button type="submit" class="btn btn-primary"  ng-disabled="!comment">Comment</button>
+                    </div>
+                    <div style="clear:both;"></div>
+                </td>
+            </tr>
+        </table>
+    </form>
+
 </div>
+

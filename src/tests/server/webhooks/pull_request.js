@@ -39,47 +39,24 @@ describe('pull_request:opened', function(){
         };
     });
 
+
     it('should send notification', function(done){
 
-        stub_github_call = sinon.stub(github, 'call', function(args, done){
-            
-            if(args.fun == 'getIssues'){
-              var issues = [];
-              err = null;
-              done(err,issues);
-            }else if(args.fun == 'get' && args.obj == 'pullRequests'){
-              var pull_request = {
-                head: {
-                  sha: '123'
-                }
-              };
-              err =null;
-              done(err,pull_request);
-            }
-        });
+      stub_github_status_api = sinon.stub(status, 'update', function(args,done){
+        done();
+      });
 
-        stub_github_status_api = sinon.stub(status, 'update', function(args,done){
-          done();
-        });
-
-        stub_notification_pull_request_opened = sinon.stub(notification,'pull_request_opened', function(user, slug, number, sender, review_url, repo, repo_name){
-            assert.equal(number, 48);
-        });
-
-
-        stub_repo_with=  sinon.stub(Repo,'with', function(args,done){
-            var err = null;
-            var repo = {
-                ninja:true,
-                token:'token'
-            };
-            done(err,repo);
-        });
-
+      stub_repo_with=  sinon.stub(Repo,'with', function(args,done){
+          var err = null;
+          var repo = {
+              ninja:true,
+              token:'token'
+          };
+      });
 
     var req = 
         {
-            body:{
+            args:{
                 
   'action': 'opened',
   'number': 48,
@@ -490,18 +467,14 @@ describe('pull_request:opened', function(){
 }
 
     };
+      var res= {
+          end: function(){
+              done();
+          }
+      };
 
-    var res= {
-        end: function(){
-            done();
-        }
-    };
-
-    var pull_request = new PullRequest(req,res);
-
-
+      var pull_request = new PullRequest(req,res);
 
     });
-
 
 });

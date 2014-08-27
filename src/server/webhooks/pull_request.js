@@ -14,62 +14,67 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    var repo_uuid = req.body.repository.id;
-
     Repo.with({
-        uuid: repo_uuid
+        uuid: req.args.repository.id
     }, function(err, repo) {
 
-        if (err) {
+        if(err) {
             return;
         }
 
-        if (repo.ninja) {
+        if(repo.ninja) {
 
-            // to be reviewed by review.ninja so let's go on
-
-            var action = req.body.action;
-            var pull_request_number = req.body.number;
-            var repository = req.body.repository;
-            var user = repository.owner.login;
-            var repo_name = repository.name;
-            var slug = repository.full_name;
-            var sender = req.body.sender;
-            var review_url = url.reviewPullRequest(user, repo_name, req.body.number);
-            var latest_commit_sha = req.body.pull_request.head.sha;
-
-            args = {
-                user: user,
-                repo: repo_name,
-                repo_uuid: repo_uuid,
-                sha: latest_commit_sha,
-                number: pull_request_number,
+            var args = {
+                user: req.args.repository.owner.login,
+                repo: req.args.repository.name,
+                repo_uuid: req.args.repository.id,
+                sha: req.args.pull_request.head.sha,
+                number: req.args.number,
                 token: repo.token
+            };
+
+            var notification_args = {
+                slug: req.args.repository.full_name,
+                number: req.args.number,
+                sender: req.args.sender,
+                review_url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
             };
 
             var actions = {
                 opened: function() {
 
-                    status.update(args, function(err, data) {
-                    });
+                    status.update(args, function(err, data) {});
 
-                    notification.pull_request_opened(user, slug, pull_request_number, sender, review_url, repo, repo_name);
+                    notification.sendmail('pull_request_opened',
+                                          req.args.repository.owner.login,
+                                          req.args.repository.name,
+                                          repo.uuid,
+                                          repo.token,
+                                          req.args.number,
+                                          notification_args);
+
                 },
                 synchronize: function() {
-                    status.update(args, function(err, data) {
-                    });
 
-                    notification.pull_request_synchronized(user, slug, pull_request_number, sender, review_url, repo, repo_name);
+                    status.update(args, function(err, data) {});
+
+                    notification.sendmail(
+                                          'pull_request_synchronized',
+                                          req.args.repository.owner.login,
+                                          req.args.repository.name,
+                                          repo.uuid,
+                                          repo.token,
+                                          req.args.number,
+                                          notification_args);
+
                 },
                 closed: function() {
                     // a pull request you have been reviewing has closed
-                    var merged = req.body.pull_request.merged;
 
-                    if(merged) {
+                    if(req.args.pull_request.merged) {
                         
-                        io.emit(user + ':' + repository.name + ':pull-request-'+req.body.number +':merged', merged);
+                        io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-'+req.args.number +':merged', req.args.pull_request.merged);
                     }
-
                 },
                 reopened: function() {
                     // a pull request you have reviewed has a been reopened
@@ -77,11 +82,9 @@ module.exports = function(req, res) {
                 }
             };
 
-            if (!actions[action]) {
-                return;
+            if (actions[req.args.action]) {
+                actions[req.args.action]();
             }
-
-            actions[action]();
         }
     });
 

@@ -6,8 +6,8 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Issue',
-    function($scope, $stateParams, $HUB, $RPC, repo, pull, socket, Issue) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Issue',
+    function($scope, $rootScope, $state, $stateParams, $HUB, $RPC, repo, pull, socket, Issue) {
 
         // get the repo
         $scope.repo = repo.value;
@@ -17,9 +17,12 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
         $scope.base = $scope.pull.base.sha;
         $scope.head = $scope.pull.head.sha;
 
+        // selected issues
+        $scope.issue = {};
+
         // file reference
         $scope.reference = {};
-        $scope.selection = null;
+        $scope.selection = {};
 
         // get the files (for the diff view)
         $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
@@ -41,6 +44,45 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
             repo_uuid: $scope.repo.id
         });
 
+        // get the users for each star
+        $scope.pull.stars.forEach(function(star) {
+            star.user = $HUB.call('user', 'getFrom', {
+                user: star.name
+            });
+        });
+
+        //
+        // Events
+        //
+
+        $scope.$on('issue:set', function(event, issue) {
+            $scope.issue = issue;
+        });
+
+        $scope.$on('reference:set', function(event, issues) {
+
+            var reference = [];
+
+            issues.forEach(function(issue) {
+                if(issue.sha && issue.ref) {
+
+                    var key = issue.sha + '/' + issue.ref;
+
+                    if(!reference[key]) {
+                        reference[key] = [];
+                    }
+
+                    reference[key].push({ 
+                        ref: issue.ref, 
+                        sha: issue.sha, 
+                        issue: issue.number 
+                    });
+                }
+            });
+
+            $scope.reference = reference;
+        });
+
 
         //
         // Actions
@@ -56,8 +98,7 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     head: $scope.head,
-                    base: base
-                    
+                    base: $scope.base
                 }, function(err, res) {
                     if(!err) {
                         $scope.files.value = res.value.files;
@@ -84,9 +125,10 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
                 sha: $scope.pull.head.sha,
                 number: $stateParams.number,
                 repo_uuid: $scope.repo.id
-            }, function(err, res) {
+            }, function(err, star) {
                 if(!err) {
-                    $scope.star.value = fn==='set' ? res.value : null;
+                    console.log(star);
+                    $scope.star.value = fn==='set' ? star.value : null;
                 }
             });
         };
@@ -98,17 +140,16 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
             }, function(err, stars) {
                 if(!err) {
                     $scope.pull.stars = stars.value;
+                    $scope.pull.stars.forEach(function(star) {
+                        star.user = $HUB.call('user', 'getFrom', {
+                            user: star.name
+                        });
+                    });
                 }
-            });
-
-            $scope.star = $RPC.call('star', 'get', {
-                sha: $scope.pull.head.sha,
-                repo_uuid: $scope.repo.id
             });
         };
 
         $scope.refreshPullRequest = function() {
-
             $HUB.call('pullRequests', 'get', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
@@ -118,6 +159,41 @@ module.controller('PullCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', 'repo',
                     $scope.pull = pull.value;
                 }
             });
+        };
+
+        $scope.createIssue = function() {
+
+            if($scope.title) {
+
+                var description = $scope.description ? $scope.description : '';
+
+                // this will expand to  
+                // multiple lines in the future
+                var reference;
+
+                for(var ref in $scope.selection) {
+                    reference = ref;
+                }
+
+                $scope.creating = $RPC.call('issue', 'add', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number,
+                    repo_uuid: $scope.repo.id,
+                    title: $scope.title,
+                    body: description,
+                    sha: $scope.pull.head.sha,
+                    reference: reference
+                }, function(err, issue) {
+                    if(!err) {
+                        $state.go('repo.pull.issue.detail', { issue: issue.value.number }).then(function() {
+                            $scope.show = false;
+                            $scope.title = null;
+                            $scope.description = null;
+                        });
+                    }
+                });
+            }
         };
 
         //

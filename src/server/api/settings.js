@@ -16,16 +16,15 @@ module.exports = {
     ************************************************************************************************************/
     
     get: function(req, done) {
-
         Settings.with({user: req.user.id, repo: req.args.repo_uuid}, function(err, settings) {
 
+            // check if settings exist and return them
             if(settings) {
                 return done(err, settings);
             }
 
-            Settings.with({user: req.user.id, repo: req.args.repo_uuid}, {}, function(err, settings) {
-                done(err, settings);
-            });
+            // if they don't exist create them
+            Settings.with({user: req.user.id, repo: req.args.repo_uuid}, {}, done);
         });
     },
 
@@ -45,9 +44,7 @@ module.exports = {
             repo: req.args.repo_uuid
         }, {
             watched: result
-        }, function(err, settings) {
-            done(err, settings);
-        });
+        }, done);
     },
 
     setNotifications: function(req, done) {
@@ -56,9 +53,7 @@ module.exports = {
             repo: req.args.repo_uuid
         }, {
             notifications: req.args.notifications
-        }, function(err, settings) {
-            done(err, settings);
-        });
+        }, done);
     }
 
 };

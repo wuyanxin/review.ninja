@@ -10,7 +10,9 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
             scope: {
                 tree: '=',
                 update: '&',
-                headSha: '='
+                headSha: '=',
+                selection: '=',
+                reference: '='
             },
             link: function(scope, elem, attrs) {
 

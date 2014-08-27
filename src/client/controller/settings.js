@@ -15,28 +15,31 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             repo_uuid: repo.value.id
         });
 
-        $scope.setWatched = function() {
+        $scope.setWatched = function(watched) {
+
             $RPC.call('settings', 'setWatched', {
                 repo_uuid: repo.value.id,
-                watched: $scope.settings.value.watched
+                watched: watched
             }, function(err, settings) {
                 if(!err) {
+                    $scope.newWatch = '';
                     $scope.settings = settings;
                 }
             });
         };
 
-        $scope.addWatched = function() {
-            $scope.settings.value.watched.push($scope.newWatched);
-            $scope.showAddNotification = false;
-            $scope.newWatched = '';
-            $scope.setWatched();
+        $scope.addWatch = function(watch) {
+            var watched = $scope.settings.value.watched;
+            watched.push(watch);
+
+            $scope.setWatched(watched);
         };
 
-        $scope.removeWatched = function(watched) {
-            var index = $scope.settings.value.watched.indexOf(watched);
-            $scope.settings.value.watched.splice(index, 1);
-            $scope.setWatched();
+        $scope.removeWatch = function(watch) {
+            var watched = $scope.settings.value.watched;
+            watched.splice(watched.indexOf(watch), 1);
+
+            $scope.setWatched(watched);
         };
 
         $scope.setNotifications = function() {
@@ -45,7 +48,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
                 notifications: $scope.settings.value.notifications
             }, function(err, settings) {
                 if(!err) {
-                    $scope.settings = settings;
+                    $scope.settings.value.notifications = settings.value.notifications;
                 }
             });
         };

@@ -1,17 +1,17 @@
 <table class="code">
 	<tr ng-repeat="line in content track by $index"
-        ng-class="{ selected: Reference.isIssue(headRef(line)) || Reference.isSelected(headRef(line)) }">
+        ng-class="{ selected: selection[headRef(line)] || reference[headRef(line)] }">
 
         <td class="select">
-            <i class="fa fa-circle" 
+            <i class="fa fa-circle text-warning" 
                ng-click="select(line)" 
-               ng-show="Reference.isSelected(headRef(line))">
+               ng-show="selection[headRef(line)]">
             </i>
 
-            <i class="fa fa-exclamation-circle" 
-               ng-click="go( Reference.get(headRef(line)) )" 
-               ng-show="Reference.isIssue(headRef(line))">
-            </i>
+            <span class="octicon octicon-issue-opened text-warning" 
+               ng-click="go(reference[headRef(line)])" 
+               ng-show="reference[headRef(line)]">
+            </span>
         </td>
 
 		<td class="number" ng-click="select(line)"><pre>{{ line.head }}</pre></td>

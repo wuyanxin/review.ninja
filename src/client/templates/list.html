@@ -1,105 +1,107 @@
-<div class="row">
+<div class="row main">
   <div class="col-md-8 col-md-offset-2">
+
     <div class="row">
       <div class="col-md-12">
-        <p class="lead">{{ repo.value.full_name }} <a ui-sref="repo.settings({ user:repo.value.owner.login, repo:repo.value.name })"><i class="fa fa-cog"></i></a></p>
-        <h4>Pull Requests</h4>
+
+        <ol class="breadcrumb">
+          <li><a ui-sref="repo.list()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
+          <li class="pull-right"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
+        </ol>
+        
+        <h2><span class="mega-octicon octicon-git-pull-request"></span> Pull Requests</h2>
+
       </div>
     </div>
 
     <div class="row">
-
       <div class="col-sm-12">
-        <tabset>
-        <tab heading="Open">
 
-          <table class="table">
-            <tr ng-repeat="pull in open.value" ng-class="{'success': pull.watched}">
-              <td>
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-stack-1x fa-inverse fa-code-fork"></i>
-                </span>
-              </td>
-              <td>
-                <a ui-sref="repo.pull.issue.master({ number: pull.number })">{{ pull.title }}</a><br />
-                <img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
-              </td>
-              <td>
-                <?xml version="1.0" encoding="utf-8"?>
-                <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-                <svg version="1.1" class="merge pull-right" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                  viewBox="0 0 180 40" enable-background="new 0 0 180 40" xml:space="preserve" width="400px" height="40px">
-                  <path class="git-base" stroke-width="4" stroke-miterlimit="10" d="M 103 6 L 171 6"/>
-                  <polygon class="git-graph-arrow" points="171,1.7 180,5.6 171,9.6 "/>
-                  <path class="git-head" stroke-width="4" stroke-miterlimit="10" d="M152.5,4.8c-7,2.5-7,12.5-15.6,18.6
-                  c-6.7,4.8-11.7,5-33.3,5"/>
-                  <circle class="git-commit" cx="103" cy="28.1" r="4.8"/>
-                  <text class="git-base" y="10" x="95" text-anchor="end">{{ pull.base.ref }}</text>
-                  <circle class="git-commit" cx="103" cy="5.6" r="4.8"/>
-                  <text class="git-head" y="33" x="95" text-anchor="end">{{ pull.head.ref }}</text>
-                  <circle class="git-commit" cx="148.6" cy="5.6" r="4.8"/>
-                </svg>
-              </td>
-              <td style="text-align:right;">
-                <i class="fa fa-star" ng-repeat="star in pull.stars"></i>
-              </td>
-            </tr>
-          </table>
-          <p class="well text-center empty-notice" ng-show="open.value.length == 0">There are no open pull requests.</p>
+        <div class="well well-sm">
+          <a href="" class="btn btn-link" ng-click="type='open'" ng-class="{active: type==='open'}">
+            <span class="octicon octicon-issue-opened"></span> Open
+          </a>
+          <a href="" class="btn btn-link" ng-click="type='closed'" ng-class="{active: type==='closed'}">
+            <span class="octicon octicon-issue-closed"></span> Closed
+          </a>
+          <div class="btn-group pull-right">
+            <a href="" class="btn btn-link dropdown-toggle" ng-class="{active: author}" data-toggle="dropdown">
+              Author <small><i class="fa fa-chevron-down"></i></small>
+            </a>
+            <ul class="dropdown-menu" role="menu" ng-show="authors">
+              <li ng-show="author">
+                <a href="" ng-click="author=null">
+                  <i class="fa fa-times-circle-o"></i> Clear author
+                </a>
+              </li>
+              <li ng-show="author" class="divider"></li>
+              <li ng-repeat="(key, val) in authors">
+                <a href="" ng-click="$parent.author=key">
+                  <i ng-show="$parent.author===key"></i> {{ key }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-          <button type="button" class="btn btn-default" ng-click="open.getMore()" ng-show="open.hasMore">Next</button>
+        <table class="table table-hover pull-list" 
+               infinite-scroll="type==='open' ? open.getMore() : closed.getMore()" 
+               infinite-scroll-disabled="type==='open' ? !(!open.loading && !author) : !(!closed.loading && !author)"
+               ng-show="matched.length">
 
-        </tab>
+          <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))">
+            <td class="watched" ng-class="{active: pull.watched}"></td>
 
+            <td style="width:50px;">
+              <img ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
+            </td>
 
-        <tab heading="Closed" style="text-size:12px">
-          <table class="table">
-            <tr ng-repeat="pull in closed.value" ng-class="{'success': pull.watched}">
-              <td>
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-stack-1x fa-inverse fa-code-fork"></i>
-                </span>
-              </td>
-              <td>
-                <a ui-sref="repo.pull.issue.master({ number: pull.number })">{{ pull.title }}</a><br />
-                <img ng-src="{{ pull.user.avatar_url }}" width="16px;" /> <small>{{ pull.user.login }} <span moment="pull.created_at"></span></small>
-              </td>
-              <td>
-                <?xml version="1.0" encoding="utf-8"?>
-                <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-                <svg version="1.1" class="merge pull-right" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                  viewBox="0 0 180 40" enable-background="new 0 0 180 40" xml:space="preserve" width="400px" height="40px">
-                  <path class="git-base" stroke-width="4" stroke-miterlimit="10" d="M 103 6 L 171 6"/>
-                  <polygon class="git-graph-arrow" points="171,1.7 180,5.6 171,9.6 "/>
-                  <path class="git-head" stroke-width="4" stroke-miterlimit="10" d="M152.5,4.8c-7,2.5-7,12.5-15.6,18.6
-                  c-6.7,4.8-11.7,5-33.3,5"/>
-                  <circle class="git-commit" cx="103" cy="28.1" r="4.8"/>
-                  <text class="git-base" y="10" x="95" text-anchor="end">{{ pull.base.ref }}</text>
-                  <circle class="git-commit" cx="103" cy="5.6" r="4.8"/>
-                  <text class="git-head" y="33" x="95" text-anchor="end">{{ pull.head.ref }}</text>
-                  <circle class="git-commit" cx="148.6" cy="5.6" r="4.8"/>
-                </svg>
-              </td>
-              <td style="text-align:right;">
-                <i class="fa fa-star" ng-repeat="star in pull.stars"></i>
-              </td>
-            </tr>
-          </table>
-          <p class="well text-center empty-notice" ng-show="closed.value.length == 0">There are no closed pull requests.</p>
+            <td>
+              <a ui-sref="repo.pull.issue.master({ number: pull.number })">{{ pull.title }}</a><br />
+              <small>#{{ pull.number }} opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
+            </td>
+
+            <td>
+              <table class="git-merge text-primary">
+                <tr>
+                  <td><small>{{ pull.base.ref }}</small></td>
+                  <td rowspan="2"><span class="mega-octicon octicon-git-pull-request octicon-rotate"></span></td>
+                </tr>
+                <tr>
+                  <td><small>{{ pull.head.label }}</small></td>
+                </tr>
+              </table>
+            </td>
+
+            <td class="text-center" style="width:45px;">
+              <span class="octicon octicon-large octicon-issue-opened text-warning" ng-show="pull.open_issue"></span>
+              <span class="octicon octicon-large octicon-issue-closed text-primary" ng-show="pull.closed_issue && !pull.open_issue"></span>
+            </td>
+
+            <td class="text-center" style="width:45px;">
+              <span class="text-primary" ng-show="pull.stars.length" ng-class="{muted: pull.open_issue}">
+                <i class="fa fa-lg fa-star"></i><br />
+                {{ pull.stars.length }}
+              </span>
+            </td>
+          </tr>
           
-          <button type="button" class="btn btn-default" ng-click="closed.getMore()" ng-show="closed.hasMore">Next</button>
-          <i class="fa fa-spinner fa-spin" ng-show="closed.loading"></i>
+        </table>
 
-        </tab>
-        </tabset>
+        <p class="well text-center" ng-show="type==='open' && !open.loading && !matched.length">
+          There are no open pull requests to show <a href="" ng-show="author" ng-click="author=null">clear author</a>
+        </p>
+
+        <p class="well text-center" ng-show="type==='closed' && !closed.loading && !matched.length">
+          There are no closed pull requests to show <a href="" ng-show="author" ng-click="author=null">clear author</a>
+        </p>
+
+        <i class="fa fa-2x fa-spinner fa-spin center-block"
+           ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)">
+        </i>
+
       </div>
-
     </div>
-
 
   </div>
 </div>

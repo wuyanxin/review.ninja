@@ -35,6 +35,7 @@ module.exports = function(config) {
             'https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js',
             'https://www.google-analytics.com/analytics.js',
+            'src/bower/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
             'src/bower/angulartics/dist/angulartics.min.js',
             'src/bower/angulartics/dist/angulartics-ga.min.js',
 

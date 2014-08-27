@@ -7,32 +7,31 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
 
         $rootScope.user = $HUB.call('user', 'get', {});
 
-        $scope.hook = true;
+        $rootScope.$on('repos:get', function(event, repo) {
+            $scope.repo = repo;
+        });
 
-        $rootScope.$on('$stateChangeSuccess', function(event, toState, fromState, fromParams, error) {
+        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
-            $scope.hook = true;
-            $scope.getHook = null;
+            if( !($stateParams.user && $stateParams.repo) ) {
+                $scope.hook = {};
+            }
 
-            if($stateParams.user && $stateParams.repo) {
-                $scope.getHook = $RPC.call('repo', 'getHook', {
+            if($stateParams.user && $stateParams.repo && toParams.user!==fromParams.user) {
+                $scope.hook = $RPC.call('repo', 'getHook', {
                     user: $stateParams.user,
                     repo: $stateParams.repo
-                }, function(err, hook) {
-                    if(!err) {
-                        $scope.hook = hook.value;
-                    }
                 });
             }
         });
 
         $scope.createWebhook = function() {
-            $RPC.call('repo', 'createHook', {
+            $scope.creating = $RPC.call('repo', 'createHook', {
                 user: $stateParams.user,
                 repo: $stateParams.repo
             }, function(err, hook) {
                 if(!err) {
-                    $scope.hook = hook.value;
+                    $scope.hook = hook;
                     $scope.created = true;
                 }
             });

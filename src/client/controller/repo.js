@@ -12,6 +12,13 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         // get the repo
         $scope.repo = repo;
 
+        // for the authors
+        $scope.authors = {};
+        $scope.author = null;
+
+        // set the default state
+        $scope.type = 'open';
+
         // get the open pull requests
         $scope.open = $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
@@ -21,7 +28,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
             if(!err) {
                 res.affix.forEach(function(pull) {
                     pull = getDetails(pull);
-                });   
+                    $scope.authors[pull.user.login] = true;
+                });  
             }
         });
 
@@ -34,6 +42,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
             if(!err) {
                 res.affix.forEach(function(pull) {
                     pull = getDetails(pull);
+                    $scope.authors[pull.user.login] = true;
                 });   
             }
         });
@@ -52,7 +61,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 per_page: 1
             }, function(err, issues) {
                 if(!err) {
-                    pull.open_issue = issues;
+                    pull.open_issue = issues.value.length ? issues.value[0] : null;
                 }
             });
 
@@ -64,7 +73,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 per_page: 1
             }, function(err, issues) {
                 if(!err) {
-                    pull.closed_issue = issues;
+                    pull.closed_issue = issues.value.length ? issues.value[0] : null;
                 }
             });
 

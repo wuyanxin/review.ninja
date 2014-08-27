@@ -1,12 +1,17 @@
+table {
+    background: none;
+}
 
 .table {
-    td {
+    background: $gray-lighter;
+
+    > tbody > tr > td {
         border-bottom: 10px solid #fff;
     }
 }
 
 .table-hover {
-    tr:hover {
+    tr.select:hover {
         cursor: pointer;
     }
 }

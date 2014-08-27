@@ -6,7 +6,7 @@
     </div>
     <div class="panel-body">
 
-        <table ng-show="!file" class="table">
+        <table ng-show="!file" class="browse">
             <tr class="up" ng-show="stack.length">
                 <td width="1%;"></td>
                 <td><a href="" ng-click="up()">..</a></td>
@@ -14,8 +14,8 @@
 
             <tr ng-repeat="node in tree.tree | orderBy:'type':true">
                 <td width="1px">
-                    <i ng-show="node.type=='tree'" class="fa fa-folder-o"></i>
-                    <i ng-show="node.type=='blob'" class="fa fa-file-o"></i>
+                    <span ng-show="node.type=='tree'" class="octicon octicon-file-directory"></span>
+                    <span ng-show="node.type=='blob'" class="octicon octicon-file-text"></span>
                 </td>
                 <td>
                     <a href="" ng-click="down(node)">{{ node.path }}</a>
@@ -26,7 +26,9 @@
         <file ng-show="file" 
               path="path.join('/')" 
               content="file.content"
-              head-sha="headSha">
+              head-sha="headSha"
+              selection="selection"
+              reference="reference">
         </file>
 
     </div>

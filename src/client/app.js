@@ -4,6 +4,7 @@ var module = angular.module('app',
      'ui.utils',
      'ui.router', 
      'ui.bootstrap',
+     'infinite-scroll',
      'angulartics', 
      'angulartics.google.analytics']);
 
@@ -43,11 +44,15 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 url: '/:user/:repo',
                 templateUrl: '/templates/repo.html',
                 resolve: {
-                    repo: ['$stateParams', '$HUBService',
-                        function($stateParams, $HUBService) {
+                    repo: ['$rootScope', '$stateParams', '$HUBService',
+                        function($rootScope, $stateParams, $HUBService) {
                             return $HUBService.call('repos', 'get', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo
+                            }, function(err, repo) {
+                                if(!err) {
+                                    $rootScope.$emit('repos:get', repo.value);
+                                }
                             });
                         }
                     ]
@@ -98,81 +103,35 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             .state('repo.pull.issue', {
                 abstract: true,
                 templateUrl: '/templates/issue.html',
-                resolve: {
-                    open: ['$stateParams', '$HUBService', 'Issue', 'Reference',
-                        function($stateParams, $HUBService, Issue, Reference) {
-                            return $HUBService.call('issues', 'repoIssues', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'open',
-                                // per_page: 1
-                            }, function(err, res) {
-                                if(!err) {
-                                    Reference.clear();
-                                    res.value.forEach(function(issue) {
-                                        issue = Issue.parse(issue);
-                                        Reference.add(issue);
-                                    });
-                                }
-                            });
-                        }
-                    ],
-                    closed: ['$stateParams', '$HUBService', 'Issue', 
-                        function($stateParams, $HUBService, Issue) {
-                            return $HUBService.call('issues', 'repoIssues', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'closed',
-                                // per_page: 2
-                            }, function(err, res) {
-                                if(!err) {
-                                    res.affix.forEach(function(issue) {
-                                        issue = Issue.parse(issue);
-                                    });
-                                }
-                            });
-                        }
-                    ]
-                }
             })
 
             //
             // Repo issue master state
             //
             .state('repo.pull.issue.master', {
-                url: '?issues',
+                url: '?state&issues',
                 templateUrl: '/templates/pull/list.html',
                 controller: 'PullListCtrl',
                 resolve: {
-                    open: ['open', '$stateParams', 'Reference', function(open, $stateParams, Reference) {
+                    issues: ['$HUBService', '$stateParams', 'Issue',
+                        function($HUBService, $stateParams, Issue) {
 
-                        var retOpen = {};
-                        retOpen = angular.extend(retOpen, open);
+                            var state = ($stateParams.state==='open' || $stateParams.state==='closed') ? $stateParams.state : 'open';
 
-                        var issues = $stateParams.issues ? $stateParams.issues.split(',') : null;                        
-
-                        if(issues) {
-                            var value = [];
-                            open.value.forEach(function(issue) {
-                                if(issues.indexOf(issue.number.toString()) > -1) {
-                                    value.push(issue);
+                            return $HUBService.call('issues', 'repoIssues', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                labels: 'review.ninja, pull-request-' + $stateParams.number,
+                                state: state
+                            }, function(err, res) {
+                                if(!err) {
+                                    res.value.forEach(function(issue) {
+                                        issue = Issue.parse(issue);
+                                    });
                                 }
                             });
-                            retOpen.value = value;
                         }
-
-                        Reference.clear();
-                        retOpen.value.forEach(function(issue) {
-                            Reference.add(issue);
-                        });
-
-                        return retOpen; // inherited from parent state
-                    }],
-                    closed: ['closed', function(closed) {
-                        return closed; // inherited from parent state
-                    }],
+                    ]
                 }
             })
 
@@ -184,14 +143,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/issue.html',
                 controller: 'PullIssueCtrl',
                 resolve: {
-                    open: ['open', function(open) {
-                        return open; // inherited from parent state
-                    }],
-                    closed: ['closed', function(closed) {
-                        return closed; // inherited from parent state
-                    }],
-                    issue: ['$stateParams', '$HUBService', 'Issue', 'Reference',
-                        function($stateParams, $HUBService, Issue, Reference) {
+                    issue: ['$stateParams', '$HUBService', 'Issue',
+                        function($stateParams, $HUBService, Issue) {
                             return $HUBService.call('issues', 'getRepoIssue', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
@@ -199,9 +152,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                             }, function(err, issue) {
                                 if(!err) {
                                     issue.value = Issue.parse(issue.value);
-                                    Reference.clear();
-                                    Reference.add(issue.value);
-                                    Reference.set(issue.value);
                                 }
                             });
                         }

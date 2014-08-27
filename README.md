@@ -35,7 +35,7 @@ Contributions to this project are very welcome, but can only be accepted if the 
 License
 =======
 
-Copyright 2014 by [SAP AG](www.sap.com) and made available under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). 
+Copyright 2014 by [SAP AG](http://www.sap.com) and made available under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). 
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

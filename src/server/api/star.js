@@ -17,11 +17,7 @@ module.exports = {
     ************************************************************************************************************/
 
     all: function(req, done) {
-
-        Star.find({sha: req.args.sha, repo: req.args.repo_uuid}, function(err, stars) {
-            done(err, stars);
-        });
-
+        Star.find({sha: req.args.sha, repo: req.args.repo_uuid}, done);
     },
 
 
@@ -34,15 +30,11 @@ module.exports = {
     ************************************************************************************************************/
 
     get: function(req, done) {
-
         Star.with({
             sha: req.args.sha,
             user: req.user.id,
             repo: req.args.repo_uuid
-        }, function(err, star) {
-            done(err, star);
-        });
-
+        }, done);
     },
 
     /************************************************************************************************************
@@ -66,13 +58,13 @@ module.exports = {
                 fun: 'one', 
                 arg: { id: req.args.repo_uuid }, 
                 token: req.user.token
-            }, function(err, repo) {
+            }, function(err, github_repo) {
 
                 if(err) {
-                    return done(err, repo);
+                    return done(err, github_repo);
                 }
 
-                if(!repo.permissions.pull) {
+                if(!github_repo.permissions.pull) {
                     return done({
                         code: 403,
                         text: 'Forbidden'
@@ -83,7 +75,8 @@ module.exports = {
                     sha: req.args.sha, 
                     user: req.user.id, 
                     repo: req.args.repo_uuid,
-                    name: req.user.login
+                    name: req.user.login,
+                    created_at: Date.now()
                 }, function(err, star) {
 
                     if(star) {
@@ -100,13 +93,17 @@ module.exports = {
                         }, function(err, res) {
 
                         });
-                        
-                        // commenting out until this is refactored
-                        // notification.star(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
+                        var args = {
+                          starrer: req.user.login,
+                          number: req.args.number
+                        };
+
+                        notification.sendmail('star', req.args.user, req.args.repo, repo.uuid, repo.token, req.args.number, args);
                     }
 
                     done(err, star);
                 });
+
             });
 
         });
@@ -151,8 +148,13 @@ module.exports = {
                             
                         });
                         
-                        // commenting out until this is refactored
-                        // notification.unstar(req.args.user, req.user.login, req.args.number, repo, req.args.repo, req.args.number);
+                        var args = {
+                          starrer: req.user.login,
+                          number: req.args.number
+                        };
+
+                        notification.sendmail('unstar', req.args.user, req.args.repo, repo.uuid, repo.token, req.args.number, args);
+
                     }
 
                     done(err, star);

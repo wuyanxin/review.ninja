@@ -65,7 +65,7 @@ describe('issue webhook', function(){
     it('should set status', function(done) {
 
         var req = {
-            'body': {
+            'args': {
                 'action': 'opened',
                 'issue': {
                     'url': 'https://api.github.com/repos/baxterthehacker/public-repo/issues/49',
@@ -227,7 +227,7 @@ describe('issue webhook', function(){
 
 //     var req={
 
-//       body:{
+//       args:{
 //         'action': 'opened',
 //         'issue': {
 //           'url': 'https://api.github.com/repos/baxterthehacker/public-repo/issues/49',
@@ -473,7 +473,7 @@ describe('issue webhook', function(){
 
 // var req={
 
-//   body:{
+//   args:{
 //     'action': 'closed',
 //     'issue': {
 //       'url': 'https://api.github.com/repos/baxterthehacker/public-repo/issues/49',

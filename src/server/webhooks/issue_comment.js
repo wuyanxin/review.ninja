@@ -6,27 +6,13 @@ var User = require('mongoose').model('User');
 var github = require('../services/github');
 var notification = require('../services/notification');
 var status = require('../services/status');
+var pullRequest = require('../services/pullRequest');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Issue comment Webhook Handler
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = function(req, res) {
-
-    function has_pull_request_label(labels) {
-
-        for(var i=0; i<labels.length; i++){
-
-            var reg = /pull-request-(\d*)?/;
-            var match = reg.exec(labels[i].name); 
-
-            if (match) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     Repo.with({
         uuid: req.args.repository.id
@@ -40,22 +26,20 @@ module.exports = function(req, res) {
 
             var actions = {
                 created: function() {
-                    if(has_pull_request_label(req.args.issue.labels)) {
+
+                    if(pullRequest.byLabels(req.args.issue.labels)) {
 
                         var event = req.args.repository.owner.login + ':' + 
                                     req.args.repository.name + ':' +
                                     'issue-comment-' + req.args.issue.id;
-
                         io.emit(event, req.args.comment.id);
                     }
                 }
             };
 
-            if (!actions[req.args.action]) {
-                return;
+            if (actions[req.args.action]) {
+                actions[req.args.action]();
             }
-
-            actions[req.args.action]();
         }
     });
 
