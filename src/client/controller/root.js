@@ -17,7 +17,10 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
                 $scope.hook = {};
             }
 
-            if($stateParams.user && $stateParams.repo && toParams.user!==fromParams.user) {
+            if( $stateParams.user && $stateParams.repo && 
+                $scope.repo && $scope.repo.permissions.admin && 
+                toParams.user!==fromParams.user ) {
+
                 $scope.hook = $RPC.call('repo', 'getHook', {
                     user: $stateParams.user,
                     repo: $stateParams.repo

@@ -12,7 +12,11 @@
       <small moment="issue.created_at"></small>
     </td>
     <td class="text-right">
-      <i class="fa fa-lg fa-link text-warning" ng-show="issue.ref"></i>
+      <i class="fa fa-lg fa-link text-warning" 
+         ng-show="issue.ref"
+         tooltip="{{ issue.ref }}"
+         tooltip-placement="bottom" >
+      </i>
     </td>
     <td class="text-right text-primary" style="padding-right:15px;">
       <i class="fa fa-lg fa-comments"></i><br />

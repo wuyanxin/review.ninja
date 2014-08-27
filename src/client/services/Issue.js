@@ -17,11 +17,6 @@ module.factory('Issue', function() {
             if(match) {
                 issue.sha = match[1];
                 issue.ref = match[3];
-
-                if(issue.ref) {
-                    issue.file = issue.ref.split('#')[0];
-                    issue.line = issue.ref.split('#')[1];
-                }
             }
 
             return issue;

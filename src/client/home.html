@@ -20,7 +20,8 @@
 
 <body ng-controller="RootCtrl">
 
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
+<!-- the navbar -->
+  <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -33,13 +34,12 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right" ng-show="user.loaded">
-          <li><a href="">Features</a></li>
-          <li><a href="">Documentation</a></li>
-          <li><a href="">Contact</a></li>
+          <li><a href="">FEATURES</a></li>
+          <li><a href="">DOCUMENTATION</a></li>
+          <li><a href="">CONTACT</a></li>
           <li>&nbsp;&nbsp;</li>
           <li class="dropdown">
             <a href="" class="dropdown-toggle" data-toggle="dropdown">
-              <img ng-src="{{ user.value.avatar_url }}?s=20" width="20px" class="img-circle" />
               {{ user.value.login }} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">
@@ -51,25 +51,21 @@
     </div>
   </div>
 
+  <!-- the webhook notification -->
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12 alert alert-warning" ng-show="hook.loaded && !hook.value && !repo.permissions.admin">
-        <strong>Warning!</strong> A webhook is missing for this repository and will need to be set up by an administrator.
-      </div>
-    </div>
-    <div class="row" ng-show="hook.loaded && !hook.value && repo.permissions.admin">
-      <div class="col-md-12 alert alert-warning">
+    <div class="row" ng-show="hook.loaded && !hook.value && repo.permissions.admin" ng-cloak>
+      <div class="col-md-12 alert alert-warning" style="margin:0;">
         <strong>Warning!</strong> A webhook is missing for this repository. 
         <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="creating.loading"></i>
         <button type="button" class="btn btn-default btn-xs pull-right" ng-click="createWebhook()" ng-show="!creating.loading">Add Webhook</button>
       </div>
     </div>
-    <div class="row" ng-show="created">
-      <div class="col-md-12 alert alert-success">
+    <div class="row" ng-show="created" ng-cloak>
+      <div class="col-md-12 alert alert-success" style="margin:0;">
         <button type="button" class="close" data-dismiss="alert">
           <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
         </button>
-        <strong>Success!</strong> The webhook was created successfully.</a>
+        <strong>Success!</strong> The webhook was created successfully.
       </div>
     </div>
   </div>
