@@ -5,7 +5,7 @@ module.exports = function() {
     var localSocket = url.format({
         protocol: 'http',
         hostname: 'localhost',
-        port: config.server.local_port
+        port: config.server.localport
     });
 
     var baseUrl = url.format({
