@@ -83,8 +83,6 @@ module.exports = {
                         repo_uuid: req.args.repo_uuid, 
                         number: req.args.number, 
                         token: req.user.token
-                    }, function(err, res) {
-
                     });
                     
                     var args = {
@@ -134,8 +132,6 @@ module.exports = {
                         sha: req.args.sha, 
                         number: req.args.number, 
                         token: req.user.token
-                    }, function(err, res) {
-                        
                     });
                     
                     var args = {
