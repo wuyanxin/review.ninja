@@ -142,8 +142,6 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                     issues.forEach(function(issue) {
                         scope.issues.push(issue);
                     });
-
-                    // $state.go('repo.pull.issue.master', { issues: issues });
                 };
             }
         };

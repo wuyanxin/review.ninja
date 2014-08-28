@@ -9,7 +9,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
             templateUrl: '/directives/templates/browser.html',
             scope: {
                 tree: '=',
-                update: '&',
+                issues: '=',
                 headSha: '=',
                 selection: '=',
                 reference: '='
