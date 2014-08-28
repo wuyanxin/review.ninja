@@ -144,7 +144,7 @@ module.exports = function() {
                     return;
                 }
 
-                get_collaborators(user,repo, token, function(err, collaborators) {
+                get_collaborators(user, repo, token, function(err, collaborators) {
 
                     if(err) {
                         return;

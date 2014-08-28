@@ -92,7 +92,7 @@ module.exports = {
                       number: req.args.number
                     };
 
-                    notification.sendmail('star', req.args.user, req.args.repo, repo.uuid, repo.token, req.args.number, args);
+                    notification.sendmail('star', req.args.user, req.args.repo, req.args.repo_uuid, req.user.token, req.args.number, args);
                 }
 
                 done(err, star);
@@ -143,7 +143,7 @@ module.exports = {
                       number: req.args.number
                     };
 
-                    notification.sendmail('unstar', req.args.user, req.args.repo, repo.uuid, repo.token, req.args.number, args);
+                    notification.sendmail('unstar', req.args.user, req.args.repo, req.args.repo_uuid, req.user.token, req.args.number, args);
                 }
 
                 done(err, star);
