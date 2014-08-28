@@ -1,8 +1,8 @@
 language: node_js
 cache:
   directories:
-    - node_modules
-    - src/bower
+  - node_modules
+  - src/bower
 before_script:
 - bower install
 - gem install compass
@@ -10,13 +10,13 @@ before_script:
 notifications:
   email: false
 deploy:
-  provider: cloudfoundry
-  api: https://api.run.pivotal.io
-  username: dominik.tornow@gmail.com
+  provider:
+    provider: cloudfoundry
+  api: api.run.pivotal.io
+  username: fbranczyk@gmail.com
   password:
-    secure: j1nbvw+9/wUK5VnKOvDqTZ7380TkJMNP6fPiEdaNoiFb1jSHGmABrM2aheVOWrLpeOp3gbN5IUEgNqH+549IThfTuzQcR1w5i5HgFjOl5QGEw4x2NFq2346tWugwAJrRpmq6V0YS2tXVsOpTQxHKKCuhwZ2NKytE/yvaIn0/Ajw=
+    secure: Ije9TY5nIp672Ox5EkkokmMEoQVZgXVKiqUxV69TaZjz24PIrFwiMTpkz5LpPOCIUGbAFK67Y9zVCXHctl+pnrUBryGCSvApiRBzpxX2I613gmX63/7wBx+92S0qEVZ6sF8w5mi6BAsMlIwpeP8RUShm7aiYTsJgf68Ml02FCY4=
   organization: Github Team
   space: development
   on:
     repo: reviewninja/review.ninja
-    branch: master
