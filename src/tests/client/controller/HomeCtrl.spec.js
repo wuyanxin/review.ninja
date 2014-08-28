@@ -234,7 +234,7 @@ describe('Home Controller', function() {
         var repos = ['repo-1', 'repo-2'];
 
         httpBackend.expect('POST', '/api/github/wrap','{"obj":"search","fun":"repos","arg":{"q":"query+in:name+fork:true+user:login+user:my-org"}}').respond({
-            data: "repos"
+            data: 'repos'
         });
 
         httpBackend.flush();
