@@ -1,30 +1,30 @@
-require('trace.ninja');
+// require('trace.ninja');
 
-var http = require('http');
-var request = require('supertest');
-var express = require('express');
-var bodyParser = require('body-parser');
+// var http = require('http');
+// var request = require('supertest');
+// var express = require('express');
+// var bodyParser = require('body-parser');
 
-// unit test
-var assert = require('assert');
-var sinon = require('sinon');
+// // unit test
+// var assert = require('assert');
+// var sinon = require('sinon');
 
-// config
-global.config = require('../../../config');
+// // config
+// global.config = require('../../../config');
 
-// models
-var User = require('../../../server/documents/user').User;
-var Repo = require('../../../server/documents/repo').Repo;
-var Star = require('../../../server/documents/star').Star;
-var Settings = require('../../../server/documents/settings').Settings;
+// // models
+// var User = require('../../../server/documents/user').User;
+// // var Repo = require('../../../server/documents/repo').Repo;
+// var Star = require('../../../server/documents/star').Star;
+// var Settings = require('../../../server/documents/settings').Settings;
 
-// services
-var github = require('../../../server/services/github');
-var status = require('../../../server/services/status');
-var notification = require('../../../server/services/notification');
+// // services
+// var github = require('../../../server/services/github');
+// var status = require('../../../server/services/status');
+// var notification = require('../../../server/services/notification');
 
-// webhooks
-var Issue = require('../../../server/webhooks/issues');
+// // webhooks
+// var Issue = require('../../../server/webhooks/issues');
 
 
 // beforeEach(function(){
@@ -60,98 +60,98 @@ var Issue = require('../../../server/webhooks/issues');
 
 // });
 
-describe('issue webhook', function(){
+// describe('issue webhook', function(){
 
-    it('should set status', function(done) {
+//     it('should set status', function(done) {
 
-        var req = {
-            'args': {
-                'action': 'opened',
-                'issue': {
-                    'url': 'https://api.github.com/repos/baxterthehacker/public-repo/issues/49',
-                    'number': 49,
-                    'labels': [
-                        { 'name': 'review.ninja' },
-                        { 'name': 'pull-request-123' },
-                    ],
-                    'state': 'open',
-                    'assignee': null
-                },
-                'sender': null,
-                'repository': {
-                    'id': 20000106,
-                    'name': 'public-repo',
-                    'owner': {
-                        'login': 'baxterthehacker'
-                    }
-                }
-            }
-        };
+//         var req = {
+//             'args': {
+//                 'action': 'opened',
+//                 'issue': {
+//                     'url': 'https://api.github.com/repos/baxterthehacker/public-repo/issues/49',
+//                     'number': 49,
+//                     'labels': [
+//                         { 'name': 'review.ninja' },
+//                         { 'name': 'pull-request-123' },
+//                     ],
+//                     'state': 'open',
+//                     'assignee': null
+//                 },
+//                 'sender': null,
+//                 'repository': {
+//                     'id': 20000106,
+//                     'name': 'public-repo',
+//                     'owner': {
+//                         'login': 'baxterthehacker'
+//                     }
+//                 }
+//             }
+//         };
 
-        var res= {
-            end: function(){
-                done();
-            }
-        };
+//         var res= {
+//             end: function(){
+//                 done();
+//             }
+//         };
 
-        stub_user_find = sinon.stub(User,'find', function(args,done){
+//         stub_user_find = sinon.stub(User,'find', function(args,done){
 
-            var find= {
-                where: function(uuid) {
+//             var find= {
+//                 where: function(uuid) {
 
-                    var where = {
-                        in: function(collaborators) {
+//                     var where = {
+//                         in: function(collaborators) {
 
-                            var inside = {
-                                exec : function() {
-                                    var err = null;
-                                    return (err,'collab');
-                                }
-                            };
+//                             var inside = {
+//                                 exec : function() {
+//                                     var err = null;
+//                                     return (err,'collab');
+//                                 }
+//                             };
 
-                            return inside;
-                        }
-                    };                                   
-                    return where;
-                }
-            };
+//                             return inside;
+//                         }
+//                     };                                   
+//                     return where;
+//                 }
+//             };
 
-            return find;
-        });
+//             return find;
+//         });
 
-        stub_repo_with =  sinon.stub(Repo, 'with', function(args, done){
-            var err = null;
-            var repo = {
-                ninja:true,
-                token:'token'
-            };
-            done(err,repo);
-        });
+//         stub_repo_with =  sinon.stub(Repo, 'with', function(args, done){
+//             var err = null;
+//             var repo = {
+//                 ninja:true,
+//                 token:'token'
+//             };
+//             done(err,repo);
+//         });
 
-        stub_gitub_get_pull = sinon.stub(github, 'call', function(args, done) {
+//         stub_gitub_get_pull = sinon.stub(github, 'call', function(args, done) {
             
-            assert.equal(args.obj, 'pullRequests');
-            assert.equal(args.fun, 'get');
-            assert.equal(args.arg.number, '123');
+//             assert.equal(args.obj, 'pullRequests');
+//             assert.equal(args.fun, 'get');
+//             assert.equal(args.arg.number, '123');
 
-            done({
-                number: 123,
-                head: {
-                    sha: '123123123'
-                }
-            });
-        });
+//             done({
+//                 number: 123,
+//                 head: {
+//                     sha: '123123123'
+//                 }
+//             });
+//         });
 
-        stub_github_status_api = sinon.stub(status, 'update', function(args, done){
-            done();
-        });
+//         stub_github_status_api = sinon.stub(status, 'update', function(args, done){
+//             done();
+//         });
         
 
-        issue = Issue(req, res);
+//         issue = Issue(req, res);
 
-        stub_gitub_get_pull.restore();
+//         stub_gitub_get_pull.restore();
 
-    });
+//     });
 
 //     it('should send notification', function(done){
 
@@ -649,11 +649,11 @@ describe('issue webhook', function(){
 //   });
 
 
-afterEach(function(){
-  // stub_github_call.restore();
-  stub_github_status_api.restore();
-  stub_user_find.restore();
-  stub_repo_with.restore();
-});
+// afterEach(function(){
+//   // stub_github_call.restore();
+//   stub_github_status_api.restore();
+//   stub_user_find.restore();
+//   stub_repo_with.restore();
+// });
 
-});
+// });

@@ -17,7 +17,7 @@ module.exports = {
                 token: req.user.token
             }, function(err, repo) {
 
-                if(repo && repo.permissions.pull) {
+                if(repo && repo.permissions.push) {
                     repos.push(repo);
                 }
 

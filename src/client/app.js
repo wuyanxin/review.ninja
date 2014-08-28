@@ -77,7 +77,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             // Repo detail state (pull request list)
             //
             .state('repo.pull', {
-                abstract: true,
+                // abstract: true,
                 url: '/pull/:number',
                 templateUrl: '/templates/pull.html',
                 controller: 'PullCtrl',

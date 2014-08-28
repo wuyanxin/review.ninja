@@ -57,7 +57,7 @@
             </td>
 
             <td>
-              <a ui-sref="repo.pull.issue.master({ number: pull.number })">{{ pull.title }}</a><br />
+              <a ui-sref="repo.pull({ number: pull.number })">{{ pull.title }}</a><br />
               <small>#{{ pull.number }} opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
             </td>
 

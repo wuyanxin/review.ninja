@@ -12,27 +12,24 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.results = [];
 
+        $scope.hasRepos = true;
+
         $RPC.call('user', 'get', {}, function(err, user) {
+            if(!err) {
 
-            var count = 0;
-            var repos = user.value ? user.value.repos : [];
+                $scope.hasRepos = !!user.value.repos.length;
 
-            $scope.checked = !repos.length ? true : false;
-
-            repos.forEach(function(uuid) {
-                $RPC.call('repo', 'get', { repo_uuid: uuid }, function(err, repo) {
-
-                    // flag we have checked
-                    if(++count === repos.length) {
-                        $scope.checked = true;
-                    }
-
-                    if(!err && repo.value.ninja) {
-                        $scope.checked = true;
-                        $scope.repos.push(repo.value);
-                    }
+                user.value.repos.forEach(function(uuid) {
+                    $HUB.call('repos', 'one', {
+                        id: uuid
+                    }, function(err, repo) {
+                        if(!err) {
+                            repo.value.ninja = true;
+                            $scope.repos.push(repo.value);
+                        }
+                    });
                 });
-            });
+            }
         });
 
         //
@@ -44,24 +41,16 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             per_page: 100
         });
 
-        $scope.userRepos = $HUB.call('repos', 'getAll', {
-            per_page: 100
-        }, function(err, repos) {
-            if(!err) {
-                $scope.results = $scope.results.concat(repos.affix);
-            }
-        });
-
         //
         // Actions
         //
 
         $scope.add = function(repo) {
-            $scope.adding = $RPC.call('repo', 'add', {
+            $scope.adding = $RPC.call('user', 'addRepo', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
-            }, function(err, ninja) {
+            }, function(err) {
                 if (!err) {
                     $state.go('repo.list', {user: repo.owner.login, repo:repo.name});
                 }
@@ -69,14 +58,13 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         };
 
         $scope.remove = function(repo) {
-
-            $RPC.call('repo', 'rmv', {
+            $RPC.call('user', 'rmvRepo', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
-            }, function(err, ninja) {
+            }, function(err) {
                 if (!err) {
-                    repo.ninja = ninja.value.ninja;
+                    repo.ninja = false;
                 }
             });
         };
@@ -85,9 +73,13 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.search = function() {
 
-            if($scope.query.length >= 3 && !$scope.searching.loading && $scope.orgs.value.length) {
+            if(!$scope.query.length) {
+                $scope.results = [];
+            }
 
-                var query = $scope.query + '+in:name+fork:true';
+            if($scope.query.length >= 3 && !$scope.searching.loading) {
+
+                var query = $scope.query + '+in:name+fork:true+user:' + $rootScope.user.value.login;
 
                 $scope.orgs.value.forEach(function(org) {
                     query += '+user:' + org.login;
@@ -96,8 +88,8 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                 $scope.searching = $HUB.wrap('search', 'repos', {
                     q: query
                 }, function(err, repos) {
-                    if(!err && $scope.query.length >= 3) {
-                        $scope.results = $scope.userRepos.value.concat(repos.value);
+                    if(!err && $scope.query.length) {
+                        $scope.results = repos.value;
                     }
                 });
             }

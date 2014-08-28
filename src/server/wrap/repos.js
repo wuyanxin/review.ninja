@@ -1,7 +1,5 @@
 // modules
 var parse = require('parse-diff');
-// models
-var Repo = require('mongoose').model('Repo');
 
 module.exports = {
     

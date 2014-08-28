@@ -2,6 +2,8 @@
 var github = require('../services/github');
 var merge = require('merge');
 var path = require('path');
+// models
+var User = require('mongoose').model('User');
 
 module.exports = {
 
@@ -21,6 +23,26 @@ module.exports = {
                 data: res,
                 meta: meta
             });
+
+            // automatically add to users repo array
+            if(!err && req.args.obj==='repos' && req.args.fun==='get' && res.permissions && res.permissions.push) {
+
+                User.with({ uuid: req.user.id }, function(err, user) {
+                    if(user) {
+                        var found = false;
+                        user.repos.forEach(function(repo) {
+                            if(repo === res.id) {
+                                found = true;
+                            }
+                        });
+
+                        if(!found) {
+                            user.repos.push(res.id);
+                            user.save();
+                        }
+                    }
+                });
+            }
         });
     },
 

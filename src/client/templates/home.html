@@ -18,17 +18,17 @@
         <input ng-change="search()" ng-model="query" class="form-control" placeholder="Find Repository..." />
       </div>
 
-      <div class="list-group" style="max-height:200px; overflow-y:scroll;">
+      <div class="list-group" style="max-height:200px; overflow-y:scroll;" ng-show="matched.length">
         <a href="" 
            class="list-group-item" 
            ng-class="{ active: active===repo }" 
            ng-click="$parent.active=repo"
-           ng-repeat="repo in (matched = (results | filter:{name: query} | orderBy: 'full_name'))">
+           ng-repeat="repo in (matched = (results | orderBy: 'full_name'))">
           {{ repo.full_name }}
         </a>
       </div>
 
-      <i class="fa fa-2x fa-spinner fa-spin" ng-show="searching.loading || userRepos.loading || adding.loading" style="margin-left:5px;"></i>
+      <i class="fa fa-2x fa-spinner fa-spin" ng-show="searching.loading || adding.loading" style="margin-left:5px;"></i>
       <div class="pull-right">
         <button type="button" class="btn btn-info" ng-click="show=false; active=null;">Close</button>
         <button type="button" class="btn btn-primary" ng-click="add(active)" ng-disabled="!active">Add repository</button>
@@ -36,10 +36,10 @@
       <div style="clear:both;"></div>
     </div>
 
-    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="!checked"></i>
+    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="hasRepos && !repos.length"></i>
 
-    <p class="well text-center" ng-show="checked && !repos.length && !show">
-      You need to add some repositories bro
+    <p class="well" ng-show="!hasRepos && !show">
+      You should add some repos bro
     </p>
 
 		<table class="table table-hover">
@@ -52,7 +52,6 @@
 				<td style="text-align:right;">
           <i class="fa fa-times" 
              ng-click="remove(repo); $event.stopPropagation();" 
-             ng-show="repo.permissions.admin" 
              tooltip-placement="bottom" 
              tooltip="Remove">
           </i>

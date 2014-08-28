@@ -10,7 +10,6 @@ global.config = require('../../../config');
 // models
 var User = require('../../../server/documents/user').User;
 var Star = require('../../../server/documents/star').Star;
-var Repo = require('../../../server/documents/repo').Repo;
 var Settings = require('../../../server/documents/settings').Settings;
 
 // services
@@ -166,10 +165,6 @@ before(function(){
 
     it('should create a star', function(done){
 
-        repo_with_stub = sinon.stub(Repo, 'with', function(args, done){
-            done(null, {});
-        });
-
         github_one_stub = sinon.stub(github,'call', function(args, done){
             
             assert.equal(args.obj, 'repos');
@@ -230,10 +225,6 @@ before(function(){
 
     it('should throw error for star.create error', function(done){
 
-        repo_with_stub = sinon.stub(Repo, 'with', function(args, done){
-            done(null, {});
-        });
-
         github_one_stub = sinon.stub(github,'call', function(args, done){
             
             assert.equal(args.obj, 'repos');
@@ -272,7 +263,7 @@ before(function(){
     });
 
     afterEach(function(){
-        repo_with_stub.restore();
+        // repo_with_stub.restore();
         github_one_stub.restore();
         star_create_stub.restore();
     });

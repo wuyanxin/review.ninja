@@ -1,5 +1,4 @@
 // models
-var Repo = require('mongoose').model('Repo');
 var User = require('mongoose').model('User');
 
 //services
@@ -14,34 +13,22 @@ var pullRequest = require('../services/pullRequest');
 
 module.exports = function(req, res) {
 
-    Repo.with({
-        uuid: req.args.repository.id
-    }, function(err, repo) {
+    var actions = {
+        created: function() {
 
-        if (err) {
-            return;
-        }
+            if(pullRequest.byLabels(req.args.issue.labels)) {
 
-        if (repo.ninja) {
-
-            var actions = {
-                created: function() {
-
-                    if(pullRequest.byLabels(req.args.issue.labels)) {
-
-                        var event = req.args.repository.owner.login + ':' + 
-                                    req.args.repository.name + ':' +
-                                    'issue-comment-' + req.args.issue.id;
-                        io.emit(event, req.args.comment.id);
-                    }
-                }
-            };
-
-            if (actions[req.args.action]) {
-                actions[req.args.action]();
+                var event = req.args.repository.owner.login + ':' + 
+                            req.args.repository.name + ':' +
+                            'issue-comment-' + req.args.issue.id;
+                io.emit(event, req.args.comment.id);
             }
         }
-    });
+    };
+
+    if (actions[req.args.action]) {
+        actions[req.args.action]();
+    }
 
     res.end();
 };

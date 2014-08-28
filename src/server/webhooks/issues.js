@@ -1,5 +1,4 @@
 // models
-var Repo = require('mongoose').model('Repo');
 var User = require('mongoose').model('User');
 
 //services
@@ -13,8 +12,6 @@ var pullRequest = require('../services/pullRequest');
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = function(req, res) {
-
-    var uuid = req.args.repository.id;
 
     //
     // Helper functions
@@ -32,13 +29,11 @@ module.exports = function(req, res) {
                 state:'open'
             },
             token: token
-        }, function(err, issues) {
-            done(err,issues);
-        });
+        }, done);
     }
 
 
-    function get_pull_request(user, repo, number, token, done){
+    function get_pull_request(user, repo, number, token, done) {
 
         github.call({
             obj:'pullRequests',
@@ -48,116 +43,102 @@ module.exports = function(req, res) {
                 repo: repo,
                 number:number
             }
-        }, function(err, pull_request){
-            done(err, pull_request);
-        });
+        }, done);
     }
 
-    Repo.with({
-        uuid: uuid
-    }, function(err, repo) {
-
-        if (err) {
-            return;
-        }
-
-        if (repo.ninja) {
-
-            var args = {
-                issue_number: req.args.issue.id,
-                sender: req.args.sender,
-                review_url: req.args.issue.url,
-                number: pullRequest.byLabels(req.args.issue.labels)
-            };
+    var args = {
+        issue_number: req.args.issue.id,
+        sender: req.args.sender,
+        review_url: req.args.issue.url,
+        number: pullRequest.byLabels(req.args.issue.labels)
+    };
 
 
-            var actions = {
-                opened: function() {
+    var actions = {
+        opened: function() {
 
-                    var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
+            var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
 
-                    if( pull_request_number ) {
-                        get_pull_request(req.args.repository.owner.login,
-                                         req.args.repository.name,
-                                         pull_request_number,
-                                         repo.token,
-                                         function(err, pull_request) {
+            if( pull_request_number ) {
+                get_pull_request(req.args.repository.owner.login,
+                                 req.args.repository.name,
+                                 pull_request_number,
+                                 repo.token,
+                                 function(err, pull_request) {
 
-                            if(err) {
-                                return;
-                            }
-
-                            status.update({
-                                user: req.args.repository.owner.login,
-                                repo: req.args.repository.name,
-                                repo_uuid: uuid,
-                                sha: pull_request.head.sha,
-                                number: pull_request.number,
-                                token: repo.token
-                            }, function(err, data) {
-                                
-                            });
-
-                            notification.sendmail('new_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
-                        });
+                    if(err) {
+                        return;
                     }
 
-                },
+                    status.update({
+                        user: req.args.repository.owner.login,
+                        repo: req.args.repository.name,
+                        repo_uuid: req.args.repository.id,
+                        sha: pull_request.head.sha,
+                        number: pull_request.number,
+                        token: repo.token
+                    }, function(err, data) {
+                        
+                    });
 
-                closed: function() {
-
-                    var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
-
-                    if( pull_request_number ) {
-
-                        get_issues(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, issues){
-
-                            if(err) {
-                                return;
-                            }
-
-                            if(issues.length) {
-                                return;
-                            }
-
-
-                            get_pull_request(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, pull_request) {
-
-                                if(err){
-                                    return;
-                                }
-
-                                status.update({
-                                    user: req.args.repository.owner.login,
-                                    repo: req.args.repository.name,
-                                    repo_uuid: uuid,
-                                    sha: pull_request.head.sha,
-                                    number: pull_request.number,
-                                    token: repo.token
-                                }, function(err, data) {
-                                    
-                                });
-
-                                notification.sendmail('closed_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
-                            });
-
-                        });
-                    }
-                    
-                },
-
-                reopened: function() {
-                    // udpate the status 
-                    // send email if pull req is open and unmerged 
-                    // (logic belongs in notification service)
-                }
-            };
-
-            if (actions[req.args.action]) {
-                actions[req.args.action]();
+                    notification.sendmail('new_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
+                });
             }
+
+        },
+
+        closed: function() {
+
+            var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
+
+            if( pull_request_number ) {
+
+                get_issues(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, issues){
+
+                    if(err) {
+                        return;
+                    }
+
+                    if(issues.length) {
+                        return;
+                    }
+
+
+                    get_pull_request(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, pull_request) {
+
+                        if(err){
+                            return;
+                        }
+
+                        status.update({
+                            user: req.args.repository.owner.login,
+                            repo: req.args.repository.name,
+                            repo_uuid: req.args.repository.id,
+                            sha: pull_request.head.sha,
+                            number: pull_request.number,
+                            token: repo.token
+                        }, function(err, data) {
+                            
+                        });
+
+                        notification.sendmail('closed_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
+                    });
+
+                });
+            }
+            
+        },
+
+        reopened: function() {
+            // udpate the status 
+            // send email if pull req is open and unmerged 
+            // (logic belongs in notification service)
         }
-    });
+    };
+
+    if (actions[req.args.action]) {
+        actions[req.args.action]();
+    }
 
     res.end();
 };

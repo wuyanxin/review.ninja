@@ -21,7 +21,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
                 $scope.repo && $scope.repo.permissions.admin && 
                 toParams.user!==fromParams.user ) {
 
-                $scope.hook = $RPC.call('repo', 'getHook', {
+                $scope.hook = $RPC.call('webhook', 'get', {
                     user: $stateParams.user,
                     repo: $stateParams.repo
                 });
@@ -29,7 +29,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
         });
 
         $scope.createWebhook = function() {
-            $scope.creating = $RPC.call('repo', 'createHook', {
+            $scope.creating = $RPC.call('webhook', 'create', {
                 user: $stateParams.user,
                 repo: $stateParams.repo
             }, function(err, hook) {
@@ -39,6 +39,5 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
                 }
             });
         };
-
     }
 ]);
