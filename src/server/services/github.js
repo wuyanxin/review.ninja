@@ -42,7 +42,9 @@ module.exports = {
                 meta = null;
             }
 
-            done(err, res, meta);
+            if(typeof done === 'function') {
+                done(err, res, meta);
+            }
 
         });
 
