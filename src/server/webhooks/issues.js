@@ -53,60 +53,23 @@ module.exports = function(req, res) {
         number: pullRequest.byLabels(req.args.issue.labels)
     };
 
+    User.with({ uuid: req.args.sender.id }, function(err, user) {
 
-    var actions = {
-        opened: function() {
+        var token = user ? user.token : null;
 
-            var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
+        var actions = {
+            opened: function() {
 
-            if( pull_request_number ) {
-                get_pull_request(req.args.repository.owner.login,
-                                 req.args.repository.name,
-                                 pull_request_number,
-                                 repo.token,
-                                 function(err, pull_request) {
+                var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
 
-                    if(err) {
-                        return;
-                    }
+                if( pull_request_number ) {
+                    get_pull_request(req.args.repository.owner.login,
+                                     req.args.repository.name,
+                                     pull_request_number,
+                                     token,
+                                     function(err, pull_request) {
 
-                    status.update({
-                        user: req.args.repository.owner.login,
-                        repo: req.args.repository.name,
-                        repo_uuid: req.args.repository.id,
-                        sha: pull_request.head.sha,
-                        number: pull_request.number,
-                        token: repo.token
-                    }, function(err, data) {
-                        
-                    });
-
-                    notification.sendmail('new_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
-                });
-            }
-
-        },
-
-        closed: function() {
-
-            var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
-
-            if( pull_request_number ) {
-
-                get_issues(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, issues){
-
-                    if(err) {
-                        return;
-                    }
-
-                    if(issues.length) {
-                        return;
-                    }
-
-
-                    get_pull_request(req.args.repository.owner.login, req.args.repository.name, pull_request_number, repo.token, function(err, pull_request) {
-
-                        if(err){
+                        if(err) {
                             return;
                         }
 
@@ -116,29 +79,70 @@ module.exports = function(req, res) {
                             repo_uuid: req.args.repository.id,
                             sha: pull_request.head.sha,
                             number: pull_request.number,
-                            token: repo.token
+                            token: token
                         }, function(err, data) {
                             
                         });
 
-                        notification.sendmail('closed_issue', req.args.repository.owner.login, req.args.repository.name, repo.uuid, repo.token, pull_request_number, args);
+                        notification.sendmail('new_issue', req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, token, pull_request_number, args);
                     });
+                }
 
-                });
+            },
+
+            closed: function() {
+
+                var pull_request_number = pullRequest.byLabels(req.args.issue.labels);
+
+                if( pull_request_number ) {
+
+                    get_issues(req.args.repository.owner.login, req.args.repository.name, pull_request_number, token, function(err, issues){
+
+                        if(err) {
+                            return;
+                        }
+
+                        if(issues.length) {
+                            return;
+                        }
+
+
+                        get_pull_request(req.args.repository.owner.login, req.args.repository.name, pull_request_number, token, function(err, pull_request) {
+
+                            if(err){
+                                return;
+                            }
+
+                            status.update({
+                                user: req.args.repository.owner.login,
+                                repo: req.args.repository.name,
+                                repo_uuid: req.args.repository.id,
+                                sha: pull_request.head.sha,
+                                number: pull_request.number,
+                                token: token
+                            }, function(err, data) {
+                                
+                            });
+
+                            notification.sendmail('closed_issue', req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, token, pull_request_number, args);
+                        });
+
+                    });
+                }
+                
+            },
+
+            reopened: function() {
+                // udpate the status 
+                // send email if pull req is open and unmerged 
+                // (logic belongs in notification service)
             }
-            
-        },
+        };
 
-        reopened: function() {
-            // udpate the status 
-            // send email if pull req is open and unmerged 
-            // (logic belongs in notification service)
+        if (actions[req.args.action]) {
+            actions[req.args.action]();
         }
-    };
 
-    if (actions[req.args.action]) {
-        actions[req.args.action]();
-    }
-
-    res.end();
+        res.end();
+    });
 };
