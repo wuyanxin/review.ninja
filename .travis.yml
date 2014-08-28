@@ -15,7 +15,7 @@ deploy:
   username: dominik.tornow@gmail.com
   password:
     secure: j1nbvw+9/wUK5VnKOvDqTZ7380TkJMNP6fPiEdaNoiFb1jSHGmABrM2aheVOWrLpeOp3gbN5IUEgNqH+549IThfTuzQcR1w5i5HgFjOl5QGEw4x2NFq2346tWugwAJrRpmq6V0YS2tXVsOpTQxHKKCuhwZ2NKytE/yvaIn0/Ajw=
-  organization: Github Team
+  organization: "Github Team"
   space: development
   on:
     repo: reviewninja/review.ninja
