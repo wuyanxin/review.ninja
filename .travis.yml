@@ -1,4 +1,8 @@
-language: javascript
+language: node_js
+before_script:
+- grunt sass
+notifications:
+  email: false
 deploy:
   provider: cloudfoundry
   api: https://api.run.pivotal.io
