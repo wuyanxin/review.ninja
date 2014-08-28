@@ -96,6 +96,10 @@ $breadcrumb-separator: " ";
 $breadcrumb-padding-horizontal: 0px;
 $breadcrumb-padding-vertical: 15px;
 
+// label
+$label-default-bg: $brand-info;
+$label-color: $brand-primary;
+
 // code
 $pre-color: #333333;
 
@@ -191,12 +195,25 @@ $code-font-size: 12px;
 
 /* typography */
 
+body {
+  font-weight: 300;
+}
+
+h3, h4 {
+  font-weight: 200;
+  margin-top: 10px;
+}
+
 .text-body {
   color: $text-color;
 }
 
 .text-primary.muted {
     color: $brand-primary-muted;
+}
+
+img.muted {
+  opacity: 0.5;
 }
 
 .text-warning {

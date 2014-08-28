@@ -15,14 +15,33 @@
 
     <div class="row">
       <div class="col-md-12">
+
+            <h3>Email notifications</h3>
+
+            <label>Email me about</label>
+
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="settings.value.notifications.pull_request" ng-change="setNotifications()" /> Pull Requests
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="settings.value.notifications.issue" ng-change="setNotifications()" /> Issues
+              </label>
+            </div>
+            <div class="checkbox" style="margin-bottom:20px;">
+              <label>
+                <input type="checkbox" ng-model="settings.value.notifications.star" ng-change="setNotifications()" /> Ninja stars
+              </label>
+            </div>
             
-            <h4 style="font-weight:400;">
-              Email notifications <i class="fa fa-lg fa-plus-circle text-primary" ng-click="show=true"></i>
-              <span class="fa-stack pull-right">
-                <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
-                <i class="fa fa-info fa-stack-1x text-primary"></i>
-              </span>
-            </h4>
+            <label>Watched branches <i class="fa fa-lg fa-plus-circle text-primary" ng-click="show=true"></i></label>
+
+            <span class="fa-stack pull-right">
+              <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
+              <i class="fa fa-info fa-stack-1x text-primary"></i>
+            </span>
 
             <div class="well" ng-show="show">
               <form role="form" ng-submit="addWatch(newWatch)" style="margin:0;">
@@ -40,6 +59,10 @@
               </form>
             </div>
 
+            <p ng-show="!show && !settings.value.watched.length">
+              Add branch patterns to tell ReviewNinja which branches you want to focus on.
+            </p>
+
             <table class="table table-hover" ng-show="settings.value.watched.length">
               <tr ng-repeat="watched in settings.value.watched">
                 <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
@@ -52,22 +75,6 @@
                 </td>
               </tr>
             </table>
-
-            <!-- <div class="well" ng-hide="settings && settings.value.watched.length > 0">
-              <p class="text-center">You have no notifications setup, you can get started and <a ng-click="showAddNotification=true" href="">add one right now</a>.</p>
-            </div> -->
-
-            <div class="well well-sm">
-              <label class="checkbox-inline">
-                <input type="checkbox" ng-model="settings.value.notifications.pull_request" ng-change="setNotifications()" /> Pull Request
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" ng-model="settings.value.notifications.issue" ng-change="setNotifications()" /> Issue
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" ng-model="settings.value.notifications.star" ng-change="setNotifications()" /> Star
-              </label>
-            </div>
 
       </div>
     </div>

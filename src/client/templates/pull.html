@@ -15,7 +15,8 @@
           </div>
           <div class="col-sm-8">
             <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }}</h2>
-            <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-primary">{{ pull.base.ref }}</span> from <span class="label label-primary">{{ pull.head.label }}</span> <span moment="pull.created_at"></span></p>
+            <p>{{ pull.body }}</p>
+            <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-default">{{ pull.base.ref }}</span> from <span class="label label-default">{{ pull.head.label }}</span> <span moment="pull.created_at"></span></p>
           </div>
           <div class="col-sm-3">
             <div ng-show="extra.loaded">
@@ -86,11 +87,13 @@
 
                 <div class="col-sm-4 text-right">
                   <div class="btn-group">
-                    <button type="button" class="btn btn-default" ng-click="toggle()">
-                      &nbsp;<i class="fa fa-star text-primary" ng-class="{ muted: !star.value }"></i>&nbsp;
+                    <button type="button" class="btn btn-default" ng-click="toggle()" style="padding:2px 12px 0px;">
+                      <span class="icon-ninja-star" style="font-size:25px"></span>
                     </button>
                     <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" ng-disabled="!pull.stars.length">{{ pull.stars.length }}</button>
+                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" ng-disabled="!pull.stars.length" style="font-size:18px;">
+                        {{ pull.stars.length }}
+                      </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
                         <li><a href="">You have {{ pull.stars.length | pluralize:'ninja star' }}!</a></li>
                         <li class="divider"></li>
