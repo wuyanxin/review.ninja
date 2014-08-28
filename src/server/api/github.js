@@ -27,7 +27,7 @@ module.exports = {
             // automatically add to users repo array
             if(!err && req.args.obj==='repos' && req.args.fun==='get' && res.permissions && res.permissions.push) {
 
-                User.with({ uuid: req.user.id }, function(err, user) {
+                User.findOne({ uuid: req.user.id }, function(err, user) {
                     if(user) {
                         var found = false;
                         user.repos.forEach(function(repo) {

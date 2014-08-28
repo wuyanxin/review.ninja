@@ -45,7 +45,7 @@ module.exports = {
             repo = null;
         }
 
-        Settings.with({
+        Settings.findOne({
             user: req.user.id,
             repo: repo
         }, function(err, settings) {

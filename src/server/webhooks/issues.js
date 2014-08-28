@@ -53,7 +53,7 @@ module.exports = function(req, res) {
         number: pullRequest.byLabels(req.args.issue.labels)
     };
 
-    User.with({ uuid: req.args.sender.id }, function(err, user) {
+    User.findOne({ uuid: req.args.sender.id }, function(err, user) {
 
         var token = user ? user.token : null;
 
