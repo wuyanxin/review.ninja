@@ -6,7 +6,7 @@ var Star = require('mongoose').model('Star');
 module.exports = {
     update: function(args, done) {
 
-        Star.find({repo: args.repo_uuid, comm: args.sha}, function(err, stars) {
+        Star.find({repo: args.repo_uuid, sha: args.sha}, function(err, stars) {
 
             stars = stars || [];
 
@@ -38,9 +38,7 @@ module.exports = {
                         target_url: url.reviewPullRequest(args.user, args.repo, args.number)
                     },
                     token: args.token
-                }, function(err, res) {
-                    done(err, res);
-                });
+                }, done);
             });
         });
     }
