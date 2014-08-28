@@ -42,7 +42,6 @@ module.exports = {
                 meta = null;
             }
 
-            console.log(obj + '.' + fun);
             done(err, res, meta);
 
         });
