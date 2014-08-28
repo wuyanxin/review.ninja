@@ -9,22 +9,6 @@
 module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issues', 'Issue',
     function($scope, $state, $stateParams, $HUB, $RPC, issues, Issue) {
 
-        // filter the issues
-        var filtered = [];
-        var filter = $stateParams.issues ? $stateParams.issues.split(',') : null;
-
-        if(filter) {
-            issues.value.forEach(function(issue) {
-                if(filter.indexOf(issue.number.toString()) > -1) {
-                    filtered.push(issue);
-                }
-            });
-        }
-
-        if(filtered.length) {
-            issues.value = filtered;
-        }
-
         // get the open issues
         $scope.issues = issues;
 

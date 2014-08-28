@@ -77,7 +77,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             // Repo detail state (pull request list)
             //
             .state('repo.pull', {
-                // abstract: true,
+                abstract: true,
                 url: '/pull/:number',
                 templateUrl: '/templates/pull.html',
                 controller: 'PullCtrl',
@@ -101,8 +101,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             // Repo issue state (abstract)
             //
             .state('repo.pull.issue', {
-                url: '?state',
                 abstract: true,
+                url: '?state',
                 templateUrl: '/templates/issue.html',
                 resolve: {
                     issues: ['$HUBService', '$stateParams', 'Issue',
@@ -139,7 +139,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                         return issues;
                     }]
                 }
-
             })
 
             //

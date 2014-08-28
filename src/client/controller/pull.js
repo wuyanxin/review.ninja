@@ -17,9 +17,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.base = $scope.pull.base.sha;
         $scope.head = $scope.pull.head.sha;
 
-        // selected issues
-        $scope.issue = {};
-
         // file reference
         $scope.reference = {};
         $scope.selection = {};
@@ -67,17 +64,15 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
-        // $HUB.call('issues', 'repoIssues', {
-        //     user: $stateParams.user,
-        //     repo: $stateParams.repo,
-        //     labels: 'review.ninja, pull-request-' + $stateParams.number,
-        //     state: 'closed',
-        //     per_page: 1
-        // }, function(err, issues) {
-        //     if(!err) {
-        //         $scope.pull.closed_issue = issues.value.length ? issues.value[0] : null;
-        //     }
-        // });
+        // 
+        // The issues filter
+        //
+
+        $scope.filter = [];
+
+        $scope.clearFilter = function() {
+            $scope.filter = [];
+        };
 
         //
         // Events

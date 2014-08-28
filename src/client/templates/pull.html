@@ -121,7 +121,8 @@
                   status="file.status" 
                   file-sha="file.sha"
                   base-sha="base"
-                  head-sha="head"
+                  head-sha="head" 
+                  issues="filter" 
                   selection="selection"
                   reference="reference">
             </diff>
@@ -154,14 +155,14 @@
             <i class="fa fa-plus fa-stack-1x"></i>
           </span>
 
-          <div class="pull-right">
-            <a ui-sref="repo.pull.issue.master({state:'open', issues:null})" 
+          <div class="pull-right" ng-click="clearFilter()">
+            <a ui-sref="repo.pull.issue.master({state:'open'})" 
                class="btn btn-link inverse" ng-click="type='open'" 
                ng-class="{active:($stateParams.state !== 'closed')}">
 
               <span class="octicon octicon-issue-opened"></span> Open
             </a>
-            <a ui-sref="repo.pull.issue.master({state:'closed', issues:null})" 
+            <a ui-sref="repo.pull.issue.master({state:'closed'})" 
                class="btn btn-link inverse" ng-click="type='closed'" 
                ng-class="{active:$stateParams.state === 'closed'}">
               <span class="octicon octicon-issue-closed"></span> Closed

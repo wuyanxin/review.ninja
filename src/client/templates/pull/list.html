@@ -1,8 +1,8 @@
 <table class="table table-hover"
        infinite-scroll="issues.getMore()"
-       infinite-scroll-disabled="$stateParams.issues ? true : issues.loading">
+       infinite-scroll-disabled="filter.length ? true : issues.loading">
 
-  <tr class="select" ng-repeat="issue in issues.value" ui-sref="repo.pull.issue.detail({ issue: issue.number })">
+  <tr class="select" ng-repeat="issue in issues.value | in:filter:'number'" ui-sref="repo.pull.issue.detail({ issue: issue.number })">
     <td width="50px">
       <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
     </td>

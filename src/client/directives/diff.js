@@ -11,6 +11,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 path: '=',
                 patch: '=',
                 status: '=',
+                issues: '=',
                 fileSha: '=',
                 baseSha: '=',
                 headSha: '=',
@@ -137,7 +138,12 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                         return $state.go('repo.pull.issue.detail', { issue: issues[0] });
                     }
 
-                    $state.go('repo.pull.issue.master', { issues: issues });
+                    scope.issues.length = 0;
+                    issues.forEach(function(issue) {
+                        scope.issues.push(issue);
+                    });
+
+                    // $state.go('repo.pull.issue.master', { issues: issues });
                 };
             }
         };
