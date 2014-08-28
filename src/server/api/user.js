@@ -8,7 +8,7 @@ module.exports = {
 
     get: function(req, done) {
 
-        User.with({ uuid: req.user.id }, function(err, user) {
+        User.findOne({ uuid: req.user.id }, function(err, user) {
             if(err) {
                 return done(err, null);
             }
@@ -33,7 +33,7 @@ module.exports = {
                     });
                 }
 
-                User.with({ uuid: req.user.id }, function(err, user) {
+                User.findOne({ uuid: req.user.id }, function(err, user) {
                     if(user) {
                         var found = false;
                         user.repos.forEach(function(repo) {
@@ -75,7 +75,7 @@ module.exports = {
         rmvRepo: function(req, done) {
 
             // remove from user array
-            User.with({ uuid: req.user.id }, function(err, user) {
+            User.findOne({ uuid: req.user.id }, function(err, user) {
                 if(user) {
                     var repos = [];
                     user.repos.forEach(function(repo) {

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var withHelper = require('./with');
 
 var StarSchema = mongoose.Schema({
     sha: String,
@@ -8,8 +7,6 @@ var StarSchema = mongoose.Schema({
     name: String,
     created_at: Date
 });
-
-StarSchema.plugin(withHelper);
 
 StarSchema.index({
     sha: 1,

@@ -16,15 +16,17 @@ module.exports = {
     ************************************************************************************************************/
     
     get: function(req, done) {
-        Settings.with({user: req.user.id, repo: req.args.repo_uuid}, function(err, settings) {
-
+        Settings.findOne({user: req.user.id, repo: req.args.repo_uuid}, function(err, settings) {
             // check if settings exist and return them
             if(settings) {
                 return done(err, settings);
             }
 
             // if they don't exist create them
-            Settings.with({user: req.user.id, repo: req.args.repo_uuid}, {}, done);
+            Settings.create({
+                user: req.user.id, 
+                repo: req.args.repo_uuid
+            }, done);
         });
     },
 
@@ -39,21 +41,21 @@ module.exports = {
             }
         }
 
-        Settings.with({
+        Settings.findOneAndUpdate({
             user: req.user.id,
             repo: req.args.repo_uuid
         }, {
             watched: result
-        }, done);
+        }, {}, done);
     },
 
     setNotifications: function(req, done) {
-        Settings.with({
+        Settings.findOneAndUpdate({
             user: req.user.id,
             repo: req.args.repo_uuid
         }, {
             notifications: req.args.notifications
-        }, done);
+        }, {}, done);
     }
 
 };

@@ -29,7 +29,7 @@ module.exports = {
     ************************************************************************************************************/
 
     get: function(req, done) {
-        Star.with({
+        Star.findOne({
             sha: req.args.sha,
             user: req.user.id,
             repo: req.args.repo_uuid
@@ -109,7 +109,7 @@ module.exports = {
 
     rmv: function(req, done) {
 
-        Star.with({
+        Star.findOne({
             sha: req.args.sha,
             user: req.user.id,
             repo: req.args.repo_uuid

@@ -13,7 +13,7 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    User.with({ uuid: req.args.sender.id }, function(err, user) {
+    User.findOne({ uuid: req.args.sender.id }, function(err, user) {
 
       var token = user ? user.token : null;
 

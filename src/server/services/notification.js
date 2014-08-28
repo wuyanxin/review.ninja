@@ -158,7 +158,7 @@ module.exports = function() {
                                 return;
                             }
 
-                            Settings.with({
+                            Settings.findOne({
                                 user: collaborator.uuid,
                                 repo: repo_uuid
                             }, function(err, settings) {
