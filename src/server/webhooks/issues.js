@@ -53,9 +53,11 @@ module.exports = function(req, res) {
         number: pullRequest.byLabels(req.args.issue.labels)
     };
 
-    User.findOne({ uuid: req.args.sender.id }, function(err, user) {
+    User.findOne({ _id: req.args.id }, function(err, user) {
 
-        var token = user ? user.token : null;
+        if(!user) {
+            return res.end();
+        }
 
         var actions = {
             opened: function() {
@@ -66,7 +68,7 @@ module.exports = function(req, res) {
                     get_pull_request(req.args.repository.owner.login,
                                      req.args.repository.name,
                                      pull_request_number,
-                                     token,
+                                     user.token,
                                      function(err, pull_request) {
 
                         if(err) {
@@ -79,12 +81,10 @@ module.exports = function(req, res) {
                             repo_uuid: req.args.repository.id,
                             sha: pull_request.head.sha,
                             number: pull_request.number,
-                            token: token
-                        }, function(err, data) {
-                            
+                            token: user.token
                         });
 
-                        notification.sendmail('new_issue', req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, token, pull_request_number, args);
+                        notification.sendmail('new_issue', req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, user.token, pull_request_number, args);
                     });
                 }
 
@@ -96,7 +96,7 @@ module.exports = function(req, res) {
 
                 if( pull_request_number ) {
 
-                    get_issues(req.args.repository.owner.login, req.args.repository.name, pull_request_number, token, function(err, issues){
+                    get_issues(req.args.repository.owner.login, req.args.repository.name, pull_request_number, user.token, function(err, issues){
 
                         if(err) {
                             return;
@@ -107,7 +107,7 @@ module.exports = function(req, res) {
                         }
 
 
-                        get_pull_request(req.args.repository.owner.login, req.args.repository.name, pull_request_number, token, function(err, pull_request) {
+                        get_pull_request(req.args.repository.owner.login, req.args.repository.name, pull_request_number, user.token, function(err, pull_request) {
 
                             if(err){
                                 return;
@@ -119,12 +119,10 @@ module.exports = function(req, res) {
                                 repo_uuid: req.args.repository.id,
                                 sha: pull_request.head.sha,
                                 number: pull_request.number,
-                                token: token
-                            }, function(err, data) {
-                                
+                                token: user.token
                             });
 
-                            notification.sendmail('closed_issue', req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, token, pull_request_number, args);
+                            notification.sendmail('closed_issue', req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, user.token, pull_request_number, args);
                         });
 
                     });

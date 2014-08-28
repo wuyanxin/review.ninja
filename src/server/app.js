@@ -218,7 +218,7 @@ app.all('/api/:obj/:fun', function(req, res) {
 // Handle webhook calls
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.all('/github/webhook', function(req, res) {
+app.all('/github/webhook/:id', function(req, res) {
     var event = req.headers['x-github-event'];
     try {
         if (!webhooks[event]) {

@@ -13,9 +13,11 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    User.findOne({ uuid: req.args.sender.id }, function(err, user) {
+    User.findOne({ _id: req.args.id }, function(err, user) {
 
-      var token = user ? user.token : null;
+      if(!user) {
+          return res.end();
+      }
 
       var args = {
           user: req.args.repository.owner.login,
@@ -23,7 +25,7 @@ module.exports = function(req, res) {
           repo_uuid: req.args.repository.id,
           sha: req.args.pull_request.head.sha,
           number: req.args.number,
-          token: token
+          token: user.token
       };
 
       var notification_args = {
@@ -36,27 +38,27 @@ module.exports = function(req, res) {
       var actions = {
           opened: function() {
 
-              status.update(args, function(err, data) {});
+              status.update(args);
 
               notification.sendmail('pull_request_opened',
                                     req.args.repository.owner.login,
                                     req.args.repository.name,
                                     req.args.repository.id,
-                                    token,
+                                    user.token,
                                     req.args.number,
                                     notification_args);
 
           },
           synchronize: function() {
 
-              status.update(args, function(err, data) {});
+              status.update(args);
 
               notification.sendmail(
                                     'pull_request_synchronized',
                                     req.args.repository.owner.login,
                                     req.args.repository.name,
                                     req.args.repository.id,
-                                    token,
+                                    user.token,
                                     req.args.number,
                                     notification_args);
 
