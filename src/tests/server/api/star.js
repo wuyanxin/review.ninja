@@ -44,7 +44,7 @@ describe('star:all', function(done) {
 
 describe('star:get', function() {
     it('should set the correct parameters when calling get', function(done) {
-        var starStub = sinon.stub(Star,'with', function(args, done) {
+        var starStub = sinon.stub(Star,'findOne', function(args, done) {
             assert.deepEqual(args, {sha: 'sha', repo: 'repo', user: 1234});
             done();
         });
@@ -203,7 +203,7 @@ describe('star:set', function() {
 describe('star:rmv', function() {
 
     it('should return an error if it occurs when retrieving the star', function(done) {
-        var starStub = sinon.stub(Star, 'with', function(args, done) {
+        var starStub = sinon.stub(Star, 'findOne', function(args, done) {
             done('mongoose star error');
         });
 
@@ -227,7 +227,7 @@ describe('star:rmv', function() {
 
         global.io = {emit: sinon.spy()};
 
-        var starStub = sinon.stub(Star, 'with', function(args, done) {
+        var starStub = sinon.stub(Star, 'findOne', function(args, done) {
             var star = {
                 remove: function(done) {
                     done(null, {});
