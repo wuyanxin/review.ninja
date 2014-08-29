@@ -43,7 +43,6 @@
     "parse-diff": "git+https://github.com/reviewninja/parse-diff.git",
     "passport": "^0.2.0",
     "passport-github": "^0.1.5",
-    "redis": "^0.10.3",
     "request": "^2.37.0",
     "socket.io": "^1.0.6",
     "valid-url": "^1.0.9"
