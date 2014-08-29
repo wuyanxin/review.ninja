@@ -31,7 +31,8 @@
                       ng-disabled="!pull.mergeable" 
                       ng-click="merge()">
 
-                <span class="octicon octicon-git-merge"></span> Merge pull request
+                <span class="octicon octicon-git-merge"></span> 
+                {{ pull.open_issue ? 'YOLO' : 'Merge pull request' }}
               </button>
 
               <div ng-show="!pull.merged">
