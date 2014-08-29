@@ -53,8 +53,6 @@
     "karma-reviewninja-reporter": "git+https://git@github.com/reviewninja/karma-reviewninja-reporter.git",
     "mkdirp": "0.5.0",
     "mocha": "^1.19.0",
-    "mocha.ninja": "git+https://git@github.com/dtornow/mocha.ninja.git",
-    "reviewninja-coverage-reporter": "git+https://git@github.com/reviewninja/reviewninja-coverage-reporter.git",
     "should": "^3.3.1",
     "sinon": "^1.10.2",
     "supertest": "0.13.0",

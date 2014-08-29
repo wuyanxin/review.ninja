@@ -1,8 +1,26 @@
+var TRAVIS_COMMIT = process.env.TRAVIS_COMMIT;
 module.exports = function(grunt) {
 
     var config = {
 
         pkg: grunt.file.readJSON('package.json'),
+
+        mocha_istanbul: {
+            coverage: {
+                src: 'src/tests/server', // the folder, not the files,
+                options: {
+                    coverage: true,
+                    mask: '**/*.js',
+                    coverageFolder: 'output/coverage'
+                }
+            }
+        },
+
+        coveralls: {
+            mocha: {
+                src: 'output/coverage/lcov.info'
+            }
+        },
 
         sass: {
             dist: {
@@ -69,11 +87,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-nodemon');
+
+    grunt.loadNpmTasks('grunt-mocha-istanbul');
+    grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.registerTask('serve', ['sass', 'concurrent']);
-
+    grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'coveralls:mocha']);
     grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
 };
