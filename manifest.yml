@@ -1,3 +1,3 @@
-application:
+applications:
 - name: review-ninja-staging
   command: node app.js
