@@ -13,7 +13,7 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    User.findOne({ _id: req.args.id }, function(err, user) {
+    User.findOne({ _id: req.params.id }, function(err, user) {
 
       if(!user) {
           return res.end();
