@@ -19,7 +19,7 @@ module.exports = {
             var hook;
             if(!err) {
                 hooks.forEach(function(webhook) {
-                    if(webhook.config.url.indexOf(url.baseWebhook) > -1) {
+                    if(webhook.config.url && webhook.config.url.indexOf(url.baseWebhook) > -1) {
                         hook = webhook;
                     }
                 });
