@@ -1,5 +1,7 @@
 [![Codeship Status](https://codeship.io/projects/c947ac30-e856-0131-ba4d-6ed2984e85b2/status)](https://codeship.io/projects/26050) [![Stories in Ready](https://badge.waffle.io/reviewninja/review.ninja.svg?label=ready&title=Ready)](http://waffle.io/reviewninja/review.ninja) [![Dependencies](https://david-dm.org/reviewninja/review.ninja.png)](https://david-dm.org/reviewninja/review.ninja) [![Coverage Status](https://img.shields.io/coveralls/reviewninja/review.ninja.svg)](https://coveralls.io/r/reviewninja/review.ninja?branch=master) [![Code Climate](https://codeclimate.com/github/reviewninja/review.ninja.png)](https://codeclimate.com/github/reviewninja/review.ninja)
 
+ReviewNinja is still under construction. We should be ready in the week of September 2nd.
+
 ReviewNinja - merge with confidence
 ============
 
