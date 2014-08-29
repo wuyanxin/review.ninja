@@ -1,11 +1,28 @@
 {
   "name": "review.ninja",
+  "author": "Review Ninja <contact@review.ninja> (https://github.com/reviewninja)",
   "version": "0.0.1",
-  "domains": [
-    "review.ninja",
-    "www.review.ninja"
+  "homepage": "http://review.ninja",
+  "description": "code review for github pull requests",
+  "keywords": ["code review", "github"],
+  "license": "Apache-2.0",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/reviewninja/review.ninja"
+  },
+  "bugs": "https://github.com/reviewninja/review.ninja/issues",
+  "contributors": [
+    "Agarwal, Aayushya <aayushya.agarwal@sap.com>",
+    "Boeser, Benjamin <ben.boeser@sap.com>",
+    "Branczyk, Frederic <frederic.branczyk@sap.com>",
+    "Chen, Mei <mei.chen@sap.com>",
+    "Farr, David <david.farr@sap.com>",
+    "Huang, Chelsea <chelsea.huang@sap.com>",
+    "Kunzmann, Michael <michael.kunzmann@sap.com>",
+    "Reynard, Rachel <rachel.reynard@sap.com>",
+    "Tornow, Dominik <dominik.tornow@sap.com>",
+    "Xiong, Jie <jie.xiong01@sap.com>"
   ],
-  "subdomain": "dtornow-reviewninja",
   "dependencies": {
     "array-sugar": "^0.2.4",
     "async": "^0.9.0",
