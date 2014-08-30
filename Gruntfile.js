@@ -1,4 +1,3 @@
-var TRAVIS_COMMIT = process.env.TRAVIS_COMMIT;
 module.exports = function(grunt) {
 
     var config = {
@@ -7,7 +6,7 @@ module.exports = function(grunt) {
 
         mocha_istanbul: {
             coverage: {
-                src: 'src/tests/server', // the folder, not the files,
+                src: 'src/tests/server',
                 options: {
                     coverage: true,
                     mask: '**/*.js',
@@ -66,7 +65,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // jshint
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
@@ -76,8 +74,17 @@ module.exports = function(grunt) {
                     src: ['app.js', 'src/client/**/*.js', 'src/server/**/*.js', 'src/tests/**/*.js']
                 }
             }
-        }
+        },
 
+        scsslint: {
+            allFiles: [
+              'src/client/assets/styles/*.scss',
+            ],
+            options: {
+              config: '.scss-lint.yml',
+              colorizeOutput: true
+            }
+        }
     };
 
     // Initialize configuration
@@ -85,6 +92,7 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
+    grunt.registerTask('lint', ['jshint', 'scsslint']);
     grunt.registerTask('serve', ['sass', 'concurrent']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'coveralls:mocha']);
     grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);

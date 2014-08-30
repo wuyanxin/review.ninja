@@ -1,14 +1,17 @@
 {
   "name": "review.ninja",
-  "author": "Review Ninja <contact@review.ninja> (https://github.com/reviewninja)",
+  "author": "ReviewNinja <contact@review.ninja> (https://github.com/reviewninja)",
   "version": "0.0.1",
   "homepage": "http://review.ninja",
-  "description": "code review for github pull requests",
-  "keywords": ["code review", "github"],
+  "description": "ReviewNinja, merge with confidence",
+  "keywords": [
+    "code review",
+    "github"
+  ],
   "license": "Apache-2.0",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/reviewninja/review.ninja"
+    "type": "git",
+    "url": "https://github.com/reviewninja/review.ninja"
   },
   "bugs": "https://github.com/reviewninja/review.ninja/issues",
   "contributors": [
@@ -61,6 +64,7 @@
     "grunt-mocha-istanbul": "^2.0.0",
     "grunt-mocha-test": "^0.11.0",
     "grunt-nodemon": "^0.3.0",
+    "grunt-scss-lint": "^0.3.3",
     "jshint.ninja": "git+https://git@github.com/dtornow/jshint.ninja.git",
     "karma": "^0.12.16",
     "karma-mocha": "^0.1.3",
