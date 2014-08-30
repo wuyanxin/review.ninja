@@ -24,7 +24,7 @@ Try ReviewNinja
 ----------------
 
 ReviewNinja is in the very early stages of active development, and you can expect significant API and UX/UI
-changes. To sign up for our newsletter go to http://review.ninja/ .
+changes. To sign up for our newsletter go to http://review.ninja/.
 
 Contribute
 ----------
