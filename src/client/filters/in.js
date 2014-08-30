@@ -5,7 +5,7 @@
 filters.filter('in', function() {
     return function(items, array, attr) {
 
-        if(!array.length) {
+        if(!array || !array.length) {
             return items;
         }
 
@@ -15,7 +15,7 @@ filters.filter('in', function() {
 
             var match = attr ? item[attr] : item;
 
-            if(array.indexOf(match) > -1) {
+            if(array.indexOf( match.toString() ) > -1) {
                 matched.push(item);
             }
         });

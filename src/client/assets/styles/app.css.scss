@@ -158,15 +158,16 @@ $code-font-size: 12px;
         top: 0;
     }
 
-    section {
+    .content {
       height: 100vh;
       height: calc(100vh - 100px);
       overflow-y: scroll;
+      overflow-x: hidden;
     }
 
-    section::-webkit-scrollbar {
-      display: none;
-    }
+    // section::-webkit-scrollbar {
+    //   display: none;
+    // }
   }
 }
 

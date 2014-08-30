@@ -8,7 +8,6 @@ module.directive('file', ['$state', function($state) {
             templateUrl: '/directives/templates/file.html',
             scope: {
                 path: '=',
-                issues: '=',
                 content: '=',
                 headSha: '=',
                 selection: '=',
@@ -54,10 +53,7 @@ module.directive('file', ['$state', function($state) {
                         return $state.go('repo.pull.issue.detail', { issue: issues[0] });
                     }
 
-                    scope.issues.length = 0;
-                    issues.forEach(function(issue) {
-                        scope.issues.push(issue);
-                    });
+                    $state.go('repo.pull.issue.master', { issues: issues });
                 };
             }
         };

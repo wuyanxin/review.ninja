@@ -64,16 +64,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
-        // 
-        // The issues filter
-        //
-
-        $scope.filter = [];
-
-        $scope.clearFilter = function() {
-            $scope.filter = [];
-        };
-
         //
         // Events
         //

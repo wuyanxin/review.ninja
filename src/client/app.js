@@ -42,7 +42,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             .state('repo', {
                 abstract: true,
                 url: '/:user/:repo',
-                templateUrl: '/templates/repo.html',
+                template: '<section ui-view></section>',
                 resolve: {
                     repo: ['$rootScope', '$stateParams', '$HUBService',
                         function($rootScope, $stateParams, $HUBService) {
@@ -64,8 +64,19 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             //
             .state('repo.list', {
                 url: '',
-                templateUrl: '/templates/list.html',
+                templateUrl: '/templates/repo/list.html',
                 controller: 'RepoCtrl',
+                resolve: {
+                    repo: ['repo', function(repo) {
+                        return repo; // inherited from parent state
+                    }]
+                }
+            })
+
+            .state('repo.settings', {
+                url: '/settings',
+                templateUrl: '/templates/repo/settings.html',
+                controller: 'SettingsCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
                         return repo; // inherited from parent state
@@ -79,7 +90,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             .state('repo.pull', {
                 abstract: true,
                 url: '/pull/:number',
-                templateUrl: '/templates/pull.html',
+                templateUrl: '/templates/pull/main.html',
                 controller: 'PullCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -103,21 +114,35 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             .state('repo.pull.issue', {
                 abstract: true,
                 url: '?state',
-                templateUrl: '/templates/issue.html',
+                template: '<section ui-view></section>',
                 resolve: {
-                    issues: ['$HUBService', '$stateParams', 'Issue',
+                    open: ['$HUBService', '$stateParams', 'Issue',
                         function($HUBService, $stateParams, Issue) {
-
-                            var state = ($stateParams.state==='open' || $stateParams.state==='closed') ? $stateParams.state : 'open';
-
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: state
-                            }, function(err, res) {
+                                state: 'open',
+                                per_page: 4
+                            }, function(err, open) {
                                 if(!err) {
-                                    res.affix.forEach(function(issue) {
+                                    open.affix.forEach(function(issue) {
+                                        issue = Issue.parse(issue);
+                                    });
+                                }
+                            });
+                        }
+                    ],
+                    closed: ['$HUBService', '$stateParams', 'Issue',
+                        function($HUBService, $stateParams, Issue) {
+                            return $HUBService.call('issues', 'repoIssues', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                labels: 'review.ninja, pull-request-' + $stateParams.number,
+                                state: 'closed'
+                            }, function(err, closed) {
+                                if(!err) {
+                                    closed.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
                                 }
@@ -135,8 +160,13 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/list.html',
                 controller: 'PullListCtrl',
                 resolve: {
-                    issues: ['issues', function(issues) {
-                        return issues;
+                    issues: ['$stateParams', '$filter', 'open', 'closed', function($stateParams, $filter, open, closed) {
+
+                        if($stateParams.state === 'closed') {
+                            return closed;
+                        }
+
+                        return open;
                     }]
                 }
             })
@@ -162,17 +192,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                             });
                         }
                     ]
-                }
-            })
-
-            .state('repo.settings', {
-                url: '/settings',
-                templateUrl: '/templates/settings.html',
-                controller: 'SettingsCtrl',
-                resolve: {
-                    repo: ['repo', function(repo) {
-                        return repo; // inherited from parent state
-                    }]
                 }
             });
 
