@@ -1,0 +1,37 @@
+.btn {
+  &.btn-link {
+    color: $brand-primary-muted;
+
+    &:hover {
+      color: $brand-primary;
+      text-decoration: none;
+    }
+
+    &.active {
+      background: none;
+      box-shadow: none;
+      color: $brand-primary;
+    }
+
+    &.inverse {
+      color: $gray;
+      padding: 3px 0 0 5px;
+
+      &:hover,
+      &.active {
+        color: #fff;
+      }
+    }
+  }
+}
+
+// .btn-group.star {
+//   .btn-primary:hover,
+//   .btn-primary:focus,
+//   .btn-primary:active {
+//     background: $brand-primary;
+//     border-color: #378883;
+//     box-shadow: none;
+//     cursor: default;
+//   }
+// }

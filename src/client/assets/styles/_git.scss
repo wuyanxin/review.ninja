@@ -1,0 +1,46 @@
+.git {
+  svg {
+    margin: -20px 0 0 60px;
+
+    &.merge {
+      font-size: 14px;
+    }
+
+    &.branch {
+      font-size: 22px;
+    }
+
+    path.git-base,
+    path.git-head,
+    polygon.git-graph-arrow {
+      stroke: #000;
+    }
+
+    path.git-head {
+      fill: none;
+    }
+
+    circle.git-commit {
+      fill: #000;
+
+      &.active {
+        fill: $brand-primary;
+      }
+
+      &.head {
+        fill: $brand-primary-muted;
+      }
+
+      &.base:hover,
+      &.issue:hover {
+        cursor: pointer;
+        fill: $brand-primary-hover;
+        filter: url('#dropshadow');
+      }
+
+      &.head:hover {
+        fill: $brand-primary-hover;
+      }
+    }
+  }
+}
