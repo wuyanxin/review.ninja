@@ -1,0 +1,11 @@
+_.breadcrumb {
+  a {
+    color: $brand-primary;
+    font-size: $font-size-h4;
+  }
+
+  a:hover {
+    color: $brand-primary-hover;
+    text-decoration: none;
+  }
+}
