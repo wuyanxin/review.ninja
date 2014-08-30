@@ -16,7 +16,7 @@ module.exports = {
             },
             token: req.user.token
         }, function(err, hooks) {
-            var hook;
+            var hook = null;
             if(!err) {
                 hooks.forEach(function(webhook) {
                     if(webhook.config.url && webhook.config.url.indexOf(url.baseWebhook) > -1) {
@@ -48,7 +48,7 @@ module.exports = {
                     repo: req.args.repo,
                     name: 'web',
                     config: { url: url.webhook(user._id), content_type: 'json' },
-                    events: ['pull_request','issues', 'issue_comment'],
+                    events: ['pull_request', 'issues', 'issue_comment'],
                     active: true
                 },
                 token: req.user.token
