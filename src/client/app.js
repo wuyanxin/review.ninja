@@ -60,7 +60,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo list state (list of pull requests)
+            // Repo master state (list of pull requests)
             //
             .state('repo.master', {
                 url: '',
@@ -118,6 +118,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 abstract: true,
                 url: '?state',
                 templateUrl: '/templates/pull/sidebar.html',
+                controller: 'SidebarCtrl',
                 resolve: {
                     open: ['$HUBService', '$stateParams', 'Issue',
                         function($HUBService, $stateParams, Issue) {

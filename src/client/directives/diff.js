@@ -106,15 +106,16 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                     if(line.head) {
 
                         var ref = scope.headRef(line);
+                        var cur = scope.selection[0] ? scope.selection[0].ref : null;
 
-                        if(scope.selection[ref]) {
-                            return delete scope.selection[ref];
-                        }
+                        scope.selection.length = 0;
 
-                        for(var sel in scope.selection) {
-                            delete scope.selection[sel];
+                        if(ref !== cur) {
+                            scope.selection.push({
+                                ref: ref,
+                                line: scope.path + '#L' + line.base
+                            });
                         }
-                        scope.selection[ref] = true;
                     }
                 };
 

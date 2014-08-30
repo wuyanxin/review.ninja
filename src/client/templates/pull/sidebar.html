@@ -35,10 +35,16 @@
                   <textarea class="form-control" 
                             ng-model="description" 
                             rows="3" 
-                            placeholder="Description - to link this issue to a line of code, click on a line number">
+                            placeholder="Description {{ !selection[0] ? '- to link this issue to a line of code, click on a line number' : '' }}">
                   </textarea>
                 </div>
                 <div class="pull-right">
+                  <i class="fa fa-lg fa-link text-warning" 
+                     ng-show="selection[0] && !creating.loading"
+                     tooltip="{{ selection[0].line }}"
+                     tooltip-placement="bottom" 
+                     style="margin-right:10px;">
+                  </i>
                   <i class="fa fa-lg fa-spinner fa-spin" ng-show="creating.loading" style="margin-right:10px;"></i>
                   <button type="button" class="btn btn-info" ng-click="show=false">Cancel</button>
                   <button type="submit" class="btn btn-primary" ng-disabled="!title">Submit</button>

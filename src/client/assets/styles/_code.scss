@@ -38,6 +38,11 @@
     i {
       position: absolute;
       visibility: hidden;
+
+      &.fa-circle {
+        font-size: 16px;
+        top: 2px;
+      }
     }
   }
 

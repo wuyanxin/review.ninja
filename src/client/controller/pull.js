@@ -19,7 +19,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         // file reference
         $scope.reference = {};
-        $scope.selection = {};
+        $scope.selection = [];
 
         // get the files (for the diff view)
         $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
@@ -172,41 +172,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     $scope.pull = pull.value;
                 }
             });
-        };
-
-        $scope.createIssue = function() {
-
-            if($scope.title) {
-
-                var description = $scope.description ? $scope.description : '';
-
-                // this will expand to  
-                // multiple lines in the future
-                var reference;
-
-                for(var ref in $scope.selection) {
-                    reference = ref;
-                }
-
-                $scope.creating = $RPC.call('issue', 'add', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    number: $stateParams.number,
-                    repo_uuid: $scope.repo.id,
-                    title: $scope.title,
-                    body: description,
-                    sha: $scope.pull.head.sha,
-                    reference: reference
-                }, function(err, issue) {
-                    if(!err) {
-                        $state.go('repo.pull.issue.detail', { issue: issue.value.number }).then(function() {
-                            $scope.show = false;
-                            $scope.title = null;
-                            $scope.description = null;
-                        });
-                    }
-                });
-            }
         };
 
         //

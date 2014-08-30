@@ -45,6 +45,7 @@ module.exports = {
         }
 
         var fileReference = '`none`';
+        var ninjaReference = '[' + '#' + req.args.number + ']' + '(' + url.reviewPullRequest(req.args.user, req.args.repo, req.args.number) + ')';
 
         if(req.args.reference) {
             var referenceUrl = url.githubFileReference(req.args.user, req.args.repo, req.args.reference);
@@ -53,9 +54,9 @@ module.exports = {
         }
             
         var body = req.args.body + '\r\n\r\n';
-        body += '|commit|file reference|\r\n';
-        body += '|------|--------------|\r\n';
-        body += '|' + req.args.sha + '|' + fileReference + '|';
+        body += '|commit|file reference|ReviewNinja|\r\n';
+        body += '|------|--------------|-----------|\r\n';
+        body += '|' + req.args.sha + '|' + fileReference + '|' + ninjaReference + '|';
 
         github.call({
             obj: 'issues', 

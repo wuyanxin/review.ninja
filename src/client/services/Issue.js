@@ -4,7 +4,7 @@
 
 module.factory('Issue', function() {
 
-    var regex = /\|commit\|file reference\|\r\n\|------\|--------------\|\r\n\|(\b[0-9a-f]{40}\b)\|(\[(.*)?\].*?|[`]none[`])\|/;
+    var regex = /\|commit\|file reference\|.*\r\n\|-+\|-+\|.*\r\n\|(\b[0-9a-f]{40}\b)\|(\[([^\|]*)?\].*?|[`]none[`])\|.*/;
 
     return {
 
