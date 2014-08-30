@@ -1,0 +1,40 @@
+.btn {
+  &.btn-link {
+    color: $brand-primary-muted;
+  }
+
+  &.btn-link:hover {
+    color: $brand-primary;
+    text-decoration: none;
+  }
+
+  &.btn-link.active {
+    background: none;
+    box-shadow: none;
+    color: $brand-primary;
+  }
+
+  &.btn-link.inverse {
+    color: $gray;
+    padding: 3px 0 0 5px;
+  }
+
+  &.btn-link.inverse:hover {
+    color: #fff;
+  }
+
+  &.btn-link.inverse.active {
+    color: #fff;
+  }
+}
+
+// .btn-group.star {
+//   .btn-primary:hover,
+//   .btn-primary:focus,
+//   .btn-primary:active {
+//     background: $brand-primary;
+//     border-color: #378883;
+//     box-shadow: none;
+//     cursor: default;
+//   }
+// }
