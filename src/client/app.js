@@ -122,8 +122,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'open',
-                                per_page: 4
+                                state: 'open'
                             }, function(err, open) {
                                 if(!err) {
                                     open.affix.forEach(function(issue) {
@@ -160,7 +159,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/list.html',
                 controller: 'PullListCtrl',
                 resolve: {
-                    issues: ['$stateParams', '$filter', 'open', 'closed', function($stateParams, $filter, open, closed) {
+                    issues: ['$stateParams', 'open', 'closed', function($stateParams, open, closed) {
 
                         if($stateParams.state === 'closed') {
                             return closed;

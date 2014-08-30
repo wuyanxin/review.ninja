@@ -165,9 +165,9 @@ $code-font-size: 12px;
       overflow-x: hidden;
     }
 
-    // section::-webkit-scrollbar {
-    //   display: none;
-    // }
+    .content::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 
