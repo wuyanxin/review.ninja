@@ -29,7 +29,7 @@ changes. To sign up for our newsletter go to http://review.ninja/.
 Contribute
 ----------
 
-To contribute, take a look at our [vagrant.review.ninja](https://github.com/reviewninja/vagrant.review.ninja) repo, it explains you how to get setup and running easily through a combination of vagrant and salt ;)
+To contribute, take a look at our [vagrant.review.ninja](https://github.com/reviewninja/vagrant.review.ninja) repo, it explains how to get setup and running easily through a combination of vagrant and salt ;)
 
 Contributions to this project are very welcome, but can only be accepted if the contributions themselves are given to the project under the Apache License 2.0. Contributions other than those given under Apache License 2.0 will be rejected.
 
