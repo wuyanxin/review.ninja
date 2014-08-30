@@ -1,12 +1,12 @@
 // *****************************************************
-// Pull List Controller
+// Issue List Controller
 //
-// tmpl: pull/list.html
-// path: /:user/:repo/pull/:number
-// resolve: open, closed 
+// tmpl: issue/list.html
+// path: /:user/:repo/pull/:number?state&issues
+// resolve: issues 
 // *****************************************************
 
-module.controller('PullListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issues', 'Issue',
+module.controller('IssueListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issues', 'Issue',
     function($scope, $state, $stateParams, $HUB, $RPC, issues, Issue) {
 
         // get the open issues

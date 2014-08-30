@@ -17,9 +17,6 @@ $brand-info: #d0eaea;
 $brand-merged: #6e5494;
 $link-color: #3c3c3d;
 
-// scaffolding
-// $body-bg: $gray-lighter;
-
 // typography
 $text-color: $gray-darker;
 $link-color: $gray-darker;
@@ -135,14 +132,14 @@ $code-font-size: 12px;
 .scaffold {
   background: $gray-lighter;
 
-  .main {
+  > .pull {
     background: $body-bg;
     min-height: 100vh;
     min-height: calc(100vh - 52px);
     padding: 0 30px;
   }
 
-  .sidebar {
+  > .sidebar {
     background: $gray-lighter;
     max-height: 100vh;
     max-height: calc(100vh - 52px);
@@ -155,11 +152,7 @@ $code-font-size: 12px;
       width: inherit;
     }
 
-    .content::-webkit-scrollbar {
-      display: none;
-    }
-
-    .content {
+    .issues {
       height: 100vh;
       height: calc(100vh - 100px);
       overflow-x: hidden;

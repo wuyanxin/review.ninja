@@ -52,7 +52,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                 repo_uuid: repo.id
             }, function(err) {
                 if (!err) {
-                    $state.go('repo.list', {user: repo.owner.login, repo:repo.name});
+                    $state.go('repo.master', {user: repo.owner.login, repo:repo.name});
                 }
             });
         };

@@ -44,7 +44,7 @@
 
 		<table class="table table-hover">
 			<tr ng-repeat="repo in repos | filter:{ninja: true} | orderBy:'full_name'" 
-          ui-sref="repo.list({ user:repo.owner.login, repo:repo.name })"
+          ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })"
           class="select">
 
 				<td><span class="octicon octicon-repo"></span>&nbsp; {{ repo.owner.login }} / {{ repo.name }}</td>

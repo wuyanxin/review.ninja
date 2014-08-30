@@ -1,12 +1,12 @@
 // *****************************************************
-// Pull Issue Controller
+// Issue Detail Controller
 //
-// tmpl: pull/list.html
+// tmpl: issue/detail.html
 // path: /:user/:repo/pull/:number/:issue
 // resolve: open, closed 
 // *****************************************************
 
-module.controller('PullIssueCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',
+module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',
     function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, issue, socket) {
 
         // get the issue

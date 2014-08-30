@@ -5,7 +5,7 @@
       <div class="col-md-12">
 
         <ol class="breadcrumb">
-          <li><a ui-sref="repo.list()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
+          <li><a ui-sref="repo.master()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
           <li class="pull-right"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
         </ol>
         
@@ -57,7 +57,7 @@
             </td>
 
             <td>
-              <a ui-sref="repo.pull.issue.master({ number: pull.number })">{{ pull.title }}</a><br />
+              <a ui-sref="repo.pull.issue.master({ number: pull.number, state:'open' })">{{ pull.title }}</a><br />
               <small>#{{ pull.number }} opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
             </td>
 

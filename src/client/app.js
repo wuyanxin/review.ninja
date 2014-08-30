@@ -60,11 +60,11 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo master state
+            // Repo list state (list of pull requests)
             //
-            .state('repo.list', {
+            .state('repo.master', {
                 url: '',
-                templateUrl: '/templates/repo/list.html',
+                templateUrl: '/templates/repo/repo.html',
                 controller: 'RepoCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -73,6 +73,9 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 }
             })
 
+            //
+            // Repo settings state
+            //
             .state('repo.settings', {
                 url: '/settings',
                 templateUrl: '/templates/repo/settings.html',
@@ -85,12 +88,12 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo detail state (pull request list)
+            // Pull request state (abstract)
             //
             .state('repo.pull', {
                 abstract: true,
                 url: '/pull/:number',
-                templateUrl: '/templates/pull/main.html',
+                templateUrl: '/templates/pull/pull.html',
                 controller: 'PullCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -109,12 +112,12 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo issue state (abstract)
+            // Pull request issues state (abstract)
             //
             .state('repo.pull.issue', {
                 abstract: true,
                 url: '?state',
-                template: '<section ui-view></section>',
+                templateUrl: '/templates/pull/sidebar.html',
                 resolve: {
                     open: ['$HUBService', '$stateParams', 'Issue',
                         function($HUBService, $stateParams, Issue) {
@@ -152,12 +155,12 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo issue master state
+            // Pull request issues state (list of issues)
             //
             .state('repo.pull.issue.master', {
                 url: '?issues',
-                templateUrl: '/templates/pull/list.html',
-                controller: 'PullListCtrl',
+                templateUrl: '/templates/issue/list.html',
+                controller: 'IssueListCtrl',
                 resolve: {
                     issues: ['$stateParams', 'open', 'closed', function($stateParams, open, closed) {
 
@@ -171,12 +174,12 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo issue detail state
+            // Pull request issue state
             //
             .state('repo.pull.issue.detail', {
                 url: '/:issue',
-                templateUrl: '/templates/pull/issue.html',
-                controller: 'PullIssueCtrl',
+                templateUrl: '/templates/issue/detail.html',
+                controller: 'IssueDetailCtrl',
                 resolve: {
                     issue: ['$stateParams', '$HUBService', 'Issue',
                         function($stateParams, $HUBService, Issue) {

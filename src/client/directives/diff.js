@@ -25,8 +25,9 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
 
                 scope.expanded = false;
 
-                // To Do:
-                // fix this
+                //
+                // todo: clean up this code
+                //
 
                 scope.$watch('patch', function() {
 

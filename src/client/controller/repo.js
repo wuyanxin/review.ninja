@@ -1,7 +1,7 @@
 // *****************************************************
-// Repository Controller
+// Repo Controller
 //
-// tmpl: pull.html
+// tmpl: repo/repo.html
 // path: /:user/:repo
 // resolve: repo 
 // *****************************************************

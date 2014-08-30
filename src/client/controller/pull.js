@@ -1,7 +1,7 @@
 // *****************************************************
 // Pull Request Controller
 //
-// tmpl: pull.html
+// tmpl: pull/pull.html
 // path: /:user/:repo/pull/:number
 // resolve: repo, pull 
 // *****************************************************
