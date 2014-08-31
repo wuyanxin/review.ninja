@@ -1,0 +1,26 @@
+env:
+    browser: true
+    mocha: true
+    node: true
+
+globals:
+    $: false
+    angular: false
+    chunk: true
+    config: false
+    filters: true
+    ga: false
+    io: false
+    models: true
+    module: true
+    moment: false
+
+rules:
+    camelcase: 0
+    eol-last: 0
+    new-cap: 0
+    no-underscore-dangle: 0
+    no-unused-vars: 0
+    no-use-before-define: [1 nofunc]
+    quotes: [1, single]
+    space-infix-ops: 0
