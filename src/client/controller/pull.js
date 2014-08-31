@@ -6,14 +6,14 @@
 // resolve: repo, pull 
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Issue',
-    function($scope, $rootScope, $state, $stateParams, $HUB, $RPC, repo, pull, socket, Issue) {
+module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Pull',
+    function($scope, $state, $stateParams, $HUB, $RPC, repo, pull, socket, Pull) {
 
         // get the repo
         $scope.repo = repo.value;
 
         // get the pull request
-        $scope.pull = pull.value;
+        $scope.pull = Pull.issues(pull.value);
         $scope.base = $scope.pull.base.sha;
         $scope.head = $scope.pull.head.sha;
 
@@ -81,6 +81,14 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             $scope.reference = reference;
         });
 
+        $scope.$on('issue:open', function(event, issue) {
+            $scope.pull = Pull.issues($scope.pull);
+        });
+
+        $scope.$on('issue:closed', function(event, issue) {
+            $scope.pull = Pull.issues($scope.pull);
+        });
+
 
         //
         // Actions
@@ -106,7 +114,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         };
 
         $scope.merge = function() {
-            $HUB.call('pullRequests', 'merge', {
+            $scope.merging = $HUB.call('pullRequests', 'merge', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 number: $stateParams.number
@@ -154,13 +162,13 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         };
 
         $scope.refreshPullRequest = function() {
-            $HUB.wrap('pullRequests', 'get', {
+            $scope.refreshing = $HUB.wrap('pullRequests', 'get', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 number: $stateParams.number
             }, function(err, pull) {
                 if(!err) {
-                    $scope.pull = pull.value;
+                    $scope.pull = Pull.issues(pull.value);
                 }
             });
         };

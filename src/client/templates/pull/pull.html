@@ -19,13 +19,7 @@
             <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-default">{{ pull.base.ref }}</span> from <span class="label label-default">{{ pull.head.label }}</span> <span moment="pull.created_at"></span></p>
           </div>
           <div class="col-sm-3">
-
-            <merge-button stars="pull.stars"
-                          merge="merge()"
-                          merged="pull.merged"
-                          mergeable="pull.mergeable">
-            </merge-button>
-
+            <merge-button pull="pull" merge="merge()" merging="(merging.loading || refreshing.loading)"></merge-button>
           </div>
         </div>
 

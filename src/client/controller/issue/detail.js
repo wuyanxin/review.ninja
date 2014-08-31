@@ -38,7 +38,6 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
 
         $scope.toggle = function() {
 
-            var old = $scope.issue.state;
             var state = $scope.issue.state === 'open' ? 'closed' : 'open';
 
             $scope.toggling = $HUB.call('issues', 'edit', {
@@ -48,11 +47,10 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                 state: state
             }, function(err, issue) {
                 if(!err) {
-                    $scope.issue.state = issue.value.state;
                     $scope.issue.ref = null;
+                    $scope.issue.state = issue.value.state;
 
-                    $rootScope.$emit('issues:' + old, $rootScope[old] - 1);
-                    $rootScope.$emit('issues:' + state, $rootScope[state] + 1);
+                    $scope.$emit('issue:' + issue.value.state, issue.value);
                 }
             });
         };

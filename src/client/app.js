@@ -120,36 +120,18 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/sidebar.html',
                 controller: 'SidebarCtrl',
                 resolve: {
-                    open: ['$rootScope', '$HUBService', '$stateParams', 'Issue',
-                        function($rootScope, $HUBService, $stateParams, Issue) {
+                    issues: ['$HUBService', '$stateParams', 'Issue',
+                        function($HUBService, $stateParams, Issue) {
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
+                                state: $stateParams.state,
                                 labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'open'
-                            }, function(err, open) {
+                            }, function(err, issues) {
                                 if(!err) {
-                                    open.affix.forEach(function(issue) {
+                                    issues.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
-                                    $rootScope.$emit('issues:open', open.value.length);
-                                }
-                            });
-                        }
-                    ],
-                    closed: ['$rootScope', '$HUBService', '$stateParams', 'Issue',
-                        function($rootScope, $HUBService, $stateParams, Issue) {
-                            return $HUBService.call('issues', 'repoIssues', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: 'closed'
-                            }, function(err, closed) {
-                                if(!err) {
-                                    closed.affix.forEach(function(issue) {
-                                        issue = Issue.parse(issue);
-                                    });
-                                    $rootScope.$emit('issues:closed', closed.value.length);
                                 }
                             });
                         }
@@ -165,13 +147,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/issue/list.html',
                 controller: 'IssueListCtrl',
                 resolve: {
-                    issues: ['$stateParams', 'open', 'closed', function($stateParams, open, closed) {
-
-                        if($stateParams.state === 'closed') {
-                            return closed;
-                        }
-
-                        return open;
+                    issues: ['issues', function(issues) {
+                        return issues;
                     }]
                 }
             })
@@ -184,17 +161,16 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/issue/detail.html',
                 controller: 'IssueDetailCtrl',
                 resolve: {
-                    issue: ['$stateParams', 'open', 'closed',
-                        function($stateParams, open, closed) {
+                    issue: ['$stateParams', 'issues',
+                        function($stateParams, issues) {
 
                             var selected;
 
-                            ($stateParams.state === 'closed' ? closed : open).value.forEach(function(issue) {
+                            issues.value.forEach(function(issue) {
                                 if(issue.number === parseInt($stateParams.issue)) {
                                     selected = issue;
                                 }
                             });
-
                             return selected;
                         }
                     ]

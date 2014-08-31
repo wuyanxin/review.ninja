@@ -6,8 +6,8 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('SidebarCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$RPC', 'open', 'closed', 'Issue',
-    function($rootScope, $scope, $state, $stateParams, $RPC, open, closed, Issue) {
+module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$RPC', 'issues', 'Issue',
+    function($scope, $state, $stateParams, $RPC, issues, Issue) {
 
         //
         // actions
@@ -34,8 +34,9 @@ module.controller('SidebarCtrl', ['$rootScope', '$scope', '$state', '$stateParam
                     reference: reference
                 }, function(err, issue) {
                     if(!err) {
-                        open.value.unshift(Issue.parse(issue.value));
-                        $rootScope.$emit('issues:open', $rootScope.open + 1);
+                        issues.value.unshift(Issue.parse(issue.value));
+
+                        $scope.$emit('issue:' + issue.value.state, issue.value);
 
                         $state.go('repo.pull.issue.detail', { issue: issue.value.number }).then(function() {
                             $scope.show = null;
