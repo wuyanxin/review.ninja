@@ -9,12 +9,16 @@
 module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',
     function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, issue, socket) {
 
+        if(!issue) {
+            return $state.go('repo.pull.issue.master');
+        }
+
         // get the issue
-        $scope.issue = issue.value;
+        $scope.issue = issue;
 
         // emit to parent controller (repo.pull)
-        $scope.$emit('issue:set', issue.value);
-        $scope.$emit('reference:set', [issue.value]);
+        $scope.$emit('issue:set', issue);
+        $scope.$emit('reference:set', [issue]);
 
         // switch the comparison view
         if($scope.issue.sha) {
@@ -34,6 +38,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
 
         $scope.toggle = function() {
 
+            var old = $scope.issue.state;
             var state = $scope.issue.state==='open' ? 'closed' : 'open';
 
             $scope.toggling = $HUB.call('issues', 'edit', {
@@ -44,6 +49,10 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
             }, function(err, issue) {
                 if(!err) {
                     $scope.issue.state = issue.value.state;
+                    $scope.issue.ref = null;
+
+                    $rootScope.$emit('issues:' + old, $rootScope[old] - 1);
+                    $rootScope.$emit('issues:' + state, $rootScope[state] + 1);
                 }
             });
         };

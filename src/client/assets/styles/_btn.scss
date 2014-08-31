@@ -23,15 +23,11 @@
       }
     }
   }
-}
 
-// .btn-group.star {
-//   .btn-primary:hover,
-//   .btn-primary:focus,
-//   .btn-primary:active {
-//     background: $brand-primary;
-//     border-color: #378883;
-//     box-shadow: none;
-//     cursor: default;
-//   }
-// }
+  &.btn-merged {
+    background-color: #fff;
+    border: 1px solid;
+    color: $brand-merged;
+    opacity: 1;
+  }
+}

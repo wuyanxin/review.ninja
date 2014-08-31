@@ -11,6 +11,14 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
             $scope.repo = repo;
         });
 
+        $rootScope.$on('issues:open', function(event, count) {
+            $rootScope.open = count;
+        });
+
+        $rootScope.$on('issues:closed', function(event, count) {
+            $rootScope.closed = count;
+        });
+
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
             if( !($stateParams.user && $stateParams.repo) ) {

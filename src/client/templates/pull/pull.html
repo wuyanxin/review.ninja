@@ -19,44 +19,13 @@
             <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-default">{{ pull.base.ref }}</span> from <span class="label label-default">{{ pull.head.label }}</span> <span moment="pull.created_at"></span></p>
           </div>
           <div class="col-sm-3">
-            <div ng-show="extra.loaded">
-              <button type="button" 
-                      class="btn btn-block" 
-                      ng-class="{
-                        'btn-primary': pull.stars.length && !pull.open_issue,
-                        'btn-warning': !pull.stars.length && !pull.open_issue,
-                        'btn-danger': pull.open_issue
-                      }"
-                      ng-show="!pull.merged" 
-                      ng-disabled="!pull.mergeable" 
-                      ng-click="merge()">
 
-                <span class="octicon octicon-git-merge"></span> 
-                {{ pull.open_issue ? 'YOLO' : 'Merge pull request' }}
-              </button>
+            <merge-button stars="pull.stars"
+                          merge="merge()"
+                          merged="pull.merged"
+                          mergeable="pull.mergeable">
+            </merge-button>
 
-              <div ng-show="!pull.merged">
-                <div ng-show="pull.stars.length && !pull.open_issue" class="merge-message text-primary">
-                  Looking good<br />
-                  <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
-                </div>
-
-                <div ng-show="!pull.stars.length && !pull.open_issue" class="merge-message text-warning">
-                  Pending<br />
-                  <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
-                </div>
-
-                <div ng-show="pull.open_issue" class="merge-message text-danger">
-                  Not looking so good<br />
-                  <span class="text-body">open issue(s)</span>
-                </div>
-              </div>
-
-              <div ng-show="pull.merged" class="merge-message text-merged pull-right" style="margin-top:0">
-                <p class="lead" style="margin-bottom:5px;"><span class="mega-octicon octicon-git-pull-request"></span> Merged</p>
-                <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
-              </div>
-            </div>
           </div>
         </div>
 

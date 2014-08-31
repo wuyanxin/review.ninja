@@ -48,28 +48,13 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             });
         });
 
-        // get the details
-        // it would be cool if the "issue" could
-        // be inherited from the parent list view
-        // to avoid having to call github
-        $scope.extra = $HUB.call('issues', 'repoIssues', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            labels: 'review.ninja, pull-request-' + $stateParams.number,
-            state: 'open',
-            per_page: 1
-        }, function(err, issues) {
-            if(!err) {
-                $scope.pull.open_issue = issues.value.length ? issues.value[0] : null;
-            }
-        });
-
         //
         // Events
         //
 
         $scope.$on('issue:set', function(event, issue) {
             $scope.issue = issue;
+            $scope.selection = [];
         });
 
         $scope.$on('reference:set', function(event, issues) {
@@ -125,6 +110,13 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 number: $stateParams.number
+            }, function(err, res) {
+
+                // todo: handle error or unmerged
+
+                if(!err && res.value.merged) {
+                    $scope.pull = $scope.refreshPullRequest();
+                }
             });
         };
 
@@ -140,7 +132,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 repo_uuid: $scope.repo.id
             }, function(err, star) {
                 if(!err) {
-                    console.log(star);
                     $scope.star.value = fn==='set' ? star.value : null;
                 }
             });
@@ -163,7 +154,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         };
 
         $scope.refreshPullRequest = function() {
-            $HUB.call('pullRequests', 'get', {
+            $HUB.wrap('pullRequests', 'get', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 number: $stateParams.number

@@ -6,8 +6,12 @@
 // resolve: open, closed 
 // *****************************************************
 
-module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$RPC',
-    function($scope, $state, $stateParams, $RPC) {
+module.controller('SidebarCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$RPC', 'open', 'closed', 'Issue',
+    function($rootScope, $scope, $state, $stateParams, $RPC, open, closed, Issue) {
+
+        //
+        // actions
+        //
 
         $scope.createIssue = function() {
 
@@ -30,6 +34,9 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$RPC',
                     reference: reference
                 }, function(err, issue) {
                     if(!err) {
+                        open.value.unshift(Issue.parse(issue.value));
+                        $rootScope.$emit('issues:open', $rootScope.open + 1);
+                        
                         $state.go('repo.pull.issue.detail', { issue: issue.value.number }).then(function() {
                             $scope.show = null;
                             $scope.title = null;

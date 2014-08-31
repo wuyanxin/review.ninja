@@ -1,0 +1,38 @@
+
+<button type="button" 
+        class="btn btn-block" 
+        ng-class="{
+          'btn-primary': !merged && stars.length && !open,
+          'btn-warning': !merged && !stars.length && !open,
+          'btn-danger': !merged && open,
+          'btn-merged': merged
+        }"
+        ng-disabled="!mergeable" 
+        ng-click="merge()">
+
+  <span class="octicon octicon-git-merge"></span> 
+  <span ng-show="!merged && open">YOLO</span>
+  <span ng-show="!merged && !open">Merge pull request</span>
+  <span ng-show="merged">Merged</span>
+</button>
+
+<div ng-show="!merged && stars.length && !open" class="merge-message text-primary">
+  Looking good<br />
+  <span class="text-body">{{ stars.length | pluralize:'ninja star' }}</span>
+</div>
+
+<div ng-show="!merged && !stars.length && !open" class="merge-message text-warning">
+  Pending<br />
+  <span class="text-body">{{ stars.length | pluralize:'ninja star' }}</span>
+</div>
+
+<div ng-show="!merged && open" class="merge-message text-danger">
+  Not looking so good<br />
+  <span class="text-body">{{ open | pluralize:'open issue' }}</span>
+</div>
+
+<div ng-show="merged" class="merge-message text-merged">
+  <span class="text-body">{{ stars.length | pluralize:'ninja star' }}</span>
+  <span class="text-body" ng-show="open"><br />{{ open | pluralize:'open issue' }}</span>
+  <span class="text-body" ng-show="closed"><br />{{ closed | pluralize:'closed issue' }}</span>
+</div>

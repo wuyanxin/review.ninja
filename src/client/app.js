@@ -120,8 +120,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/pull/sidebar.html',
                 controller: 'SidebarCtrl',
                 resolve: {
-                    open: ['$HUBService', '$stateParams', 'Issue',
-                        function($HUBService, $stateParams, Issue) {
+                    open: ['$rootScope', '$HUBService', '$stateParams', 'Issue',
+                        function($rootScope, $HUBService, $stateParams, Issue) {
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
@@ -132,12 +132,13 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                     open.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
+                                    $rootScope.$emit('issues:open', open.value.length);
                                 }
                             });
                         }
                     ],
-                    closed: ['$HUBService', '$stateParams', 'Issue',
-                        function($HUBService, $stateParams, Issue) {
+                    closed: ['$rootScope', '$HUBService', '$stateParams', 'Issue',
+                        function($rootScope, $HUBService, $stateParams, Issue) {
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
@@ -148,6 +149,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                     closed.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
+                                    $rootScope.$emit('issues:closed', closed.value.length);
                                 }
                             });
                         }
@@ -182,17 +184,18 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                 templateUrl: '/templates/issue/detail.html',
                 controller: 'IssueDetailCtrl',
                 resolve: {
-                    issue: ['$stateParams', '$HUBService', 'Issue',
-                        function($stateParams, $HUBService, Issue) {
-                            return $HUBService.call('issues', 'getRepoIssue', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                number: $stateParams.issue
-                            }, function(err, issue) {
-                                if(!err) {
-                                    issue.value = Issue.parse(issue.value);
+                    issue: ['$stateParams', 'open', 'closed',
+                        function($stateParams, open, closed) {
+
+                            var selected;
+                            
+                            ($stateParams.state === 'closed' ? closed : open).value.forEach(function(issue) {
+                                if(issue.number === parseInt($stateParams.issue)) {
+                                    selected = issue;
                                 }
                             });
+
+                            return selected;
                         }
                     ]
                 }
