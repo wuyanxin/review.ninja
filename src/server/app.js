@@ -5,6 +5,7 @@ var glob = require('glob');
 var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
+var sass = require('node-sass');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration 
@@ -64,6 +65,12 @@ async.series([
         console.log('bootstrap static files'.bold);
 
         config.server.static.forEach(function(p) {
+            app.use(sass.middleware({
+                src: p,
+                dest: p,
+                debug: true,
+                outputStyle: 'compressed'
+            }));
             app.use(express.static(p));
         });
         callback();
