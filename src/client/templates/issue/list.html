@@ -1,6 +1,5 @@
 <table class="table table-hover"
        infinite-scroll="issues.getMore()"
-       infinite-scroll-use-document-bottom="true"
        infinite-scroll-disabled="$stateParams.issues ? true: issues.loading">
 
   <tr class="select" 
@@ -11,7 +10,7 @@
       <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
     </td>
     <td>
-      <strong>#{{ issue.number }} {{ issue.title }} {{ issue.state }}</strong><br />
+      <strong>#{{ issue.number }} {{ issue.title }}</strong><br />
       <p ng-show="issue.body" style="word-break:break-all;">{{ issue.body | limitTo:250 }}</p>
       <small moment="issue.created_at"></small>
     </td>
