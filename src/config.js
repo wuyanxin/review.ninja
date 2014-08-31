@@ -19,7 +19,7 @@ module.exports = {
             secret: process.env.GITHUB_SECRET,
 
             // review.ninja specific
-            scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org'],
+            scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org']
         },
 
         localport: process.env.PORT || 5000,
@@ -38,7 +38,7 @@ module.exports = {
         smtp: {
             enabled: !!process.env.SMTP_HOST,
             host: process.env.SMTP_HOST,
-            secure: (!!process.env.SMTP_SSL && process.env.SMTP_SSL == 'true'),
+            secure: (!!process.env.SMTP_SSL && process.env.SMTP_SSL === 'true'),
             port: process.env.SMTP_PORT,
             auth: {
                 user: process.env.SMTP_USER,
@@ -72,7 +72,7 @@ module.exports = {
 
         controller: [
             __dirname + '/server/controller/!(default).js',
-            __dirname + '/server/controller/default.js',
+            __dirname + '/server/controller/default.js'
         ],
 
         middleware: [

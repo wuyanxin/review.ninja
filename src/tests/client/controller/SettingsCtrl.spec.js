@@ -16,7 +16,7 @@ describe('Settings Controller', function() {
         });
         scope = $rootScope.$new();
 
-        repo= {
+        repo = {
             value: {
                 id:1234
             }
@@ -27,7 +27,7 @@ describe('Settings Controller', function() {
                 $scope: scope,
                 repo:repo
             });
-            ctrl.scope =scope;
+            ctrl.scope = scope;
             return ctrl;
         };
     }));
@@ -53,10 +53,10 @@ describe('Settings Controller', function() {
 
         httpBackend.expect('POST', '/api/settings/get').respond({
                 settings:'settings',
-                watched:['one', 'two']            
-            
+                watched:['one', 'two']
+
         });
-        
+
         httpBackend.flush();
 
         scope.addWatch('feature/*');
@@ -71,10 +71,10 @@ describe('Settings Controller', function() {
 
         httpBackend.expect('POST', '/api/settings/get').respond({
                 settings:'settings',
-                watched:['one', 'two']            
-            
+                watched:['one', 'two']
+
         });
-        
+
         httpBackend.flush();
 
         ctrl.scope.removeWatch('two');
@@ -92,10 +92,10 @@ describe('Settings Controller', function() {
         httpBackend.expect('POST', '/api/settings/get').respond({
                 settings:'settings',
                 watched:['one', 'two'],
-                notifications: ['yo wassup']            
-            
+                notifications: ['yo wassup']
+
         });
-        
+
         httpBackend.flush();
 
         ctrl.scope.setNotifications();

@@ -70,10 +70,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         reference[key] = [];
                     }
 
-                    reference[key].push({ 
-                        ref: issue.ref, 
-                        sha: issue.sha, 
-                        issue: issue.number 
+                    reference[key].push({
+                        ref: issue.ref,
+                        sha: issue.sha,
+                        issue: issue.number
                     });
                 }
             });
@@ -88,7 +88,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         $scope.compComm = function(base) {
 
-            if($scope.base!==base && $scope.head!==base) {
+            if($scope.base !== base && $scope.head !== base) {
 
                 $scope.base = base;
 
@@ -132,7 +132,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 repo_uuid: $scope.repo.id
             }, function(err, star) {
                 if(!err) {
-                    $scope.star.value = fn==='set' ? star.value : null;
+                    $scope.star.value = fn === 'set' ? star.value : null;
                 }
             });
         };
@@ -176,8 +176,8 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':unstarred', function() {
             $scope.refreshStars();
         });
-        
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number +':merged', function() {
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':merged', function() {
             $scope.refreshPullRequest();
         });
     }

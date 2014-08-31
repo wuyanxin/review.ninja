@@ -45,7 +45,7 @@ module.directive('file', ['$state', function($state) {
                     var issues = [];
 
                     if(headRefs) {
-                        for(var i=0; i<headRefs.length; i++) {
+                        for(var i = 0; i < headRefs.length; i++) {
                             issues.push(headRefs[i].issue);
                         }
                     }

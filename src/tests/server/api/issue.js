@@ -164,7 +164,7 @@ describe('issue:add', function(done){
                 body: 'Test body',
                 user: 'reviewninja',
                 repo: 'review.ninja',
-                sha: '*commitsha*',
+                sha: '*commitsha*'
             }
         };
 

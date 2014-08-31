@@ -4,7 +4,7 @@ module.exports = {
 
         labels.forEach(function(label) {
             var regex = /pull-request-(\d*)?/;
-            var match = regex.exec(label.name); 
+            var match = regex.exec(label.name);
 
             if (match) {
                 pull_request_number = match[1];

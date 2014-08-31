@@ -21,7 +21,7 @@ module.exports = {
             done(err, pull);
         });
     },
-    
+
     getFiles: function(req, files, done) {
         files.forEach(function(file) {
             try {

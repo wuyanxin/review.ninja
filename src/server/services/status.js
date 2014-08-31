@@ -1,6 +1,5 @@
 var url = require('./url');
 var github = require('./github');
-var url = require('./url');
 var Star = require('mongoose').model('Star');
 
 module.exports = {
@@ -11,14 +10,14 @@ module.exports = {
             stars = stars || [];
 
             github.call({
-                obj: 'issues', 
-                fun: 'repoIssues', 
+                obj: 'issues',
+                fun: 'repoIssues',
                 arg: {
                     user: args.user,
                     repo: args.repo,
                     state: 'open',
                     labels: 'review.ninja, pull-request-' + args.number
-                }, 
+                },
                 token: args.token
             }, function(err, issues) {
 

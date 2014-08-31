@@ -18,7 +18,7 @@ module.exports = function(req, res) {
     //
 
     function get_issues(user, repo, pull_request_number, token, done) {
-        
+
         github.call({
             obj: 'issues',
             fun: 'repoIssues',
@@ -127,12 +127,12 @@ module.exports = function(req, res) {
 
                     });
                 }
-                
+
             },
 
             reopened: function() {
-                // udpate the status 
-                // send email if pull req is open and unmerged 
+                // udpate the status
+                // send email if pull req is open and unmerged
                 // (logic belongs in notification service)
             }
         };

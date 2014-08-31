@@ -1,7 +1,7 @@
 var parse = require('parse-diff');
 
 module.exports = {
-    
+
     getBlob: function(req, blob, done) {
 
         try {
