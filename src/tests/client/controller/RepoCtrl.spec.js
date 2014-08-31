@@ -16,9 +16,9 @@ describe('Repo Controller', function() {
         });
         scope = $rootScope.$new();
 
-        repo= {
+        repo = {
             value: {
-                id:1234
+                id: 1234
             }
         };
         createCtrl = function() {
@@ -27,7 +27,7 @@ describe('Repo Controller', function() {
                 $scope: scope,
                 repo:repo
             });
-            ctrl.scope =scope;
+            ctrl.scope = scope;
             return ctrl;
         };
     }));

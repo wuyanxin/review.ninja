@@ -11,9 +11,9 @@ module.exports = {
         async.each(results.items, function(result, call) {
 
             github.call({
-                obj: 'repos', 
-                fun: 'one', 
-                arg: { id: result.id }, 
+                obj: 'repos',
+                fun: 'one',
+                arg: { id: result.id },
                 token: req.user.token
             }, function(err, repo) {
 
@@ -24,7 +24,6 @@ module.exports = {
                 return call(null);
             });
 
-            
         }, function() {
             done(null, repos);
         });

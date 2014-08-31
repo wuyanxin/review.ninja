@@ -25,7 +25,7 @@ module.exports = {
             });
 
             // automatically add to users repo array
-            if(!err && req.args.obj==='repos' && req.args.fun==='get' && res.permissions && res.permissions.push) {
+            if(!err && req.args.obj === 'repos' && req.args.fun === 'get' && res.permissions && res.permissions.push) {
 
                 User.findOne({ uuid: req.user.id }, function(err, user) {
                     if(user) {
@@ -47,7 +47,7 @@ module.exports = {
     },
 
     wrap: function(req, done) {
-        
+
         github.call(merge(req.args, {
             token: req.user.token
         }), function(err, res, meta) {

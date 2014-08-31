@@ -41,11 +41,11 @@ async.series([
     function(callback) {
         console.log('checking configs'.bold);
 
-        if(config.server.http.protocol != 'http' && config.server.http.protocol != 'https') {
+        if(config.server.http.protocol !== 'http' && config.server.http.protocol !== 'https') {
             throw 'PROTOCOL must be "http" or "https"';
         }
 
-        if(config.server.github.protocol != 'http' && config.server.github.protocol != 'https') {
+        if(config.server.github.protocol !== 'http' && config.server.github.protocol !== 'https') {
             throw 'GITHUB_PROTOCOL must be "http" or "https"';
         }
 
@@ -60,7 +60,7 @@ async.series([
     },
 
     function(callback) {
-        
+
         console.log('bootstrap static files'.bold);
 
         config.server.static.forEach(function(p) {

@@ -39,7 +39,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         $scope.toggle = function() {
 
             var old = $scope.issue.state;
-            var state = $scope.issue.state==='open' ? 'closed' : 'open';
+            var state = $scope.issue.state === 'open' ? 'closed' : 'open';
 
             $scope.toggling = $HUB.call('issues', 'edit', {
                 user: $stateParams.user,
@@ -79,10 +79,10 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                 repo: $stateParams.repo,
                 id: id
             }, function(err, comment) {
-                if(!err && comment.value.user.id!==$rootScope.user.value.id) {
+                if(!err && comment.value.user.id !== $rootScope.user.value.id) {
                   $scope.comments.value.push(comment.value);
                 }
-            });        
+            });
         });
     }
 ]);

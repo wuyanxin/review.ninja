@@ -33,11 +33,11 @@ module.exports = function() {
             if(err) {
                 return done(err);
             }
-            
+
             var collaborator_ids = collaborators.map(function(collaborator) {
                 return collaborator.id;
             });
-            
+
             User.find().where('uuid').in(collaborator_ids).exec(function(err, collaborators) {
                 done(err, collaborators);
             });
@@ -58,7 +58,7 @@ module.exports = function() {
         }, function(err, pull) {
 
             done(err, pull);
-        }); 
+        });
 
     }
 
@@ -76,7 +76,7 @@ module.exports = function() {
         }, function(err, emails) {
 
             var primary = null;
-            for(var key=0; key < emails.length; key++) {
+            for(var key = 0; key < emails.length; key++) {
                 if(emails[key].primary) {
                     primary = emails[key];
                     break;
@@ -193,7 +193,7 @@ module.exports = function() {
 
                                         transporter.close();
                                     });
-                                }                
+                                }
                             });
                         });
                     });

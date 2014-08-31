@@ -3,7 +3,7 @@
 //
 // tmpl: pull/sidebar.html
 // path: /:user/:repo/pull/:number
-// resolve: open, closed 
+// resolve: open, closed
 // *****************************************************
 
 module.controller('SidebarCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$RPC', 'open', 'closed', 'Issue',
@@ -19,7 +19,7 @@ module.controller('SidebarCtrl', ['$rootScope', '$scope', '$state', '$stateParam
 
                 var body = $scope.description ? $scope.description : '';
 
-                // this will expand to  
+                // this will expand to
                 // multiple lines in the future
                 var reference = $scope.selection[0] ? $scope.selection[0].ref : null;
 
@@ -36,7 +36,7 @@ module.controller('SidebarCtrl', ['$rootScope', '$scope', '$state', '$stateParam
                     if(!err) {
                         open.value.unshift(Issue.parse(issue.value));
                         $rootScope.$emit('issues:open', $rootScope.open + 1);
-                        
+
                         $state.go('repo.pull.issue.detail', { issue: issue.value.number }).then(function() {
                             $scope.show = null;
                             $scope.title = null;

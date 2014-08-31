@@ -1,17 +1,17 @@
-var module = angular.module('app', 
-    ['ninja.filters', 
+var module = angular.module('app',
+    ['ninja.filters',
      'ninja.config',
      'ui.utils',
-     'ui.router', 
+     'ui.router',
      'ui.bootstrap',
      'infinite-scroll',
-     'angulartics', 
+     'angulartics',
      'angulartics.google.analytics']);
 
 var filters = angular.module('ninja.filters', []);
 
 // *************************************************************
-// Delay start 
+// Delay start
 // *************************************************************
 
 angular.element(document).ready(function() {
@@ -27,8 +27,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 
         $stateProvider
 
-            // 
-            // Home state 
+            //
+            // Home state
             //
             .state('home', {
                 url: '/',
@@ -188,7 +188,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                         function($stateParams, open, closed) {
 
                             var selected;
-                            
+
                             ($stateParams.state === 'closed' ? closed : open).value.forEach(function(issue) {
                                 if(issue.number === parseInt($stateParams.issue)) {
                                     selected = issue;

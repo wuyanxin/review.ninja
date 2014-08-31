@@ -52,22 +52,22 @@ module.exports = {
             // req.args.reference is 'sha/path/to/file#Lline_number this line trims the sha
             fileReference = '[' + req.args.reference.replace(req.args.sha + '/', '') + ']' + '(' + referenceUrl + ')';
         }
-            
+
         var body = req.args.body + '\r\n\r\n';
         body += '|commit|file reference|ReviewNinja|\r\n';
         body += '|------|--------------|-----------|\r\n';
         body += '|' + req.args.sha + '|' + fileReference + '|' + ninjaReference + '|';
 
         github.call({
-            obj: 'issues', 
-            fun: 'create', 
+            obj: 'issues',
+            fun: 'create',
             arg: {
                 user: req.args.user,
                 repo: req.args.repo,
                 body: body,
                 title: req.args.title,
                 labels: ['review.ninja', 'pull-request-' + req.args.number]
-            }, 
+            },
             token: req.user.token
         }, done);
     }
