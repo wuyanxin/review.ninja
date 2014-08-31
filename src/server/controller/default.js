@@ -12,6 +12,8 @@ router.all('/*', function(req, res) {
         return res.sendfile('home.html', {root: __dirname + './../../client'});
     }
 
+    req.session.next = req.url;
+
     // enterprise marketing page
     if (config.server.github.enterprise) {
         return res.sendfile('login.html', {root: __dirname + './../../client'});

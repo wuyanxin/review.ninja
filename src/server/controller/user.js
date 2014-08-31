@@ -10,7 +10,6 @@ var router = express.Router();
 
 router.get('/auth/github',
     function(req, res, next) {
-        req.session.next = req.query.next;
         passport.authenticate('github')(req, res, next);
     }
 );
