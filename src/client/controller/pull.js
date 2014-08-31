@@ -115,7 +115,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 // todo: handle error or unmerged
 
                 if(!err && res.value.merged) {
-                    $scope.pull = $scope.refreshPullRequest();
+                    $scope.refreshPullRequest();
                 }
             });
         };
