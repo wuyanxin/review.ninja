@@ -28,6 +28,9 @@ module.exports = {
             // now we will have to check two things:
             // 1) webhook user still has push access to this repo
             // 2) token is still valid
+            // -> if one of these conditions is not met we will
+            //    delete the webhook
+
 
             done(err, hook);
         });

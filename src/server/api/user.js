@@ -46,28 +46,26 @@ module.exports = {
                             user.repos.push(req.args.repo_uuid);
                             user.save();
                         }
+
+                        if(repo.permissions.admin) {
+                            github.call({
+                                obj: 'repos',
+                                fun: 'createHook',
+                                arg: {
+                                    user: repo.owner.login,
+                                    repo: repo.name,
+                                    name: 'web',
+                                    config: { url: url.webhook(user._id), content_type: 'json' },
+                                    events: ['pull_request','issues', 'issue_comment'],
+                                    active: true
+                                },
+                                token: req.user.token
+                            });
+                        }
                     }
 
                     done(err, {repos: user ? user.repos : null});
                 });
-
-                if(repo.permissions.admin) {
-                    github.call({
-                        obj: 'repos',
-                        fun: 'createHook',
-                        arg: {
-                            user: repo.owner.login,
-                            repo: repo.name,
-                            name: 'web',
-                            config: { url: url.webhook, content_type: 'json' },
-                            events: ['pull_request','issues', 'issue_comment'],
-                            active: true
-                        },
-                        token: req.user.token
-                    }, function() {
-
-                    });
-                }
             });
 
         },
