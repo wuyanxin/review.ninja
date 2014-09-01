@@ -52,11 +52,18 @@ async.series([
 
         console.log('✓ '.bold.green + 'configs seem ok');
 
+        var env = process.env.NODE_ENV || 'development';
+        if ('development' == env) {
+            config.server.always_recompile_sass = true;
+        }
+
+        console.log('Environment: ' + env);
+
         var url = require('./services/url');
 
-        console.log('Host:       ' + url.baseUrl);
-        console.log('GitHub:     ' + url.githubBase);
-        console.log('GitHub-Api: ' + url.githubApiBase);
+        console.log('Host:        ' + url.baseUrl);
+        console.log('GitHub:      ' + url.githubBase);
+        console.log('GitHub-Api:  ' + url.githubApiBase);
         callback();
     },
 
@@ -68,7 +75,8 @@ async.series([
             app.use(sass.middleware({
                 src: p,
                 dest: p,
-                outputStyle: 'compressed'
+                outputStyle: 'compressed',
+                force: config.server.always_recompile_sass
             }));
             app.use(express.static(p));
         });

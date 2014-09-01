@@ -24,6 +24,8 @@ module.exports = {
 
         localport: process.env.PORT || 5000,
 
+        always_recompile_sass: false,
+
         http: {
             protocol: process.env.PROTOCOL || 'https',
             host: process.env.HOST || 'review.ninja',
@@ -51,7 +53,7 @@ module.exports = {
             uri: process.env.MONGODB
         },
 
-        marketingPage: 'http://get.review.ninja',
+        marketingPage: 'http://about.review.ninja',
 
         static: [
             __dirname + '/bower',
