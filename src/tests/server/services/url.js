@@ -38,6 +38,21 @@ describe('url:githubApiBase', function(done) {
     });
 });
 
+describe('url:githubProfile', function(done) {
+    it('should by default be /user', function(done) {
+        assert.equal(url.githubProfile(), 'https://api.github.com/user');
+        done();
+    });
+});
+
+describe('url:githubProfile', function(done) {
+    it('should be /api/v3/user in enterprise mode', function(done) {
+        config.server.github.enterprise = true;
+        assert.equal(url.githubProfile(), 'https://api.github.com/api/v3/user');
+        done();
+    });
+});
+
 describe('url:githubFileReference', function(done) {
     it('should by default be https://api.github.com/user/repo/blob/fileref', function(done) {
         assert.equal(url.githubFileReference('user', 'repo', 'fileref'),

@@ -279,6 +279,7 @@ describe('star:rmv', function() {
             assert.equal(null, null);
 
             starStub.restore();
+            statusStub.restore();
             done();
         });
     });
