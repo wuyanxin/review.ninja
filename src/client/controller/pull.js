@@ -3,7 +3,7 @@
 //
 // tmpl: pull/pull.html
 // path: /:user/:repo/pull/:number
-// resolve: repo, pull 
+// resolve: repo, pull
 // *****************************************************
 
 module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Pull',

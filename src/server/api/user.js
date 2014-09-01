@@ -20,9 +20,9 @@ module.exports = {
     addRepo: function(req, done) {
 
             github.call({
-                obj: 'repos', 
-                fun: 'one', 
-                arg: { id: req.args.repo_uuid }, 
+                obj: 'repos',
+                fun: 'one',
+                arg: { id: req.args.repo_uuid },
                 token: req.user.token
             }, function(err, repo) {
 
@@ -55,7 +55,7 @@ module.exports = {
                     github.call({
                         obj: 'repos',
                         fun: 'createHook',
-                        arg: { 
+                        arg: {
                             user: repo.owner.login,
                             repo: repo.name,
                             name: 'web',
@@ -65,7 +65,7 @@ module.exports = {
                         },
                         token: req.user.token
                     }, function() {
-                        
+
                     });
                 }
             });

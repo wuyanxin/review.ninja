@@ -28,7 +28,7 @@
 
 
 // beforeEach(function(){
-    
+
 //     stub_github_status_api = sinon.stub(status, 'update', function(args, done){
 //         done();
 //     });
@@ -50,7 +50,7 @@
 
 //                         return inside;
 //                     }
-//                 };                                   
+//                 };
 //                 return where;
 //             }
 //         };
@@ -111,7 +111,7 @@
 
 //                             return inside;
 //                         }
-//                     };                                   
+//                     };
 //                     return where;
 //                 }
 //             };
@@ -129,7 +129,6 @@
 //         });
 
 //         stub_gitub_get_pull = sinon.stub(github, 'call', function(args, done) {
-            
 //             assert.equal(args.obj, 'pullRequests');
 //             assert.equal(args.fun, 'get');
 //             assert.equal(args.arg.number, '123');
@@ -145,7 +144,6 @@
 //         stub_github_status_api = sinon.stub(status, 'update', function(args, done){
 //             done();
 //         });
-        
 
 //         issue = Issue(req, res);
 
@@ -201,7 +199,7 @@
 //                       return inside;
 //                     }
 
-//               };                                      
+//               };
 //             return where;
 
 
@@ -215,7 +213,6 @@
 
 
 //         stub_repo_with=  sinon.stub(Repo,'with', function(args,done){
-           
 //             var err = null;
 //             var repo = {
 //                 ninja:true,
@@ -448,7 +445,7 @@
 //                       return inside;
 //                     }
 
-//               };                                      
+//               };
 //             return where;
 
 

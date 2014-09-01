@@ -3,7 +3,7 @@
 //
 // tmpl: issue/detail.html
 // path: /:user/:repo/pull/:number/:issue
-// resolve: open, closed 
+// resolve: open, closed
 // *****************************************************
 
 module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',

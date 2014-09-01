@@ -14,7 +14,7 @@ module.exports = {
         @github (if needed)
 
     ************************************************************************************************************/
-    
+
     get: function(req, done) {
         Settings.findOne({user: req.user.id, repo: req.args.repo_uuid}, function(err, settings) {
             // check if settings exist and return them
@@ -24,7 +24,7 @@ module.exports = {
 
             // if they don't exist create them
             Settings.create({
-                user: req.user.id, 
+                user: req.user.id,
                 repo: req.args.repo_uuid
             }, done);
         });

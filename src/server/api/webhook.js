@@ -43,7 +43,7 @@ module.exports = {
             github.call({
                 obj: 'repos',
                 fun: 'createHook',
-                arg: { 
+                arg: {
                     user: req.args.user,
                     repo: req.args.repo,
                     name: 'web',

@@ -39,7 +39,7 @@ describe('star:all', function(done) {
             done();
         });
 
-    }); 
+    });
 });
 
 describe('star:get', function() {

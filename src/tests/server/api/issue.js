@@ -50,7 +50,7 @@ describe('issue:add', function(done){
             githubStub.restore();
             done();
         });
-    }); 
+    });
 
     it('should call the github api to create an issue with no file reference', function(done){
         var githubStub = sinon.stub(github, 'call', function(args, done) {
@@ -87,7 +87,7 @@ describe('issue:add', function(done){
             githubStub.restore();
             done();
         });
-    }); 
+    });
 
     it('should return error code 400 if sha is not set', function(done){
         var req = {
@@ -104,7 +104,7 @@ describe('issue:add', function(done){
             assert.equal(err.code, 400);
             done();
         });
-    }); 
+    });
 
     it('should return error code 400 if repo is not set', function(done){
         var req = {
@@ -121,7 +121,7 @@ describe('issue:add', function(done){
             assert.equal(err.code, 400);
             done();
         });
-    }); 
+    });
 
     it('should return error code 400 if user is not set', function(done){
         var req = {
@@ -138,7 +138,7 @@ describe('issue:add', function(done){
             assert.equal(err.code, 400);
             done();
         });
-    }); 
+    });
 
     it('should return error code 400 if title is not set', function(done){
         var req = {
@@ -155,7 +155,7 @@ describe('issue:add', function(done){
             assert.equal(err.code, 400);
             done();
         });
-    }); 
+    });
 
     it('should return error code 400 if number is not set', function(done){
         var req = {
@@ -172,6 +172,6 @@ describe('issue:add', function(done){
             assert.equal(err.code, 400);
             done();
         });
-    }); 
-    
+    });
+
 });
