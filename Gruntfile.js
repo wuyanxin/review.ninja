@@ -21,36 +21,6 @@ module.exports = function(grunt) {
             }
         },
 
-        sass: {
-            dist: {
-                files: {
-                    'src/client/assets/styles/app.css' : 'src/client/assets/styles/app.scss'
-                }
-            }
-        },
-
-        watch: {
-            css: {
-                files: 'src/client/assets/styles/*.scss',
-                tasks: ['sass']
-            }
-        },
-
-        concurrent: {
-            dev: {
-                tasks: ['nodemon', 'watch'],
-                options: {
-                    logConcurrentOutput: true
-                }
-            }
-        },
-
-        nodemon: {
-            debug: {
-                script: 'app.js'
-            }
-        },
-
         // server tests
         mochaTest: {
             server: {
@@ -90,7 +60,6 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.registerTask('lint', ['eslint', 'scsslint']);
-    grunt.registerTask('serve', ['sass', 'concurrent']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'coveralls:mocha']);
     grunt.registerTask('default', ['eslint', 'mochaTest', 'karma']);
 };
