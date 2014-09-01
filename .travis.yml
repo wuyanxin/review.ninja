@@ -5,8 +5,6 @@ cache:
   - src/bower
 before_script:
 - bower install
-- gem install compass
-- grunt sass
 after_script:
 - grunt coverage
 notifications:
