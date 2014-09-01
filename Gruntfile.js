@@ -60,6 +60,6 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.registerTask('lint', ['eslint', 'scsslint']);
-    grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'coveralls:mocha']);
+    grunt.registerTask('coverage', ['mocha_istanbul', 'coveralls']);
     grunt.registerTask('default', ['eslint', 'mochaTest', 'karma']);
 };

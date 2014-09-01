@@ -6,7 +6,7 @@ cache:
 before_script:
 - bower install
 after_script:
-- grunt coverage
+- grunt mocha_istanbul && grunt coveralls
 notifications:
   email: false
 deploy:
