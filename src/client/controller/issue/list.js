@@ -3,7 +3,7 @@
 //
 // tmpl: issue/list.html
 // path: /:user/:repo/pull/:number?state&issues
-// resolve: issues 
+// resolve: issues
 // *****************************************************
 
 module.controller('IssueListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issues', 'Issue',

@@ -22,7 +22,7 @@ describe('pullRequest:byLabels', function(done) {
 describe('pullRequest:setWatched', function(done) {
     it('if settings are null do not set pull.watched', function(done) {
         var pulls = [{
-            head: {ref: 'feature/one'}, 
+            head: {ref: 'feature/one'},
             base: {ref: 'master'}
         }];
         pullRequest.setWatched(pulls, null);
@@ -35,7 +35,7 @@ describe('pullRequest:setWatched', function(done) {
             watched: []
         };
         var pulls = [{
-            head: {ref: 'feature'}, 
+            head: {ref: 'feature'},
             base: {ref: 'master'}
         }];
         pullRequest.setWatched(pulls, settings);
@@ -50,7 +50,7 @@ describe('pullRequest:isWatched', function(done) {
             watched: ['feature/*']
         };
         var pull = {
-            head: {ref: 'feature/one'}, 
+            head: {ref: 'feature/one'},
             base: {ref: 'master'}
         };
         assert.equal(pullRequest.isWatched(pull, settings), true);
@@ -62,7 +62,7 @@ describe('pullRequest:isWatched', function(done) {
             watched: ['feature/*.*.*']
         };
         var pull = {
-            head: {ref: 'feature/one'}, 
+            head: {ref: 'feature/one'},
             base: {ref: 'master'}
         };
         assert.equal(pullRequest.isWatched(pull, settings), false);
@@ -74,7 +74,7 @@ describe('pullRequest:isWatched', function(done) {
             watched: []
         };
         var pull = {
-            head: {ref: 'feature/one'}, 
+            head: {ref: 'feature/one'},
             base: {ref: 'master'}
         };
         assert.equal(pullRequest.isWatched(pull, settings), false);

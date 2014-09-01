@@ -62,7 +62,7 @@ describe('Home Controller', function() {
             ],
             'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
             'uuid': 1387834
-            
+
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
@@ -104,7 +104,7 @@ describe('Home Controller', function() {
             ],
             'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
             'uuid': 1387834
-            
+
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
@@ -139,10 +139,10 @@ describe('Home Controller', function() {
         });
 
         httpBackend.flush();
-        scope.repos.length.should.be.exactly(1);    
+        scope.repos.length.should.be.exactly(1);
     });
 
-    
+
     it('should remove a repo without error', function() {
                var ctrl = createCtrl();
 
@@ -158,7 +158,6 @@ describe('Home Controller', function() {
             ],
             'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
             'uuid': 1387834
-            
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
@@ -167,7 +166,7 @@ describe('Home Controller', function() {
                 login: 'my-org'
             }]
         });
-       
+
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
                 name: 'repo-1',
@@ -189,7 +188,7 @@ describe('Home Controller', function() {
         (scope.repos[0].name).should.be.exactly('repo-1');
 
     });
-    
+
 
     it('should search for repo', function() {
 
@@ -207,7 +206,6 @@ describe('Home Controller', function() {
             ],
             'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
             'uuid': 1387834
-            
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({

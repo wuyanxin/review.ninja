@@ -126,7 +126,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 state: $stateParams.state,
-                                labels: 'review.ninja, pull-request-' + $stateParams.number,
+                                labels: 'review.ninja, pull-request-' + $stateParams.number
                             }, function(err, issues) {
                                 if(!err) {
                                     issues.affix.forEach(function(issue) {

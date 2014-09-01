@@ -29,7 +29,7 @@ describe('settings:get', function(done){
             settingsStub.restore();
             done();
         });
-    }); 
+    });
 
     it('should create a new settings object if it does not already exists', function(done) {
         var settingsFindOneStub = sinon.stub(Settings, 'findOne', function(args, done) {
@@ -50,7 +50,7 @@ describe('settings:get', function(done){
             settingsCreateStub.restore();
             done();
         });
-    }); 
+    });
 });
 
 describe('settings:setWatched', function(done) {
@@ -73,7 +73,7 @@ describe('settings:setWatched', function(done) {
             settingsStub.restore();
             done();
         });
-    }); 
+    });
 });
 
 describe('settings:setNotifications', function(done) {

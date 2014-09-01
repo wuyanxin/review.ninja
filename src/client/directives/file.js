@@ -15,7 +15,7 @@ module.directive('file', ['$state', function($state) {
             },
             link: function(scope, elem, attrs) {
 
-                // 
+                //
                 // actions
                 //
 

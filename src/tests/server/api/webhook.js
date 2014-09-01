@@ -91,7 +91,7 @@ describe('webhook:get', function() {
                 },
                 token: 'token'
             });
-            
+
             done(null, [{config: { url: 'https://review.ninja/github/webhook/1234' }}]);
         });
 

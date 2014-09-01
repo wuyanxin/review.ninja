@@ -3,7 +3,7 @@
 //
 // tmpl: repo/repo.html
 // path: /:user/:repo
-// resolve: repo 
+// resolve: repo
 // *****************************************************
 
 module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', 'Pull',
@@ -29,7 +29,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 res.affix.forEach(function(pull) {
                     pull = Pull.issues(pull);
                     $scope.authors[pull.user.login] = true;
-                });  
+                });
             }
         });
 
@@ -43,7 +43,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
                 res.affix.forEach(function(pull) {
                     pull = Pull.issues(pull);
                     $scope.authors[pull.user.login] = true;
-                });   
+                });
             }
         });
     }
