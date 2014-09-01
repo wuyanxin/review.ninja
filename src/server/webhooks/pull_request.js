@@ -2,8 +2,8 @@
 var User = require('mongoose').model('User');
 
 //services
-var github = require('../services/github');
 var url = require('../services/url');
+var github = require('../services/github');
 var notification = require('../services/notification');
 var status = require('../services/status');
 
@@ -29,10 +29,11 @@ module.exports = function(req, res) {
       };
 
       var notification_args = {
-          slug: req.args.repository.full_name,
+          user: req.args.repository.owner.login,
+          repo: req.args.repository.name,
           number: req.args.number,
-          sender: req.args.sender,
-          review_url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
+          sender: req.args.sender.login,
+          url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
       };
 
       var actions = {

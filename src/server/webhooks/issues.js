@@ -2,6 +2,7 @@
 var User = require('mongoose').model('User');
 
 //services
+var url = require('../services/url');
 var github = require('../services/github');
 var notification = require('../services/notification');
 var status = require('../services/status');
@@ -46,11 +47,15 @@ module.exports = function(req, res) {
         }, done);
     }
 
+    var number = pullRequest.byLabels(req.args.issue.labels);
+
     var args = {
-        issue_number: req.args.issue.id,
-        sender: req.args.sender,
-        review_url: req.args.issue.url,
-        number: pullRequest.byLabels(req.args.issue.labels)
+        user: req.args.repository.owner.login,
+        repo: req.args.repository.name,
+        issue: req.args.issue.id,
+        sender: req.args.sender.login,
+        number: number,
+        url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, number)
     };
 
     User.findOne({ _id: req.params.id }, function(err, user) {
