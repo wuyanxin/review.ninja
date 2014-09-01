@@ -65,13 +65,10 @@ module.exports = function(grunt) {
             }
         },
 
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc'
-            },
+        eslint: {
             app: {
                 files: {
-                    src: ['app.js', 'src/client/**/*.js', 'src/server/**/*.js', 'src/tests/**/*.js']
+                    src: ['*.js', 'src']
                 }
             }
         },
@@ -92,8 +89,8 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('lint', ['jshint', 'scsslint']);
+    grunt.registerTask('lint', ['eslint', 'scsslint']);
     grunt.registerTask('serve', ['sass', 'concurrent']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'coveralls:mocha']);
-    grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
+    grunt.registerTask('default', ['eslint', 'mochaTest', 'karma']);
 };
