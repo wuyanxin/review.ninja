@@ -5,8 +5,10 @@ cache:
   - src/bower
 before_script:
 - bower install
+- gem install scss-lint
 after_script:
 - grunt mocha_istanbul && grunt coveralls
+- grunt scsslint --force
 notifications:
   email: false
 deploy:
