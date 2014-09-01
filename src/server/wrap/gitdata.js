@@ -8,7 +8,7 @@ module.exports = {
             blob.content = parse(new Buffer(blob.content, blob.encoding).toString());
         }
         catch(ex) {
-            res.content = null;
+            blob.content = null;
         }
 
         done(null, blob);
