@@ -5,6 +5,7 @@ var glob = require('glob');
 var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
+var sass = require('node-sass');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration
@@ -51,11 +52,18 @@ async.series([
 
         console.log('✓ '.bold.green + 'configs seem ok');
 
+        var env = process.env.NODE_ENV || 'development';
+        if ('development' == env) {
+            config.server.always_recompile_sass = true;
+        }
+
+        console.log('Environment: ' + env);
+
         var url = require('./services/url');
 
-        console.log('Host:       ' + url.baseUrl);
-        console.log('GitHub:     ' + url.githubBase);
-        console.log('GitHub-Api: ' + url.githubApiBase);
+        console.log('Host:        ' + url.baseUrl);
+        console.log('GitHub:      ' + url.githubBase);
+        console.log('GitHub-Api:  ' + url.githubApiBase);
         callback();
     },
 
@@ -64,6 +72,12 @@ async.series([
         console.log('bootstrap static files'.bold);
 
         config.server.static.forEach(function(p) {
+            app.use(sass.middleware({
+                src: p,
+                dest: p,
+                outputStyle: 'compressed',
+                force: config.server.always_recompile_sass
+            }));
             app.use(express.static(p));
         });
         callback();
