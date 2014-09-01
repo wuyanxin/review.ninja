@@ -68,7 +68,6 @@ async.series([
             app.use(sass.middleware({
                 src: p,
                 dest: p,
-                debug: true,
                 outputStyle: 'compressed'
             }));
             app.use(express.static(p));
