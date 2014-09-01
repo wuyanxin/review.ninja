@@ -24,7 +24,9 @@ module.exports = {
     },
 
     isWatched: function(pull, settings) {
-        var watched = false;
+
+        // by default we are watching all branches
+        var watched = !settings.watched.length;
 
         settings.watched.forEach(function(watch) {
             // escape all regex symbols except '*'

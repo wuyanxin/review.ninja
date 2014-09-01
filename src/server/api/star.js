@@ -1,6 +1,7 @@
 // models
 var Star = require('mongoose').model('Star');
 
+var url = require('../services/url');
 var github = require('../services/github');
 var status = require('../services/status');
 var notification = require('../services/notification');
@@ -85,12 +86,13 @@ module.exports = {
                         token: req.user.token
                     });
 
-                    var args = {
-                      starrer: req.user.login,
-                      number: req.args.number
-                    };
-
-                    notification.sendmail('star', req.args.user, req.args.repo, req.args.repo_uuid, req.user.token, req.args.number, args);
+                    notification.sendmail('star', req.args.user, req.args.repo, req.args.repo_uuid, req.user.token, req.args.number, {
+                        user: req.args.user,
+                        repo: req.args.repo,
+                        number: req.args.number,
+                        sender: req.user.login,
+                        url: url.reviewPullRequest(req.args.user, req.args.repo, req.args.number)
+                    });
                 }
 
                 done(err, star);
@@ -134,12 +136,13 @@ module.exports = {
                         token: req.user.token
                     });
 
-                    var args = {
-                      starrer: req.user.login,
-                      number: req.args.number
-                    };
-
-                    notification.sendmail('unstar', req.args.user, req.args.repo, req.args.repo_uuid, req.user.token, req.args.number, args);
+                    notification.sendmail('unstar', req.args.user, req.args.repo, req.args.repo_uuid, req.user.token, req.args.number, {
+                        user: req.args.user,
+                        repo: req.args.repo,
+                        number: req.args.number,
+                        sender: req.user.login,
+                        url: url.reviewPullRequest(req.args.user, req.args.repo, req.args.number)
+                    });
                 }
 
                 done(err, star);

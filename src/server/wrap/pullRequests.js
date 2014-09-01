@@ -49,6 +49,8 @@ module.exports = {
             user: req.user.id,
             repo: repo
         }, function(err, settings) {
+
+            // set watched
             pullRequest.setWatched(pulls, settings);
 
             // set the stars

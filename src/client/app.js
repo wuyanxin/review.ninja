@@ -125,7 +125,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
-                                state: $stateParams.state,
+                                state: $stateParams.state || 'open',
                                 labels: 'review.ninja, pull-request-' + $stateParams.number
                             }, function(err, issues) {
                                 if(!err) {
