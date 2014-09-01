@@ -30,7 +30,7 @@ describe('pullRequest:setWatched', function(done) {
         done();
     });
 
-    it('if settings are not null, add watched property', function(done) {
+    it('if settings are not null, add watched property (watched by default)', function(done) {
         var settings = {
             watched: []
         };
@@ -39,7 +39,7 @@ describe('pullRequest:setWatched', function(done) {
             base: {ref: 'master'}
         }];
         pullRequest.setWatched(pulls, settings);
-        assert.equal(pulls[0].watched, false);
+        assert.equal(pulls[0].watched, true);
         done();
     });
 });
@@ -71,7 +71,7 @@ describe('pullRequest:isWatched', function(done) {
 
     it('return false if one does not watch any pattern', function(done) {
         var settings = {
-            watched: []
+            watched: ['abcd']
         };
         var pull = {
             head: {ref: 'feature/one'},

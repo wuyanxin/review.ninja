@@ -13,6 +13,7 @@ var Star = require('../../../server/documents/star').Star;
 var Settings = require('../../../server/documents/settings').Settings;
 
 // services
+var url = require('../../../server/services/url');
 var github = require('../../../server/services/github');
 var notification = require('../../../server/services/notification');
 var status = require('../../../server/services/status');
@@ -150,8 +151,11 @@ describe('star:set', function() {
             assert.equal(repo_token, 'token');
             assert.equal(pull_request_number, 2);
             assert.deepEqual(args, {
-                starrer: 'login',
-                number: 2
+                user: 'user',
+                repo: 'repo',
+                number: 2,
+                sender: 'login',
+                url: url.reviewPullRequest('user', 'repo', 2)
             });
         });
 
@@ -255,8 +259,11 @@ describe('star:rmv', function() {
             assert.equal(repo_token, 'token');
             assert.equal(pull_request_number, 2);
             assert.deepEqual(args, {
-                starrer: 'login',
-                number: 2
+                user: 'user',
+                repo: 'repo',
+                number: 2,
+                sender: 'login',
+                url: url.reviewPullRequest('user', 'repo', 2)
             });
         });
 
