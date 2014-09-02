@@ -12,13 +12,14 @@ after_script:
 notifications:
   email: false
 deploy:
-  provider: cloudfoundry
+  provider:
+    provider: cloudfoundry
   api: https://api.run.pivotal.io
   username: dominik.tornow@gmail.com
   password:
-    secure: d8HCJ/9Ay3ddc4ZLhg99uwPKfAKxD8NIe8RmoFd7cWKToRLzvlgB+nKoAMgWon/79ZWAtYINTxFEgxGwnMSoXDKPXp/L1o95KHwhnCYJUvJYSb/gmjFcLMf+VBv/HJCYRGxyBY9fBcbGxEsER4V9XDscI+Nt03bX7vabXgfIGyc=
+    secure: RCdkqInrxxGWox04NhWV5iKZgVMdHFWG46mXUhCFusU2E9k0aqMsAJwhBkF5XMEgxK/D8zOJewDEoPYYhtdVX9mkzrDBhX2D/7++QEvJtwZAGJ+t2MgCIRwOB8mJ3GHW9qIGi1ptuNYUGrGsaxYa4s4rthtj4kHYsgkC6z8sbNY=
   organization: GithubTeam
-  space: development
+  space: reviewninja
   on:
     repo: reviewninja/review.ninja
     branch: master
