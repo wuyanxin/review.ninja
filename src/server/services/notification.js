@@ -163,7 +163,7 @@ module.exports = function() {
                                     var template = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
 
                                     var mailOptions = {
-                                        from: 'Review Ninja <noreply@review.ninja>',
+                                        from: 'ReviewNinja <noreply@review.ninja>',
                                         to: email.email,
                                         subject: notificationArgs[notificationType].subject,
                                         html: ejs.render(template, args)
