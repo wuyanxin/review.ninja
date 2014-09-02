@@ -186,6 +186,12 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':merged', function() {
+            if(!$scope.pull.value.merged && !$scope.refreshing.loading) {
+                $scope.refreshPullRequest();
+            }
+        });
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':synchronize', function() {
             $scope.refreshPullRequest();
         });
     }

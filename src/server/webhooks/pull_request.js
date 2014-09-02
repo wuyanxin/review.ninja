@@ -63,12 +63,12 @@ module.exports = function(req, res) {
                                     req.args.number,
                                     notification_args);
 
+              io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':synchronize', req.args.number);
           },
           closed: function() {
               // a pull request you have been reviewing has closed
-
               if(req.args.pull_request.merged) {
-                  io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':merged', req.args.pull_request.merged);
+                  io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':merged', req.args.number);
               }
           },
           reopened: function() {
