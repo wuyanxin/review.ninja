@@ -18,7 +18,7 @@ deploy:
   password:
     secure: RCdkqInrxxGWox04NhWV5iKZgVMdHFWG46mXUhCFusU2E9k0aqMsAJwhBkF5XMEgxK/D8zOJewDEoPYYhtdVX9mkzrDBhX2D/7++QEvJtwZAGJ+t2MgCIRwOB8mJ3GHW9qIGi1ptuNYUGrGsaxYa4s4rthtj4kHYsgkC6z8sbNY=
   organization: GithubTeam
-  space: staging
+  space: applications
   on:
     repo: reviewninja/review.ninja
     branch: master
