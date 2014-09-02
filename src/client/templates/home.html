@@ -29,6 +29,7 @@
       </div>
 
       <i class="fa fa-2x fa-spinner fa-spin" ng-show="searching.loading || adding.loading" style="margin-left:5px;"></i>
+
       <div class="pull-right">
         <button type="button" class="btn btn-info" ng-click="show=false; active=null;">Close</button>
         <button type="button" class="btn btn-primary" ng-click="add(active)" ng-disabled="!active">Add repository</button>
@@ -38,9 +39,35 @@
 
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="hasRepos && !repos.length"></i>
 
-    <p class="well" ng-show="!hasRepos && !show">
-      You should add some repos bro
-    </p>
+    <div ng-show="!hasRepos">
+      <table>
+        <tr>
+          <td>
+            <span class="fa-stack fa-4x">
+              <i class="fa fa-circle fa-stack-2x text-info"></i>
+              <span class="octicon octicon-repo fa-stack-2x text-primary" style="font-size:48px; top:32px;"></span>
+            </span>
+          </td>
+          <td style="vertical-align:top; padding:10px; max-width:325px;">
+            <h3 class="text-primary">Add a repository</h3>
+            Choose a repository from your GitHub account or from one of your organizations.
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <span class="fa-stack fa-4x">
+              <i class="fa fa-circle fa-stack-2x text-info"></i>
+              <i class="fa fa-envelope-o fa-stack-1x text-primary" style="font-size:48px;"></i>
+            </span>
+          </td>
+          <td style="vertical-align:top; padding:10px; max-width:325px;">
+            <h3 class="text-primary">Add email notifications</h3>
+            In a repo's settings, choose what you want to be notified about &amp; add branches to watch.
+          </td>
+        </tr>
+      </table>
+    </div>
 
 		<table class="table table-hover">
 			<tr ng-repeat="repo in repos | filter:{ninja: true} | orderBy:'full_name'" 
