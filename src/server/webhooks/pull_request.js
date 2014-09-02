@@ -63,7 +63,7 @@ module.exports = function(req, res) {
                                     req.args.number,
                                     notification_args);
 
-              io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':synchronize', req.args.number);
+              io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':synchronize', req.args.pull_request.head.sha);
           },
           closed: function() {
               // a pull request you have been reviewing has closed
