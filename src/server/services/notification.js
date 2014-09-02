@@ -18,8 +18,7 @@ module.exports = function() {
         return nodemailer.createTransport(sendmailTransport());
     }
 
-    function get_collaborators(user, repo, token, done) {
-
+    function getCollaborators(user, repo, token, done) {
         github.call({
             obj: 'repos',
             fun: 'getCollaborators',
@@ -29,41 +28,36 @@ module.exports = function() {
             },
             token: token
         }, function(err, collaborators) {
-
             if(err) {
                 return done(err);
             }
 
-            var collaborator_ids = collaborators.map(function(collaborator) {
+            var collaboratorIds = collaborators.map(function(collaborator) {
                 return collaborator.id;
             });
 
-            User.find().where('uuid').in(collaborator_ids).exec(function(err, collaborators) {
+            User.find().where('uuid').in(collaboratorIds).exec(function(err, collaborators) {
                 done(err, collaborators);
             });
         });
     }
 
-    function get_pull_request(pull_req_number, user, repo, token, done) {
-
+    function getPullRequest(pullReqNumber, user, repo, token, done) {
         github.call({
             obj: 'pullRequests',
             fun: 'get',
             arg: {
                 user: user,
                 repo: repo,
-                number: pull_req_number
+                number: pullReqNumber
             },
             token: token
         }, function(err, pull) {
-
             done(err, pull);
         });
-
     }
 
-    function get_primary_email(token, done) {
-
+    function getPrimaryEmail(token, done) {
         github.call({
             obj: 'user',
             fun: 'getEmails',
@@ -96,7 +90,7 @@ module.exports = function() {
         closed_issue: 'issue'
     };
 
-    var notification_args = {
+    var notificationArgs = {
 
         pull_request_opened: {
             subject:'A new pull request is ready for review',
@@ -109,12 +103,12 @@ module.exports = function() {
         },
 
         star: {
-            subject: 'Your pull request has been starred',
+            subject: 'Pull request has been starred',
             template: 'src/server/templates/starred.ejs'
         },
 
         unstar: {
-            subject: 'Your pull request has been unstarred',
+            subject: 'Pull request has been unstarred',
             template: 'src/server/templates/unstarred.ejs'
         },
 
@@ -131,11 +125,8 @@ module.exports = function() {
     };
 
     return {
-
-        sendmail: function (notification_type, user, repo, repo_uuid, token, number, args) {
-
-            get_pull_request(number, user, repo, token, function(err, pull) {
-
+        sendmail: function (notificationType, user, repo, repoUuid, token, number, args) {
+            getPullRequest(number, user, repo, token, function(err, pull) {
                 if(err) {
                     return;
                 }
@@ -144,49 +135,41 @@ module.exports = function() {
                     return;
                 }
 
-                get_collaborators(user, repo, token, function(err, collaborators) {
-
+                getCollaborators(user, repo, token, function(err, collaborators) {
                     if(err) {
                         return;
                     }
 
                     collaborators.forEach(function(collaborator){
-
-                        get_primary_email(collaborator.token, function(err, email) {
-
+                        getPrimaryEmail(collaborator.token, function(err, email) {
                             if(err || !email) {
                                 return;
                             }
 
                             Settings.findOne({
                                 user: collaborator.uuid,
-                                repo: repo_uuid
+                                repo: repoUuid
                             }, function(err, settings) {
-
-                                if(err || !settings || !settings.watched){
+                                if(err || !settings || !settings.watched) {
                                     return;
                                 }
 
                                 var watch = pullRequest.isWatched(pull, settings);
 
-                                if( watch && (
-                                    (eventType[notification_type] === 'star' && settings.notifications.star) ||
-                                    (eventType[notification_type] === 'issue' && settings.notifications.issue) ||
-                                    (eventType[notification_type] === 'pull_request' && settings.notifications.pull_request)) ){
+                                if(watch && settings.notifications[eventType[notificationType]]) {
 
                                     var transporter = buildTransporter();
 
-                                    var template = fs.readFileSync(notification_args[notification_type].template, 'utf-8');
+                                    var template = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
 
                                     var mailOptions = {
-                                        from: 'Review Ninja <noreply@review.ninja>',
+                                        from: 'ReviewNinja <noreply@review.ninja>',
                                         to: email.email,
-                                        subject: notification_args[notification_type].subject,
+                                        subject: notificationArgs[notificationType].subject,
                                         html: ejs.render(template, args)
                                     };
 
                                     transporter.sendMail(mailOptions, function(err, response) {
-
                                         if (err) {
                                             return;
                                         }
