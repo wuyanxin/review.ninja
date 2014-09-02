@@ -1,0 +1,13 @@
+{
+  "name": "review.ninja",
+  "website": "http://review.ninja",
+  "description": "ReviewNinja, merge with confidence",
+  "keywords": [
+    "code review",
+    "github"
+  ],
+  "repository": "https://github.com/reviewninja/review.ninja",
+  "addons": [
+    "mongolab:shared-single-small"
+  ]
+}
