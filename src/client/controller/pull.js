@@ -197,10 +197,14 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
             $scope.compComm($scope.base, head);
 
             // update tree
-            $scope.tree = $HUB.call('gitdata', 'getTree', {
+            $HUB.call('gitdata', 'getTree', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 sha: head
+            }, function(err, res) {
+                if(!err) {
+                    $scope.tree.value =  res.value;
+                }
             });
         });
     }
