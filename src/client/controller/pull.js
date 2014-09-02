@@ -96,7 +96,8 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
 
         $scope.compComm = function(base, head) {
 
-            if($scope.base!==base || $scope.head!==head) {
+            if(($scope.base!==base || $scope.head!==head) && base!==head) {
+                console.log('here yo');
                 $HUB.wrap('repos', 'compareCommits', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
