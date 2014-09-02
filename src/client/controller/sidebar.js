@@ -30,7 +30,7 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$RPC', 'i
                     repo_uuid: $scope.repo.id,
                     title: $scope.title,
                     body: body,
-                    sha: $scope.pull.head.sha,
+                    sha: $scope.head,
                     reference: reference
                 }, function(err, issue) {
                     if(!err) {

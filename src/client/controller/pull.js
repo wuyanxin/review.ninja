@@ -32,12 +32,12 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
         $scope.tree = $HUB.call('gitdata', 'getTree', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            sha: $scope.pull.head.sha
+            sha: $scope.head
         });
 
         // get the star
         $scope.star = $RPC.call('star', 'get', {
-            sha: $scope.pull.head.sha,
+            sha: $scope.head,
             repo_uuid: $scope.repo.id
         });
 
@@ -134,7 +134,7 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
             $RPC.call('star', fn, {
                 repo: $stateParams.repo,
                 user: $stateParams.user,
-                sha: $scope.pull.head.sha,
+                sha: $scope.head,
                 number: $stateParams.number,
                 repo_uuid: $scope.repo.id
             }, function(err, star) {
@@ -146,7 +146,7 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
 
         $scope.refreshStars = function() {
             $RPC.call('star', 'all', {
-                sha: $scope.pull.head.sha,
+                sha: $scope.head,
                 repo_uuid: $scope.repo.id
             }, function(err, stars) {
                 if(!err) {
@@ -191,7 +191,16 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':synchronize', function(head) {
+            
+            // update comparison
             $scope.compComm($scope.base, head);
+
+            // update tree
+            $scope.tree = $HUB.call('gitdata', 'getTree', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                sha: head
+            });
         });
     }
 ]);
