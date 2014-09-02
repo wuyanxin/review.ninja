@@ -21,6 +21,6 @@ module.controller('IssueListCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
 
 
         // update the comparison view
-        $scope.compComm($scope.pull.base.sha);
+        $scope.compComm($scope.pull.base.sha, $scope.head);
     }
 ]);

@@ -39,7 +39,7 @@
     <circle class="git-commit base" 
         cx="42.3" cy="16" r="13.7"
         ng-class="{ active: activeSha===baseSha }" 
-        ng-click="compare({ base: baseSha })"  
+        ng-click="compare({ base: baseSha, head: headSha })"  
         tooltip="{{ baseSha | limitTo:7 }}: base commit" 
         tooltip-append-to-body="true" 
         tooltip-placement="bottom">
@@ -50,7 +50,7 @@
         cx="136.9" cy="78.4" r="13.7" 
         ng-show="issueSha && issueSha!==baseSha && issueSha!==headSha" 
         ng-class="{ active: activeSha===issueSha }" 
-        ng-click="compare({ base: issueSha })" 
+        ng-click="compare({ base: issueSha, head: headSha })" 
         tooltip="{{ issueSha | limitTo:7 }}: commit where issue #{{ issueNum }} was created" 
         tooltip-append-to-body="true" 
         tooltip-placement="bottom">
@@ -59,7 +59,7 @@
     <g class="git-commit exclamation" 
        ng-show="issueSha && issueSha!==baseSha && issueSha!==headSha" 
        ng-class="{ active: activeSha===issueSha }" 
-       ng-click="compare({ base: issueSha })"
+       ng-click="compare({ base: issueSha, head: headSha })"
        tooltip="{{ issueSha | limitTo:7 }}: commit where issue #{{ issueNum }} was created" 
        tooltip-append-to-body="true" 
        tooltip-placement="bottom" >

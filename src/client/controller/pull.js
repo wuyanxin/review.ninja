@@ -94,18 +94,22 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
         // Actions
         //
 
-        $scope.compComm = function(base) {
-            $HUB.wrap('repos', 'compareCommits', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                head: $scope.head,
-                base: $scope.base
-            }, function(err, res) {
-                if(!err) {
-                    $scope.base = base;
-                    $scope.files.value = res.value.files;
-                }
-            });
+        $scope.compComm = function(base, head) {
+
+            if($scope.base!==base || $scope.head!==head) {
+                $HUB.wrap('repos', 'compareCommits', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    base: base,
+                    head: head
+                }, function(err, res) {
+                    if(!err) {
+                        $scope.base = base;
+                        $scope.head = head;
+                        $scope.files.value = res.value.files;
+                    }
+                });
+            }
         };
 
         $scope.merge = function() {
@@ -186,9 +190,8 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
             }
         });
 
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':synchronize', function(sha) {
-            $scope.head = sha;
-            $scope.compComm($scope.base);
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':synchronize', function(head) {
+            $scope.compComm($scope.base, head);
         });
     }
 ]);

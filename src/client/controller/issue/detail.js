@@ -22,7 +22,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
 
         // switch the comparison view
         if($scope.issue.sha) {
-            $scope.compComm($scope.issue.sha);
+            $scope.compComm($scope.issue.sha, $scope.head);
         }
 
         // get the comments
