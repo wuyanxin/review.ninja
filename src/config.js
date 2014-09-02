@@ -24,7 +24,7 @@ module.exports = {
 
         localport: process.env.PORT || 5000,
 
-        always_recompile_sass: process.env.NODE_ENV === 'production' ? true : false,
+        always_recompile_sass: process.env.NODE_ENV === 'production' ? false : true,
 
         http: {
             protocol: process.env.PROTOCOL || 'https',
