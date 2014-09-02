@@ -11,24 +11,35 @@
     }
 
     path.git-base,
-    path.git-head,
+    path.git-head {
+      stroke: $text-color;
+    }
+
     polygon.git-graph-arrow {
-      stroke: #000;
+      fill: $text-color;
     }
 
     path.git-head {
       fill: none;
     }
 
+    .git-commit.exclamation {
+      fill: $brand-primary;
+
+      &.active {
+        fill: $brand-info;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
     circle.git-commit {
-      fill: #000;
+      fill: $brand-primary-muted;
 
       &.active {
         fill: $brand-primary;
-      }
-
-      &.head {
-        fill: $brand-primary-muted;
       }
 
       &.base:hover,
@@ -39,7 +50,8 @@
       }
 
       &.head:hover {
-        fill: $brand-primary-hover;
+        cursor: pointer;
+        filter: url('#dropshadow');
       }
     }
   }

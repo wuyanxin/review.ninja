@@ -36,12 +36,12 @@
                 <div class="col-sm-8">
                   <p>
                     <span class="octicon octicon-diff"></span> 
-                    <small>
-                      Showing {{ pull.changed_files | pluralize:'changed file' }} with 
-                      <strong>{{ pull.additions | pluralize:'addition' }}</strong> and 
-                      <strong>{{ pull.deletions | pluralize:'deletion' }}</strong>
-                    </small>
+                    Showing {{ pull.changed_files | pluralize:'changed file' }} with 
+                    <strong>{{ pull.additions | pluralize:'addition' }}</strong> and 
+                    <strong>{{ pull.deletions | pluralize:'deletion' }}</strong>
                   </p>
+
+                  <p ng-show="issue"><small>Comparing {{ pull.base.sha===base ? 'base' : 'issue' }} commit to head commit.</small></p>
 
                   <strong>Compare:</strong>
 
@@ -50,6 +50,7 @@
                          base-sha="pull.base.sha" 
                          head-sha="pull.head.sha" 
                          issue-sha="issue.sha"
+                         issue-num="issue.number"
                          active-sha="base" 
                          compare="compComm(base)">
                   </graph>
