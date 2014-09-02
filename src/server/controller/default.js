@@ -19,8 +19,7 @@ router.all('/*', function(req, res) {
         return res.sendfile('login.html', {root: __dirname + './../../client'});
     }
 
-    // return res.redirect(config.server.marketingPage);
-    return res.sendfile('login.html', {root: __dirname + './../../client'});
+    return res.redirect(config.server.marketingPage);
 });
 
 module.exports = router;
