@@ -16,8 +16,8 @@ deploy:
   api: https://api.run.pivotal.io
   username: dominik.tornow@gmail.com
   password:
-    secure: j1nbvw+9/wUK5VnKOvDqTZ7380TkJMNP6fPiEdaNoiFb1jSHGmABrM2aheVOWrLpeOp3gbN5IUEgNqH+549IThfTuzQcR1w5i5HgFjOl5QGEw4x2NFq2346tWugwAJrRpmq6V0YS2tXVsOpTQxHKKCuhwZ2NKytE/yvaIn0/Ajw=
-  organization: "GithubTeam"
+    secure: d8HCJ/9Ay3ddc4ZLhg99uwPKfAKxD8NIe8RmoFd7cWKToRLzvlgB+nKoAMgWon/79ZWAtYINTxFEgxGwnMSoXDKPXp/L1o95KHwhnCYJUvJYSb/gmjFcLMf+VBv/HJCYRGxyBY9fBcbGxEsER4V9XDscI+Nt03bX7vabXgfIGyc=
+  organization: GithubTeam
   space: development
   on:
     repo: reviewninja/review.ninja
