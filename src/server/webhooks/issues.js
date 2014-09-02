@@ -53,7 +53,7 @@ module.exports = function(req, res) {
         user: req.args.repository.owner.login,
         repo: req.args.repository.name,
         issue: req.args.issue.id,
-        sender: req.args.sender.login,
+        sender: req.args.sender,
         number: number,
         url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, number)
     };

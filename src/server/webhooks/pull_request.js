@@ -32,7 +32,7 @@ module.exports = function(req, res) {
           user: req.args.repository.owner.login,
           repo: req.args.repository.name,
           number: req.args.number,
-          sender: req.args.sender.login,
+          sender: req.args.sender,
           url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
       };
 

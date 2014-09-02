@@ -90,7 +90,7 @@ module.exports = {
                         user: req.args.user,
                         repo: req.args.repo,
                         number: req.args.number,
-                        sender: req.user.login,
+                        sender: req.user,
                         url: url.reviewPullRequest(req.args.user, req.args.repo, req.args.number)
                     });
                 }
@@ -140,7 +140,7 @@ module.exports = {
                         user: req.args.user,
                         repo: req.args.repo,
                         number: req.args.number,
-                        sender: req.user.login,
+                        sender: req.user,
                         url: url.reviewPullRequest(req.args.user, req.args.repo, req.args.number)
                     });
                 }

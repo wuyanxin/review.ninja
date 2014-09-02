@@ -154,9 +154,9 @@ module.exports = function() {
                                     return;
                                 }
 
-                                var watch = pullRequest.isWatched(pull, settings);
-
-                                if(watch && settings.notifications[eventType[notificationType]]) {
+                                if( pullRequest.isWatched(pull, settings) && 
+                                    settings.notifications[eventType[notificationType]] &&
+                                    args.sender && args.sender.id !== collaborator.uuid ) {
 
                                     var transporter = buildTransporter();
 

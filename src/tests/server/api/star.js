@@ -154,7 +154,7 @@ describe('star:set', function() {
                 user: 'user',
                 repo: 'repo',
                 number: 2,
-                sender: 'login',
+                sender: {id:3, login:'login', token:'token'},
                 url: url.reviewPullRequest('user', 'repo', 2)
             });
         });
@@ -262,7 +262,7 @@ describe('star:rmv', function() {
                 user: 'user',
                 repo: 'repo',
                 number: 2,
-                sender: 'login',
+                sender: {id:3, login:'login', token:'token'},
                 url: url.reviewPullRequest('user', 'repo', 2)
             });
         });
