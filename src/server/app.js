@@ -43,11 +43,11 @@ async.series([
         console.log('checking configs'.bold);
 
         if(config.server.http.protocol !== 'http' && config.server.http.protocol !== 'https') {
-            throw 'PROTOCOL must be "http" or "https"';
+            throw new Error('PROTOCOL must be "http" or "https"');
         }
 
         if(config.server.github.protocol !== 'http' && config.server.github.protocol !== 'https') {
-            throw 'GITHUB_PROTOCOL must be "http" or "https"';
+            throw new Error('GITHUB_PROTOCOL must be "http" or "https"');
         }
 
         console.log('✓ '.bold.green + 'configs seem ok');
