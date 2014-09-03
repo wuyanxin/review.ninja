@@ -10,8 +10,14 @@
   "logo": "https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png",
   "success_url": "/",
   "env": {
-    "HOST": "review.ninja",
-    "PROTOCOL": "http",
+    "HOST": {
+        "description": "Change this to the hostname you expect the application to have. If you want to use the one heroku provides you, you need to deploy and then change it in the applicaton settings.",
+        "value": "review.ninja"
+    },
+    "PROTOCOL": {
+        "description": "We need this to build links in emails and other external resources.",
+        "value": "http"
+    },
     "GITHUB_CLIENT": {
       "description": "Client ID of your GitHub Application"
     },
