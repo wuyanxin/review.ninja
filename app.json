@@ -1,7 +1,7 @@
 {
   "name": "ReviewNinja",
   "website": "http://review.ninja/",
-  "description": "ReviewNinja - merge with confidence. A code review tool that integrates into GitHub",
+  "description": "ReviewNinja - merge with confidence. A code review tool that integrates into GitHub.",
   "keywords": [
     "code review",
     "github"
@@ -15,9 +15,6 @@
     },
     "GITHUB_SECRET": {
       "description": "Client Secret of your GitHub Application"
-    },
-    "HOST": {
-      "description": "What is the hostname, this application will run under."
     }
   },
   "addons": [
