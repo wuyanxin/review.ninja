@@ -1,6 +1,7 @@
-//services
-var github = require('../services/github');
+// services
 var url = require('../services/url');
+var github = require('../services/github');
+var webhook = require('../services/webhook');
 // models
 var User = require('mongoose').model('User');
 
@@ -47,20 +48,27 @@ module.exports = {
                             user.save();
                         }
 
+                        // create hook, if it does not exist
                         if(repo.permissions.admin) {
-                            github.call({
-                                obj: 'repos',
-                                fun: 'createHook',
-                                arg: {
-                                    user: repo.owner.login,
-                                    repo: repo.name,
-                                    name: 'web',
-                                    config: { url: url.webhook(user._id), content_type: 'json' },
-                                    events: ['pull_request','issues', 'issue_comment'],
-                                    active: true
-                                },
-                                token: req.user.token
-                            });
+                            webhook.get(req.args.user, req.args.repo, req.user.token, 
+                                function(err, hook) {
+                                    if(!hook) {
+                                        github.call({
+                                            obj: 'repos',
+                                            fun: 'createHook',
+                                            arg: {
+                                                user: repo.owner.login,
+                                                repo: repo.name,
+                                                name: 'web',
+                                                config: { url: url.webhook(user._id), content_type: 'json' },
+                                                events: ['pull_request','issues', 'issue_comment'],
+                                                active: true
+                                            },
+                                            token: req.user.token
+                                        });
+                                    }
+                                }
+                            );
                         }
                     }
 
