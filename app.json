@@ -19,10 +19,10 @@
         "value": "http"
     },
     "GITHUB_CLIENT": {
-      "description": "Client ID of your GitHub Application"
+      "description": "Client ID of your GitHub Application. Tip: you will need to register you application with the callback url <PROTOCOLL>://<HOST>/auth/github/callback. As stated in the HOST parameter already, if you don't know the url yet then deploy and update the GitHub application once you do know."
     },
     "GITHUB_SECRET": {
-      "description": "Client Secret of your GitHub Application"
+      "description": "Client Secret of your GitHub Application."
     }
   },
   "addons": [
