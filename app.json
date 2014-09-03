@@ -9,9 +9,6 @@
   "repository": "https://github.com/reviewninja/review.ninja",
   "logo": "https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png",
   "success_url": "/",
-  "scripts": {
-    "postdeploy": "npm install -g bower && bower install"
-  },
   "env": {
     "GITHUB_CLIENT": {
       "description": "Client ID of your GitHub Application"
