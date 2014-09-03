@@ -137,6 +137,9 @@ example, http and https are used but not on port 80 and 443.
 
 `MONGODB`: Mandatory. This has to be in form of a mongodb url, e.g. `mongodb://<user>:<password>@<host>:<port>/<dbname>`.
 
+> `MONGODB` is an alias for the environment variable `MONGOLAB_URI`, so both
+> are suitable to be used. (`MONGODB` will be favored if both are set)
+
 `GACODE`: Optional. If this is not set, Google Analytics will not be recorded.
 
 #### SMTP
