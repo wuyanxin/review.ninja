@@ -10,6 +10,8 @@
   "logo": "https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png",
   "success_url": "/",
   "env": {
+    "HOST": "review.ninja",
+    "PROTOCOL": "http",
     "GITHUB_CLIENT": {
       "description": "Client ID of your GitHub Application"
     },
