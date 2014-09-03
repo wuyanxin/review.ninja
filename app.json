@@ -10,7 +10,7 @@
   "logo": "https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png",
   "success_url": "/",
   "scripts": {
-    "postdeploy": "./node_modules/bower/bin/bower install"
+    "postdeploy": "npm install -g bower && bower install"
   },
   "env": {
     "GITHUB_CLIENT": {
