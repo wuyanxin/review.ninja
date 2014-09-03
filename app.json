@@ -1,7 +1,7 @@
 {
-  "name": "ReviewNinja - merge with confidence",
+  "name": "ReviewNinja",
   "website": "http://review.ninja/",
-  "description": "A code review tool that integrates into GitHub",
+  "description": "ReviewNinja - merge with confidence. A code review tool that integrates into GitHub",
   "keywords": [
     "code review",
     "github"
