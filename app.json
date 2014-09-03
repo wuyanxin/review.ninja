@@ -1,13 +1,26 @@
 {
-  "name": "review.ninja",
-  "website": "http://review.ninja",
-  "description": "ReviewNinja, merge with confidence",
+  "name": "ReviewNinja - merge with confidence",
+  "website": "http://review.ninja/",
+  "description": "A code review tool that integrates into GitHub",
   "keywords": [
     "code review",
     "github"
   ],
   "repository": "https://github.com/reviewninja/review.ninja",
+  "logo": "https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png",
+  "success_url": "/",
+  "env": {
+    "GITHUB_CLIENT": {
+      "description": "Client ID of your GitHub Application"
+    },
+    "GITHUB_SECRET": {
+      "description": "Client Secret of your GitHub Application"
+    },
+    "HOST": {
+      "description": "What is the hostname, this application will run under."
+    }
+  },
   "addons": [
-    "mongolab:shared-single-small"
+    "mongolab:sandbox"
   ]
 }
