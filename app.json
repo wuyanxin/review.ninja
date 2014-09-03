@@ -11,7 +11,7 @@
   "success_url": "/",
   "env": {
     "HOST": {
-        "description": "Change this to the hostname you expect the application to have. If you want to use the one heroku provides you, you need to deploy and then change it in the applicaton settings.",
+        "description": "Change this to the hostname you expect the application to have. If you want to use the one heroku provides you, you need to deploy and then change it in the applicaton settings. If you provided an App Name, then it will be appname.herokuapp.com",
         "value": "review.ninja"
     },
     "PROTOCOL": {
