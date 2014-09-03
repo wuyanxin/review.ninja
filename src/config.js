@@ -50,7 +50,7 @@ module.exports = {
         },
 
         mongodb: {
-            uri: process.env.MONGODB
+            uri: process.env.MONGODB || process.env.MONGOLAB_URI
         },
 
         marketingPage: 'http://about.review.ninja',
