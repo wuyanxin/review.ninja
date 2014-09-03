@@ -15,11 +15,11 @@ router.all('/*', function(req, res) {
     req.session.next = req.url;
 
     // enterprise marketing page
-    if (config.server.github.enterprise) {
+    if (config.server.github.enterprise && !config.server.landingPage) {
         return res.sendfile('login.html', {root: __dirname + './../../client'});
     }
 
-    return res.redirect(config.server.marketingPage);
+    return res.redirect(config.server.landingPage);
 });
 
 module.exports = router;

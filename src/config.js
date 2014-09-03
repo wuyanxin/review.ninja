@@ -53,7 +53,7 @@ module.exports = {
             uri: process.env.MONGODB || process.env.MONGOLAB_URI
         },
 
-        marketingPage: 'http://about.review.ninja',
+        landingPage: process.env.LANDING_PAGE,
 
         static: [
             __dirname + '/bower',
