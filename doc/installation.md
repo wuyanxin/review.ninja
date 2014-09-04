@@ -47,7 +47,7 @@ Make sure it is running
 
 Login as your manager account
 
-	mongo --port 27017 -u manager -p 12345678 --authenticationDatabase admin
+	mongo --port 27017 --authenticationDatabase admin
 
 Add the user reviewninja
 
@@ -56,8 +56,7 @@ Add the user reviewninja
 	user: "reviewninja",
 	pwd: "reviewninja",
 	roles: [
-	        { role: "read", db: "reviewninja" },
-	        { role: "write", db: "reviewninja" },
+	        { role: "readWrite", db: "reviewninja" }
 	    ]
 	})
 
