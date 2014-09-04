@@ -9,4 +9,5 @@ before_script:
 after_script:
 - grunt mocha_istanbul && grunt coveralls
 - grunt scsslint --force
-- ./.cf.sh review-ninja-staging
+- if [[ $TRAVIS_BRANCH == 'master' ]]; then ./.cf.sh review-ninja-staging; fi
+- if [[ $TRAVIS_BRANCH == 'release' ]]; then ./.cf.sh review-ninja; fi
