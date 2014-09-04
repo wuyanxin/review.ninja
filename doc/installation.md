@@ -51,7 +51,7 @@ Login as your manager account
 
 Add the user reviewninja
 
-	use reporting
+	use reviewninja
 	db.createUser({
 	user: "reviewninja",
 	pwd: "reviewninja",
