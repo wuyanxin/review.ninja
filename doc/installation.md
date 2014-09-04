@@ -88,7 +88,6 @@ The app is located in `/home/review.ninja`.
 Install npm and bower dependencies:
 
 	npm install
-	bower install
 
 To configure the application, copy the `.env.example` file to `.env`:
 
