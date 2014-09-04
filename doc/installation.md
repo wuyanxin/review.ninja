@@ -45,7 +45,7 @@ Make sure it is running
 
 	sudo service mongod start
 
-Login as your manager account
+Open the MongoDB interactive shell
 
 	mongo --port 27017 --authenticationDatabase admin
 
@@ -59,6 +59,10 @@ Add the user reviewninja
 	        { role: "readWrite", db: "reviewninja" }
 	    ]
 	})
+
+Exit the interactive shell
+
+	exit
 
 Setup ReviewNinja
 -----------------
