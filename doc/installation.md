@@ -4,12 +4,22 @@ Installation
 This guide is thought for people who want to setup a private instance of
 ReviewNinja. It is thought to be executed on an ubuntu machine.
 
+> Tested on Ubuntu 14.04
+
 General
 -------
 
 Create a user to run the application
 
 	sudo adduser --disabled-login --gecos 'ReviewNinja' reviewninja
+
+And install some utilities used in this guide
+
+	sudo apt-get install -y vim git-core
+
+And set some default values for the system
+
+	sudo update-alternatives --set editor /usr/bin/vim.basic
 
 Install Node.JS
 ---------------
