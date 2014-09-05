@@ -4,10 +4,11 @@ Installation
 This guide is thought for people who want to setup a private instance of
 ReviewNinja. 
 
+This guide was tested with **Ubuntu 14.04**, but also may apply to other Linux
+distributions or other Unix derivatives.
 
-This guide was tested with **Ubuntu 14.04**, but also may apply to other Linux distributions or other Unix derivatives.
-
-> *Information* If you need to setup a local development environment, you can use our Vagrant image: https://github.com/reviewninja/vagrant.review.ninja
+> **Hint:** If you need to setup a local development environment, you can use
+> our Vagrant image: https://github.com/reviewninja/vagrant.review.ninja
 
 General
 -------
@@ -153,9 +154,11 @@ hostname your ReviewNinja instance should be accessible under.
 
 `PROTOCOL`: Valid options are "http" or "https". Defaults to "https".
 
-`SESSION_SECRET`: The session secret is used by the ```connect``` middleware to compute hashes. 
+`SESSION_SECRET`: The session secret is used by the `connect` middleware to compute hashes. 
 
-> *Warning* We strongly recommend choosing a secret that is hard to guess. Generate the secret on the production environment and don't transfer it between machines. You can use ```mqhash``` on Ubuntu: http://manpages.ubuntu.com/manpages/natty/mqhash.1.html
+> **Warning:** We strongly recommend choosing a secret that is hard to guess.
+> Generate the secret in the production environment. You can use `mqhash`
+> on Ubuntu: http://manpages.ubuntu.com/manpages/natty/mqhash.1.html
 
 
 `HOST_PORT`: This only needs to be set if it is a custom host port.  For
@@ -165,18 +168,17 @@ example, http and https are used but not on port 80 and 443.
 
 `GITHUB_SECRET`: Required. From your registered application in GitHub.
 
-> *Warning* Don't transfer the secret via unsecure protocols to the target machine. Keep the secret secret!
-
 `GITHUB_PROTOCOL`: Valid options are "http" or "https". Defaults to "https".
 
 `GITHUB_HOST`: Defaults to "github.com". 
 
-> *Warning:* If this variable is set, it is assumed that GitHub Enterprise is
+> **Beware:** If this variable is set, it is assumed that GitHub Enterprise is
 > used.
 
 `GITHUB_API_HOST`: Defaults to "api.github.com".
 
-`MONGODB`: Mandatory. This has to be in form of a mongodb url, e.g. `mongodb://<user>:<password>@<host>:<port>/<dbname>`.
+`MONGODB`: Mandatory. This has to be in form of a mongodb url, e.g.
+`mongodb://<user>:<password>@<host>:<port>/<dbname>`.
 
 > `MONGODB` is an alias for the environment variable `MONGOLAB_URI`, so both
 > are suitable to be used. (`MONGODB` will be favored if both are set)
@@ -190,7 +192,8 @@ example, http and https are used but not on port 80 and 443.
  
  * `SMTP_HOST`: Host on which the SMTP Server runs on.
  * `SMTP_PORT`: Port on which the SMTP Server runs on.
- * `SMTP_SSL`: Use ssl or not, values are "true" or "false". Defaults to "true".
+ * `SMTP_SSL`: Use ssl or not, values are "true" or "false". Defaults to
+   "true".
  * `SMTP_USER`: User on the SMTP Server.
  * `SMTP_PASS`: Password for the `SMTP_USER`.
 
@@ -214,6 +217,6 @@ Then take a look at that file and edit it to your need
 
 	vim /etc/nginx/sites-available/reviewninja.example.com
 
-> *Beware:* this configuration is not using ssl encryption. This file is only
+> **Beware:** this configuration is not using ssl encryption. This file is only
 > to get you started. Read [here how to configure nginx to use
 > ssl](http://nginx.org/en/docs/http/configuring_https_servers.html).
