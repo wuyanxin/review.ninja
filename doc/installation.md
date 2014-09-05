@@ -114,14 +114,13 @@ Once that is done you can start the application with:
 
 	npm app.js
 
-### Environment Variables
+### Further Environment Variables
 
 The following are the environment variables you have to configure to run a
 private instance:
 
-> **Pro Tip:** there is an example of these files in the root directory of the
-> application called `.env.example` it contains preset variables suitable for
-> development use.
+> **Pro Tip:** the `.env.example` file in the root directory of the contains
+> preset variables suitable for development use.
 
 #### General
 
