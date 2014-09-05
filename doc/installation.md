@@ -5,7 +5,7 @@ This guide is thought for people who want to setup a private instance of
 ReviewNinja. 
 
 
-The guide was tested with **Ubuntu 14.04**, but also may apply for other Linux distributions or other Unix derivatives.
+This guide was tested with **Ubuntu 14.04**, but also may apply to other Linux distributions or other Unix derivatives.
 
 > *Information* If you need to setup a local development environment, you can use our Vagrant image: https://github.com/reviewninja/vagrant.review.ninja
 
