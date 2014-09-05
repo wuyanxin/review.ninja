@@ -100,8 +100,10 @@ To configure the application, copy the `.env.example` file to `.env`:
 
 You need to [register the application on
 GitHub](https://github.com/settings/applications/new). The callback is
-http://localhost:5000/auth/github/callback.  Fill out the name and homepage as
-you wish.
+`<PROTOCOL>://<HOST>:<PORT>/auth/github/callback`. Fill out the name and
+homepage as you wish. E.g. if your application runs on
+`http://reviewninja.example.com/` then the callback url is
+`http://reviewninja.example.com/auth/github/callback`
 
 Set the `GITHUB_CLIENT` and `GITHUB_SECRET` environment variables accordingly
 in the `.env` file.
