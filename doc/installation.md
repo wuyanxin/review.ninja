@@ -181,3 +181,27 @@ example, http and https are used but not on port 80 and 443.
  * `SMTP_SSL`: Use ssl or not, values are "true" or "false". Defaults to "true".
  * `SMTP_USER`: User on the SMTP Server.
  * `SMTP_PASS`: Password for the `SMTP_USER`.
+
+Setup Nginx
+-----------
+
+Once you have your ReviewNinja instance running you probably want to put it
+behind a webserver/reverse-proxy. Our choice is Nginx. These steps must be
+executed with root permissions again.
+
+First install Nginx
+
+	sudo apt-get install nginx
+
+Create a file for the (sub)domain you want to run ReviewNinja on. You can use
+our template of this file and only fill in the blanks.
+
+	cp /home/reviewninja/review.ninja/doc/nginx/reviewninja.example.com /etc/nginx/sites-available/reviewninja.example.com
+
+Then take a look at that file and edit it to your need
+
+	vim /etc/nginx/sites-available/reviewninja.example.com
+
+> *Beware:* this configuration is not using ssl encryption. This file is only
+> to get you started. Read [here how to configure nginx to use
+> ssl](http://nginx.org/en/docs/http/configuring_https_servers.html).
