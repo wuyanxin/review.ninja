@@ -76,6 +76,11 @@ Exit the interactive shell
 
 Setup ReviewNinja
 -----------------
+
+Start by changing to the user to install ReviewNinja under, which was created
+in the beginning
+
+	su reviewninja
  
 Clone this repository:
 
@@ -103,18 +108,25 @@ in the `.env` file.
 
 The following environment variables are mandatory: 
 
+  * `HOST`
+  * `SESSION_SECRET`
   * `MONGODB`
   * `GITHUB_CLIENT`
   * `GITHUB_SECRET` 
 
-The `MONGODB` default in the `.env.example` file is correct unless you have an
-alternative configuration.
+Refer to [Further Reading on Environment
+Variables](#Further-Reading-on-Environment-Variables) for more information on
+what to set the variables to.
+
+The `MONGODB` default in the `.env.example` file is correct if you followed
+this guide 100%, however, it is recommended to choose a secure password for
+your MongoDB user.
 
 Once that is done you can start the application with:
 
 	npm app.js
 
-### Further Environment Variables
+### Further Reading on Environment Variables
 
 The following are the environment variables you have to configure to run a
 private instance:
