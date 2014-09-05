@@ -141,7 +141,8 @@ private instance:
 `NODE_ENV`: Should be set to production, unless you want to help developing
 ReviewNinja
 
-`HOST`: Defaults to "review.ninja".
+`HOST`: Defaults to "review.ninja". This should not include http://, only the
+hostname your ReviewNinja instance should be accessible under.
 
 `PORT`: The local port to bind to. Defaults to 5000.
 
