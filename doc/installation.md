@@ -150,12 +150,19 @@ hostname your ReviewNinja instance should be accessible under.
 
 `PROTOCOL`: Valid options are "http" or "https". Defaults to "https".
 
+`SESSION_SECRET`: The session secret is used by the ```connect``` middleware to compute hashes. 
+
+> *Warning* We strongly recommend choosing a secret that is hard to guess. Generate the secret on the production environment and don't transfer it between machines. You can use ```mqhash``` on Ubuntu: http://manpages.ubuntu.com/manpages/natty/mqhash.1.html
+
+
 `HOST_PORT`: This only needs to be set if it is a custom host port.  For
 example, http and https are used but not on port 80 and 443.
 
 `GITHUB_CLIENT`: Required. From your registered application in GitHub.
 
 `GITHUB_SECRET`: Required. From your registered application in GitHub.
+
+> *Warning* Don't transfer the secret via unsecure protocols to the target machine. Keep the secret secret!
 
 `GITHUB_PROTOCOL`: Valid options are "http" or "https". Defaults to "https".
 
