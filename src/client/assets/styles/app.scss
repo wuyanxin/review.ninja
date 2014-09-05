@@ -83,6 +83,7 @@ $navbar-default-link-color: $gray;
 $navbar-default-link-hover-color: $gray;
 $navbar-default-link-active-color: $gray;
 $navbar-margin-bottom: 0;
+$nav-link-padding: 15px 25px;
 
 // breadcrumb
 $breadcrumb-bg: transparent;
@@ -260,6 +261,10 @@ i.fa-link {
 
 small {
   vertical-align: middle;
+}
+
+ul.nav.navbar-nav.navbar-right {
+  font-size: 12px;
 }
 
 // Helper classes

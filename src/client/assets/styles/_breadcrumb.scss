@@ -2,6 +2,10 @@
   a {
     color: $brand-primary;
     font-size: $font-size-h4;
+
+    .octicon {
+      font-size: 20px;
+    }
   }
 
   a:hover {
