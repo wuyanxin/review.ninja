@@ -6,35 +6,53 @@ ReviewNinja - merge with confidence
 <p align="center">
 [![ReviewNinja](https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png)](http://review.ninja)
 
-ReviewNinja is a lightweight code review tool that works with GitHub, providing a more structured way to use pull requests for code review. ReviewNinja dispenses with elaborate voting systems, and supports hassle-free committing and merging for acceptable changes. Our primary focus is making it easier to identify, review, collaborate and track problems with a specific pull request until they're satisfactorily addressed.
+ReviewNinja is a lightweight code review tool that works with GitHub, providing
+a more structured way to use pull requests for code review. ReviewNinja
+dispenses with elaborate voting systems, and supports hassle-free committing
+and merging for acceptable changes. Our primary focus is making it easier to
+identify, review, collaborate and track problems with a specific pull request
+until they're satisfactorily addressed.
 
+ReviewNinja tries to store the least amount of information from your GitHub
+account to make sure the data is up to date and the data is stored at GitHub
+only.
 
-ReviewNinja tries to store the least amount of information from your GitHub account to make sure the data is up to date and the data is stored at GitHub only.
-
-ReviewNinja was built to integrate into GitHub.com as well as GitHub Enterprise. The application stack includes Node.js, Express, MongoDB and AngularJS.
+ReviewNinja was built to integrate into GitHub.com as well as GitHub
+Enterprise. The application stack includes Node.js, Express, MongoDB and
+AngularJS.
 
 Why should I use ReviewNinja?
 ------------------------------
 
-ReviewNinja defines a clearer process for code review in GitHub. ReviewNinja also provides a status overview, so team members in addition to development can understand the state of the project (e.g., product management).
+ReviewNinja defines a clearer process for code review in GitHub. ReviewNinja
+also provides a status overview, so team members in addition to development can
+understand the state of the project (e.g., product management).
 
 Try ReviewNinja
 ----------------
 
-ReviewNinja is in the very early stages of active development, and you can expect significant API and UX/UI
-changes. To sign up for our newsletter go to http://review.ninja/.
+ReviewNinja is in the very early stages of active development, and you can
+expect significant API and UX/UI changes. To sign up for our newsletter go to
+http://review.ninja/.
 
 Contribute
 ----------
 
-To contribute, take a look at our [vagrant.review.ninja](https://github.com/reviewninja/vagrant.review.ninja) repo, it explains how to get setup and running easily through a combination of vagrant and salt ;)
+To contribute, take a look at our
+[vagrant.review.ninja](https://github.com/reviewninja/vagrant.review.ninja)
+repo, it explains how to get setup and running easily through a combination of
+[Vagrant](https://www.vagrantup.com/) and [Salt](http://www.saltstack.com/)
+:wink:
 
-Contributions to this project are very welcome, but can only be accepted if the contributions themselves are given to the project under the Apache License 2.0. Contributions other than those given under Apache License 2.0 will be rejected.
+Contributions to this project are very welcome, but can only be accepted if the
+contributions themselves are given to the project under the Apache License 2.0.
+Contributions other than those given under Apache License 2.0 will be rejected.
 
 License
 =======
 
-Copyright 2014 by [SAP SE](http://www.sap.com) and made available under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). 
+Copyright 2014 by [SAP SE](http://www.sap.com) and made available under the
+[Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). 
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
