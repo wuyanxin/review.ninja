@@ -2,9 +2,11 @@ Installation
 ============
 
 This guide is thought for people who want to setup a private instance of
-ReviewNinja. This guide is for setup with Ubuntu, but also may apply for other Linux distributions. For Mac and Windows we recommend using our Vagrant environment: https://github.com/reviewninja/vagrant.review.ninja
+ReviewNinja. 
 
-> Tested on Ubuntu 14.04
+This guide was created for setup with **Ubuntu 14.04**, but also may apply for other Linux distributions or other Unix derivatives.
+
+> *Information* If you need to setup a local development environment, you can use our Vagrant image: https://github.com/reviewninja/vagrant.review.ninja
 
 General
 -------
