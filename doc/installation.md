@@ -112,6 +112,7 @@ your MongoDB user.
 
 The following environment variables are mandatory: 
 
+  * `NODE_ENV`
   * `HOST`
   * `SESSION_SECRET`
   * `MONGODB`
