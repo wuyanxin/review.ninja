@@ -135,10 +135,10 @@ And start the application with
 The following are the environment variables you have to configure to run a
 private instance:
 
-> **Pro Tip:** the `.env.example` file in the root directory of the contains
-> preset variables suitable for development use.
-
 #### General
+
+`NODE_ENV`: Should be set to production, unless you want to help developing
+ReviewNinja
 
 `HOST`: Defaults to "review.ninja".
 
