@@ -106,6 +106,10 @@ you wish.
 Set the `GITHUB_CLIENT` and `GITHUB_SECRET` environment variables accordingly
 in the `.env` file.
 
+The `MONGODB` default in the `.env.example` file is correct if you followed
+this guide 100%, however, it is recommended to choose a secure password for
+your MongoDB user.
+
 The following environment variables are mandatory: 
 
   * `HOST`
@@ -118,11 +122,11 @@ Refer to [Further Reading on Environment
 Variables](#Further-Reading-on-Environment-Variables) for more information on
 what to set the variables to.
 
-The `MONGODB` default in the `.env.example` file is correct if you followed
-this guide 100%, however, it is recommended to choose a secure password for
-your MongoDB user.
+Once that is done you can source the environment variables
 
-Once that is done you can start the application with:
+	source .env
+
+And start the application with
 
 	npm app.js
 
