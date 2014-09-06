@@ -81,6 +81,6 @@
   "scripts": {
     "start": "node app.js",
     "test": "grunt --verbose",
-    "postinstall": "bower install --config.interactive=false"
+    "postinstall": "node_modules/.bin/bower install --config.interactive=false"
   }
 }
