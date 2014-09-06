@@ -135,7 +135,7 @@ Once that is done you can source the environment variables
 
 And start the application with
 
-	npm app.js
+	npm start
 
 ### Further Reading on Environment Variables
 
