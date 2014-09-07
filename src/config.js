@@ -19,7 +19,7 @@ module.exports = {
             secret: process.env.GITHUB_SECRET,
 
             // review.ninja specific
-            scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org']
+            scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org']
         },
 
         localport: process.env.PORT || 5000,
