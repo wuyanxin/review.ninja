@@ -1,6 +1,6 @@
 var express = require('express'),
     ejs = require('ejs'),
-    fs = require('fs')
+    fs = require('fs');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Badge controller
