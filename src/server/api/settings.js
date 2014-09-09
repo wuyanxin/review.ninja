@@ -31,21 +31,21 @@ module.exports = {
     },
 
     setWatched: function(req, done) {
-        // unique the watched array
-        // taken from stackoverflow: http://stackoverflow.com/questions/1890203/unique-for-arrays-in-javascript
-        var hash = {}, result = [], arr = req.args.watched;
-        for ( var i = 0, l = arr.length; i < l; ++i ) {
-            if ( !hash.hasOwnProperty(arr[i]) ) { //it works with objects! in FF, at least
-                hash[arr[i]] = true;
-                result.push(arr[i]);
+        // uniquify the watched array
+        var uniquifier = {};
+        var uniqueWatched = [];
+        req.args.watched.forEach(function(watched) {
+            if(!uniquifier.hasOwnProperty(watched)) {
+                uniquifier[watched] = true;
+                uniqueWatched.push(watched);
             }
-        }
+        });
 
         Settings.findOneAndUpdate({
             user: req.user.id,
             repo: req.args.repo_uuid
         }, {
-            watched: result
+            watched: uniqueWatched
         }, {}, done);
     },
 
