@@ -1,35 +1,38 @@
-var express = require('express');
-
-var COLORS = {
-    none: 'lightgrey',
-    pending: 'blue',
-    rejected: 'red',
-    approved: 'brightgreen'
-};
+var express = require('express'),
+    ejs = require('ejs'),
+    fs = require('fs')
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-// Default router
+// Badge controller
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 var router = express.Router();
 
 router.all('/badge/repo/:repo', function(req, res) {
 
+    res.set('Content-Type', 'image/svg+xml');
+
     // ...
 
-    var tmp = fs.readFileSync("...", 'utf-8');
+    var tmp = fs.readFileSync("src/server/templates/badge.svg", 'utf-8');
 
-    var svg = ejs.render(tmp, arg);
+    var svg = ejs.render(tmp, {});
+
+    res.send(svg);
 
 });
 
 router.all('/badge/pull/:pull', function(req, res) {
 
+    res.set('Content-Type', 'image/svg+xml');
+
     // ...
 
-    var tmp = fs.readFileSync("...", 'utf-8');
+    var tmp = fs.readFileSync("src/server/templates/badge.svg", 'utf-8');
 
-    var svg = ejs.render(tmp, arg);
+    var svg = ejs.render(tmp, {});
+
+    res.send(svg);
 
 });
 
