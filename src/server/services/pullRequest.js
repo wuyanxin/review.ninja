@@ -18,7 +18,7 @@ module.exports = {
     },
 
     badgeComment: function(user, repo, repoId, pullNumber) {
-        var badgeUrl = url.badge(repoId, pullNumber);
+        var badgeUrl = url.pullRequestBadge(repoId, pullNumber);
         var pullUrl = url.reviewPullRequest(user, repo, pullNumber);
 
         github.call({

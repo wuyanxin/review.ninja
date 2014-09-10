@@ -68,3 +68,11 @@ describe('url:reviewPullRequest', function(done) {
         done();
     });
 });
+
+describe('url:pullRequestBadge', function(done) {
+    it('should by default be https://review.ninja/:repoId/pull/:number/badge', function(done) {
+        assert.equal(url.pullRequestBadge(123, 456),
+                    'https://review.ninja/123/pull/456/badge');
+        done();
+    });
+});
