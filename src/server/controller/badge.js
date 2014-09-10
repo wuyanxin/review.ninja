@@ -8,32 +8,18 @@ var express = require('express'),
 
 var router = express.Router();
 
-router.all('/badge/repo/:repo', function(req, res) {
-
+router.all('/:repoId/badge', function(req, res) {
     res.set('Content-Type', 'image/svg+xml');
-
-    // ...
-
     var tmp = fs.readFileSync("src/server/templates/badge.svg", 'utf-8');
-
     var svg = ejs.render(tmp, {});
-
     res.send(svg);
-
 });
 
-router.all('/badge/pull/:pull', function(req, res) {
-
+router.all('/:repoId/pull/:number/badge', function(req, res) {
     res.set('Content-Type', 'image/svg+xml');
-
-    // ...
-
     var tmp = fs.readFileSync("src/server/templates/badge.svg", 'utf-8');
-
     var svg = ejs.render(tmp, {});
-
     res.send(svg);
-
 });
 
 module.exports = router;
