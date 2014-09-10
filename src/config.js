@@ -18,6 +18,10 @@ module.exports = {
             client: process.env.GITHUB_CLIENT,
             secret: process.env.GITHUB_SECRET,
 
+            // required
+            user: process.env.GITHUB_USER,
+            pass: process.env.GITHUB_PASS,
+
             // review.ninja specific
             scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org']
         },
