@@ -5,6 +5,7 @@ var User = require('mongoose').model('User');
 var url = require('../services/url');
 var github = require('../services/github');
 var notification = require('../services/notification');
+var pullRequest = require('../services/pullRequest');
 var status = require('../services/status');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,27 +42,36 @@ module.exports = function(req, res) {
 
               status.update(args);
 
-              notification.sendmail('pull_request_opened',
-                                    req.args.repository.owner.login,
-                                    req.args.repository.name,
-                                    req.args.repository.id,
-                                    user.token,
-                                    req.args.number,
-                                    notification_args);
+              notification.sendmail(
+                      'pull_request_opened',
+                      req.args.repository.owner.login,
+                      req.args.repository.name,
+                      req.args.repository.id,
+                      user.token,
+                      req.args.number,
+                      notification_args
+              );
 
+              pullRequest.badgeComment(
+                      req.args.repository.owner.login,
+                      req.args.repository.name,
+                      req.args.repository.id,
+                      req.args.number
+              );
           },
           synchronize: function() {
 
               status.update(args);
 
               notification.sendmail(
-                                    'pull_request_synchronized',
-                                    req.args.repository.owner.login,
-                                    req.args.repository.name,
-                                    req.args.repository.id,
-                                    user.token,
-                                    req.args.number,
-                                    notification_args);
+                      'pull_request_synchronized',
+                      req.args.repository.owner.login,
+                      req.args.repository.name,
+                      req.args.repository.id,
+                      user.token,
+                      req.args.number,
+                      notification_args
+              );
 
               io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':synchronize', req.args.pull_request.head.sha);
           },
