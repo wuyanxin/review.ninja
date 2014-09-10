@@ -10,13 +10,6 @@ var router = express.Router();
 var github = require('../services/github');
 var Star = require('mongoose').model('Star');
 
-router.all('/:repoId/badge', function(req, res) {
-    res.set('Content-Type', 'image/svg+xml');
-    var tmp = fs.readFileSync("src/server/templates/badge.svg", 'utf-8');
-    var svg = ejs.render(tmp, {});
-    res.send(svg);
-});
-
 router.all('/:repoId/pull/:number/badge', function(req, res) {
     github.call({
         obj: 'repos',
