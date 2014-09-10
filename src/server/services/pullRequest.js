@@ -1,3 +1,6 @@
+var url = require('./url');
+var github = require('./github');
+
 module.exports = {
     byLabels: function(labels) {
         var pull_request_number = null;
@@ -12,6 +15,26 @@ module.exports = {
         });
 
         return pull_request_number;
+    },
+
+    badgeComment: function(user, repo, repoId, pullNumber) {
+        var badgeUrl = url.pullRequestBadge(repoId, pullNumber);
+        var pullUrl = url.reviewPullRequest(user, repo, pullNumber);
+
+        github.call({
+            obj: 'issues',
+            fun: 'createComment',
+            arg: {
+                user: user,
+                repo: repo,
+                number: pullNumber,
+                body: '[![ReviewNinja](' + badgeUrl + ')](' + pullUrl + ')'
+            },
+            basicAuth: {
+                user: config.server.github.user,
+                pass: config.server.github.pass
+            }
+        });
     },
 
     setWatched: function(pulls, settings) {

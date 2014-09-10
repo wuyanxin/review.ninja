@@ -27,6 +27,12 @@
     },
     "GITHUB_SECRET": {
       "description": "Client Secret of your GitHub Application."
+    },
+    "GITHUB_USER": {
+      "description": "For ReviewNinja to comment on pull requests, it needs a user to login to."
+    },
+    "GITHUB_PASS": {
+      "description": "Create an API Key in your user settings. https://github.com/settings/tokens/new Only public_repo is necessary."
     }
   },
   "addons": [

@@ -7,6 +7,7 @@ module.exports = {
         var fun = call.fun;
         var arg = call.arg || {};
         var token = call.token;
+        var basicAuth = call.basicAuth;
 
         var github = new GitHubApi({
             protocol: config.server.github.protocol,
@@ -27,6 +28,14 @@ module.exports = {
             github.authenticate({
                 type: 'oauth',
                 token: token
+            });
+        }
+
+        if(basicAuth) {
+            github.authenticate({
+                type: "basic",
+                username: basicAuth.user,
+                password: basicAuth.pass
             });
         }
 

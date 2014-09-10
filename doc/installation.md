@@ -168,6 +168,14 @@ example, http and https are used but not on port 80 and 443.
 
 `GITHUB_SECRET`: Required. From your registered application in GitHub.
 
+`GITHUB_USER`: Required. For ReviewNinja to comment on pull requests, it
+requires a GitHub account.
+
+`GITHUB_PASS`: Required. To access the GitHub account to comment on pull
+requests, ReviewNinja needs an API Token. It can be generated here
+https://github.com/settings/tokens/new. The Only scope required is
+`repo_public`.
+
 `GITHUB_PROTOCOL`: Valid options are "http" or "https". Defaults to "https".
 
 `GITHUB_HOST`: Defaults to "github.com". 
