@@ -51,6 +51,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     }
                     
                     res.set('Content-Type', 'image/svg+xml');
+                    res.set('Cache-Control', 'no-cache');
                     var tmp = fs.readFileSync("src/server/templates/badge.svg", 'utf-8');
                     var svg = ejs.render(tmp, {openIssues: issues.length, stars: stars.length});
                     res.send(svg);
