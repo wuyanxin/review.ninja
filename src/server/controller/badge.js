@@ -1,6 +1,7 @@
 var express = require('express'),
     ejs = require('ejs'),
-    fs = require('fs');
+    fs = require('fs'),
+    crypto = require('crypto');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Badge controller
@@ -49,9 +50,19 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     if(err) {
                         return res.send(err);
                     }
+
+                    var issuesLengthHash = crypto.createHash('md5').update(issues.length.toString(), 'utf8').digest('hex');
+                    var starsLengthHash = crypto.createHash('md5').update(stars.length.toString(), 'utf8').digest('hex');
+                    var hash = crypto.createHash('md5').update(issuesLengthHash + starsLengthHash, 'utf8').digest('hex');
+
+                    if(req.get('If-None-Match') === hash) {
+                        return res.status(304).send();
+                    }
                     
                     res.set('Content-Type', 'image/svg+xml');
                     res.set('Cache-Control', 'no-cache');
+                    res.set('Etag', hash);
+
                     var tmp = fs.readFileSync("src/server/templates/badge.svg", 'utf-8');
                     var svg = ejs.render(tmp, {openIssues: issues.length, stars: stars.length});
                     res.send(svg);
