@@ -191,8 +191,6 @@ https://github.com/settings/tokens/new. The Only scope required is
 > `MONGODB` is an alias for the environment variable `MONGOLAB_URI`, so both
 > are suitable to be used. (`MONGODB` will be favored if both are set)
 
-`GACODE`: Optional. If this is not set, Google Analytics will not be recorded.
-
 #### SMTP
 
 > If `SMTP_HOST` is set, then all `SMTP_*` variables must be set. If

@@ -87,10 +87,6 @@ module.exports = {
             __dirname + '/server/passports/*.js'
         ]
 
-    },
-
-    client: {
-        gacode: process.env.GACODE
     }
 
 };
