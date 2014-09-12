@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/reviewninja/review.ninja.svg?branch=master)](https://travis-ci.org/reviewninja/review.ninja) [![Dependency Status](https://david-dm.org/reviewninja/review.ninja.svg)](https://david-dm.org/reviewninja/review.ninja) [![devDependency Status](https://david-dm.org/reviewninja/review.ninja/dev-status.svg)](https://david-dm.org/reviewninja/review.ninja#info=devDependencies) [![Coverage Status](https://img.shields.io/coveralls/reviewninja/review.ninja.svg)](https://coveralls.io/r/reviewninja/review.ninja?branch=master) [![Code Climate](https://codeclimate.com/github/reviewninja/review.ninja.png)](https://codeclimate.com/github/reviewninja/review.ninja)[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+ReviewNinja will be offered as a free hosted solution in the coming weeks... sign up for our newsletter under  [Review.ninja](http://review.ninja) to be one of the first ones to know more.
+
 ReviewNinja - merge with confidence
 ============
 
