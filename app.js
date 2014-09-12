@@ -13,15 +13,9 @@ server = http.createServer(app).listen(config.server.localport).on('listening', 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 global.io = require('socket.io').listen(server).sockets;
+
 io.on('connection', function(socket) {
-
-    socket.on('join', function(room) {
-
-        // can only be in one room at a time
-        socket.rooms.forEach(function(room) {
-            socket.leave(room);
-        });
-
-        socket.join(room);
+    socket.emit('init', {
+        message: 'Welcome to ReviewNinja!'
     });
 });

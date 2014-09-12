@@ -31,7 +31,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
             if( $stateParams.user && $stateParams.repo &&
                 (toParams.user!==fromParams.user || toParams.repo!==fromParams.repo) ) {
 
-                socket.emit('join', $stateParams.user + '/' + $stateParams.repo);
+                socket.join($stateParams.user, $stateParams.repo);
             }
         });
 
