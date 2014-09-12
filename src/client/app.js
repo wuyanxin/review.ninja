@@ -1,12 +1,9 @@
 var module = angular.module('app',
     ['ninja.filters',
-     'ninja.config',
      'ui.utils',
      'ui.router',
      'ui.bootstrap',
-     'infinite-scroll',
-     'angulartics',
-     'angulartics.google.analytics']);
+     'infinite-scroll']);
 
 var filters = angular.module('ninja.filters', []);
 
@@ -22,8 +19,8 @@ angular.element(document).ready(function() {
 // States
 // *************************************************************
 
-module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$analyticsProvider',
-    function($stateProvider, $urlRouterProvider, $locationProvider, $analyticsProvider) {
+module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+    function($stateProvider, $urlRouterProvider, $locationProvider) {
 
         $stateProvider
 
@@ -181,20 +178,11 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 
         $locationProvider.html5Mode(true);
 
-        $analyticsProvider.withAutoBase(true); // Records full path
-
     }
 ])
-.run(['$config', '$rootScope', '$state', '$stateParams',
-    function($config, $rootScope, $state, $stateParams) {
-
+.run(['$rootScope', '$state', '$stateParams',
+    function($rootScope, $state, $stateParams) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
-
-        $config.get(function(data, status) {
-            if (data.gacode) {
-                ga('create', data.gacode, 'auto');
-            }
-        });
     }
 ]);
