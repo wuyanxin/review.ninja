@@ -13,10 +13,8 @@
 //
 // socket.emit('event-name', data);
 //
-module.factory('socket', ['$rootScope', '$RPC', function($rootScope, $RPC) {
-
+module.factory('socket', ['$rootScope', function($rootScope) {
     var socket = io.connect();
-
     return {
         on: function(eventName, callback) {
             socket.on(eventName, function () {
@@ -34,13 +32,6 @@ module.factory('socket', ['$rootScope', '$RPC', function($rootScope, $RPC) {
                         callback.apply(socket, args);
                     }
                 });
-            });
-        },
-        join: function(user, repo) {
-            $RPC.call('socket', 'join', {
-                id: socket.io.engine.id,
-                user: user,
-                repo: repo
             });
         }
     };

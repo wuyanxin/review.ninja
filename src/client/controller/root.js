@@ -2,8 +2,8 @@
 // Root Controller
 // *****************************************************
 
-module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', 'socket',
-    function($rootScope, $scope, $stateParams, $HUB, $RPC, socket) {
+module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC',
+    function($rootScope, $scope, $stateParams, $HUB, $RPC) {
 
         $rootScope.user = $HUB.call('user', 'get', {});
 
@@ -25,13 +25,6 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
                     user: $stateParams.user,
                     repo: $stateParams.repo
                 });
-            }
-
-            // change the websocket room
-            if( $stateParams.user && $stateParams.repo &&
-                (toParams.user!==fromParams.user || toParams.repo!==fromParams.repo) ) {
-
-                socket.join($stateParams.user, $stateParams.repo);
             }
         });
 
