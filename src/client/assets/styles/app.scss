@@ -57,7 +57,7 @@ $btn-default-color: $brand-primary;
 
 // wells
 $well-bg: $gray-lighter;
-$well-border: $gray-light;
+$well-border: transparent;
 
 // list group
 $list-group-hover-bg: $gray-light;
@@ -66,7 +66,7 @@ $list-group-border: transparent;
 // table
 $table-bg: $gray-lighter;
 $table-bg-hover: $gray-light;
-$table-cell-padding: 20px 10px;
+$table-cell-padding: 20px 25px;
 $table-border-color: transparent;
 
 // tabs
@@ -81,6 +81,7 @@ $navbar-default-bg: #333;
 $navbar-default-color: $gray;
 $navbar-default-link-color: $gray;
 $navbar-default-link-hover-color: $gray;
+$navbar-default-brand-hover-color: $gray;
 $navbar-default-link-active-color: $gray;
 $navbar-margin-bottom: 0;
 $nav-link-padding: 15px 25px;
@@ -90,8 +91,6 @@ $breadcrumb-bg: transparent;
 $breadcrumb-color: $brand-primary;
 $breadcrumb-active-color: $brand-primary;
 $breadcrumb-separator: ' ';
-$breadcrumb-padding-horizontal: 0;
-$breadcrumb-padding-vertical: 15px;
 
 // label
 $label-default-bg: $brand-info;
@@ -190,6 +189,10 @@ body {
   font-weight: 300;
 }
 
+h2 {
+  margin-top: 30px;
+}
+
 h3,
 h4 {
   font-weight: 200;
@@ -245,6 +248,14 @@ i.fa-link {
   cursor: pointer;
 }
 
+i.fa-times {
+  color: $gray;
+
+  &:hover {
+    color: $gray-darker;
+  }
+}
+
 .octicon {
   font-size: 16px;
 }
@@ -261,10 +272,6 @@ i.fa-link {
 
 small {
   vertical-align: middle;
-}
-
-ul.nav.navbar-nav.navbar-right {
-  font-size: 12px;
 }
 
 // Helper classes

@@ -6,7 +6,7 @@
       ng-repeat="issue in issues.value | filter:{state: $stateParams.state || 'open'} | in:$stateParams.issues.split(','):'number'" 
       ui-sref="repo.pull.issue.detail({ issue: issue.number })">
 
-    <td width="50px">
+    <td style="width:40px; padding-right:0;">
       <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
     </td>
     <td>
@@ -21,7 +21,7 @@
          tooltip-placement="bottom" >
       </i>
     </td>
-    <td class="text-right text-primary" style="padding-right:15px;">
+    <td class="text-right text-primary">
       <i class="fa fa-lg fa-comments"></i><br />
       {{ issue.comments }}
     </td>

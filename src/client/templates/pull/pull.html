@@ -9,8 +9,8 @@
           <li class="pull-right settings-icon"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
         </ol>
 
-        <div class="row" style="margin-bottom:20px;">
-          <div class="col-sm-1" style="padding-right:0;">
+        <div class="row" style="margin:30px 0;">
+          <div class="col-sm-1" style="padding:0;">
             <img class="img-responsive" style="margin-bottom: 12px" ng-src="{{ pull.user.avatar_url }}&s=100" />
           </div>
           <div class="col-sm-8">
@@ -18,7 +18,7 @@
             <p>{{ pull.body }}</p>
             <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-default">{{ pull.base.ref }}</span> from <span class="label label-default">{{ pull.head.label }}</span> <span moment="pull.created_at"></span></p>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-3" style="padding-right:0;">
             <merge-button pull="pull" merge="merge()" merging="(merging.loading || refreshing.loading)"></merge-button>
           </div>
         </div>
@@ -31,7 +31,7 @@
         <tabset>
           <tab heading="Diff">
 
-            <div class="well" style="margin-top:-4px;">
+            <div class="well" style="margin-top:-2px; border:1px solid #ececec;">
               <div class="row">
                 <div class="col-sm-8">
                   <p>

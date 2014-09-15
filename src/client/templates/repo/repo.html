@@ -52,7 +52,7 @@
           <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))">
             <td class="watched" ng-class="{active: pull.watched}"></td>
 
-            <td style="width:50px;">
+            <td style="width:50px; padding-right:0;">
               <img ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
             </td>
 

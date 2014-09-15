@@ -4,7 +4,7 @@
     width: 5px;
 
     &.active {
-      background-color: #d0eaea;
+      background-color: $brand-primary !important;
     }
   }
 }
