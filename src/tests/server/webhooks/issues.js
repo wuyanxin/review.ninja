@@ -1,5 +1,3 @@
-// require('trace.ninja');
-
 // var http = require('http');
 // var request = require('supertest');
 // var express = require('express');
