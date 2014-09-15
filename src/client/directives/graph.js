@@ -10,8 +10,8 @@ module.directive('graph', function() {
             baseSha: '=',
             headSha: '=',
             issueSha: '=',
-            issueNum: '=',
             activeSha: '=',
+            openIssue: '=',
             compare: '&'
         }
     };

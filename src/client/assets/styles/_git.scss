@@ -1,57 +1,17 @@
 .git {
   svg {
-    margin: -20px 0 0 60px;
+    margin: -16px 0 0 80px;
+    overflow: visible;
 
-    &.merge {
-      font-size: 14px;
+    .active {
+      fill: #d0eaea;
     }
 
-    &.branch {
-      font-size: 22px;
-    }
+    g.select:hover {
+      cursor: pointer;
 
-    path.git-base,
-    path.git-head {
-      stroke: $text-color;
-    }
-
-    polygon.git-graph-arrow {
-      fill: $text-color;
-    }
-
-    path.git-head {
-      fill: none;
-    }
-
-    .git-commit.exclamation {
-      fill: $brand-primary;
-
-      &.active {
-        fill: $brand-info;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    circle.git-commit {
-      fill: $brand-primary-muted;
-
-      &.active {
-        fill: $brand-primary;
-      }
-
-      &.base:hover,
-      &.issue:hover {
-        cursor: pointer;
-        fill: $brand-primary-hover;
-        filter: url('#dropshadow');
-      }
-
-      &.head:hover {
-        cursor: pointer;
-        filter: url('#dropshadow');
+      circle {
+        fill: #d0eaea;
       }
     }
   }
