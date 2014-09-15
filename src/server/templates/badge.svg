@@ -388,7 +388,7 @@
 		<text transform="matrix(1 0 0 1.2885 86.9375 60.8794)" fill="#3E9A94" font-family="'HelveticaNeue-Bold'" font-size="10.0889"><%= stars %></text>
 	</g>
 	<g clip-path="url(#SVGID_2_)">
-		<text transform="matrix(1 0 0 1.2885 92.5469 60.8794)" fill="#3E9A94" font-family="'HelveticaNeue'" font-size="10.0889"> ninja stars</text>
+		<text transform="matrix(1 0 0 1.2885 98.1562 60.8794)" fill="#3E9A94" font-family="'HelveticaNeue'" font-size="10.0889"> ninja stars</text>
 	</g>
 	<g clip-path="url(#SVGID_2_)">
 		<defs>
