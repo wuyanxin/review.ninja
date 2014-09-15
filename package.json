@@ -72,8 +72,7 @@
     "mocha": "^1.19.0",
     "should": "^4.0.4",
     "sinon": "^1.10.2",
-    "supertest": "0.13.0",
-    "trace.ninja": "git+https://git@github.com/dtornow/trace.ninja.git"
+    "supertest": "0.13.0"
   },
   "engines": {
     "node": "0.10.x"
