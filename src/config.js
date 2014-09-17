@@ -5,6 +5,9 @@
  * @overview Configuration Module
  */
 module.exports = {
+
+    terms: "https://gist.githubusercontent.com/review-ninja/2c7987ebf0a0a8944be4/raw/db32a38e93221362c10120d232168b886ab12488/gistfile1.txt",
+
     server: {
         github: {
             // optional
