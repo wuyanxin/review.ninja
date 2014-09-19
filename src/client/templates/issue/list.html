@@ -11,7 +11,7 @@
     </td>
     <td>
       <strong>#{{ issue.number }} {{ issue.title }}</strong><br />
-      <p ng-show="issue.body" style="word-break:break-all;">{{ issue.body | limitTo:250 }}</p>
+      <p ng-show="issue.body">{{ issue.body | limitTo:250 }}</p>
       <small>
         <span moment="issue.created_at"></span> &nbsp;
         <i class="fa fa-lg fa-link text-warning" 
