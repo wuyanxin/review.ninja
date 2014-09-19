@@ -59,11 +59,11 @@
 
                 <div class="col-sm-4 text-right">
                   <div class="btn-group">
-                    <button type="button" class="btn btn-default" ng-click="toggle()" style="padding:2px 12px 0px;">
+                    <button type="button" class="btn btn-default" ng-click="toggle()" style="padding:4px 12px 0px;">
                       <span class="icon-ninja-star text-primary" style="font-size:25px" ng-class="{muted: !star.value}"></span>
                     </button>
                     <div class="btn-group">
-                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" ng-disabled="!pull.stars.length" style="font-size:18px;">
+                      <button type="button" class="btn btn-primary dropdown-toggle stars" data-toggle="dropdown" ng-disabled="!pull.stars.length" style="font-size:18px;">
                         {{ pull.stars.length }}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
