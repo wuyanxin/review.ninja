@@ -8,3 +8,11 @@
     }
   }
 }
+
+.author {
+  color: $brand-primary !important;
+
+  &:hover {
+    color: $brand-primary-hover !important;
+  }
+}
