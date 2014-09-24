@@ -4,6 +4,7 @@ COPY . /app
 
 EXPOSE 5000
 
-RUN cd /app; npm install
+RUN npm install -g bower
+RUN cd /app; npm install; bower install
 
 CMD ["node", "/app/app.js"]
