@@ -1,3 +1,5 @@
+'use strict';
+
 // *****************************************************
 // API
 // *****************************************************
@@ -88,7 +90,7 @@ module.factory('$HUB', ['$RAW', '$log',
 
                     } : null;
                 }
-                
+
                 $log.debug('$HUB', args, res, res.error);
 
                 if (typeof call === 'function') {
@@ -123,7 +125,7 @@ module.factory('$HUBService', ['$q', '$HUB',
         var exec = function(type, o, f, d, c) {
             var deferred = $q.defer();
             $HUB[type](o, f, d, function(err, obj) {
-                
+
                 if (typeof c === 'function') {
                     c(err, obj);
                 }
@@ -163,7 +165,7 @@ module.factory('$RPCService', ['$q', '$RPC',
                     if (typeof c === 'function') {
                         c(err, obj);
                     }
-                
+
                     if(!err) {
                         deferred.resolve(obj);
                     }

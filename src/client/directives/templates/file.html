@@ -1,11 +1,11 @@
 <table class="code">
 	<tr ng-repeat="line in content track by $index"
-        ng-class="{ selected: selection[headRef(line)] || reference[headRef(line)] }">
+        ng-class="{ selected: selection[0].ref===headRef(line) || reference[headRef(line)] }">
 
         <td class="select">
             <i class="fa fa-circle text-warning" 
                ng-click="select(line)" 
-               ng-show="selection[headRef(line)]">
+               ng-show="selection[0].ref===headRef(line)">
             </i>
 
             <span class="octicon octicon-issue-opened text-warning" 

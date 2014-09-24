@@ -1,13 +1,11 @@
 var mongoose = require('mongoose');
-var withHelper = require('./with');
 
 var UserSchema = mongoose.Schema({
     uuid: Number,
     repos: Array,
-    token: String
+    token: String,
+    terms: String
 });
-
-UserSchema.plugin(withHelper);
 
 var User = mongoose.model('User', UserSchema);
 

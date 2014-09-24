@@ -1,13 +1,13 @@
 // *****************************************************
-// Repository Controller
+// Repo Controller
 //
-// tmpl: pull.html
+// tmpl: repo/repo.html
 // path: /:user/:repo
-// resolve: repo 
+// resolve: repo
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo',
-    function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo', 'Pull',
+    function($scope, $stateParams, $HUB, $RPC, $modal, repo, Pull) {
 
         // get the repo
         $scope.repo = repo;
@@ -27,9 +27,9 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = getDetails(pull);
+                    pull = Pull.issues(pull);
                     $scope.authors[pull.user.login] = true;
-                });  
+                });
             }
         });
 
@@ -41,43 +41,10 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = getDetails(pull);
+                    pull = Pull.issues(pull);
                     $scope.authors[pull.user.login] = true;
-                });   
+                });
             }
         });
-
-        //
-        // actions
-        //
-
-        var getDetails = function(pull) {
-
-            $HUB.call('issues', 'repoIssues', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                labels: 'review.ninja, pull-request-' + pull.number,
-                state: 'open',
-                per_page: 1
-            }, function(err, issues) {
-                if(!err) {
-                    pull.open_issue = issues.value.length ? issues.value[0] : null;
-                }
-            });
-
-            $HUB.call('issues', 'repoIssues', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                labels: 'review.ninja, pull-request-' + pull.number,
-                state: 'closed',
-                per_page: 1
-            }, function(err, issues) {
-                if(!err) {
-                    pull.closed_issue = issues.value.length ? issues.value[0] : null;
-                }
-            });
-
-            return pull;
-        };
     }
 ]);

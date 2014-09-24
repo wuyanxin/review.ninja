@@ -1,24 +1,23 @@
 var url = require('./url');
 var github = require('./github');
-var url = require('./url');
 var Star = require('mongoose').model('Star');
 
 module.exports = {
     update: function(args, done) {
 
-        Star.find({repo: args.repo_uuid, comm: args.sha}, function(err, stars) {
+        Star.find({repo: args.repo_uuid, sha: args.sha}, function(err, stars) {
 
             stars = stars || [];
 
             github.call({
-                obj: 'issues', 
-                fun: 'repoIssues', 
+                obj: 'issues',
+                fun: 'repoIssues',
                 arg: {
                     user: args.user,
                     repo: args.repo,
                     state: 'open',
                     labels: 'review.ninja, pull-request-' + args.number
-                }, 
+                },
                 token: args.token
             }, function(err, issues) {
 
@@ -38,9 +37,7 @@ module.exports = {
                         target_url: url.reviewPullRequest(args.user, args.repo, args.number)
                     },
                     token: args.token
-                }, function(err, res) {
-                    done(err, res);
-                });
+                }, done);
             });
         });
     }

@@ -1,11 +1,11 @@
 // models
-var Repo = require('mongoose').model('Repo');
 var User = require('mongoose').model('User');
 
 //services
-var github = require('../services/github');
 var url = require('../services/url');
+var github = require('../services/github');
 var notification = require('../services/notification');
+var pullRequest = require('../services/pullRequest');
 var status = require('../services/status');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -14,79 +14,83 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    Repo.with({
-        uuid: req.args.repository.id
-    }, function(err, repo) {
+    User.findOne({ _id: req.params.id }, function(err, user) {
 
-        if(err) {
-            return;
-        }
+      if(!user) {
+          return res.end();
+      }
 
-        if(repo.ninja) {
+      var args = {
+          user: req.args.repository.owner.login,
+          repo: req.args.repository.name,
+          repo_uuid: req.args.repository.id,
+          sha: req.args.pull_request.head.sha,
+          number: req.args.number,
+          token: user.token
+      };
 
-            var args = {
-                user: req.args.repository.owner.login,
-                repo: req.args.repository.name,
-                repo_uuid: req.args.repository.id,
-                sha: req.args.pull_request.head.sha,
-                number: req.args.number,
-                token: repo.token
-            };
+      var notification_args = {
+          user: req.args.repository.owner.login,
+          repo: req.args.repository.name,
+          number: req.args.number,
+          sender: req.args.sender,
+          url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
+      };
 
-            var notification_args = {
-                slug: req.args.repository.full_name,
-                number: req.args.number,
-                sender: req.args.sender,
-                review_url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
-            };
+      var actions = {
+          opened: function() {
 
-            var actions = {
-                opened: function() {
+              status.update(args);
 
-                    status.update(args, function(err, data) {});
+              notification.sendmail(
+                      'pull_request_opened',
+                      req.args.repository.owner.login,
+                      req.args.repository.name,
+                      req.args.repository.id,
+                      user.token,
+                      req.args.number,
+                      notification_args
+              );
 
-                    notification.sendmail('pull_request_opened',
-                                          req.args.repository.owner.login,
-                                          req.args.repository.name,
-                                          repo.uuid,
-                                          repo.token,
-                                          req.args.number,
-                                          notification_args);
+              pullRequest.badgeComment(
+                      req.args.repository.owner.login,
+                      req.args.repository.name,
+                      req.args.repository.id,
+                      req.args.number
+              );
+          },
+          synchronize: function() {
 
-                },
-                synchronize: function() {
+              status.update(args);
 
-                    status.update(args, function(err, data) {});
+              notification.sendmail(
+                      'pull_request_synchronized',
+                      req.args.repository.owner.login,
+                      req.args.repository.name,
+                      req.args.repository.id,
+                      user.token,
+                      req.args.number,
+                      notification_args
+              );
 
-                    notification.sendmail(
-                                          'pull_request_synchronized',
-                                          req.args.repository.owner.login,
-                                          req.args.repository.name,
-                                          repo.uuid,
-                                          repo.token,
-                                          req.args.number,
-                                          notification_args);
+              io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':synchronize', req.args.pull_request.head.sha);
+          },
+          closed: function() {
+              // a pull request you have been reviewing has closed
+              if(req.args.pull_request.merged) {
+                  io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':merged', req.args.number);
+              }
+          },
+          reopened: function() {
+              // a pull request you have reviewed has a been reopened
+              // send messages to responsible users?
+          }
+      };
 
-                },
-                closed: function() {
-                    // a pull request you have been reviewing has closed
+      if (actions[req.args.action]) {
+          actions[req.args.action]();
+      }
 
-                    if(req.args.pull_request.merged) {
-                        
-                        io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-'+req.args.number +':merged', req.args.pull_request.merged);
-                    }
-                },
-                reopened: function() {
-                    // a pull request you have reviewed has a been reopened
-                    // send messages to responsible users?
-                }
-            };
-
-            if (actions[req.args.action]) {
-                actions[req.args.action]();
-            }
-        }
+      res.end();
     });
-
-    res.end();
 };

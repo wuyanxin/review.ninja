@@ -27,18 +27,26 @@ module.exports = function() {
     return {
         socket: localSocket,
         baseUrl: baseUrl,
-        webhook: url.resolve(baseUrl, '/github/webhook'),
+        webhook: function(id) {
+            return url.resolve(baseUrl, '/github/webhook/' + id);
+        },
+        baseWebhook: url.resolve(baseUrl, '/github/webhook/'),
         githubBase: githubBase,
         githubApiBase: githubApiBase,
         githubCallback: url.resolve(baseUrl, '/auth/github/callback'),
         githubAuthorization: url.resolve(githubBase, '/login/oauth/authorize'),
         githubToken: url.resolve(githubBase, '/login/oauth/access_token'),
-        githubProfile: url.resolve(githubApiBase, config.server.github.enterprise ? '/api/v3/user' : '/user'),
+        githubProfile: function() {
+            return url.resolve(githubApiBase, config.server.github.enterprise ? '/api/v3/user' : '/user');
+        },
         githubFileReference: function(user, repo, fileReference) {
             return url.resolve(githubBase, '/' + user + '/' + repo + '/blob/' + fileReference);
         },
         reviewPullRequest: function(user, repo, number) {
             return url.resolve(baseUrl, '/' + user + '/' + repo + '/pull/' + number);
+        },
+        pullRequestBadge: function(repoId, pullNumber) {
+            return url.resolve(baseUrl, '/' + repoId + '/pull/' + pullNumber + '/badge');
         }
     };
 }();

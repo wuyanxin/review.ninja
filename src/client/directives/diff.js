@@ -25,8 +25,9 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
 
                 scope.expanded = false;
 
-                // To Do:
-                // fix this
+                //
+                // todo: clean up this code
+                //
 
                 scope.$watch('patch', function() {
 
@@ -40,7 +41,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
 
                             if(!err) {
 
-                                var file=[], chunks=[];
+                                var file = [], chunks = [];
                                 var index = 0;
 
                                 // find the chunks
@@ -48,9 +49,9 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
 
                                     if(scope.patch[index].chunk) {
 
-                                        var start=0, end=0, c=[];
+                                        var start = 0, end = 0, c = [];
 
-                                        while( ++index<scope.patch.length && !scope.patch[index].chunk ) {
+                                        while( ++index < scope.patch.length && !scope.patch[index].chunk ) {
 
                                             start = start ? start : scope.patch[index].head;
                                             end = scope.patch[index].head ? scope.patch[index].head : end;
@@ -69,7 +70,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                                 // insert the chunks
                                 while (index < res.value.content.length) {
 
-                                    if( chunks[0] && res.value.content[index].head===chunks[0].start ) {
+                                    if( chunks[0] && res.value.content[index].head === chunks[0].start ) {
 
                                         chunk = chunks.shift();
                                         file = file.concat( chunk.chunk );
@@ -89,7 +90,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
 
                 });
 
-                // 
+                //
                 // actions
                 //
 
@@ -105,15 +106,16 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                     if(line.head) {
 
                         var ref = scope.headRef(line);
+                        var cur = scope.selection[0] ? scope.selection[0].ref : null;
 
-                        if(scope.selection[ref]) {
-                            return delete scope.selection[ref];
-                        }
+                        scope.selection.length = 0;
 
-                        for(var sel in scope.selection) {
-                            delete scope.selection[sel];
+                        if(ref !== cur) {
+                            scope.selection.push({
+                                ref: ref,
+                                line: scope.path + '#L' + line.base
+                            });
                         }
-                        scope.selection[ref] = true;
                     }
                 };
 
@@ -122,13 +124,13 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                     var issues = [];
 
                     if(baseRefs) {
-                        for(var i=0; i<baseRefs.length; i++) {
+                        for(var i = 0; i < baseRefs.length; i++) {
                             issues.push(baseRefs[i].issue);
                         }
                     }
 
                     if(headRefs) {
-                        for(var j=0; j<headRefs.length; j++) {
+                        for(var j = 0; j < headRefs.length; j++) {
                             issues.push(headRefs[j].issue);
                         }
                     }

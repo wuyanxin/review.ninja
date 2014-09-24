@@ -1,17 +1,40 @@
+var url = require('./url');
+var github = require('./github');
+
 module.exports = {
     byLabels: function(labels) {
         var pull_request_number = null;
 
-        for(var i=0; i<labels.length; i++){
-            var reg = /pull-request-(\d*)?/;
-            var match = reg.exec(labels[i].name); 
+        labels.forEach(function(label) {
+            var regex = /pull-request-(\d*)?/;
+            var match = regex.exec(label.name);
 
             if (match) {
                 pull_request_number = match[1];
-                break;
             }
-        }   
+        });
+
         return pull_request_number;
+    },
+
+    badgeComment: function(user, repo, repoId, pullNumber) {
+        var badgeUrl = url.pullRequestBadge(repoId, pullNumber);
+        var pullUrl = url.reviewPullRequest(user, repo, pullNumber);
+
+        github.call({
+            obj: 'issues',
+            fun: 'createComment',
+            arg: {
+                user: user,
+                repo: repo,
+                number: pullNumber,
+                body: '[![ReviewNinja](' + badgeUrl + ')](' + pullUrl + ')'
+            },
+            basicAuth: {
+                user: config.server.github.user,
+                pass: config.server.github.pass
+            }
+        });
     },
 
     setWatched: function(pulls, settings) {
@@ -24,7 +47,9 @@ module.exports = {
     },
 
     isWatched: function(pull, settings) {
-        var watched = false;
+
+        // by default we are watching all branches
+        var watched = !settings.watched.length;
 
         settings.watched.forEach(function(watch) {
             // escape all regex symbols except '*'

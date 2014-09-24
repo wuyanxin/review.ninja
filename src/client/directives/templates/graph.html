@@ -1,56 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
 <svg version="1.1" 
-     xml:space="preserve" 
      xmlns="http://www.w3.org/2000/svg" 
      xmlns:xlink="http://www.w3.org/1999/xlink" 
-     enable-background="new 0 0 300 100" 
-     viewBox="0 0 300 100" 
      x="0px" y="0px"
-     width="200px">
+     width="81px" height="40.9px" 
+     viewBox="0 0 81 40.9" 
+     enable-background="new 0 0 81 40.9" 
+     xml:space="preserve">
 
-    <path class="git-base" stroke-width="11" stroke-miterlimit="10" d="M 41.1 16.1 L 232.6 16.1"/>
-
-    <polygon class="git-graph-arrow" points="224,4.9 250,16 224,27.4 "/>
-
-    <path class="git-head" 
-          stroke-width="11" 
+  <g>
+    <path fill="none" 
+          stroke="#666666" 
+          stroke-width="5" 
           stroke-miterlimit="10" 
-          d="M226.4,78.3c-112.1,0-133.6,1.3-152.8-12.4 C49.1,48.4,54,22.3,34,15.1"/>
+          d="M76.5,9.4l-73,0c0,19.8,9.8,27.8,30.1,27.8 c0.1,0,43.8,0,43.8,0" />
 
-    <filter id="dropshadow" height="130%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/> <!-- stdDeviation is how much to blur -->
-      <feMerge> 
-        <feMergeNode/> <!-- this contains the offset blurred image -->
-        <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
-      </feMerge>
-    </filter>
+    <polyline fill="none" 
+              stroke="#666666" 
+              stroke-width="5" 
+              stroke-linecap="round" 
+              stroke-miterlimit="10" 
+              points="69.6,15.9 76.5,9.4 69.7,3.5" />
+  </g>
 
-    <!-- the head commit circle -->
-    <circle class="git-commit head" 
-        cx="235.6" cy="78.4" r="13.7" 
-        popover="this is the latest commit on the pull request" 
-        popover-trigger="mouseenter" 
-        popover-append-to-body="true" 
-        popover-placement="bottom" />
+  <!-- the base commit -->
+  <g class="select" 
+     ng-click="compare({ base: baseSha, head: headSha })"
+     tooltip="Commit base"
+     tooltip-append-to-body="true" 
+     tooltip-placement="bottom">
+    <circle ng-class="{ active: activeSha===baseSha }"
+            fill="#ffffff" 
+            stroke="#3E9A94" 
+            stroke-width="3.6" 
+            stroke-miterlimit="3.6" 
+            cx="4" cy="9" r="9" />
+  </g>
 
-    <!-- the base commit circle -->
-    <circle class="git-commit base" 
-        cx="42.3" cy="16" r="13.7"
-        ng-class="{ active: activeSha===baseSha }" 
-        ng-click="compare({ base: baseSha })"  
-        popover="the pull request is based on this commit" 
-        popover-trigger="mouseenter" 
-        popover-append-to-body="true" 
-        popover-placement="bottom" />
+  <!-- the issue commit -->
+  <g class="select"
+     ng-show="issueSha && issueSha!==baseSha && issueSha!==headSha"
+     ng-click="compare({ base: issueSha, head: headSha })"
+     tooltip="When issue was created"
+     tooltip-append-to-body="true" 
+     tooltip-placement="bottom" >
+    <circle ng-class="{ active: activeSha===issueSha }" 
+            fill="#ffffff" 
+            stroke="#3E9A94" 
+            stroke-width="3.6" 
+            stroke-miterlimit="3.6" 
+            cx="31" cy="37" r="9" />
+    <g>
+      <rect x="29.5" y="31.5" fill="#3E9A94" width="3" height="7"/>
+      <rect x="29.5" y="39.5" fill="#3E9A94" width="3" height="3"/>
+    </g>
+  </g>
 
-    <!-- the issue commit cirlce -->
-    <circle class="git-commit issue" 
-        cx="136.9" cy="78.4" r="13.7" 
-        ng-show="issueSha && issueSha!==baseSha && issueSha!==headSha" 
-        ng-class="{ active: activeSha===issueSha }" 
-        ng-click="compare({ base: issueSha })" 
-        popover="this is where this issue was created" 
-        popover-trigger="mouseenter" 
-        popover-append-to-body="true" 
-        popover-placement="bottom" />
+  <!-- the head commit -->
+  <g tooltip="Latest commit"
+     tooltip-append-to-body="true" 
+     tooltip-placement="bottom">
+    <circle fill="#d0eaea" 
+            stroke="#3E9A94" 
+            stroke-width="3.6" 
+            stroke-miterlimit="3.6" 
+            cx="70" cy="37" r="9" />
+    <g ng-show="openIssue">
+      <rect x="68.5" y="31.5" fill="#3E9A94" width="3" height="7"/>
+      <rect x="68.5" y="39.5" fill="#3E9A94" width="3" height="3"/>
+    </g>
+  </g>
+
 </svg>

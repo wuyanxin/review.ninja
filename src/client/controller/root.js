@@ -2,7 +2,7 @@
 // Root Controller
 // *****************************************************
 
-module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', 
+module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC',
     function($rootScope, $scope, $stateParams, $HUB, $RPC) {
 
         $rootScope.user = $HUB.call('user', 'get', {});
@@ -17,8 +17,11 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
                 $scope.hook = {};
             }
 
-            if($stateParams.user && $stateParams.repo && toParams.user!==fromParams.user) {
-                $scope.hook = $RPC.call('repo', 'getHook', {
+            if( $stateParams.user && $stateParams.repo &&
+                $scope.repo && $scope.repo.permissions.admin &&
+                toParams.user !== fromParams.user ) {
+
+                $scope.hook = $RPC.call('webhook', 'get', {
                     user: $stateParams.user,
                     repo: $stateParams.repo
                 });
@@ -26,9 +29,10 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
         });
 
         $scope.createWebhook = function() {
-            $scope.creating = $RPC.call('repo', 'createHook', {
+            $scope.creating = $RPC.call('webhook', 'create', {
                 user: $stateParams.user,
-                repo: $stateParams.repo
+                repo: $stateParams.repo,
+                user_uuid: $rootScope.user.value.id
             }, function(err, hook) {
                 if(!err) {
                     $scope.hook = hook;
@@ -36,6 +40,5 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
                 }
             });
         };
-
     }
 ]);

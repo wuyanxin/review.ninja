@@ -1,0 +1,60 @@
+<div class="panel panel-default inverse">
+
+    <div class="panel-heading">
+      Issues
+      <span class="fa-stack" ng-click="show=true">
+        <i class="fa fa-circle fa-lg fa-stack-1x text-primary"></i>
+        <i class="fa fa-plus fa-stack-1x"></i>
+      </span>
+      <div class="pull-right">
+        <a ui-sref="repo.pull.issue.master({state:'open', issues:null})" 
+           class="btn btn-link inverse" ng-click="type='open'" 
+           ng-class="{active:($stateParams.state !== 'closed')}">
+          <span class="octicon octicon-issue-opened"></span> Open
+        </a>
+        <a ui-sref="repo.pull.issue.master({state:'closed', issues:null})" 
+           class="btn btn-link inverse" ng-click="type='closed'" 
+           ng-class="{active:$stateParams.state === 'closed'}">
+          <span class="octicon octicon-issue-closed"></span> Closed
+        </a>
+      </div>
+    </div>
+
+    <div class="panel-body" ng-show="show">
+        <table style="width:100%;">
+          <tr>
+            <td style="width:48px; vertical-align:top; padding-right:10px;">
+              <img ng-src="{{ user.value.avatar_url }}&s=48" width="48" />
+            </td>
+            <td>
+              <form role="form" ng-submit="createIssue()">
+                <div class="form-group">
+                  <input type="text" ng-model="title" class="form-control" placeholder="Title">
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" 
+                            ng-model="description" 
+                            rows="3" 
+                            placeholder="Description {{ !selection[0] ? '- to link this issue to a line of code, click on a line number' : '' }}">
+                  </textarea>
+                </div>
+                <div class="pull-right">
+                  <i class="fa fa-lg fa-link text-warning" 
+                     ng-show="selection[0] && !creating.loading"
+                     tooltip="{{ selection[0].line }}"
+                     tooltip-placement="bottom" 
+                     style="margin-right:10px;">
+                  </i>
+                  <i class="fa fa-lg fa-spinner fa-spin" ng-show="creating.loading" style="margin-right:10px;"></i>
+                  <button type="button" class="btn btn-info" ng-click="show=false">Cancel</button>
+                  <button type="submit" class="btn btn-primary" ng-disabled="!title">Submit</button>
+                </div>
+                <div style="clear:both;"></div>
+              </form>
+            </td>
+          </tr>
+        </table>
+    </div>
+</div>
+
+<section class="issues" ui-view></section>

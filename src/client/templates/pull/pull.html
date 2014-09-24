@@ -1,0 +1,126 @@
+
+<div class="row scaffold">
+  <div class="col-sm-9 pull">
+    <div class="row">
+      <div class="col-sm-12">
+
+        <ol class="breadcrumb">
+          <li><a ui-sref="repo.master()">{{ repo.owner.login }} / {{ repo.name }}</a></li>
+          <li class="pull-right settings-icon"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
+        </ol>
+
+        <div class="row" style="margin:30px 0;">
+          <div class="col-sm-1" style="padding:0;">
+            <img class="img-responsive" style="margin-bottom: 12px" ng-src="{{ pull.user.avatar_url }}&s=100" />
+          </div>
+          <div class="col-sm-8">
+            <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }}</h2>
+            <p>{{ pull.body }}</p>
+            <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-default">{{ pull.base.ref }}</span> from <span class="label label-default">{{ pull.head.label }}</span> <span moment="pull.created_at"></span></p>
+          </div>
+          <div class="col-sm-3" style="padding-right:0;">
+            <merge-button pull="pull" merge="merge()" merging="(merging.loading || refreshing.loading)"></merge-button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <tabset>
+          <tab heading="Diffs">
+
+            <div class="well" style="margin-top:-2px; border:1px solid #ececec;">
+              <div class="row">
+                <div class="col-sm-8">
+                  <p>
+                    <span class="octicon octicon-diff"></span> 
+                    Showing {{ pull.changed_files | pluralize:'changed file' }} with 
+                    <strong>{{ pull.additions | pluralize:'addition' }}</strong> and 
+                    <strong>{{ pull.deletions | pluralize:'deletion' }}</strong>
+                  </p>
+
+                  <p ng-show="issue"><small>Comparing {{ pull.base.sha===base ? 'base' : 'issue' }} commit to head commit.</small></p>
+
+                  <strong>Compare:</strong>
+
+                  <div class="clearfix"></div>
+                  <graph class="git" 
+                         base-sha="pull.base.sha" 
+                         head-sha="head" 
+                         issue-sha="issue.sha"
+                         active-sha="base" 
+                         open-issue="pull.open_issue"
+                         compare="compComm(base, head)">
+                  </graph>
+                  <div class="clearfix"></div>
+                </div>
+
+                <div class="col-sm-4 text-right">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-click="toggle()" style="padding:4px 12px 0px;">
+                      <span class="icon-ninja-star text-primary" style="font-size:25px" ng-class="{muted: !star.value}"></span>
+                    </button>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary dropdown-toggle stars" data-toggle="dropdown" ng-disabled="!pull.stars.length" style="font-size:18px;">
+                        {{ pull.stars.length }}
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
+                        <li><a href="">You have {{ pull.stars.length | pluralize:'ninja star' }}!</a></li>
+                        <li class="divider"></li>
+                        <li ng-repeat="star in pull.stars | orderBy:'-created_at'" class="star-dropdown-item">
+                          <a href="#">
+                            <table>
+                              <tr>
+                                <td><img ng-src="{{ star.user.value.avatar_url }}&s=56" width="56px" style="margin-right:16px;" /></td>
+                                <td>
+                                  <strong><a ng-href="{{ star.user.value.html_url }}" target="_blank">{{ star.name }}</a></strong><br />
+                                  ninja starred this<br />
+                                  <small moment="star.created_at"></small>
+                                </td>
+                              </tr>
+                            </table>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <diff ng-repeat="file in files.value" 
+                  path="file.filename" 
+                  patch="file.patch" 
+                  status="file.status" 
+                  file-sha="file.sha"
+                  base-sha="base"
+                  head-sha="head" 
+                  selection="selection"
+                  reference="reference">
+            </diff>
+
+          </tab>
+
+          <tab heading="Files">
+            <browser tree="tree.value" 
+                     head-sha="head" 
+                     selection="selection"
+                     reference="reference">
+            </browser>
+          </tab>
+
+        </tabset>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3 hidden-xs sidebar">
+    <div ui-scrollfix="+52">
+      <section ui-view></section>
+    </div>
+  </div>
+  
+</div>

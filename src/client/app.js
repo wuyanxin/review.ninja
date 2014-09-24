@@ -1,17 +1,14 @@
-var module = angular.module('app', 
-    ['ninja.filters', 
-     'ninja.config',
+var module = angular.module('app',
+    ['ninja.filters',
      'ui.utils',
-     'ui.router', 
+     'ui.router',
      'ui.bootstrap',
-     'infinite-scroll',
-     'angulartics', 
-     'angulartics.google.analytics']);
+     'infinite-scroll']);
 
 var filters = angular.module('ninja.filters', []);
 
 // *************************************************************
-// Delay start 
+// Delay start
 // *************************************************************
 
 angular.element(document).ready(function() {
@@ -22,13 +19,13 @@ angular.element(document).ready(function() {
 // States
 // *************************************************************
 
-module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$analyticsProvider',
-    function($stateProvider, $urlRouterProvider, $locationProvider, $analyticsProvider) {
+module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+    function($stateProvider, $urlRouterProvider, $locationProvider) {
 
         $stateProvider
 
-            // 
-            // Home state 
+            //
+            // Home state
             //
             .state('home', {
                 url: '/',
@@ -42,7 +39,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             .state('repo', {
                 abstract: true,
                 url: '/:user/:repo',
-                templateUrl: '/templates/repo.html',
+                template: '<section ui-view></section>',
                 resolve: {
                     repo: ['$rootScope', '$stateParams', '$HUBService',
                         function($rootScope, $stateParams, $HUBService) {
@@ -60,11 +57,11 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo master state
+            // Repo master state (list of pull requests)
             //
-            .state('repo.list', {
+            .state('repo.master', {
                 url: '',
-                templateUrl: '/templates/list.html',
+                templateUrl: '/templates/repo/repo.html',
                 controller: 'RepoCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -74,12 +71,26 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo detail state (pull request list)
+            // Repo settings state
+            //
+            .state('repo.settings', {
+                url: '/settings',
+                templateUrl: '/templates/repo/settings.html',
+                controller: 'SettingsCtrl',
+                resolve: {
+                    repo: ['repo', function(repo) {
+                        return repo; // inherited from parent state
+                    }]
+                }
+            })
+
+            //
+            // Pull request state (abstract)
             //
             .state('repo.pull', {
                 abstract: true,
                 url: '/pull/:number',
-                templateUrl: '/templates/pull.html',
+                templateUrl: '/templates/pull/pull.html',
                 controller: 'PullCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -98,34 +109,24 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo issue state (abstract)
+            // Pull request issues state (abstract)
             //
             .state('repo.pull.issue', {
                 abstract: true,
-                templateUrl: '/templates/issue.html',
-            })
-
-            //
-            // Repo issue master state
-            //
-            .state('repo.pull.issue.master', {
-                url: '?state&issues',
-                templateUrl: '/templates/pull/list.html',
-                controller: 'PullListCtrl',
+                url: '?state',
+                templateUrl: '/templates/pull/sidebar.html',
+                controller: 'SidebarCtrl',
                 resolve: {
                     issues: ['$HUBService', '$stateParams', 'Issue',
                         function($HUBService, $stateParams, Issue) {
-
-                            var state = ($stateParams.state==='open' || $stateParams.state==='closed') ? $stateParams.state : 'open';
-
                             return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
-                                labels: 'review.ninja, pull-request-' + $stateParams.number,
-                                state: state
-                            }, function(err, res) {
+                                state: $stateParams.state || 'open',
+                                labels: 'review.ninja, pull-request-' + $stateParams.number
+                            }, function(err, issues) {
                                 if(!err) {
-                                    res.value.forEach(function(issue) {
+                                    issues.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
                                 }
@@ -136,37 +137,40 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
             })
 
             //
-            // Repo issue detail state
+            // Pull request issues state (list of issues)
             //
-            .state('repo.pull.issue.detail', {
-                url: '/:issue',
-                templateUrl: '/templates/pull/issue.html',
-                controller: 'PullIssueCtrl',
+            .state('repo.pull.issue.master', {
+                url: '?issues',
+                templateUrl: '/templates/issue/list.html',
+                controller: 'IssueListCtrl',
                 resolve: {
-                    issue: ['$stateParams', '$HUBService', 'Issue',
-                        function($stateParams, $HUBService, Issue) {
-                            return $HUBService.call('issues', 'getRepoIssue', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                number: $stateParams.issue
-                            }, function(err, issue) {
-                                if(!err) {
-                                    issue.value = Issue.parse(issue.value);
-                                }
-                            });
-                        }
-                    ]
+                    issues: ['issues', function(issues) {
+                        return issues;
+                    }]
                 }
             })
 
-            .state('repo.settings', {
-                url: '/settings',
-                templateUrl: '/templates/settings.html',
-                controller: 'SettingsCtrl',
+            //
+            // Pull request issue state
+            //
+            .state('repo.pull.issue.detail', {
+                url: '/:issue',
+                templateUrl: '/templates/issue/detail.html',
+                controller: 'IssueDetailCtrl',
                 resolve: {
-                    repo: ['repo', function(repo) {
-                        return repo; // inherited from parent state
-                    }]
+                    issue: ['$stateParams', 'issues',
+                        function($stateParams, issues) {
+
+                            var selected;
+
+                            issues.value.forEach(function(issue) {
+                                if(issue.number === parseInt($stateParams.issue)) {
+                                    selected = issue;
+                                }
+                            });
+                            return selected;
+                        }
+                    ]
                 }
             });
 
@@ -174,20 +178,11 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$an
 
         $locationProvider.html5Mode(true);
 
-        $analyticsProvider.withAutoBase(true); // Records full path
-
     }
 ])
-.run(['$config', '$rootScope', '$state', '$stateParams',
-    function($config, $rootScope, $state, $stateParams) {
-
+.run(['$rootScope', '$state', '$stateParams',
+    function($rootScope, $state, $stateParams) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
-
-        $config.get(function(data, status) {
-            if (data.gacode) {
-                ga('create', data.gacode, 'auto');
-            }
-        });
     }
 ]);

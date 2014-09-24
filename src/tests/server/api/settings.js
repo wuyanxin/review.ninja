@@ -1,5 +1,3 @@
-require('trace.ninja');
-
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
@@ -15,7 +13,7 @@ var settings = require('../../../server/api/settings');
 
 describe('settings:get', function(done){
     it('should return the settings object if is exists', function(done) {
-        var settingsStub = sinon.stub(Settings, 'with', function(args, done) {
+        var settingsStub = sinon.stub(Settings, 'findOne', function(args, done) {
             done(null, {settings: 'object'});
         });
 
@@ -29,18 +27,14 @@ describe('settings:get', function(done){
             settingsStub.restore();
             done();
         });
-    }); 
+    });
 
     it('should create a new settings object if it does not already exists', function(done) {
-        var settingsStub = sinon.stub(Settings, 'with', function() {
-            if(arguments.length == 2) {
-                // done is the second argument
-                arguments[1](null, null);
-            }
-            if(arguments.length == 3) {
-                // done is the third argument
-                arguments[2](null, {settings: 'object'});
-            }
+        var settingsFindOneStub = sinon.stub(Settings, 'findOne', function(args, done) {
+            done(null, null);
+        });
+        var settingsCreateStub = sinon.stub(Settings, 'create', function(args, done) {
+            done(null, {settings: 'object'});
         });
 
         var req = {
@@ -50,15 +44,16 @@ describe('settings:get', function(done){
 
         settings.get(req, function(err, res) {
             assert.deepEqual(res, {settings: 'object'});
-            settingsStub.restore();
+            settingsFindOneStub.restore();
+            settingsCreateStub.restore();
             done();
         });
-    }); 
+    });
 });
 
 describe('settings:setWatched', function(done) {
     it('should uniquify the watched list and only watchlist should be set', function(done) {
-        var settingsStub = sinon.stub(Settings, 'with', function(key, args, done) {
+        var settingsStub = sinon.stub(Settings, 'findOneAndUpdate', function(key, args, options, done) {
             assert.equal(args.watched.length, 2);
             assert.deepEqual(args, {watched: ['test', 'test1']});
             done();
@@ -76,12 +71,12 @@ describe('settings:setWatched', function(done) {
             settingsStub.restore();
             done();
         });
-    }); 
+    });
 });
 
 describe('settings:setNotifications', function(done) {
     it('should only set the notifications even if other args are set', function(done) {
-        var settingsStub = sinon.stub(Settings, 'with', function(key, args, done) {
+        var settingsStub = sinon.stub(Settings, 'findOneAndUpdate', function(key, args, options, done) {
             assert.deepEqual(args, {notifications: {pull_request: true}});
             done();
         });

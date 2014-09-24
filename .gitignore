@@ -11,3 +11,4 @@ coverage
 src/client/assets/styles/app.css
 src/client/assets/styles/app.css.map
 .sass-cache
+npm-shrinkwrap.json

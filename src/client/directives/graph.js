@@ -11,6 +11,7 @@ module.directive('graph', function() {
             headSha: '=',
             issueSha: '=',
             activeSha: '=',
+            openIssue: '=',
             compare: '&'
         }
     };

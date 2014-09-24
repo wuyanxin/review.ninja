@@ -20,12 +20,12 @@
             		ng-class="{ addition: line.add, 
                         		deletion: line.del, 
                         		chunk: line.chunk, 
-                        		selected: selection[headRef(line)] || reference[baseRef(line)] || reference[headRef(line)] }">
+                        		selected: selection[0].ref===headRef(line) || reference[baseRef(line)] || reference[headRef(line)] }">
 
 					<td class="select">
 						<i class="fa fa-circle text-warning" 
 						   ng-click="select(line)" 
-						   ng-show="selection[headRef(line)]">
+						   ng-show="selection[0].ref===headRef(line)">
 						</i>
 
 						<span class="octicon octicon-issue-opened text-warning" 

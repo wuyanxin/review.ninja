@@ -1,0 +1,39 @@
+
+<button type="button" 
+        class="btn btn-block" 
+        ng-class="{
+          'btn-primary': !pull.merged && pull.stars.length && !pull.open_issue,
+          'btn-warning': !pull.merged && !pull.stars.length && !pull.open_issue,
+          'btn-danger': !pull.merged && pull.open_issue,
+          'btn-merged': pull.merged
+        }"
+        ng-disabled="!pull.mergeable" 
+        ng-click="merge()">
+
+  <span class="octicon octicon-git-merge"></span> 
+  <span ng-show="!pull.merged && pull.open_issue">YOLO</span>
+  <span ng-show="!pull.merged && !pull.open_issue">Merge pull request</span>
+  <span ng-show="pull.merged">Merged</span>
+  <i class="fa fa-spinner fa-spin" ng-show="merging"></i>
+</button>
+
+<div ng-show="!pull.merged && pull.stars.length && !pull.open_issue" class="merge-message text-primary">
+  Looking good<br />
+  <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
+</div>
+
+<div ng-show="!pull.merged && !pull.stars.length && !pull.open_issue" class="merge-message text-warning">
+  Pending<br />
+  <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
+</div>
+
+<div ng-show="!pull.merged && pull.open_issue" class="merge-message text-danger">
+  Not looking so good<br />
+  <span class="text-body">open issue(s)</span>
+</div>
+
+<div ng-show="pull.merged" class="merge-message text-merged">
+  <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
+  <span class="text-body" ng-show="pull.open_issue"><br />open issue(s)</span>
+  <span class="text-body" ng-show="pull.closed_issue"><br />closed issue(s)</span>
+</div>

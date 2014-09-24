@@ -1,7 +1,7 @@
 // *****************************************************
 // Pluralize filter
 //
-// examples: 
+// examples:
 // {{ 1 | pluralize:'guy' }} -> 1 guy
 // {{ 3 | pluralize:'guy' }} -> 3 guys
 // {{ 1 | pluralize:'person':'people' }} -> 1 person

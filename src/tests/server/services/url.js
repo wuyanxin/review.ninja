@@ -1,5 +1,3 @@
-require('trace.ninja');
-
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
@@ -38,6 +36,21 @@ describe('url:githubApiBase', function(done) {
     });
 });
 
+describe('url:githubProfile', function(done) {
+    it('should by default be /user', function(done) {
+        assert.equal(url.githubProfile(), 'https://api.github.com/user');
+        done();
+    });
+});
+
+describe('url:githubProfile', function(done) {
+    it('should be /api/v3/user in enterprise mode', function(done) {
+        config.server.github.enterprise = true;
+        assert.equal(url.githubProfile(), 'https://api.github.com/api/v3/user');
+        done();
+    });
+});
+
 describe('url:githubFileReference', function(done) {
     it('should by default be https://api.github.com/user/repo/blob/fileref', function(done) {
         assert.equal(url.githubFileReference('user', 'repo', 'fileref'),
@@ -50,6 +63,14 @@ describe('url:reviewPullRequest', function(done) {
     it('should by default be https://review.ninja/user/repo/pull/1', function(done) {
         assert.equal(url.reviewPullRequest('user', 'repo', 1),
                     'https://review.ninja/user/repo/pull/1');
+        done();
+    });
+});
+
+describe('url:pullRequestBadge', function(done) {
+    it('should by default be https://review.ninja/:repoId/pull/:number/badge', function(done) {
+        assert.equal(url.pullRequestBadge(123, 456),
+                    'https://review.ninja/123/pull/456/badge');
         done();
     });
 });

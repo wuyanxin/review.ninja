@@ -5,9 +5,10 @@ var glob = require('glob');
 var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
+var sass = require('node-sass');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Load configuration 
+// Load configuration
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 global.config = require('./../config');
@@ -20,6 +21,7 @@ var app = express();
 var api = {};
 var webhooks = {};
 
+app.use(require('x-frame-options')());
 app.use(require('body-parser').json());
 app.use(require('cookie-parser')());
 app.use(require('cookie-session')({
@@ -41,29 +43,35 @@ async.series([
     function(callback) {
         console.log('checking configs'.bold);
 
-        if(config.server.http.protocol != 'http' && config.server.http.protocol != 'https') {
-            throw 'PROTOCOL must be "http" or "https"';
+        if(config.server.http.protocol !== 'http' && config.server.http.protocol !== 'https') {
+            throw new Error('PROTOCOL must be "http" or "https"');
         }
 
-        if(config.server.github.protocol != 'http' && config.server.github.protocol != 'https') {
-            throw 'GITHUB_PROTOCOL must be "http" or "https"';
+        if(config.server.github.protocol !== 'http' && config.server.github.protocol !== 'https') {
+            throw new Error('GITHUB_PROTOCOL must be "http" or "https"');
         }
 
         console.log('✓ '.bold.green + 'configs seem ok');
 
         var url = require('./services/url');
 
-        console.log('Host:       ' + url.baseUrl);
-        console.log('GitHub:     ' + url.githubBase);
-        console.log('GitHub-Api: ' + url.githubApiBase);
+        console.log('Host:        ' + url.baseUrl);
+        console.log('GitHub:      ' + url.githubBase);
+        console.log('GitHub-Api:  ' + url.githubApiBase);
         callback();
     },
 
     function(callback) {
-        
+
         console.log('bootstrap static files'.bold);
 
         config.server.static.forEach(function(p) {
+            app.use(sass.middleware({
+                src: p,
+                dest: p,
+                outputStyle: 'compressed',
+                force: config.server.always_recompile_sass
+            }));
             app.use(express.static(p));
         });
         callback();
@@ -218,7 +226,7 @@ app.all('/api/:obj/:fun', function(req, res) {
 // Handle webhook calls
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.all('/github/webhook', function(req, res) {
+app.all('/github/webhook/:id', function(req, res) {
     var event = req.headers['x-github-event'];
     try {
         if (!webhooks[event]) {

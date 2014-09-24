@@ -8,7 +8,6 @@ module.directive('file', ['$state', function($state) {
             templateUrl: '/directives/templates/file.html',
             scope: {
                 path: '=',
-                update: '&',
                 content: '=',
                 headSha: '=',
                 selection: '=',
@@ -16,7 +15,7 @@ module.directive('file', ['$state', function($state) {
             },
             link: function(scope, elem, attrs) {
 
-                // 
+                //
                 // actions
                 //
 
@@ -28,15 +27,16 @@ module.directive('file', ['$state', function($state) {
                     if(line.head) {
 
                         var ref = scope.headRef(line);
+                        var cur = scope.selection[0] ? scope.selection[0].ref : null;
 
-                        if(scope.selection[ref]) {
-                            return delete scope.selection[ref];
-                        }
+                        scope.selection.length = 0;
 
-                        for(var sel in scope.selection) {
-                            delete scope.selection[sel];
+                        if(ref !== cur) {
+                            scope.selection.push({
+                                ref: ref,
+                                line: scope.path + '#L' + line.base
+                            });
                         }
-                        scope.selection[ref] = true;
                     }
                 };
 
@@ -45,7 +45,7 @@ module.directive('file', ['$state', function($state) {
                     var issues = [];
 
                     if(headRefs) {
-                        for(var i=0; i<headRefs.length; i++) {
+                        for(var i = 0; i < headRefs.length; i++) {
                             issues.push(headRefs[i].issue);
                         }
                     }

@@ -1,0 +1,32 @@
+<table class="table table-hover"
+       infinite-scroll="issues.getMore()"
+       infinite-scroll-disabled="$stateParams.issues ? true: issues.loading">
+
+  <tr class="select" 
+      ng-repeat="issue in issues.value | filter:{state: $stateParams.state || 'open'} | in:$stateParams.issues.split(','):'number'" 
+      ui-sref="repo.pull.issue.detail({ issue: issue.number })">
+
+    <td style="width:40px; padding-right:0;">
+      <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
+    </td>
+    <td>
+      <strong>#{{ issue.number }} {{ issue.title }}</strong><br />
+      <p ng-show="issue.body">{{ issue.body | limitTo:250 }}</p>
+      <small>
+        <span moment="issue.created_at"></span> &nbsp;
+        <i class="fa fa-lg fa-link text-warning" 
+           ng-show="issue.ref"
+           tooltip="{{ issue.ref }}"
+           tooltip-placement="bottom" >
+        </i> 
+      </small>
+    </td>
+    <td class="text-right text-primary">
+      <i class="fa fa-lg fa-comments"></i><br />
+      {{ issue.comments }}
+    </td>
+  </tr>
+
+</table>
+
+<i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="issues.loading"></i>

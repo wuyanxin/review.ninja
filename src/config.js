@@ -5,6 +5,9 @@
  * @overview Configuration Module
  */
 module.exports = {
+
+    terms: process.env.TERMS_URL,
+
     server: {
         github: {
             // optional
@@ -18,11 +21,17 @@ module.exports = {
             client: process.env.GITHUB_CLIENT,
             secret: process.env.GITHUB_SECRET,
 
+            // required
+            user: process.env.GITHUB_USER,
+            pass: process.env.GITHUB_PASS,
+
             // review.ninja specific
-            scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org'],
+            scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org']
         },
 
         localport: process.env.PORT || 5000,
+
+        always_recompile_sass: process.env.NODE_ENV === 'production' ? false : true,
 
         http: {
             protocol: process.env.PROTOCOL || 'https',
@@ -38,8 +47,8 @@ module.exports = {
         smtp: {
             enabled: !!process.env.SMTP_HOST,
             host: process.env.SMTP_HOST,
-            secure: (!!process.env.SMTP_SSL && process.env.SMTP_SSL == 'true'),
-            port: process.env.SMTP_PORT,
+            secure: (!!process.env.SMTP_SSL && process.env.SMTP_SSL === 'true'),
+            port: process.env.SMTP_PORT || 465,
             auth: {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS
@@ -48,10 +57,8 @@ module.exports = {
         },
 
         mongodb: {
-            uri: process.env.MONGODB
+            uri: process.env.MONGODB || process.env.MONGOLAB_URI
         },
-
-        marketingPage: 'http://get.review.ninja',
 
         static: [
             __dirname + '/bower',
@@ -72,7 +79,7 @@ module.exports = {
 
         controller: [
             __dirname + '/server/controller/!(default).js',
-            __dirname + '/server/controller/default.js',
+            __dirname + '/server/controller/default.js'
         ],
 
         middleware: [
@@ -83,10 +90,6 @@ module.exports = {
             __dirname + '/server/passports/*.js'
         ]
 
-    },
-
-    client: {
-        gacode: process.env.GACODE
     }
 
 };

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var withHelper = require('./with');
 
 var SettingsSchema = mongoose.Schema({
     user: Number,
@@ -11,8 +10,6 @@ var SettingsSchema = mongoose.Schema({
     },
     watched: [String]
 });
-
-SettingsSchema.plugin(withHelper);
 
 var Settings = mongoose.model('Settings', SettingsSchema);
 

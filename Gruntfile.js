@@ -4,33 +4,20 @@ module.exports = function(grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
-        sass: {
-            dist: {
-                files: {
-                    'src/client/assets/styles/app.css' : 'src/client/assets/styles/app.css.scss'
-                }
-            }
-        },
-
-        watch: {
-            css: {
-                files: 'src/client/assets/styles/*.scss',
-                tasks: ['sass']
-            }
-        },
-
-        concurrent: {
-            dev: {
-                tasks: ['nodemon', 'watch'],
+        mocha_istanbul: {
+            coverage: {
+                src: 'src/tests/server',
                 options: {
-                    logConcurrentOutput: true
+                    coverage: true,
+                    mask: '**/*.js',
+                    coverageFolder: 'output/coverage'
                 }
             }
         },
 
-        nodemon: {
-            debug: {
-                script: 'app.js'
+        coveralls: {
+            mocha: {
+                src: 'output/coverage/lcov.info'
             }
         },
 
@@ -48,32 +35,31 @@ module.exports = function(grunt) {
             }
         },
 
-        // jshint
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc'
-            },
+        eslint: {
             app: {
                 files: {
-                    src: ['app.js', 'src/client/**/*.js', 'src/server/**/*.js', 'src/tests/**/*.js']
+                    src: ['*.js', 'src']
                 }
             }
-        }
+        },
 
+        scsslint: {
+            allFiles: [
+              'src/client/assets/styles/*.scss'
+            ],
+            options: {
+              config: '.scss-lint.yml',
+              colorizeOutput: true
+            }
+        }
     };
 
     // Initialize configuration
     grunt.initConfig(config);
 
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-nodemon');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+    require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('serve', ['sass', 'concurrent']);
-
-    grunt.registerTask('default', ['jshint', 'mochaTest', 'karma']);
+    grunt.registerTask('lint', ['eslint', 'scsslint']);
+    grunt.registerTask('coverage', ['mocha_istanbul', 'coveralls']);
+    grunt.registerTask('default', ['eslint', 'mochaTest', 'karma']);
 };

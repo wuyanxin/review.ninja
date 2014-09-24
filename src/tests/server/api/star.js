@@ -1,5 +1,3 @@
-require('trace.ninja');
-
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
@@ -10,199 +8,173 @@ global.config = require('../../../config');
 // models
 var User = require('../../../server/documents/user').User;
 var Star = require('../../../server/documents/star').Star;
-var Repo = require('../../../server/documents/repo').Repo;
 var Settings = require('../../../server/documents/settings').Settings;
 
 // services
+var url = require('../../../server/services/url');
 var github = require('../../../server/services/github');
 var notification = require('../../../server/services/notification');
+var status = require('../../../server/services/status');
 
 // api
 var star = require('../../../server/api/star');
 
-describe('star:all', function(done){
-
-    it('should get all stars without error', function(done){
-        stub_star_all = sinon.stub(Star,'find', function(args,done){
-            error = null;
-            star_stub = 'star';
-            done(error,star_stub);
-        });
-
-        req = {
-            args:{
-                comm:'comm',
-                repo: 'repo'
-            }
-        };
-
-        star.all(req,function(error,res){
-            assert.equal(res,'star');
+describe('star:all', function(done) {
+    it('should set the correct parameters when calling find', function(done) {
+        var starStub = sinon.stub(Star, 'find', function(args, done) {
+            assert.deepEqual(args, {sha: 'sha', repo: 'repo'});
             done();
         });
 
-    }); 
+        var req = {
+            args: {
+                sha: 'sha',
+                repo_uuid: 'repo'
+            }
+        };
 
-
-it('should throw error when star is null', function(done){
-
-    stub_star_all = sinon.stub(Star,'find', function(args,done){
-        error = 'error';
-        star_stub = null;
-        done(error,star_stub);
-    });
-
-    req = {
-        args:{
-            comm: 'comm',
-            repo: 'repo'
-        }
-    };
-
-    star.all(req, function(err, res){
-        assert.equal(err,'error');
-        done();
-    });
-});
-
-    afterEach(function(){
-        stub_star_all.restore();
-    });
-
-
-});
-
-
-
-
-
-
-
-describe('star:get', function(){
-
-    it('should get star with no error', function(done){
-
-        star_with_stub = sinon.stub(Star,'with', function(args,done){
-            err = null;
-            star_stub = 'star';
-            done(err,star_stub);
+        star.all(req, function(error, res) {
+            starStub.restore();
+            done();
         });
 
-        req = {
-            args:{
-                repo: 'repo',
-                comm:'comm'
+    });
+});
+
+describe('star:get', function() {
+    it('should set the correct parameters when calling get', function(done) {
+        var starStub = sinon.stub(Star,'findOne', function(args, done) {
+            assert.deepEqual(args, {sha: 'sha', repo: 'repo', user: 1234});
+            done();
+        });
+
+        var req = {
+            args: {
+                repo_uuid: 'repo',
+                sha: 'sha'
             },
-            user:{
-                id:'user'
+            user: {
+                id: 1234
             }
         };
 
-        star.get(req, function(err,res){
-            assert.equal('star', res);
+        star.get(req, function(err, res) {
+            starStub.restore();
             done();
         });
-
-
     });
+});
 
+describe('star:set', function() {
 
-    it('should throw error when star is null', function(done){
-
-        star_with_stub = sinon.stub(Star,'with', function(args, done){
-            err = 'error';
-            star_stub = null;
-            done(err,star_stub);
+    it('should return an error if github call repos one errors', function(done) {
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            done('github repos one error');
         });
 
-        req = {
-            args:{
-                repo: 'repo',
-                comm:'comm'
+        var req = {
+            args: {
+                repo_uuid: 1
             },
-            user:{
-                id:'user'
+            user: {
+                token: 'token'
             }
         };
 
-        star.get(req, function(err,res){
-            assert.equal(err,'error');
+        star.set(req, function(err, star) {
+            assert.equal(err, 'github repos one error');
+
+            githubStub.restore();
             done();
         });
-
     });
 
-    afterEach(function(){
-        star_with_stub.restore();
+    it('should return an error if github call repos one returns permission to pull does not exists', function(done) {
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            done(null, {permissions: {}});
+        });
+
+        var req = {
+            args: {
+                repo_uuid: 1
+            },
+            user: {
+                token: 'token'
+            }
+        };
+
+        star.set(req, function(err, star) {
+            assert.deepEqual(err, {
+                code: 403,
+                text: 'Forbidden'
+            });
+
+            githubStub.restore();
+            done();
+        });
     });
 
+    it('should create a star and update statuses/notifications accordingly', function(done) {
 
-});
+        global.io = {emit: sinon.spy()};
 
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            assert.deepEqual(args, {
+                obj: 'repos',
+                fun: 'one',
+                arg: {id: 1},
+                token: 'token'
+            });
 
+            done(null, {permissions: {pull: true}});
+        });
 
+        var starStub = sinon.stub(Star, 'create', function(args, done) {
+            assert.deepEqual(args, {
+                sha: 'sha',
+                repo: 1,
+                user: 3,
+                name: 'login',
+                created_at: '4'
+            });
 
-
-
-
-
-
-describe('star:set', function(){
-
-beforeEach(function() {
-    global.io = {emit: sinon.spy()};
-
-});
-
-before(function(){
-    // removing until notifications is refactored
-    // notification_star_stub = sinon.stub(notification,'star', function(args, done){
-    //  return;
-    // });
-    // notification_unstar_stub = sinon.stub(notification,'unstar', function(args, done){
-    //  return;
-    // });
-});
-
-    it('should create a star', function(done){
-
-        repo_with_stub = sinon.stub(Repo, 'with', function(args, done){
             done(null, {});
         });
 
-        github_one_stub = sinon.stub(github,'call', function(args, done){
-            
-            assert.equal(args.obj, 'repos');
-            assert.equal(args.fun, 'one');
-            assert.equal(args.arg.id, 1);
-
-            done(null, {
-                permissions: { pull: true }
+        var notificationStub = sinon.stub(notification, 'sendmail', function(notification_type, user, repo, repo_uuid, repo_token, pull_request_number, args) {
+            assert.equal(notification_type, 'star');
+            assert.equal(user, 'user');
+            assert.equal(repo, 'repo');
+            assert.equal(repo_uuid, 1);
+            assert.equal(repo_token, 'token');
+            assert.equal(pull_request_number, 2);
+            assert.deepEqual(args, {
+                user: 'user',
+                repo: 'repo',
+                number: 2,
+                sender: {id:3, login:'login', token:'token'},
+                url: url.reviewPullRequest('user', 'repo', 2)
             });
         });
 
-        star_create_stub = sinon.stub(Star, 'create', function(args, done){
+        var dateStub = sinon.stub(Date, 'now', function() {
+            return 4;
+        });
 
-            assert.equal(args.sha, '1234');
-            assert.equal(args.repo, 1);
-            assert.equal(args.user, 2);
-            assert.equal(args.name, 'login');
-
-            done(null, {
-                sha: args.sha,
-                repo: args.repo,
-                user: args.user,
-                name: args.name,
+        var statusStub = sinon.stub(status, 'update', function(args) {
+            assert.deepEqual(args, {
+                user: 'user',
+                repo: 'repo',
+                sha: 'sha',
+                repo_uuid: 1,
+                number: 2,
+                token: 'token'
             });
         });
 
-        notification_stub = sinon.stub(notification,'sendmail', function(user, notification_type, repo, repo_name, pull_req_number, args) {
-            done();
-        });
-
-        star.set({
+        var req = {
             args: {
-                sha: '1234',
+                sha: 'sha',
                 repo: 'repo',
                 user: 'user',
                 name: 'name',
@@ -210,71 +182,111 @@ before(function(){
                 number: 2
             },
             user: {
-                id: 2,
+                id: 3,
                 login: 'login',
-                token: '12345'
+                token: 'token'
             }
-        }, function(error, res){
+        };
+
+        star.set(req, function(error, res) {
             assert(io.emit.called);
 
-            assert.equal(res.sha, '1234');
-            assert.equal(res.repo, 1);
-            assert.equal(res.user, 2);
-            assert.equal(res.name, 'login');
-
+            githubStub.restore();
+            starStub.restore();
+            notificationStub.restore();
+            dateStub.restore();
+            statusStub.restore();
+            done();
         });
-
-
     });
 
+});
 
-    it('should throw error for star.create error', function(done){
+describe('star:rmv', function() {
 
-        repo_with_stub = sinon.stub(Repo, 'with', function(args, done){
-            done(null, {});
+    it('should return an error if it occurs when retrieving the star', function(done) {
+        var starStub = sinon.stub(Star, 'findOne', function(args, done) {
+            done('mongoose star error');
         });
 
-        github_one_stub = sinon.stub(github,'call', function(args, done){
-            
-            assert.equal(args.obj, 'repos');
-            assert.equal(args.fun, 'one');
-            assert.equal(args.arg.id, 1);
+        var req = {
+            args: {
+                repo_uuid: 1,
+                sha: 'sha'
+            },
+            user: {id: 2}
+        };
 
-            done(null, {
-                permissions: { pull: true }
+        star.rmv(req, function(err, res) {
+            assert.equal(err, 'mongoose star error');
+
+            starStub.restore();
+            done();
+        });
+    });
+
+    it('should create no notifications/statuses when removing a star return no star', function(done) {
+
+        global.io = {emit: sinon.spy()};
+
+        var starStub = sinon.stub(Star, 'findOne', function(args, done) {
+            var star = {
+                remove: function(done) {
+                    done(null, {});
+                }
+            };
+            done(null, star);
+        });
+
+        var statusStub = sinon.stub(status, 'update', function(args) {
+            assert.deepEqual(args, {
+                user: 'user',
+                repo: 'repo',
+                repo_uuid: 1,
+                sha: 'sha',
+                number: 2,
+                token: 'token'
             });
         });
 
-        star_create_stub = sinon.stub(Star, 'create', function(args, done){
-            done(true, null);
+        var notificationStub = sinon.stub(notification, 'sendmail', function(notification_type, user, repo, repo_uuid, repo_token, pull_request_number, args) {
+            assert.equal(notification_type, 'unstar');
+            assert.equal(user, 'user');
+            assert.equal(repo, 'repo');
+            assert.equal(repo_uuid, 1);
+            assert.equal(repo_token, 'token');
+            assert.equal(pull_request_number, 2);
+            assert.deepEqual(args, {
+                user: 'user',
+                repo: 'repo',
+                number: 2,
+                sender: {id:3, login:'login', token:'token'},
+                url: url.reviewPullRequest('user', 'repo', 2)
+            });
         });
 
-        star.set({
+        var req = {
             args: {
-                sha: '1234',
-                repo: 'repo',
                 user: 'user',
-                name: 'name',
+                repo: 'repo',
                 repo_uuid: 1,
+                sha: 'sha',
                 number: 2
             },
             user: {
-                id: 2,
+                id: 3,
                 login: 'login',
-                token: '12345'
+                token: 'token'
             }
-        }, function(err, res){
-            assert.equal(err, true);
-            assert.equal(res, null);
+        };
+
+        star.rmv(req, function(err, res) {
+            assert.equal(null, null);
+
+            starStub.restore();
+            statusStub.restore();
             done();
         });
-
-    });
-
-    afterEach(function(){
-        repo_with_stub.restore();
-        github_one_stub.restore();
-        star_create_stub.restore();
     });
 
 });
