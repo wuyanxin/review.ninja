@@ -24,6 +24,7 @@ module.exports = function(config) {
             'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js',
             'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular-route.js',
             'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-animate.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js',
