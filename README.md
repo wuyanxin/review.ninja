@@ -31,8 +31,8 @@ understand the state of the project (e.g., product management).
 Try ReviewNinja
 ----------------
 
-ReviewNinja is still in development. To sign up for our newsletter go to
-http://review.ninja/.
+ReviewNinja is provided by SAP as a free hosted offering under: http://review.ninja/.
+Please leave us a GitHub issue if you have feedback.
 
 Contribute
 ----------
