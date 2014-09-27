@@ -4,6 +4,10 @@
     color: $brand-primary-muted;
   }
 
+  > li.active:last-child > a {
+    background: #fff;
+  }
+
   a:hover {
     cursor: pointer;
   }

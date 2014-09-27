@@ -48,6 +48,14 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
             });
         });
 
+        // get the pull req comments
+        $scope.comments = $HUB.wrap('issues', 'getComments', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            number: $stateParams.number
+        });
+
+
         //
         // Events
         //
@@ -173,6 +181,22 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
             });
         };
 
+        $scope.addComment = function() {
+            if($scope.comment) {
+                $scope.commenting = $HUB.call('issues', 'createComment', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number,
+                    body: $scope.comment
+                }, function(err, comment) {
+                    if(!err) {
+                        $scope.comment = null;
+                        $scope.comments.value.push(comment.value);
+                    }
+                });
+            }
+        };
+
         //
         // Websockets
         //
@@ -189,6 +213,18 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
             if(!$scope.pull.value.merged && !$scope.refreshing.loading) {
                 $scope.refreshPullRequest();
             }
+        });
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $scope.number, function(id) {
+            $HUB.call('issues', 'getComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                id: id
+            }, function(err, comment) {
+                if(!err && comment.value.user.id !== $rootScope.user.value.id) {
+                  $scope.comments.value.push(comment.value);
+                }
+            });
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':synchronize', function(head) {

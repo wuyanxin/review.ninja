@@ -111,6 +111,74 @@
             </browser>
           </tab>
 
+          <tab heading="Conversation">
+
+            <div infinite-scroll="comments.getMore()" 
+                 infinite-scroll-disabled="comments.loading"
+                 style="margin:20px 0;">
+
+              <table style="width:100%;" ng-show="pull.body">
+                  <tr>
+                      <td style="width:42px; padding-right:10px; vertical-align:top;">
+                          <img ng-src="{{ pull.user.avatar_url }}&s=42" width="42px" />
+                      </td>
+                      <td>
+                          <div class="panel panel-default comment">
+                              <div class="panel-heading">
+                                  <strong>{{ pull.user.login }}</strong> commented <span moment="pull.created_at"></span>
+                              </div>
+                              <div class="panel-body">
+                                {{ pull.body }}
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
+              </table>
+
+              <table style="width:100%;">
+                  <tr ng-repeat="comment in comments.value">
+                      <td style="width:42px; padding-right:10px; vertical-align:top;">
+                          <img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" />
+                      </td>
+                      <td>
+                          <div class="panel panel-default comment">
+                              <div class="panel-heading">
+                                  <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
+                              </div>
+                              <div class="panel-body" ng-bind-html="comment.html"></div>
+                          </div>
+                      </td>
+                  </tr>
+              </table>
+
+              <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="comments.loading"></i>
+
+              <form role="form" ng-submit="addComment()">
+                <table style="width:100%" ng-show="!comments.loading && !comments.hasMore">
+                    <tr>
+                        <td style="width:42px; padding-right:10px; vertical-align:top;">
+                            <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
+                        </td>
+                        <td>
+                            <div class="panel panel-default comment">
+                                <div class="panel-heading"><strong>{{ user.value.login }}</strong></div>
+                                <div class="panel-body" style="padding:0;">
+                                    <textarea class="form-control" ng-model="$parent.comment" rows="4" placeholder="Leave a comment"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="pull-right">
+                              <i class="fa fa-lg fa-spinner fa-spin" ng-show="commenting.loading" style="margin-right:10px;"></i>
+                              <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.comment">Comment</button>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </td>
+                    </tr>
+                </table>
+              </form>
+            </div>
+          </tab>
+
         </tabset>
 
       </div>
