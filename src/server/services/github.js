@@ -41,10 +41,10 @@ module.exports = {
 
         github[obj][fun](arg, function(err, res) {
 
-            var meta = {};
+            var meta = null;
 
             try {
-                meta.link = res.meta.link;
+                meta = res.meta;
                 meta.hasMore = !!github.hasNextPage(res.meta.link);
                 delete res.meta;
             } catch (ex) {

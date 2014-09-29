@@ -78,6 +78,9 @@ module.factory('$HUB', ['$RAW', '$log',
                 res.set(error, data);
 
                 if(meta) {
+
+                    res.meta = meta
+
                     res.hasMore = meta.hasMore;
 
                     res.getMore = meta.hasMore ? function() {
