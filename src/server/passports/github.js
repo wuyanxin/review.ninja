@@ -12,7 +12,6 @@ passport.use(new Strategy({
         authorizationURL: url.githubAuthorization,
         tokenURL: url.githubToken,
         userProfileURL: url.githubProfile(),
-        scope: config.server.github.scopes
     },
     function(accessToken, refreshToken, profile, done) {
         models.User.update({
