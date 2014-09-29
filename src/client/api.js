@@ -79,7 +79,7 @@ module.factory('$HUB', ['$RAW', '$log',
 
                 if(meta) {
 
-                    res.meta = meta
+                    res.meta = meta;
 
                     res.hasMore = meta.hasMore;
 
