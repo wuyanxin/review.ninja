@@ -11,4 +11,4 @@ WORKDIR /app
 
 VOLUME ["/etc/ssl/certs"]
 
-CMD ["node", "/app/app.js"]
+CMD update-ca-certificates; node /app/app.js
