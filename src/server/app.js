@@ -77,7 +77,8 @@ async.series([
                 if (file && file.length) {
                     file.forEach(function(f) {
                         try {
-                            (https.globalAgent.options.ca || []).push(fs.readFileSync(path.relative(process.cwd(), f)));
+                            https.globalAgent.options.ca = https.globalAgent.options.ca || [];
+                            https.globalAgent.options.ca.push(fs.readFileSync(path.relative(process.cwd(), f)));
                             console.log('✓ '.bold.green + path.relative(process.cwd(), f));
                         } catch (ex) {
                             console.log('✖ '.bold.red + path.relative(process.cwd(), f));
