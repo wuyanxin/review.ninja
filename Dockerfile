@@ -11,6 +11,4 @@ WORKDIR /app
 
 VOLUME ["/certs"]
 
-ENV CERT /certs/*.pem
-
 CMD ["node", "/app/app.js"]
