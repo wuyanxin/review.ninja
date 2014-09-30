@@ -9,6 +9,8 @@ RUN cd /app; npm install; bower install --allow-root
 
 WORKDIR /app
 
-VOLUME ["/etc/ssl/certs"]
+VOLUME ["/certs"]
+
+ENV CERT /certs/*.pem
 
 CMD ["node", "/app/app.js"]
