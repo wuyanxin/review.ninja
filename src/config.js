@@ -39,6 +39,10 @@ module.exports = {
             port: process.env.HOST_PORT
         },
 
+        https: {
+            certs: process.env.CERT
+        },
+
         security: {
             sessionSecret: process.env.SESSION_SECRET || 'review.ninja',
             cookieMaxAge: 60 * 60 * 1000
