@@ -183,7 +183,7 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC
 
         $scope.addComment = function() {
             if($scope.comment) {
-                $scope.commenting = $HUB.call('issues', 'createComment', {
+                $scope.commenting = $HUB.wrap('issues', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,

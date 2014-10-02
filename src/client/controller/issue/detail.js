@@ -26,7 +26,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         }
 
         // get the comments
-        $scope.comments = $HUB.call('issues', 'getComments', {
+        $scope.comments = $HUB.wrap('issues', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.issue
@@ -57,7 +57,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
 
         $scope.addComment = function() {
             if($scope.comment) {
-                $scope.commenting = $HUB.call('issues', 'createComment', {
+                $scope.commenting = $HUB.wrap('issues', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.issue,
