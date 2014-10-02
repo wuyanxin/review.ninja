@@ -10,7 +10,8 @@ var router = express.Router();
 
 router.get('/auth/github',
     function(req, res, next) {
-        passport.authenticate('github')(req, res, next);
+        var scope = req.query.private === 'true' ? config.server.github.private_scope : config.server.github.public_scope;
+        passport.authenticate('github', {scope: scope})(req, res, next);
     }
 );
 
