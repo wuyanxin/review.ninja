@@ -30,7 +30,7 @@
 
       <i class="fa fa-2x fa-spinner fa-spin" ng-show="searching.loading || adding.loading" style="margin-left:5px;"></i>
 
-      <div class="pull-left" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') == -1">
+      <div class="pull-left" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') === -1">
         <a class="btn btn-info" href="/auth/github?private=true" target="_self"><i class="fa fa-lock"></i> Enable private repos</a>
       </div>
       <div class="pull-right">
