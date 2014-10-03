@@ -5,10 +5,10 @@ COPY . /app
 EXPOSE 5000
 
 RUN npm install -g bower
-RUN cd /app; npm install; bower install --allow-root
+RUN cd /app; npm install; bower install nodemon --allow-root; bower install --allow-root;
 
 WORKDIR /app
 
 VOLUME ["/certs"]
 
-CMD ["node", "/app/app.js"]
+CMD ["nodemon", "/app/app.js"]
