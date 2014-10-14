@@ -2,7 +2,7 @@
 // Issue Factory
 // *****************************************************
 
-module.factory('Issue', function() {
+module.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
 
     var regex = /\|commit\|file reference\|.*\r\n\|-+\|-+\|.*\r\n\|(\b[0-9a-f]{40}\b)\|(\[([^\|]*)?\].*?|[`]none[`])\|.*/;
 
@@ -20,6 +20,21 @@ module.factory('Issue', function() {
             }
 
             return issue;
+        },
+
+        render: function(issue) {
+
+            // NOTE:
+            // in order to render, we need to fix this bug in node-github
+            // (https://github.com/mikedeboer/node-github/issues/92)
+
+            // $HUB.wrap('markdown', 'render', {
+            //     text: issue.body,
+            //     mode: 'gfm',
+            //     context: $stateParams.user + '/' + $stateParams.repo
+            // });
+
+            return issue;
         }
     };
-});
+}]);

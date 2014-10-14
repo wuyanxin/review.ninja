@@ -3,6 +3,7 @@ var async = require('async');
 var parse = require('parse-diff');
 
 // services
+var github = require('../services/github');
 var pullRequest = require('../services/pullRequest');
 
 // models
@@ -18,7 +19,19 @@ module.exports = {
                 pull.stars = stars;
             }
 
-            done(err, pull);
+            github.call({
+                obj: 'markdown',
+                fun: 'render',
+                arg: { 
+                    text: pull.body,
+                    mode: 'gfm',
+                    context: req.args.arg.user + '/' + req.args.arg.repo
+                },
+                token: req.user.token
+            }, function(err, render) {
+                pull.html = render ? render.data : null;
+                done(null, pull);
+            });
         });
     },
 
