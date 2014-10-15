@@ -20,21 +20,21 @@ module.exports = function(config) {
             'src/bower/should/should.js',
 
             // Angular
-            'https://cdn.socket.io/socket.io-1.0.4.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular-route.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-animate.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-utils/0.1.1/angular-ui-utils.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js',
+            'http://cdn.socket.io/socket.io-1.0.4.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular-route.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-animate.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular-ui-utils/0.1.1/angular-ui-utils.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js',
             'https://www.google-analytics.com/analytics.js',
             'src/bower/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
             'src/bower/angulartics/dist/angulartics.min.js',
@@ -97,7 +97,7 @@ module.exports = function(config) {
 
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_DEBUG,
 
 
         // enable / disable watching file and executing tests whenever any file changes
