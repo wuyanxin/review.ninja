@@ -74,25 +74,25 @@ describe('Repo Controller', function() {
             }]
         });
 
-        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"review.ninja, pull-request-1","state":"open","per_page":1}}').respond({
+        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"pull-request-1","state":"open","per_page":1}}').respond({
             data:[{
                 issue: 'issue1'
             }]
         });
 
-        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"review.ninja, pull-request-1","state":"closed","per_page":1}}').respond({
+        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"pull-request-1","state":"closed","per_page":1}}').respond({
             data:[{
                 issue: 'issue1'
             }]
         });
 
-        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"review.ninja, pull-request-2","state":"open","per_page":1}}').respond({
+        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"pull-request-2","state":"open","per_page":1}}').respond({
             data:[{
                 issue: 'issue1'
             }]
         });
 
-        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"review.ninja, pull-request-2","state":"closed","per_page":1}}').respond({
+        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"pull-request-2","state":"closed","per_page":1}}').respond({
             data:[{
                 issue: 'issue1'
             }]
