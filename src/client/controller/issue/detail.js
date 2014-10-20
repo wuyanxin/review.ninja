@@ -6,15 +6,15 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issue', 'socket',
-    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, issue, socket) {
+module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'issue', 'socket',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, issue, socket) {
 
         if(!issue) {
             return $state.go('repo.pull.issue.master');
         }
 
         // get the issue
-        $scope.issue = issue;
+        $scope.issue = Issue.render(issue);
 
         // emit to parent controller (repo.pull)
         $scope.$emit('issue:set', issue);
@@ -26,7 +26,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         }
 
         // get the comments
-        $scope.comments = $HUB.call('issues', 'getComments', {
+        $scope.comments = $HUB.wrap('issues', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.issue
@@ -57,7 +57,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
 
         $scope.addComment = function() {
             if($scope.comment) {
-                $scope.commenting = $HUB.call('issues', 'createComment', {
+                $scope.commenting = $HUB.wrap('issues', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.issue,

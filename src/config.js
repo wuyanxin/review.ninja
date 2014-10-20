@@ -26,7 +26,8 @@ module.exports = {
             pass: process.env.GITHUB_PASS,
 
             // review.ninja specific
-            scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org']
+            public_scope: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org'],
+            private_scope: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org']
         },
 
         localport: process.env.PORT || 5000,
@@ -37,6 +38,10 @@ module.exports = {
             protocol: process.env.PROTOCOL || 'https',
             host: process.env.HOST || 'review.ninja',
             port: process.env.HOST_PORT
+        },
+
+        https: {
+            certs: process.env.CERT
         },
 
         security: {

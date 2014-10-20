@@ -54,9 +54,7 @@
                     <div class="panel-heading">
                         <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
                     </div>
-                    <div class="panel-body">
-                        {{ comment.body }}
-                    </div>
+                    <div class="panel-body" ng-bind-html="comment.html"></div>
                 </div>
             </td>
         </tr>

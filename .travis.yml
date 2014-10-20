@@ -1,8 +1,4 @@
 language: node_js
-cache:
-  directories:
-  - node_modules
-  - src/bower
 before_script:
 - bower install
 - gem install scss-lint
@@ -11,3 +7,5 @@ after_script:
 - grunt scsslint --force
 - if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'master' ]]; then ./.cf.sh review-ninja-staging; fi
 - if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'release' ]]; then ./.cf.sh review-ninja; fi
+notifications:
+  webhooks: http://api.codepipes.io/exec/5440169d92758e200017513a

@@ -11,7 +11,7 @@ module.factory('Pull', ['$HUB', function($HUB) {
             $HUB.call('issues', 'repoIssues', {
                 user: pull.base.repo.owner.login,
                 repo: pull.base.repo.name,
-                labels: 'review.ninja, pull-request-' + pull.number,
+                labels: 'pull-request-' + pull.number,
                 state: 'open',
                 per_page: 1
             }, function(err, issues) {
@@ -23,7 +23,7 @@ module.factory('Pull', ['$HUB', function($HUB) {
             $HUB.call('issues', 'repoIssues', {
                 user: pull.base.repo.owner.login,
                 repo: pull.base.repo.name,
-                labels: 'review.ninja, pull-request-' + pull.number,
+                labels: 'pull-request-' + pull.number,
                 state: 'closed',
                 per_page: 1
             }, function(err, issues) {

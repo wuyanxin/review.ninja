@@ -61,6 +61,43 @@ async.series([
         callback();
     },
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Bootstrap certificates
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    function(callback) {
+
+        console.log('bootstrap certificates'.bold);
+
+        var https = require('https'),
+            fs = require('fs');
+
+        if(config.server.https.certs) {
+            glob(config.server.https.certs, function(err, file) {
+                if (file && file.length) {
+                    file.forEach(function(f) {
+                        try {
+                            https.globalAgent.options.ca = https.globalAgent.options.ca || [];
+                            https.globalAgent.options.ca.push(fs.readFileSync(path.relative(process.cwd(), f)));
+                            console.log('✓ '.bold.green + path.relative(process.cwd(), f));
+                        } catch (ex) {
+                            console.log('✖ '.bold.red + path.relative(process.cwd(), f));
+                            console.log(ex.stack);
+                        }
+                    });
+                }
+                callback();
+            });
+        } else {
+            callback();
+        }
+
+    },
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Bootstrap static
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
     function(callback) {
 
         console.log('bootstrap static files'.bold);
