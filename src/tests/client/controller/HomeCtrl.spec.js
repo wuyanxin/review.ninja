@@ -65,13 +65,6 @@ describe('Home Controller', function() {
 
         });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
-            data: {
-                id: 1,
-                login: 'my-org'
-            }
-        });
-
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
                 name: 'repo-1',
@@ -105,13 +98,6 @@ describe('Home Controller', function() {
             'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
             'uuid': 1387834
 
-        });
-
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
-            data: [{
-                id: 1,
-                login: 'my-org'
-            }]
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
@@ -160,13 +146,6 @@ describe('Home Controller', function() {
             'uuid': 1387834
         });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
-            data: [{
-                id: 1,
-                login: 'my-org'
-            }]
-        });
-
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
                 name: 'repo-1',
@@ -208,13 +187,6 @@ describe('Home Controller', function() {
             'uuid': 1387834
         });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
-            data: [{
-                id: 1,
-                login: 'my-org'
-            }]
-        });
-
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
                 name: 'repo-1',
@@ -231,7 +203,7 @@ describe('Home Controller', function() {
 
         var repos = ['repo-1', 'repo-2'];
 
-        httpBackend.expect('POST', '/api/github/wrap','{"obj":"search","fun":"repos","arg":{"q":"query+in:name+fork:true+user:login+user:my-org"}}').respond({
+        httpBackend.expect('POST', '/api/github/wrap','{"obj":"search","fun":"repos","arg":{"q":"query+in:name+fork:true+user:login"}}').respond({
             data: 'repos'
         });
 
