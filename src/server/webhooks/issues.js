@@ -18,7 +18,7 @@ module.exports = function(req, res) {
     // Helper functions
     //
 
-    function get_issues(user, repo, pull_request_number, token, done) {
+    function get_issues(user, repo, number, token, done) {
 
         github.call({
             obj: 'issues',
@@ -26,7 +26,7 @@ module.exports = function(req, res) {
             arg: {
                 user: user,
                 repo: repo,
-                labels: 'review.ninja, ' + 'pull-request-' + pull_request_number,
+                labels: 'pull-request-' + number,
                 state:'open'
             },
             token: token
@@ -42,7 +42,7 @@ module.exports = function(req, res) {
             arg: {
                 user: user,
                 repo: repo,
-                number:number
+                number: number
             }
         }, done);
     }
