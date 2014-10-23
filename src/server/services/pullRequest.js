@@ -11,7 +11,6 @@ module.exports = {
                 number = match[1];
             }
         });
-
         return number;
     },
 
