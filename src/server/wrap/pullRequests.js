@@ -63,6 +63,10 @@ module.exports = {
             repo: repo
         }, function(err, settings) {
 
+            if(err) {
+                return done(null, pulls);
+            }
+
             // set watched
             pullRequest.setWatched(pulls, settings);
 
@@ -76,7 +80,7 @@ module.exports = {
                     return callback(null);
                 });
             }, function() {
-                done(err, pulls);
+                done(null, pulls);
             });
         });
     }
