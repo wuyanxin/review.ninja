@@ -68,11 +68,9 @@ module.exports = {
             }
 
             // set watched
-            if(settings) {
-                pulls.forEach(function(pull) {
-                    pull.watched = pullRequest.isWatched(pull, settings);
-                });
-            }
+            pulls.forEach(function(pull) {
+                pull.watched = !settings ? true : pullRequest.isWatched(pull, settings);
+            });
 
             // set the stars
             async.each(pulls, function(pull, callback) {
