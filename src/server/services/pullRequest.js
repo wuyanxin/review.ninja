@@ -3,23 +3,21 @@ var github = require('./github');
 
 module.exports = {
     byLabels: function(labels) {
-        var pull_request_number = null;
-
+        var number = null;
         labels.forEach(function(label) {
             var regex = /pull-request-(\d*)?/;
             var match = regex.exec(label.name);
-
             if (match) {
-                pull_request_number = match[1];
+                number = match[1];
             }
         });
 
-        return pull_request_number;
+        return number;
     },
 
-    badgeComment: function(user, repo, repoId, pullNumber) {
-        var badgeUrl = url.pullRequestBadge(repoId, pullNumber);
-        var pullUrl = url.reviewPullRequest(user, repo, pullNumber);
+    badgeComment: function(user, repo, repo_uuid, number) {
+        var badgeUrl = url.pullRequestBadge(repo_uuid, number);
+        var pullUrl = url.reviewPullRequest(user, repo, number);
 
         if(config.server.github.user) {
             github.call({
@@ -28,7 +26,7 @@ module.exports = {
                 arg: {
                     user: user,
                     repo: repo,
-                    number: pullNumber,
+                    number: number,
                     body: '[![ReviewNinja](' + badgeUrl + ')](' + pullUrl + ')'
                 },
                 basicAuth: {
@@ -40,7 +38,6 @@ module.exports = {
     },
 
     setWatched: function(pulls, settings) {
-        // set the watched pulls
         if(settings) {
             pulls.forEach(function(pull) {
                 pull.watched = module.exports.isWatched(pull, settings);
