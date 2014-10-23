@@ -30,11 +30,11 @@ router.all('/*', function(req, res) {
 
             if(!user) {
                 req.logout();
-                return res.sendfile('login.html', {root: __dirname + './../../client'});
+                return res.sendFile('login.html', {root: __dirname + './../../client'});
             }
 
             if(!config.terms || user.terms===config.terms) {
-                return res.sendfile('home.html', {root: __dirname + './../../client'});
+                return res.sendFile('home.html', {root: __dirname + './../../client'});
             }
 
             request(config.terms, function(err, response, rawGist) {
@@ -52,7 +52,7 @@ router.all('/*', function(req, res) {
             });
         });
     } else {
-        res.sendfile('login.html', {root: __dirname + './../../client'});
+        res.sendFile('login.html', {root: __dirname + './../../client'});
     }
 });
 
