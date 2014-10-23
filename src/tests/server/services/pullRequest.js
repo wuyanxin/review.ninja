@@ -48,31 +48,6 @@ describe('pullRequest:badgeComment', function(done) {
     });
 });
 
-describe('pullRequest:setWatched', function(done) {
-    it('if settings are null do not set pull.watched', function(done) {
-        var pulls = [{
-            head: {ref: 'feature/one'},
-            base: {ref: 'master'}
-        }];
-        pullRequest.setWatched(pulls, null);
-        assert.equal(pulls[0].hasOwnProperty('watched'), false);
-        done();
-    });
-
-    it('if settings are not null, add watched property (watched by default)', function(done) {
-        var settings = {
-            watched: []
-        };
-        var pulls = [{
-            head: {ref: 'feature'},
-            base: {ref: 'master'}
-        }];
-        pullRequest.setWatched(pulls, settings);
-        assert.equal(pulls[0].watched, true);
-        done();
-    });
-});
-
 describe('pullRequest:isWatched', function(done) {
     it('return true for feature/one if one is watching feature/*', function(done) {
         var settings = {

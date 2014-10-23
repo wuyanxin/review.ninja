@@ -37,14 +37,6 @@ module.exports = {
         }
     },
 
-    setWatched: function(pulls, settings) {
-        if(settings) {
-            pulls.forEach(function(pull) {
-                pull.watched = module.exports.isWatched(pull, settings);
-            });
-        }
-    },
-
     isWatched: function(pull, settings) {
 
         // by default we are watching all branches
