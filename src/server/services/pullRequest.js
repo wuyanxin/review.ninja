@@ -14,7 +14,7 @@ module.exports = {
         return number;
     },
 
-    badgeComment: function(user, repo, repo_uuid, number, token) {
+    badgeComment: function(user, repo, repo_uuid, number) {
         var badgeUrl = url.pullRequestBadge(repo_uuid, number);
         var pullUrl = url.reviewPullRequest(user, repo, number);
 
@@ -28,7 +28,10 @@ module.exports = {
                     number: number,
                     body: '[![ReviewNinja](' + badgeUrl + ')](' + pullUrl + ')'
                 },
-                token: token
+                basicAuth: {
+                    user: config.server.github.user,
+                    pass: config.server.github.pass
+                }
             });
         }
     },

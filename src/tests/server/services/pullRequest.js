@@ -35,11 +35,14 @@ describe('pullRequest:badgeComment', function(done) {
                     number: 456,
                     body: '[![ReviewNinja](https://review.ninja/123/pull/456/badge)](https://review.ninja/user/repo/pull/456)'
                 },
-                token: 'token'
+                basicAuth: {
+                    user: 'githubUser',
+                    pass: 'githubUserApiKey'
+                }
             });
         });
         
-        pullRequest.badgeComment('user', 'repo', 123, 456, 'token');
+        pullRequest.badgeComment('user', 'repo', 123, 456);
         githubStub.restore();
         done();
     });
