@@ -36,8 +36,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
             if(err) {
                 return res.send(err);
             }
-
-            github.call({
+            var options = {
                 obj: 'pullRequests',
                 fun: 'get',
                 arg: {
@@ -45,7 +44,15 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     repo: githubRepo.name,
                     number: req.params.number
                 }
-            }, function(err, githubPullRequest) {
+            };
+            if(config.server.github.user & config.server.github.pass) {
+                options.basicAuth = {
+                    user: config.server.github.user,
+                    pass: config.server.github.pass
+                }
+            }
+
+            github.call(options, function(err, githubPullRequest) {
                 Star.find({sha: githubPullRequest.head.sha, repo: githubRepo.id}, function(err, stars) {
                     if(err) {
                         return res.send(err);
@@ -58,7 +65,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     if(req.get('If-None-Match') === hash) {
                         return res.status(304).send();
                     }
-                    
+
                     res.set('Content-Type', 'image/svg+xml');
                     res.set('Cache-Control', 'no-cache');
                     res.set('Etag', hash);
