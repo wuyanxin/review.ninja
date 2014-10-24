@@ -23,7 +23,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
             return res.send(err);
         }
 
-        github.call({
+        var options = {
             obj: 'issues',
             fun: 'repoIssues',
             arg: {
@@ -32,7 +32,15 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                 labels: 'pull-request-' + req.params.number,
                 state: 'open'
             }
-        }, function(err, issues) {
+        };
+        if(config.server.github.user & config.server.github.pass) {
+            options.basicAuth = {
+                user: config.server.github.user,
+                pass: config.server.github.pass
+            };
+        }
+
+        github.call(options, function(err, issues) {
             if(err) {
                 return res.send(err);
             }
