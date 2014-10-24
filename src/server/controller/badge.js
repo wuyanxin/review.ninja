@@ -1,7 +1,4 @@
-var express = require('express'),
-    ejs = require('ejs'),
-    fs = require('fs'),
-    crypto = require('crypto');
+var express = require('express'), ejs = require('ejs'), fs = require('fs'), crypto = require('crypto');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Badge controller
@@ -12,18 +9,28 @@ var github = require('../services/github');
 var Star = require('mongoose').model('Star');
 
 router.all('/:repoId/pull/:number/badge', function(req, res) {
-    github.call({
+    function addAuth(options) {
+        if(config.server.github.user & config.server.github.pass) {
+            options.basicAuth = {
+                user: config.server.github.user,
+                pass: config.server.github.pass
+            };
+        }
+    }
+
+    var options = {
         obj: 'repos',
         fun: 'one',
         arg: {
             id: req.params.repoId
         }
-    }, function(err, githubRepo) {
+    };
+    addAuth(options);
+    github.call(options, function(err, githubRepo) {
         if(err) {
             return res.send(err);
         }
-
-        github.call({
+        var options = {
             obj: 'issues',
             fun: 'repoIssues',
             arg: {
@@ -32,12 +39,13 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                 labels: 'pull-request-' + req.params.number,
                 state: 'open'
             }
-        }, function(err, issues) {
+        };
+        addAuth(options);
+        github.call(options, function(err, issues) {
             if(err) {
                 return res.send(err);
             }
-
-            github.call({
+            var options = {
                 obj: 'pullRequests',
                 fun: 'get',
                 arg: {
@@ -45,12 +53,13 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     repo: githubRepo.name,
                     number: req.params.number
                 }
-            }, function(err, githubPullRequest) {
+            };
+            addAuth(options);
+            github.call(options, function(err, githubPullRequest) {
                 Star.find({sha: githubPullRequest.head.sha, repo: githubRepo.id}, function(err, stars) {
                     if(err) {
                         return res.send(err);
                     }
-
                     var issuesLengthHash = crypto.createHash('md5').update(issues.length.toString(), 'utf8').digest('hex');
                     var starsLengthHash = crypto.createHash('md5').update(stars.length.toString(), 'utf8').digest('hex');
                     var hash = crypto.createHash('md5').update(issuesLengthHash + starsLengthHash, 'utf8').digest('hex');
@@ -58,7 +67,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     if(req.get('If-None-Match') === hash) {
                         return res.status(304).send();
                     }
-                    
+
                     res.set('Content-Type', 'image/svg+xml');
                     res.set('Cache-Control', 'no-cache');
                     res.set('Etag', hash);
