@@ -14,6 +14,10 @@
 }
 
 .panel.comment {
+  display: table;
+  overflow-x: hidden;
+  table-layout: fixed;
+  width: 100%;
   word-break: break-word;
 
   .panel-heading {
