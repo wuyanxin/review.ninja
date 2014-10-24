@@ -3,9 +3,9 @@ var User = require('mongoose').model('User');
 
 //services
 var github = require('../services/github');
-var notification = require('../services/notification');
 var status = require('../services/status');
 var pullRequest = require('../services/pullRequest');
+var notification = require('../services/notification');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Issue comment Webhook Handler
@@ -15,9 +15,7 @@ module.exports = function(req, res) {
 
     var actions = {
         created: function() {
-
             if(pullRequest.byLabels(req.args.issue.labels)) {
-
                 var event = req.args.repository.owner.login + ':' +
                             req.args.repository.name + ':' +
                             'issue-comment-' + req.args.issue.id;

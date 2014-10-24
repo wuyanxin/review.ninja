@@ -63,8 +63,14 @@ module.exports = {
             repo: repo
         }, function(err, settings) {
 
+            if(err) {
+                return done(null, pulls);
+            }
+
             // set watched
-            pullRequest.setWatched(pulls, settings);
+            pulls.forEach(function(pull) {
+                pull.watched = !settings ? true : pullRequest.isWatched(pull, settings);
+            });
 
             // set the stars
             async.each(pulls, function(pull, callback) {
@@ -76,7 +82,7 @@ module.exports = {
                     return callback(null);
                 });
             }, function() {
-                done(err, pulls);
+                done(null, pulls);
             });
         });
     }
