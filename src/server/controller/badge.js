@@ -49,7 +49,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                 options.basicAuth = {
                     user: config.server.github.user,
                     pass: config.server.github.pass
-                }
+                };
             }
 
             github.call(options, function(err, githubPullRequest) {
