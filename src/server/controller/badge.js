@@ -1,7 +1,4 @@
-var express = require('express'),
-    ejs = require('ejs'),
-    fs = require('fs'),
-    crypto = require('crypto');
+var express = require('express'), ejs = require('ejs'), fs = require('fs'), crypto = require('crypto');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Badge controller
@@ -12,17 +9,27 @@ var github = require('../services/github');
 var Star = require('mongoose').model('Star');
 
 router.all('/:repoId/pull/:number/badge', function(req, res) {
-    github.call({
+    function addAuth(options) {
+        if(config.server.github.user & config.server.github.pass) {
+            options.basicAuth = {
+                user: config.server.github.user,
+                pass: config.server.github.pass
+            };
+        }
+    }
+
+    var options = {
         obj: 'repos',
         fun: 'one',
         arg: {
             id: req.params.repoId
         }
-    }, function(err, githubRepo) {
+    };
+    addAuth(options);
+    github.call(options, function(err, githubRepo) {
         if(err) {
             return res.send(err);
         }
-
         var options = {
             obj: 'issues',
             fun: 'repoIssues',
@@ -33,13 +40,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                 state: 'open'
             }
         };
-        if(config.server.github.user & config.server.github.pass) {
-            options.basicAuth = {
-                user: config.server.github.user,
-                pass: config.server.github.pass
-            };
-        }
-
+        addAuth(options);
         github.call(options, function(err, issues) {
             if(err) {
                 return res.send(err);
@@ -53,19 +54,12 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     number: req.params.number
                 }
             };
-            if(config.server.github.user & config.server.github.pass) {
-                options.basicAuth = {
-                    user: config.server.github.user,
-                    pass: config.server.github.pass
-                };
-            }
-
+            addAuth(options);
             github.call(options, function(err, githubPullRequest) {
                 Star.find({sha: githubPullRequest.head.sha, repo: githubRepo.id}, function(err, stars) {
                     if(err) {
                         return res.send(err);
                     }
-
                     var issuesLengthHash = crypto.createHash('md5').update(issues.length.toString(), 'utf8').digest('hex');
                     var starsLengthHash = crypto.createHash('md5').update(stars.length.toString(), 'utf8').digest('hex');
                     var hash = crypto.createHash('md5').update(issuesLengthHash + starsLengthHash, 'utf8').digest('hex');
