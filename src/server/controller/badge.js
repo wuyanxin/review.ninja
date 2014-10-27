@@ -10,7 +10,7 @@ var Star = require('mongoose').model('Star');
 
 router.all('/:repoId/pull/:number/badge', function(req, res) {
     function addAuth(options) {
-        if(config.server.github.user & config.server.github.pass) {
+        if(config.server.github.user && config.server.github.pass) {
             options.basicAuth = {
                 user: config.server.github.user,
                 pass: config.server.github.pass
