@@ -44,7 +44,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             }, function(err) {
                 $scope.active = null;
                 $scope.hasRepos = true;
-                if (!err && $scope.repos.indexOf(repo)<0) {
+                if (!err && $scope.repos.indexOf(repo) < 0) {
                     repo.ninja = true;
                     $scope.repos.push(repo);
                 }

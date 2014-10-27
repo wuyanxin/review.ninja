@@ -33,7 +33,7 @@ router.all('/*', function(req, res) {
                 return res.sendFile('login.html', {root: __dirname + './../../client'});
             }
 
-            if(!config.terms || user.terms===config.terms) {
+            if(!config.terms || user.terms === config.terms) {
                 return res.sendFile('home.html', {root: __dirname + './../../client'});
             }
 
