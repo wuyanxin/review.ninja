@@ -1,4 +1,7 @@
-var express = require('express'), ejs = require('ejs'), fs = require('fs'), crypto = require('crypto');
+var express = require('express');
+var ejs = require('ejs');
+var fs = require('fs');
+var crypto = require('crypto');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Badge controller
