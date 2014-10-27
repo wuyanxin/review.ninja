@@ -33,7 +33,7 @@ module.exports = {
 
         if(basicAuth) {
             github.authenticate({
-                type: "basic",
+                type: 'basic',
                 username: basicAuth.user,
                 password: basicAuth.pass
             });

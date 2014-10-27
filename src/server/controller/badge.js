@@ -72,7 +72,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     res.set('Cache-Control', 'no-cache');
                     res.set('Etag', hash);
 
-                    var tmp = fs.readFileSync("src/server/templates/badge.svg", 'utf-8');
+                    var tmp = fs.readFileSync('src/server/templates/badge.svg', 'utf-8');
                     var svg = ejs.render(tmp, {openIssues: issues.length, stars: stars.length});
                     res.send(svg);
                 });
