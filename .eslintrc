@@ -19,7 +19,7 @@ globals:
 rules:
     camelcase: 0
     eol-last: 1
-    handle-callback-err: 1
+    handle-callback-err: 0
     new-cap: 0
     no-extra-semi: 1
     no-path-concat: 0
