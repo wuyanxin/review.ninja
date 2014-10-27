@@ -9,7 +9,7 @@ module.exports = {
 
     get: function(req, done) {
 
-        webhook.get(req.args.user, req.args.repo, req.user.token, 
+        webhook.get(req.args.user, req.args.repo, req.user.token,
             function(err, hook) {
 
                 // now we will have to check two things:

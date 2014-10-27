@@ -73,14 +73,14 @@ module.exports = function(req, res) {
                             number: pull.number,
                             token: user.token
                         });
-                        
+
                         notification.sendmail(
-                            'new_issue', 
-                            req.args.repository.owner.login, 
-                            req.args.repository.name, 
-                            req.args.repository.id, 
-                            user.token, 
-                            number, 
+                            'new_issue',
+                            req.args.repository.owner.login,
+                            req.args.repository.name,
+                            req.args.repository.id,
+                            user.token,
+                            number,
                             args
                         );
                     }
@@ -102,12 +102,12 @@ module.exports = function(req, res) {
                                 });
 
                                 notification.sendmail(
-                                    'closed_issue', 
-                                    req.args.repository.owner.login, 
-                                    req.args.repository.name, 
-                                    req.args.repository.id, 
-                                    user.token, 
-                                    number, 
+                                    'closed_issue',
+                                    req.args.repository.owner.login,
+                                    req.args.repository.name,
+                                    req.args.repository.id,
+                                    user.token,
+                                    number,
                                     args
                                 );
                             }

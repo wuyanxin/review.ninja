@@ -71,7 +71,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             // get query
             var query = $scope.query.split('/');
             query = (query[1] || '') + '+in:name+fork:true+user:' + query[0];
-            
+
             $scope.searching = $HUB.wrap('search', 'repos', {
                 q: query
             }, function(err, repos) {

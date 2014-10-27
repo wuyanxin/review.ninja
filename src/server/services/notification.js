@@ -154,7 +154,7 @@ module.exports = function() {
                                     return;
                                 }
 
-                                if( pullRequest.isWatched(pull, settings) && 
+                                if( pullRequest.isWatched(pull, settings) &&
                                     settings.notifications[eventType[notificationType]] &&
                                     args.sender && args.sender.id !== collaborator.uuid ) {
 

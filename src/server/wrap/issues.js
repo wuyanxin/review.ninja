@@ -9,7 +9,7 @@ module.exports = {
             github.call({
                 obj: 'markdown',
                 fun: 'render',
-                arg: { 
+                arg: {
                     text: comment.body,
                     mode: 'gfm',
                     context: req.args.arg.user + '/' + req.args.arg.repo
@@ -29,7 +29,7 @@ module.exports = {
         github.call({
             obj: 'markdown',
             fun: 'render',
-            arg: { 
+            arg: {
                 text: comment.body,
                 mode: 'gfm',
                 context: req.args.arg.user + '/' + req.args.arg.repo

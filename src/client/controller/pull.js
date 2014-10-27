@@ -235,7 +235,7 @@ module.controller('PullCtrl', ['$scope', '$state', '$stateParams', '$modal', '$H
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':synchronize', function(head) {
-            
+
             // update comparison
             $scope.compComm($scope.base, head);
 

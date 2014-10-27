@@ -22,7 +22,7 @@ module.exports = {
             github.call({
                 obj: 'markdown',
                 fun: 'render',
-                arg: { 
+                arg: {
                     text: pull.body,
                     mode: 'gfm',
                     context: req.args.arg.user + '/' + req.args.arg.repo

@@ -50,7 +50,7 @@ module.exports = {
 
                         // create hook, if it does not exist
                         if(repo.permissions.admin) {
-                            webhook.get(req.args.user, req.args.repo, req.user.token, 
+                            webhook.get(req.args.user, req.args.repo, req.user.token,
                                 function(err, hook) {
                                     if(!hook) {
                                         github.call({

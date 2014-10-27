@@ -41,7 +41,7 @@ describe('pullRequest:badgeComment', function(done) {
                 }
             });
         });
-        
+
         pullRequest.badgeComment('user', 'repo', 123, 456);
         githubStub.restore();
         done();

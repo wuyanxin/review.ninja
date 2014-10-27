@@ -116,7 +116,7 @@ describe('Home Controller', function() {
 
         httpBackend.expect('POST', '/api/user/addRepo').respond(null);
         httpBackend.flush();
-        
+
         scope.repos.length.should.be.exactly(2);
     });
 

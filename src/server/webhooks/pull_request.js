@@ -73,17 +73,17 @@ module.exports = function(req, res) {
                     notification_args
                 );
 
-                var event = req.args.repository.owner.login + ':' + 
+                var event = req.args.repository.owner.login + ':' +
                             req.args.repository.name + ':' +
                             'pull-request-' + req.args.number + ':synchronize';
 
                 io.emit(event, req.args.pull_request.head.sha);
             },
             closed: function() {
-                
+
                 if(req.args.pull_request.merged) {
-                    var event = req.args.repository.owner.login + ':' + 
-                                req.args.repository.name + ':' + 
+                    var event = req.args.repository.owner.login + ':' +
+                                req.args.repository.name + ':' +
                                 'pull-request-' + req.args.number + ':merged';
 
                     io.emit(event, req.args.number);
