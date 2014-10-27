@@ -35,3 +35,4 @@ rules:
     space-infix-ops: 1
     strict: 1
     valid-typeof: 1
+    no-bitwise: 1
