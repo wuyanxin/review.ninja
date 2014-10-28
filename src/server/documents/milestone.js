@@ -6,6 +6,14 @@ var MilestoneSchema = mongoose.Schema({
     number: Number
 });
 
+MilestoneSchema.index({
+    pull: 1,
+    repo: 1,
+    number: 1
+}, {
+    unique: true
+});
+
 var Milestone = mongoose.model('Milestone', MilestoneSchema);
 
 module.exports = {
