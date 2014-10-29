@@ -38,5 +38,27 @@ module.exports = {
                 }, done);
             });
         });
+    },
+
+    close: function(user, repo, repo_uuid, number, token) {
+        Milestone.findOne({
+            pull: number,
+            repo: repo_uuid
+        }, function(err, milestone) {
+            if(!err && milestone) {
+                github.call({
+                    obj: 'issues',
+                    fun: 'updateMilestone',
+                    arg: {
+                        user: user,
+                        repo: repo,
+                        number: milestone.number,
+                        state: 'closed'
+                    },
+                    token: token
+                });
+            }
+        });
+
     }
 };
