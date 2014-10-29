@@ -27,7 +27,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.issues(pull);
+                    pull = Pull.milestone(pull);
                     $scope.authors[pull.user.login] = true;
                 });
             }
@@ -41,7 +41,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.issues(pull);
+                    pull = Pull.milestone(pull);
                     $scope.authors[pull.user.login] = true;
                 });
             }

@@ -6,31 +6,19 @@ module.factory('Pull', ['$HUB', function($HUB) {
 
     return {
 
-        issues: function(pull) {
+        milestone: function(pull) {
 
-            $HUB.call('issues', 'repoIssues', {
-                user: pull.base.repo.owner.login,
-                repo: pull.base.repo.name,
-                labels: 'pull-request-' + pull.number,
-                state: 'open',
-                per_page: 1
-            }, function(err, issues) {
-                if(!err) {
-                    pull.open_issue = issues.value.length ? issues.value[0] : null;
-                }
-            });
-
-            $HUB.call('issues', 'repoIssues', {
-                user: pull.base.repo.owner.login,
-                repo: pull.base.repo.name,
-                labels: 'pull-request-' + pull.number,
-                state: 'closed',
-                per_page: 1
-            }, function(err, issues) {
-                if(!err) {
-                    pull.closed_issue = issues.value.length ? issues.value[0] : null;
-                }
-            });
+            if(pull.milestone) {
+                $HUB.call('issues', 'getMilestone', {
+                    user: pull.base.repo.owner.login,
+                    repo: pull.base.repo.name,
+                    number: pull.milestone.number
+                }, function(err, milestone) {
+                    if(!err) {
+                        pull.milestone = milestone.value;
+                    }
+                });
+            }
 
             return pull;
         }

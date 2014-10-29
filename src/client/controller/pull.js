@@ -13,7 +13,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.repo = repo.value;
 
         // get the pull request
-        $scope.pull = Pull.issues(pull.value);
+        $scope.pull = Pull.milestone(pull.value);
         $scope.base = $scope.pull.base.sha;
         $scope.head = $scope.pull.head.sha;
 
@@ -90,11 +90,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         $scope.$on('issue:open', function(event, issue) {
-            $scope.pull = Pull.issues($scope.pull);
+            $scope.pull = Pull.milestone($scope.pull);
         });
 
         $scope.$on('issue:closed', function(event, issue) {
-            $scope.pull = Pull.issues($scope.pull);
+            $scope.pull = Pull.milestone($scope.pull);
         });
 
 
@@ -176,7 +176,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 number: $stateParams.number
             }, function(err, pull) {
                 if(!err) {
-                    $scope.pull = Pull.issues(pull.value);
+                    $scope.pull = Pull.milestone(pull.value);
                 }
             });
         };
