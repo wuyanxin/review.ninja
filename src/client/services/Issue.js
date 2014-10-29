@@ -22,7 +22,7 @@ module.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
             return issue;
         },
 
-        render: function(issue, done) {
+        render: function(issue) {
 
             // NOTE:
             // in order to render, we need to fix this bug in node-github
@@ -33,7 +33,7 @@ module.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
                  mode: 'gfm',
                  context: $stateParams.user + '/' + $stateParams.repo
             }, function(err, res) {
-                done(err, res.value.body);
+                issue.body = res.value.body;
             });
             return issue;
         }
