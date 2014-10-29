@@ -75,7 +75,7 @@ describe('pull_request:closed', function(done) {
             });
         });
 
-        var milestoneStub = sinon.stub(milestone, 'close', 
+        var milestoneStub = sinon.stub(milestone, 'close',
             function(user, repo, repo_uuid, number, token) {
                 assert.equal(user, 'reviewninja');
                 assert.equal(repo, 'foo');
