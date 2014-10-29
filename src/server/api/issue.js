@@ -1,6 +1,7 @@
 // module
-var github = require('../services/github');
 var url = require('../services/url');
+var github = require('../services/github');
+var milestone = require('../services/milestone');
 
 module.exports = {
 
@@ -31,6 +32,12 @@ module.exports = {
                 text: 'repo must be set'
             }, null);
         }
+        if(!req.args.repo_uuid) {
+            return done({
+                code: 400,
+                text: 'repo_uuid must be set'
+            }, null);
+        }
         if(!req.args.title) {
             return done({
                 code: 400,
@@ -58,17 +65,25 @@ module.exports = {
         body += '|------|--------------|-----------|\r\n';
         body += '|' + req.args.sha + '|' + fileReference + '|' + ninjaReference + '|';
 
-        github.call({
-            obj: 'issues',
-            fun: 'create',
-            arg: {
-                user: req.args.user,
-                repo: req.args.repo,
-                body: body,
-                title: req.args.title,
-                labels: ['review.ninja', 'pull-request-' + req.args.number]
-            },
-            token: req.user.token
-        }, done);
+        milestone.get(req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user.token,
+            function(err, milestone) {
+                if(err) {
+                    return done(err);
+                }
+
+                github.call({
+                    obj: 'issues',
+                    fun: 'create',
+                    arg: {
+                        user: req.args.user,
+                        repo: req.args.repo,
+                        body: body,
+                        title: req.args.title,
+                        labels: ['review.ninja'],
+                        milestone: milestone.number
+                    },
+                    token: req.user.token
+                }, done);
+            });
     }
 };
