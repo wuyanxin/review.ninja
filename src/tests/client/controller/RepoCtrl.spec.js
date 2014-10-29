@@ -53,6 +53,9 @@ describe('Repo Controller', function() {
                 },
                 user: {
                     login: 'johndoe'
+                },
+                milestone: {
+                    number: 5
                 }
             }]
         });
@@ -70,29 +73,20 @@ describe('Repo Controller', function() {
                 },
                 user: {
                     login: 'janedoe'
+                },
+                milestone: {
+                    number: 6
                 }
             }]
         });
 
-        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"pull-request-1","state":"open","per_page":1}}').respond({
+        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"getMilestone","arg":{"user":"reviewninja","repo":"review.ninja","number":5}}').respond({
             data:[{
                 issue: 'issue1'
             }]
         });
 
-        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"pull-request-1","state":"closed","per_page":1}}').respond({
-            data:[{
-                issue: 'issue1'
-            }]
-        });
-
-        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"pull-request-2","state":"open","per_page":1}}').respond({
-            data:[{
-                issue: 'issue1'
-            }]
-        });
-
-        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"repoIssues","arg":{"user":"reviewninja","repo":"review.ninja","labels":"pull-request-2","state":"closed","per_page":1}}').respond({
+        httpBackend.expect('POST','/api/github/call','{"obj":"issues","fun":"getMilestone","arg":{"user":"reviewninja","repo":"review.ninja","number":6}}').respond({
             data:[{
                 issue: 'issue1'
             }]
