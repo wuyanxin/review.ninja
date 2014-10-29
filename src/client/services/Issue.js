@@ -22,18 +22,19 @@ module.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
             return issue;
         },
 
-        render: function(issue) {
+        render: function(issue, done) {
 
             // NOTE:
             // in order to render, we need to fix this bug in node-github
             // (https://github.com/mikedeboer/node-github/issues/92)
 
-            // $HUB.wrap('markdown', 'render', {
-            //     text: issue.body,
-            //     mode: 'gfm',
-            //     context: $stateParams.user + '/' + $stateParams.repo
-            // });
-
+            $HUB.wrap('markdown', 'render', {
+                 text: issue.body,
+                 mode: 'gfm',
+                 context: $stateParams.user + '/' + $stateParams.repo
+            }, function(err, res) {
+                done(err, res.value.body);
+            });
             return issue;
         }
     };

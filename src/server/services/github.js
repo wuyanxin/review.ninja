@@ -2,7 +2,6 @@ var GitHubApi = require('github');
 module.exports = {
 
     call: function(call, done) {
-
         var obj = call.obj;
         var fun = call.fun;
         var arg = call.arg || {};

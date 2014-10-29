@@ -14,7 +14,11 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         }
 
         // get the issue
-        $scope.issue = Issue.render(issue);
+        $scope.issue = Issue.render(issue, function(err, issue) {
+            if(!err) {
+                $scope.issue.body = issue;
+            }
+        });
 
         // emit to parent controller (repo.pull)
         $scope.$emit('issue:set', issue);
