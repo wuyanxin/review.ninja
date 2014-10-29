@@ -15,8 +15,10 @@ module.controller('IssueListCtrl', ['$scope', '$state', '$stateParams', '$HUB', 
         // emit to parent controller (repo.pull)
         $scope.$emit('issue:set', null);
 
-        $scope.$watch('issues.value', function() {
-            $scope.$emit('reference:set', $scope.issues.value);
+        $scope.$watch('issues.value', function(value) {
+            if(value) {
+                $scope.$emit('reference:set', $scope.issues.value);
+            }
         });
 
 

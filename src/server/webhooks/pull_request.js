@@ -4,9 +4,10 @@ var User = require('mongoose').model('User');
 //services
 var url = require('../services/url');
 var github = require('../services/github');
-var notification = require('../services/notification');
-var pullRequest = require('../services/pullRequest');
 var status = require('../services/status');
+var milestone = require('../services/milestone');
+var pullRequest = require('../services/pullRequest');
+var notification = require('../services/notification');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Pull Request Webhook Handler
@@ -88,6 +89,15 @@ module.exports = function(req, res) {
 
                     io.emit(event, req.args.number);
                 }
+
+                // close the milestone
+                milestone.close(
+                    req.args.repository.owner.login,
+                    req.args.repository.name,
+                    req.args.repository.id,
+                    req.args.number,
+                    user.token
+                );
             },
             reopened: function() {
                 // a pull request you have reviewed has a been reopened

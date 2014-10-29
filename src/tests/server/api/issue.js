@@ -5,8 +5,12 @@ var sinon = require('sinon');
 // config
 global.config = require('../../../config');
 
+// documents
+var Milestone = require('../../../server/documents/milestone').Milestone;
+
 // services
 var github = require('../../../server/services/github');
+var milestone = require('../../../server/services/milestone');
 
 // api
 var issue = require('../../../server/api/issue');

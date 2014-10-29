@@ -118,20 +118,20 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                 templateUrl: '/templates/pull/sidebar.html',
                 controller: 'SidebarCtrl',
                 resolve: {
-                    issues: ['$HUBService', '$stateParams', 'Issue',
-                        function($HUBService, $stateParams, Issue) {
-                            return $HUBService.call('issues', 'repoIssues', {
+                    issues: ['$HUBService', '$stateParams', 'pull', 'Issue',
+                        function($HUBService, $stateParams, pull, Issue) {
+                            return pull.value.milestone ? $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 state: $stateParams.state || 'open',
-                                labels: 'pull-request-' + $stateParams.number
+                                milestone: pull.value.milestone.number
                             }, function(err, issues) {
                                 if(!err) {
                                     issues.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
                                 }
-                            });
+                            }) : null;
                         }
                     ]
                 }
@@ -161,9 +161,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                 resolve: {
                     issue: ['$stateParams', 'issues',
                         function($stateParams, issues) {
-
                             var selected;
-
                             issues.value.forEach(function(issue) {
                                 if(issue.number === parseInt($stateParams.issue)) {
                                     selected = issue;

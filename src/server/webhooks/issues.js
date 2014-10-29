@@ -83,6 +83,8 @@ module.exports = function(req, res) {
                             number,
                             args
                         );
+
+                        // todo: emit to sockets
                     }
                 });
             },
@@ -110,6 +112,8 @@ module.exports = function(req, res) {
                                     number,
                                     args
                                 );
+
+                                // todo: emit to sockets
                             }
                         });
                     }
@@ -119,6 +123,7 @@ module.exports = function(req, res) {
             reopened: function() {
                 // udpate the status
                 // send email if pull req is open and unmerged
+                // todo: emit to sockets
             }
         };
 

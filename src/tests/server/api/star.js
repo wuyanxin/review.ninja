@@ -188,8 +188,9 @@ describe('star:set', function() {
             }
         };
 
-        star.set(req, function(error, res) {
+        star.set(req, function(err, res) {
             assert(io.emit.called);
+            assert(io.emit.calledWith('user:repo:pull-request-2:starred', {}));
 
             githubStub.restore();
             starStub.restore();
@@ -281,7 +282,8 @@ describe('star:rmv', function() {
         };
 
         star.rmv(req, function(err, res) {
-            assert.equal(null, null);
+            assert(io.emit.called);
+            assert(io.emit.calledWith('user:repo:pull-request-2:unstarred', {}));
 
             starStub.restore();
             statusStub.restore();
