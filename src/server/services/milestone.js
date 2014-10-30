@@ -12,30 +12,49 @@ module.exports = {
             repo: repo_uuid
         }, function(err, milestone) {
 
-            if(err || milestone) {
-                return done(err, milestone);
+            if(err) {
+                return done(err);
             }
 
-            // create milestone if non-existant
+            // check if milestone still exists
             github.call({
                 obj: 'issues',
-                fun: 'createMilestone',
+                fun: 'getMilestone',
                 arg: {
                     user: user,
                     repo: repo,
-                    title: 'Pull Request #' + number
+                    number: milestone ? milestone.number : null
                 },
                 token: token
-            }, function(err, milestone) {
-                if(err) {
-                    return done(err);
+            }, function(err) {
+                if(!err) {
+                    return done(err, milestone);
                 }
 
-                Milestone.create({
-                    pull: number,
-                    repo: repo_uuid,
-                    number: milestone.number
-                }, done);
+                // create milestone if non-existant
+                github.call({
+                    obj: 'issues',
+                    fun: 'createMilestone',
+                    arg: {
+                        user: user,
+                        repo: repo,
+                        title: 'Pull Request #' + number
+                    },
+                    token: token
+                }, function(err, milestone) {
+                    if(err) {
+                        return done(err);
+                    }
+
+                    Milestone.findOneAndUpdate({
+                        pull: number,
+                        repo: repo_uuid,
+                    }, {
+                        number: milestone.number
+                    }, {
+                        upsert: true
+                    }, done);
+                });
             });
         });
     },
