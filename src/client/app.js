@@ -120,18 +120,23 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                 resolve: {
                     issues: ['$HUBService', '$stateParams', 'pull', 'Issue',
                         function($HUBService, $stateParams, pull, Issue) {
-                            return pull.value.milestone ? $HUBService.call('issues', 'repoIssues', {
+                            var milestone = pull.value.milestone;
+                            return $HUBService.call('issues', 'repoIssues', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 state: $stateParams.state || 'open',
-                                milestone: pull.value.milestone.number
+                                milestone: milestone ? milestone.number : null
                             }, function(err, issues) {
+                                // ensure issues is initialized
+                                issues.affix = issues.affix || [];
+                                issues.value = issues.value || [];
+                                
                                 if(!err) {
                                     issues.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
                                     });
                                 }
-                            }) : {value: []};
+                            }, true);
                         }
                     ]
                 }
