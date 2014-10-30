@@ -130,7 +130,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                                 // ensure issues is initialized
                                 issues.affix = issues.affix || [];
                                 issues.value = issues.value || [];
-                                
+
                                 if(!err) {
                                     issues.affix.forEach(function(issue) {
                                         issue = Issue.parse(issue);
