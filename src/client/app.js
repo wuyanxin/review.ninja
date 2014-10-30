@@ -131,7 +131,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                                         issue = Issue.parse(issue);
                                     });
                                 }
-                            }) : null;
+                            }) : {value: []};
                         }
                     ]
                 }
