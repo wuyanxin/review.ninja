@@ -11,15 +11,6 @@ var github = require('../../../server/services/github');
 // service
 var pullRequest = require('../../../server/services/pullRequest');
 
-describe('pullRequest:byLabels', function(done) {
-    it('should extract 1 for pull-request-1', function(done) {
-        var labels = [{name: 'review.ninja'}, {name: 'pull-request-1'}];
-        var pullRequestNumber = pullRequest.byLabels(labels);
-        assert.equal(pullRequestNumber, 1);
-        done();
-    });
-});
-
 describe('pullRequest:badgeComment', function(done) {
     it('should set github call parameters correctly', function(done) {
         config.server.github.user = 'githubUser';
