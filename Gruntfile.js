@@ -51,6 +51,62 @@ module.exports = function(grunt) {
               config: '.scss-lint.yml',
               colorizeOutput: true
             }
+        },
+
+        http: {
+            issue_comment: {
+                options: {
+                    url: 'http://localhost:' + (process.env.PORT || 5000) + '/github/webhook/' + grunt.option('id'),
+                    headers: {
+                        'x-github-event': 'issue_comment'
+                    },
+                    json: function() {
+                        var json = require('./src/tests/fixtures/webhooks/issue_comment/' + grunt.option('action') + '.json');
+                        json.action = grunt.option('action');
+                        json.issue.id = grunt.option('issue');
+                        json.comment.id = grunt.option('comment');
+                        json.repository.owner.login = grunt.option('user');
+                        json.repository.name = grunt.option('repo');
+                        return json;
+                    }
+                }
+            },
+            issues: {
+                options: {
+                    url: 'http://localhost:' + (process.env.PORT || 5000) + '/github/webhook/' + grunt.option('id'),
+                    headers: {
+                        'x-github-event': 'issues'
+                    },
+                    json: function() {
+                        var json = require('./src/tests/fixtures/webhooks/issues/' + grunt.option('action') + '.json');
+                        json.action = grunt.option('action');
+                        json.sender = grunt.option('sender');
+                        json.issue.id = grunt.option('issue');
+                        json.repository.owner.login = grunt.option('user');
+                        json.repository.name = grunt.option('repo');
+                        json.repository.id = grunt.option('repo_uuid');
+                        return json;
+                    }
+                }
+            },
+            pull_request: {
+                options: {
+                    url: 'http://localhost:' + (process.env.PORT || 5000) + '/github/webhook/' + grunt.option('id'),
+                    headers: {
+                        'x-github-event': 'pull_request'
+                    },
+                    json: function() {
+                        var json = require('./src/tests/fixtures/webhooks/pull_request/' + grunt.option('action') + '.json');
+                        json.action = grunt.option('action');
+                        json.sender = grunt.option('sender');
+                        json.number = grunt.option('number');
+                        json.repository.owner.login = grunt.option('user');
+                        json.repository.name = grunt.option('repo');
+                        json.repository.id = grunt.option('repo_uuid');
+                        return json;
+                    }
+                }
+            }
         }
     };
 
