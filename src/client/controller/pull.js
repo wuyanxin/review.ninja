@@ -234,7 +234,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $scope.number, function(id) {
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $stateParams.number, function(id) {
             $HUB.call('issues', 'getComment', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
