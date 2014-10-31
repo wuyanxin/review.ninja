@@ -15,7 +15,7 @@
           <div class="col-sm-8">
             <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }}</h2>
             <p ng-bind-html="pull.html"></p>
-            <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-default">{{ pull.base.ref }}</span> from <span class="label label-default">{{ pull.head.label }}</span> <span moment="pull.created_at"></span></p>
+            <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-default">{{ pull.base.ref }}</span> from <span class="label label-default">{{ fromlabel() }}</span> <span moment="pull.created_at"></span></p>
           </div>
           <div class="col-sm-3" style="padding-right:0;">
             <merge-button pull="pull" merge="merge()" merging="(merging.loading || refreshing.loading)"></merge-button>
