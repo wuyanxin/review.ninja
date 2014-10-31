@@ -2,7 +2,7 @@
 // Pull Factory
 // *****************************************************
 
-module.factory('Pull', ['$HUB', function($HUB) {
+module.factory('Pull', ['$HUB', '$stateParams', function($HUB, $stateParams) {
 
     return {
 
@@ -16,6 +16,23 @@ module.factory('Pull', ['$HUB', function($HUB) {
                 }, function(err, milestone) {
                     if(!err) {
                         pull.milestone = milestone.value;
+                    }
+                });
+            }
+
+            return pull;
+        },
+
+        render: function(pull) {
+
+            if(pull.body) {
+                $HUB.wrap('markdown', 'render', {
+                    text: pull.body,
+                    mode: 'gfm',
+                    context: $stateParams.user + '/' + $stateParams.repo
+                }, function(err, markdown) {
+                    if(!err) {
+                        pull.body = markdown.value.body;
                     }
                 });
             }

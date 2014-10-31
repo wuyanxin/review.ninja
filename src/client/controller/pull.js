@@ -13,7 +13,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.repo = repo.value;
 
         // get the pull request
-        $scope.pull = Pull.milestone(pull.value);
+        $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value);
         $scope.base = $scope.pull.base.sha;
         $scope.head = $scope.pull.head.sha;
 
