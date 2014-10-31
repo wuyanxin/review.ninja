@@ -20,7 +20,7 @@ describe('pull_request:closed', function(done) {
     it('should exit silently if user not found', function(done) {
         var req = {
             params: {id: 123456},
-            args: require('../data/pull_request.closed.json')
+            args: require('../../fixtures/webhooks/pull_request/closed.json')
         };
 
         var userStub = sinon.stub(User, 'findOne', function(args, done) {
@@ -39,7 +39,7 @@ describe('pull_request:closed', function(done) {
     it('should emit "merged" to sockets', function(done) {
         var req = {
             params: {id: 123456},
-            args: require('../data/pull_request.closed.json')
+            args: require('../../fixtures/webhooks/pull_request/closed.json')
         };
 
         var userStub = sinon.stub(User, 'findOne', function(args, done) {
@@ -65,7 +65,7 @@ describe('pull_request:closed', function(done) {
     it('should close milestone', function(done) {
         var req = {
             params: {id: 123456},
-            args: require('../data/pull_request.closed.json')
+            args: require('../../fixtures/webhooks/pull_request/closed.json')
         };
 
         var userStub = sinon.stub(User, 'findOne', function(args, done) {
