@@ -67,14 +67,28 @@ module.exports = {
             if(!err && milestone) {
                 github.call({
                     obj: 'issues',
-                    fun: 'updateMilestone',
+                    fun: 'getMilestone',
                     arg: {
                         user: user,
                         repo: repo,
-                        number: milestone.number,
-                        state: 'closed'
+                        number: milestone.number
                     },
                     token: token
+                }, function(err, milestone) {
+                    if(!err) {
+                        github.call({
+                            obj: 'issues',
+                            fun: 'updateMilestone',
+                            arg: {
+                                user: user,
+                                repo: repo,
+                                number: milestone.number,
+                                title: milestone.title,
+                                state: 'closed'
+                            },
+                            token: token
+                        });
+                    }
                 });
             }
         });
