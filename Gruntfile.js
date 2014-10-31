@@ -82,6 +82,7 @@ module.exports = function(grunt) {
                         json.action = grunt.option('action');
                         json.sender = grunt.option('sender');
                         json.issue.id = grunt.option('issue');
+                        json.issue.milestone.number = grunt.option('milestone');
                         json.repository.owner.login = grunt.option('user');
                         json.repository.name = grunt.option('repo');
                         json.repository.id = grunt.option('repo_uuid');
