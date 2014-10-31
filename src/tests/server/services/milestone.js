@@ -207,16 +207,31 @@ describe('milestone:close', function(done) {
             });
         });
 
-        var githubStub = sinon.stub(github, 'call', function(args) {
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
             assert.equal(args.obj, 'issues');
-            assert.equal(args.fun, 'updateMilestone');
             assert.equal(args.token, 'token');
-            assert.deepEqual(args.arg, {
-                user: 'user',
-                repo: 'repo',
-                number: 3,
-                state: 'closed'
-            });
+
+            if(args.fun === 'getMilestone') {
+                assert.deepEqual(args.arg, {
+                    user: 'user',
+                    repo: 'repo',
+                    number: 3
+                });
+                done(null, {
+                    number: 3,
+                    title: 'Pull Request #2'
+                });
+            }
+
+            if(args.fun === 'updateMilestone') {
+                assert.deepEqual(args.arg, {
+                    user: 'user',
+                    repo: 'repo',
+                    number: 3,
+                    title: 'Pull Request #2',
+                    state: 'closed'
+                });
+            }
         });
 
         milestone.close('user', 'repo', 1, 2, 'token');
