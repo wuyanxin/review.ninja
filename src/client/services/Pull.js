@@ -32,7 +32,7 @@ module.factory('Pull', ['$HUB', '$stateParams', function($HUB, $stateParams) {
                     context: $stateParams.user + '/' + $stateParams.repo
                 }, function(err, markdown) {
                     if(!err) {
-                        pull.body = markdown.value.body;
+                        pull.html = markdown.value.body;
                     }
                 });
             }

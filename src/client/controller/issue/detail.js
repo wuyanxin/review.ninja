@@ -6,8 +6,8 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'issue', 'socket',
-    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, issue, socket) {
+module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'Comment', 'issue', 'socket',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, Comment, issue, socket) {
 
         if(!issue) {
             return $state.go('repo.pull.issue.master');
@@ -26,10 +26,16 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         }
 
         // get the comments
-        $scope.comments = $HUB.wrap('issues', 'getComments', {
+        $scope.comments = $HUB.call('issues', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.issue
+        }, function(err, comments) {
+            if(!err) {
+                comments.affix.forEach(function(comment) {
+                    comment = Comment.render(comment);
+                });
+            }
         });
 
         //
@@ -65,7 +71,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                 }, function(err, comment) {
                     if(!err) {
                         $scope.comment = null;
-                        $scope.comments.value.push(comment.value);
+                        $scope.comments.value.push(Comment.render(comment.value));
                     }
                 });
             }
@@ -78,7 +84,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                 id: id
             }, function(err, comment) {
                 if(!err && comment.value.user.id !== $rootScope.user.value.id) {
-                  $scope.comments.value.push(comment.value);
+                  $scope.comments.value.push(Comment.render(comment.value));
                 }
             });
         });

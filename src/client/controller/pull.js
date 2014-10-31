@@ -6,8 +6,8 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'repo', 'pull', 'socket', 'Pull',
-    function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, repo, pull, socket, Pull) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'Pull', 'Comment', 'repo', 'pull', 'socket',
+    function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, Pull, Comment, repo, pull, socket) {
 
         // get the repo
         $scope.repo = repo.value;
@@ -49,10 +49,16 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         // get the pull req comments
-        $scope.comments = $HUB.wrap('issues', 'getComments', {
+        $scope.comments = $HUB.call('issues', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.number
+        }, function(err, comments) {
+            if(!err) {
+                comments.affix.forEach(function(comment) {
+                    comment = Comment.render(comment);
+                });
+            }
         });
 
 
@@ -191,7 +197,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 }, function(err, comment) {
                     if(!err) {
                         $scope.comment = null;
-                        $scope.comments.value.push(comment.value);
+                        $scope.comments.value.push(Comment.render(comment.value));
                     }
                 });
             }
@@ -229,7 +235,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 id: id
             }, function(err, comment) {
                 if(!err && comment.value.user.id !== $rootScope.user.value.id) {
-                  $scope.comments.value.push(comment.value);
+                  $scope.comments.value.push(Comment.render(comment.value));
                 }
             });
         });

@@ -31,7 +31,7 @@ module.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
                     context: $stateParams.user + '/' + $stateParams.repo
                 }, function(err, markdown) {
                     if(!err) {
-                        issue.body = markdown.value.body;
+                        issue.html = markdown.value.body;
                     }
                 });
             }
