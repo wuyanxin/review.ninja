@@ -2,17 +2,6 @@ var url = require('./url');
 var github = require('./github');
 
 module.exports = {
-    byLabels: function(labels) {
-        var number = null;
-        labels.forEach(function(label) {
-            var regex = /pull-request-(\d*)?/;
-            var match = regex.exec(label.name);
-            if (match) {
-                number = match[1];
-            }
-        });
-        return number;
-    },
 
     badgeComment: function(user, repo, repo_uuid, number) {
         var badgeUrl = url.pullRequestBadge(repo_uuid, number);
