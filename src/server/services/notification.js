@@ -166,8 +166,6 @@ module.exports = function() {
                                         html: ejs.render(template, args)
                                     };
 
-                                    console.log('sendmail');
-
                                     transporter.sendMail(mailOptions, function(err, response) {
                                         if (err) {
                                             return;
