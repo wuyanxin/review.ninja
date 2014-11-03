@@ -37,7 +37,6 @@ describe('star:all', function(done) {
             starStub.restore();
             done();
         });
-
     });
 });
 
