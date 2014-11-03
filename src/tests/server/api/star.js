@@ -142,7 +142,7 @@ describe('star:set', function() {
             done(null, {});
         });
 
-        var notificationStub = sinon.stub(notification, 'sendmail', 
+        var notificationStub = sinon.stub(notification, 'sendmail',
             function(notification_type, user, repo, repo_uuid, repo_token, pull_request_number, args) {
                 assert.equal(notification_type, 'star');
                 assert.equal(user, 'user');
@@ -252,7 +252,7 @@ describe('star:rmv', function() {
             });
         });
 
-        var notificationStub = sinon.stub(notification, 'sendmail', 
+        var notificationStub = sinon.stub(notification, 'sendmail',
             function(notification_type, user, repo, repo_uuid, repo_token, pull_request_number, args) {
                 assert.equal(notification_type, 'unstar');
                 assert.equal(user, 'user');
