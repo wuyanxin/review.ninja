@@ -46,7 +46,7 @@ describe('notification:', function() {
                 }
             });
         });
-        var pullRequestStub = sinon.stub(pullRequest, 'isWatched').returns(true)
+        var pullRequestStub = sinon.stub(pullRequest, 'isWatched').returns(true);
         var userStub = sinon.stub(User, 'find').returns({where: function(uuid) {
             return {
                 in: function(collaboratorIds) {
@@ -54,9 +54,9 @@ describe('notification:', function() {
                         exec: function(fun) {
                             fun(null, collaborators);
                         }
-                    }
+                    };
                 }
-            }
+            };
         }});
         var transporter = {
             sendMail: sinon.spy()
