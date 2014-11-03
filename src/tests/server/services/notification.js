@@ -15,10 +15,6 @@ var User = require('mongoose').model('User');
 var pullRequest = require('../../../server/services/pullRequest');
 
 describe('notification:', function() {
-    beforeEach(function() {
-        notification.sendmail.restore();
-    });
-
     it('should send an email', function(done) {
         var collaborators = [];
         collaborators.push({
