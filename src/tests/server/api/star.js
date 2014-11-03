@@ -40,7 +40,6 @@ describe('star:all', function() {
             starStub.restore();
             done();
         });
-
     });
 });
 

@@ -68,7 +68,6 @@ module.exports = function() {
             },
             token: token
         }, function(err, emails) {
-
             var primary = null;
             for(var key = 0; key < emails.length; key++) {
                 if(emails[key].primary) {
@@ -157,9 +156,7 @@ module.exports = function() {
                                 if( pullRequest.isWatched(pull, settings) &&
                                     settings.notifications[eventType[notificationType]] &&
                                     args.sender && args.sender.id !== collaborator.uuid ) {
-
                                     var transporter = buildTransporter();
-
                                     var template = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
 
                                     var mailOptions = {
