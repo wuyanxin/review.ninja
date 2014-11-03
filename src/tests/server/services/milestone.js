@@ -180,6 +180,61 @@ describe('milestone:get', function(done) {
             done();
         });
     });
+
+    it('should return error if mongo return error', function(done) {
+        var milestoneFindOneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
+            done('mongodb error', null);
+        });
+
+        milestone.get('user', 'repo', 1, 2, 'token', function(err, milestone) {
+            assert.equal(err, 'mongodb error');
+
+            milestoneFindOneStub.restore();
+            done();
+        });
+    });
+
+    it('should return error if github fails to create milestone', function(done) {
+        var milestoneFindOneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
+            assert.equal(args.repo, 1);
+            assert.equal(args.pull, 2);
+            done(null, null);
+        });
+
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+
+            assert.equal(args.obj, 'issues');
+            assert.equal(args.token, 'token');
+
+            if(args.fun === 'getMilestone') {
+                assert.deepEqual(args.arg, {
+                    user: 'user',
+                    repo: 'repo',
+                    number: null
+                });
+                done(true);
+            }
+
+            if(args.fun === 'createMilestone') {
+                assert.deepEqual(args.arg, {
+                    user: 'user',
+                    repo: 'repo',
+                    title: 'Pull Request #2'
+                });
+                done('github error', null);
+            }
+        });
+
+        milestone.get('user', 'repo', 1, 2, 'token', function(err, milestone) {
+            assert.equal(err, 'github error');
+            assert.equal(githubStub.callCount, 2);
+
+            milestoneFindOneStub.restore();
+            githubStub.restore();
+
+            done();
+        });
+    });
 });
 
 describe('milestone:close', function(done) {
