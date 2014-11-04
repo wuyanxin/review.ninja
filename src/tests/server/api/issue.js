@@ -98,12 +98,14 @@ describe('issue:add', function(done){
                 body: 'Test body',
                 user: 'reviewninja',
                 repo: 'review.ninja',
+                repo_uuid: 'repouuid',
                 number: 1
             }
         };
 
         issue.add(req, function(err, res) {
             assert.equal(err.code, 400);
+            assert.equal(err.text, 'sha must be set');
             done();
         });
     });
@@ -115,12 +117,14 @@ describe('issue:add', function(done){
                 body: 'Test body',
                 user: 'reviewninja',
                 sha: '*commitsha*',
+                repo_uuid: 'repouuid',
                 number: 1
             }
         };
 
         issue.add(req, function(err, res) {
             assert.equal(err.code, 400);
+            assert.equal(err.text, 'repo must be set');
             done();
         });
     });
@@ -132,12 +136,14 @@ describe('issue:add', function(done){
                 body: 'Test body',
                 repo: 'review.ninja',
                 sha: '*commitsha*',
+                repo_uuid: 'repouuid',
                 number: 1
             }
         };
 
         issue.add(req, function(err, res) {
             assert.equal(err.code, 400);
+            assert.equal(err.text, 'user must be set');
             done();
         });
     });
@@ -149,12 +155,14 @@ describe('issue:add', function(done){
                 user: 'reviewninja',
                 repo: 'review.ninja',
                 sha: '*commitsha*',
+                repo_uuid: 'repouuid',
                 number: 1
             }
         };
 
         issue.add(req, function(err, res) {
             assert.equal(err.code, 400);
+            assert.equal(err.text, 'title must be set');
             done();
         });
     });
@@ -166,12 +174,14 @@ describe('issue:add', function(done){
                 body: 'Test body',
                 user: 'reviewninja',
                 repo: 'review.ninja',
+                repo_uuid: 'repouuid',
                 sha: '*commitsha*'
             }
         };
 
         issue.add(req, function(err, res) {
             assert.equal(err.code, 400);
+            assert.equal(err.text, 'number must be set');
             done();
         });
     });
