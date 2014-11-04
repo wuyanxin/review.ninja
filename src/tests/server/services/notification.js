@@ -71,8 +71,8 @@ describe('notification:', function() {
         });
 
 
-        assert(nodemailer.createTransport.called);
-        assert(transporter.sendMail.called);
+        assert(nodemailer.createTransport.called, 'ransporter not created');
+        assert(transporter.sendMail.called, 'mail not send via transporter');
 
         githubStub.restore();
         settingsStub.restore();
