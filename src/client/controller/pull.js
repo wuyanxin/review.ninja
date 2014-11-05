@@ -21,7 +21,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.reference = {};
         $scope.selection = [];
 
-        $scope.tooltiptext = '';
 
         // get the files (for the diff view)
         $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
@@ -42,6 +41,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             sha: $scope.head,
             repo_uuid: $scope.repo.id
         });
+        $scope.tooltiptext = function() {
+            return $scope.star.value === 'set' ? 'Remove' : 'Add';
+        }();
 
         // get the users for each star
         $scope.pull.stars.forEach(function(star) {
