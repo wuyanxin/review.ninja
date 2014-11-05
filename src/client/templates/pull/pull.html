@@ -59,7 +59,7 @@
                 <div class="col-sm-4 text-right">
                   <div class="btn-group">
                       <button type="button" class="btn btn-default" ng-click="toggle()" style="padding:2px 12px 0px;"
-                              tooltip="Okay to merge" tooltip-placement="bottom">
+                              tooltip="{{ tooltiptext }} ninja star" tooltip-placement="bottom">
                           <span class="icon-ninja-star text-primary" style="font-size:25px"
                                 ng-class="{muted: !star.value}"></span>
                       </button>
@@ -90,6 +90,7 @@
                 </div>
               </div>
             </div>
+
             <diff ng-repeat="file in files.value" 
                   path="file.filename" 
                   patch="file.patch" 
@@ -100,6 +101,7 @@
                   selection="selection"
                   reference="reference">
             </diff>
+
           </tab>
 
           <tab>
