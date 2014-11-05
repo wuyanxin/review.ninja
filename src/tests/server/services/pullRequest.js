@@ -34,6 +34,7 @@ describe('pullRequest:badgeComment', function(done) {
         });
 
         pullRequest.badgeComment('user', 'repo', 123, 456);
+        sinon.assert.called(githubStub);
         githubStub.restore();
         done();
     });

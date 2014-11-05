@@ -52,6 +52,8 @@ describe('status:update', function() {
         };
 
         status.update(args, function(err, status) {
+            sinon.assert.called(starStub);
+            sinon.assert.called(githubStub);
             starStub.restore();
             githubStub.restore();
             done();
@@ -94,6 +96,8 @@ describe('status:update', function() {
         };
 
         status.update(args, function(err, status) {
+            sinon.assert.called(starStub);
+            sinon.assert.called(githubStub);
             starStub.restore();
             githubStub.restore();
             done();
@@ -136,6 +140,8 @@ describe('status:update', function() {
         };
 
         status.update(args, function(err, status) {
+            sinon.assert.called(starStub);
+            sinon.assert.called(githubStub);
             starStub.restore();
             githubStub.restore();
             done();
