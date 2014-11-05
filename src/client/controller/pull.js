@@ -164,7 +164,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }, function(err, star) {
                 if(!err) {
                     $scope.star.value = fn === 'set' ? star.value : null;
-                    $scope.tooltiptext = fn === 'set' ? 'Remove ninja star' : 'Add ninja star';
+                    $scope.tooltiptext = fn === 'set' ? 'Remove' : 'Add';
                 }
             });
         };
