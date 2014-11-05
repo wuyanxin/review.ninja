@@ -27,7 +27,8 @@
     <div class="row">
       <div class="col-sm-12">
         <tabset>
-          <tab heading="Diffs">
+          <tab>
+            <tab-heading><span class="octicon octicon-diff"></span> Diffs</tab-heading>
 
             <div class="well" style="margin-top:-2px; border:1px solid #ececec;">
               <div class="row">
@@ -87,7 +88,6 @@
                 </div>
               </div>
             </div>
-
             <diff ng-repeat="file in files.value" 
                   path="file.filename" 
                   patch="file.patch" 
@@ -98,10 +98,10 @@
                   selection="selection"
                   reference="reference">
             </diff>
-
           </tab>
 
-          <tab heading="Files">
+          <tab>
+            <tab-heading><span class="octicon octicon-file-code"></span> Files</tab-heading>
             <browser tree="tree.value" 
                      head-sha="head" 
                      selection="selection"
@@ -109,8 +109,8 @@
             </browser>
           </tab>
 
-          <tab heading="Conversation">
-
+          <tab>
+            <tab-heading><span class="octicon octicon-comment-discussion"></span> Conversation</tab-heading>
             <div infinite-scroll="comments.getMore()" 
                  infinite-scroll-disabled="comments.loading"
                  style="margin:20px 0;">
