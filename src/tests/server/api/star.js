@@ -37,6 +37,7 @@ describe('star:all', function() {
         };
 
         star.all(req, function(error, res) {
+            sinon.assert.called(starStub);
             starStub.restore();
             done();
         });
@@ -61,6 +62,7 @@ describe('star:get', function() {
         };
 
         star.get(req, function(err, res) {
+            sinon.assert.called(starStub);
             starStub.restore();
             done();
         });
@@ -85,7 +87,7 @@ describe('star:set', function() {
 
         star.set(req, function(err, star) {
             assert.equal(err, 'github repos one error');
-
+            sinon.assert.called(githubStub);
             githubStub.restore();
             done();
         });
@@ -110,7 +112,7 @@ describe('star:set', function() {
                 code: 403,
                 text: 'Forbidden'
             });
-
+            sinon.assert.called(githubStub);
             githubStub.restore();
             done();
         });
@@ -194,6 +196,12 @@ describe('star:set', function() {
         };
 
         star.set(req, function(err, res) {
+            sinon.assert.called(githubStub);
+            sinon.assert.called(starStub);
+            sinon.assert.called(notificationStub);
+            sinon.assert.called(dateStub);
+            sinon.assert.called(statusStub);
+            sinon.assert.called(emitStub);
             githubStub.restore();
             starStub.restore();
             notificationStub.restore();
@@ -223,7 +231,7 @@ describe('star:rmv', function() {
 
         star.rmv(req, function(err, res) {
             assert.equal(err, 'mongoose star error');
-
+            sinon.assert.called(starStub);
             starStub.restore();
             done();
         });
@@ -288,6 +296,10 @@ describe('star:rmv', function() {
         };
 
         star.rmv(req, function(err, res) {
+            sinon.assert.called(starStub);
+            sinon.assert.called(statusStub);
+            sinon.assert.called(notificationStub);
+            sinon.assert.called(emitStub);
             starStub.restore();
             statusStub.restore();
             notificationStub.restore();

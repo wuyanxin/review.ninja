@@ -43,7 +43,8 @@ describe('milestone:get', function(done) {
                 pull: 2,
                 number: 3
             });
-
+            sinon.assert.called(milestoneStub);
+            sinon.assert.called(githubStub);
             milestoneStub.restore();
             githubStub.restore();
             done();
@@ -109,6 +110,9 @@ describe('milestone:get', function(done) {
             });
 
             assert.equal(githubStub.callCount, 2);
+            sinon.assert.called(milestoneStub);
+            sinon.assert.called(githubStub);
+            sinon.assert.called(milestoneCreateStub);
 
             milestoneStub.restore();
             githubStub.restore();
@@ -172,6 +176,9 @@ describe('milestone:get', function(done) {
             });
 
             assert.equal(githubStub.callCount, 2);
+            sinon.assert.called(milestoneFindOneStub);
+            sinon.assert.called(githubStub);
+            sinon.assert.called(milestoneCreateStub);
 
             milestoneFindOneStub.restore();
             githubStub.restore();
@@ -188,6 +195,7 @@ describe('milestone:get', function(done) {
 
         milestone.get('user', 'repo', 1, 2, 'token', function(err, milestone) {
             assert.equal(err, 'mongodb error');
+            sinon.assert.called(milestoneFindOneStub);
 
             milestoneFindOneStub.restore();
             done();
@@ -228,6 +236,8 @@ describe('milestone:get', function(done) {
         milestone.get('user', 'repo', 1, 2, 'token', function(err, milestone) {
             assert.equal(err, 'github error');
             assert.equal(githubStub.callCount, 2);
+            sinon.assert.called(milestoneFindOneStub);
+            sinon.assert.called(githubStub);
 
             milestoneFindOneStub.restore();
             githubStub.restore();
@@ -246,6 +256,7 @@ describe('milestone:close', function(done) {
         });
 
         milestone.close('user', 'repo', 1, 2, 'token');
+        sinon.assert.called(milestoneStub);
 
         milestoneStub.restore();
         done();
@@ -290,6 +301,9 @@ describe('milestone:close', function(done) {
         });
 
         milestone.close('user', 'repo', 1, 2, 'token');
+
+        sinon.assert.called(milestoneStub);
+        sinon.assert.called(githubStub);
 
         milestoneStub.restore();
         githubStub.restore();

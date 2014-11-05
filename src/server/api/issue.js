@@ -84,6 +84,7 @@ module.exports = {
                     },
                     token: req.user.token
                 }, done);
-            });
+            }
+        );
     }
 };

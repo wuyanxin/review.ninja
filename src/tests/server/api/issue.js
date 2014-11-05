@@ -28,8 +28,11 @@ describe('issue:add', function(done){
                        '|*commitsha*|[src/tests/server/api/issue.js#L24](https://github.com/reviewninja/review.ninja/blob/*commitsha*/src/tests/server/api/issue.js#L24)|[#1](https://review.ninja/reviewninja/review.ninja/pull/1)|';
             assert.equal(args.arg.body, body);
             assert.equal(args.arg.labels[0], 'review.ninja');
-            assert.equal(args.arg.labels[1], 'pull-request-1');
             done(null, null);
+        });
+
+        var milestoneStub = sinon.stub(milestone, 'get', function(user, repo, repo_uuid, number, token, done) {
+            done(null, {number: 1});
         });
 
         var req = {
@@ -40,6 +43,7 @@ describe('issue:add', function(done){
                 repo: 'review.ninja',
                 reference: '*commitsha*/src/tests/server/api/issue.js#L24',
                 sha: '*commitsha*',
+                repo_uuid: 2,
                 number: 1
             },
             user: {
@@ -48,8 +52,12 @@ describe('issue:add', function(done){
         };
 
         issue.add(req, function(err, res) {
+            assert.equal(err, null);
             assert.equal(res, null);
+            sinon.assert.called(githubStub);
+            sinon.assert.called(milestoneStub);
             githubStub.restore();
+            milestoneStub.restore();
             done();
         });
     });
@@ -66,9 +74,13 @@ describe('issue:add', function(done){
                        '|*commitsha*|`none`|[#1](https://review.ninja/reviewninja/review.ninja/pull/1)|';
             assert.equal(args.arg.body, body);
             assert.equal(args.arg.labels[0], 'review.ninja');
-            assert.equal(args.arg.labels[1], 'pull-request-1');
             done(null, null);
         });
+
+        var milestoneStub = sinon.stub(milestone, 'get', function(user, repo, repo_uuid, number, token, done) {
+            done(null, {number: 1});
+        });
+
 
         var req = {
             args: {
@@ -77,6 +89,7 @@ describe('issue:add', function(done){
                 user: 'reviewninja',
                 repo: 'review.ninja',
                 sha: '*commitsha*',
+                repo_uuid: 2,
                 number: 1
             },
             user: {
@@ -85,8 +98,12 @@ describe('issue:add', function(done){
         };
 
         issue.add(req, function(err, res) {
+            assert.equal(err, null);
             assert.equal(res, null);
+            sinon.assert.called(githubStub);
+            sinon.assert.called(milestoneStub);
             githubStub.restore();
+            milestoneStub.restore();
             done();
         });
     });
