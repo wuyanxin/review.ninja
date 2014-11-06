@@ -27,19 +27,19 @@ module.exports = function(req, res) {
                 user: user,
                 repo: repo,
                 number: number
-            }
+            },
+            token: token
         }, done);
     }
 
-    function getIssues(user, repo, number, token, done) {
+    function getMilestone(user, repo, number, token, done) {
         github.call({
             obj: 'issues',
-            fun: 'repoIssues',
+            fun: 'getMilestone',
             arg: {
                 user: user,
                 repo: repo,
-                labels: 'pull-request-' + number,
-                state: 'open'
+                number: number
             },
             token: token
         }, done);
@@ -98,8 +98,8 @@ module.exports = function(req, res) {
                 },
 
                 closed: function() {
-                    getIssues(req.args.repository.owner.login, req.args.repository.name, milestone.pull, user.token, function(err, issues) {
-                        if(!err && !issues.length) {
+                    getMilestone(req.args.repository.owner.login, req.args.repository.name, milestone.pull, user.token, function(err, mile) {
+                        if(!err && !mile.open_issues) {
                             getPull(req.args.repository.owner.login, req.args.repository.name, milestone.pull, user.token, function(err, pull) {
                                 if(!err) {
                                     status.update({
