@@ -52,7 +52,7 @@ module.exports = function(req, res) {
         }
 
         if(!req.args.issue.milestone) {
-            return res.end(); // quietly exit
+            return res.send('Issue has no milestone');
         }
 
         Milestone.findOne({
