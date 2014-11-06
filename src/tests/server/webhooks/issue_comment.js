@@ -42,7 +42,7 @@ describe('issue_comment', function(done) {
                 head: {
                     sha: 'sha'
                 }
-            })
+            });
         });
 
         var starStub = sinon.spy(star, 'create');
