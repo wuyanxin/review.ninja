@@ -18,7 +18,7 @@ module.exports = function(req, res) {
     User.findOne({ _id: req.params.id }, function(err, user) {
 
         if(err || !user) {
-            return res.end();
+            return res.status(404).send('User not found');
         }
 
         var args = {

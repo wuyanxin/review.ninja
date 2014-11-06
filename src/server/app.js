@@ -253,7 +253,7 @@ app.all('/api/:obj/:fun', function(req, res) {
     res.set('Content-Type', 'application/json');
     api[req.params.obj][req.params.fun](req, function(err, obj) {
         if(err) {
-            return res.send(err.code > 0 ? err.code : 500, JSON.stringify(err.text || err));
+            return res.status(err.code > 0 ? err.code : 500).send(JSON.stringify(err.text || err));
         }
         obj ? res.send(JSON.stringify(obj)) : res.send();
     });
@@ -267,11 +267,11 @@ app.all('/github/webhook/:id', function(req, res) {
     var event = req.headers['x-github-event'];
     try {
         if (!webhooks[event]) {
-            return res.send(400, 'Unsupported event');
+            return res.status(400).send('Unsupported event');
         }
         webhooks[event](req, res);
     } catch (err) {
-        res.send(500, 'Internal Server Error');
+        res.status(500).send('Internal server error');
     }
 });
 

@@ -34,7 +34,12 @@ describe('pull_request', function(done) {
         });
 
         pull_request(req, {
-            end: function() {
+            status: function(code) {
+                assert.equal(code, 404);
+                return this;
+            },
+            send: function(msg) {
+                assert.equal(msg, 'User not found');
                 userStub.restore();
                 done();
             }

@@ -34,13 +34,14 @@ describe('issue', function(done) {
             done(null, null);
         });
 
-        var milestoneSpy = sinon.spy(Milestone, 'findOne');
-
         issues(req, {
-            end: function() {
-                assert(milestoneSpy.notCalled);
+            status: function(code) {
+                assert.equal(code, 404);
+                return this;
+            },
+            send: function(msg) {
+                assert.equal(msg, 'User not found');
                 userStub.restore();
-                milestoneSpy.restore();
                 done();
             }
         });
@@ -54,19 +55,24 @@ describe('issue', function(done) {
 
         var userStub = sinon.stub(User, 'findOne', function(args, done) {
             assert.equal(args._id, 123456);
-            done(null, null);
+            done(null, {});
         });
 
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.deepEqual(args, {
-                repo: 'foo',
+                repo: 23588185,
                 number: 1
             });
             done(null, null);
         });
 
         issues(req, {
-            end: function() {
+            status: function(code) {
+                assert.equal(code, 404);
+                return this;
+            },
+            send: function(msg) {
+                assert.equal(msg, 'Milestone not found');
                 userStub.restore();
                 milestoneStub.restore();
                 done();

@@ -47,8 +47,12 @@ module.exports = function(req, res) {
 
     User.findOne({ _id: req.params.id }, function(err, user) {
 
-        if(err || !user || !req.args.issue.milestone) {
-            return res.end();
+        if(err || !user) {
+            return res.status(404).send('User not found');
+        }
+
+        if(!req.args.issue.milestone) {
+            return res.end(); // quietly exit
         }
 
         Milestone.findOne({
@@ -57,7 +61,7 @@ module.exports = function(req, res) {
         }, function(err, milestone) {
 
             if(err || !milestone) {
-                return res.end();
+                return res.status(404).send('Milestone not found');
             }
 
             var args = {
