@@ -8,7 +8,6 @@ var notification = require('../services/notification');
 module.exports = {
 
     create: function(sha, user, repo, repo_uuid, number, sender, token, done) {
-        console.log('bbbbb');
         Star.create({
             sha: sha,
             user: sender.id,
@@ -16,11 +15,8 @@ module.exports = {
             name: sender.login,
             created_at: Date.now()
         }, function(err, star) {
-            console.log('asdfasdfasdf', err);
             if(!err && star) {
                 io.emit(user + ':' + repo + ':pull-request-' + number + ':starred', {});
-                console.log('1');
-                console.log('log', sha, repo_uuid, number);
                 status.update({
                     user: user,
                     repo: repo,
@@ -29,7 +25,6 @@ module.exports = {
                     number: number,
                     token: token
                 });
-                console.log('2');
                 notification.sendmail('star', user, repo, repo_uuid, token, number, {
                     user: user,
                     repo: repo,

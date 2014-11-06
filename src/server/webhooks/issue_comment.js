@@ -32,8 +32,7 @@ module.exports = function(req, res) {
                         token: user.token
                     }, function(err, pull) {
                         if(!err) {
-                            console.log('5');
-                           star.create(pull.head.sha, req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, req.args.issue.number, req.args.sender, user.token);
+                            star.create(pull.head.sha, req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, req.args.issue.number, req.args.sender, user.token);
                         }
                     });
                 }

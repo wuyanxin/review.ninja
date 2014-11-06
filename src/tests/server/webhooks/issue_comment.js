@@ -9,7 +9,8 @@ global.config = require('../../../config');
 global.io = {emit: function() {}};
 
 // documents
-var Star = require('../../../server/documents/star').Star;
+var User = require('../../../server/documents/user').User;
+var star = require('../../../server/services/star');
 // webhooks
 var issue_comment = require('../../../server/webhooks/issue_comment');
 
@@ -21,21 +22,38 @@ describe('issue_comment', function(done) {
     it('should add a ninja star on thumbsup or plus-one', function(done) {
         var req = {
             params: {id: 123456},
-            args: require('../../fixtures/webhooks/issue_comment/created_thumbsup.json')
+            args: require('../../fixtures/webhooks/issue_comment/created.json')
         };
 
         var userStub = sinon.stub(User, 'findOne', function(args, done) {
-            console.log('args\n', args);
             assert.equal(args._id, 123456);
-            done(null, null);
+            done(null, {
+                token: 'token'
+            });
         });
 
-        pull_request(req, {
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            assert.equal('pullRequests', args.obj);
+            assert.equal('get', args.fun);
+            assert.equal('reviewninja', args.arg.user);
+            assert.equal('foo', args.arg.repo);
+            assert.equal('43', args.arg.number);
+            done(null, {
+                head: {
+                    sha: 'sha'
+                }
+            })
+        });
+
+        var starStub = sinon.spy(star, 'create');
+
+        issue_comment(req, {
             end: function() {
+                sinon.assert.called(starStub);
                 userStub.restore();
+                githubStub.restore();
                 done();
             }
         });
-        done();
     });
 });
