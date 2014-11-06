@@ -52,7 +52,7 @@ module.exports = function(req, res) {
         }
 
         Milestone.findOne({
-            repo: req.args.repository.name,
+            repo: req.args.repository.id,
             number: req.args.issue.milestone.number
         }, function(err, milestone) {
 
@@ -98,32 +98,35 @@ module.exports = function(req, res) {
                 },
 
                 closed: function() {
-                    getMilestone(req.args.repository.owner.login, req.args.repository.name, milestone.pull, user.token, function(err, mile) {
+
+                    // send a notification if all issues are closed
+                    getMilestone(req.args.repository.owner.login, req.args.repository.name, milestone.number, user.token, function(err, mile) {
                         if(!err && !mile.open_issues) {
-                            getPull(req.args.repository.owner.login, req.args.repository.name, milestone.pull, user.token, function(err, pull) {
-                                if(!err) {
-                                    status.update({
-                                        user: req.args.repository.owner.login,
-                                        repo: req.args.repository.name,
-                                        repo_uuid: req.args.repository.id,
-                                        sha: pull.head.sha,
-                                        number: pull.number,
-                                        token: user.token
-                                    });
+                            notification.sendmail(
+                                'closed_issue',
+                                req.args.repository.owner.login,
+                                req.args.repository.name,
+                                req.args.repository.id,
+                                user.token,
+                                milestone.pull,
+                                args
+                            );
+                        }
+                    });
 
-                                    notification.sendmail(
-                                        'closed_issue',
-                                        req.args.repository.owner.login,
-                                        req.args.repository.name,
-                                        req.args.repository.id,
-                                        user.token,
-                                        milestone.pull,
-                                        args
-                                    );
-
-                                    // todo: emit to sockets
-                                }
+                    // update the status
+                    getPull(req.args.repository.owner.login, req.args.repository.name, milestone.pull, user.token, function(err, pull) {
+                        if(!err) {
+                            status.update({
+                                user: req.args.repository.owner.login,
+                                repo: req.args.repository.name,
+                                repo_uuid: req.args.repository.id,
+                                sha: pull.head.sha,
+                                number: pull.number,
+                                token: user.token
                             });
+
+                            // todo: emit to sockets
                         }
                     });
                 },

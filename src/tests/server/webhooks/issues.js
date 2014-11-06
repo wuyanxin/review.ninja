@@ -89,7 +89,7 @@ describe('issue:opened', function(done) {
 
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.deepEqual(args, {
-                repo: 'foo',
+                repo: 23588185,
                 number: 3
             });
             done(null, {
@@ -169,7 +169,7 @@ describe('issue:closed', function(done) {
 
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.deepEqual(args, {
-                repo: 'foo',
+                repo: 23588185,
                 number: 1
             });
             done(null, {
@@ -188,7 +188,7 @@ describe('issue:closed', function(done) {
                     arg: {
                         user: 'reviewninja',
                         repo: 'foo',
-                        number: 2
+                        number: 1
                     },
                     token: 'token'
                 });
@@ -248,6 +248,91 @@ describe('issue:closed', function(done) {
                 githubStub.restore();
                 statusStub.restore();
                 notificationStub.restore();
+                done();
+            }
+        });
+    });
+
+    it('should set status but not send a notification (still open issues)', function(done) {
+        var req = {
+            params: {id: 123456},
+            args: require('../../fixtures/webhooks/issues/closed.json')
+        };
+
+        var userStub = sinon.stub(User, 'findOne', function(args, done) {
+            assert.equal(args._id, 123456);
+            done(null, {token: 'token'});
+        });
+
+        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
+            assert.deepEqual(args, {
+                repo: 23588185,
+                number: 1
+            });
+            done(null, {
+                pull: 2,
+                repo: 23588185,
+                number: 1
+            });
+        });
+
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+
+            if(args.obj === 'issues') {
+                assert.deepEqual(args, {
+                    obj: 'issues',
+                    fun: 'getMilestone',
+                    arg: {
+                        user: 'reviewninja',
+                        repo: 'foo',
+                        number: 1
+                    },
+                    token: 'token'
+                });
+                done(null, {
+                    open_issues: 4
+                });
+            }
+
+            if(args.obj === 'pullRequests') {
+                assert.deepEqual(args, {
+                    obj: 'pullRequests',
+                    fun: 'get',
+                    arg: {
+                        user: 'reviewninja',
+                        repo: 'foo',
+                        number: 2
+                    },
+                    token: 'token'
+                });
+                done(null, {
+                    number: 2,
+                    head: {sha: 'sha'}
+                });
+            }
+        });
+
+        var statusStub = sinon.stub(status, 'update', function(args) {
+            assert.deepEqual(args, {
+                user: 'reviewninja',
+                repo: 'foo',
+                repo_uuid: 23588185,
+                sha: 'sha',
+                number: 2,
+                token: 'token'
+            });
+        });
+
+        var notificationSpy = sinon.spy(notification, 'sendmail');
+
+        issues(req, {
+            end: function() {
+                assert(notificationSpy.notCalled);
+                userStub.restore();
+                milestoneStub.restore();
+                githubStub.restore();
+                statusStub.restore();
+                notificationSpy.restore();
                 done();
             }
         });
