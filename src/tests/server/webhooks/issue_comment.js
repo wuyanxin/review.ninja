@@ -47,11 +47,17 @@ describe('issue_comment', function(done) {
 
         var starStub = sinon.spy(star, 'create');
 
+        var ioStub = sinon.stub(io, 'emit', function(event, id) {
+            assert.equal('reviewninja:foo:issue-comment-46434016', event);
+            assert.equal('61271314', id);
+        });
+
         issue_comment(req, {
             end: function() {
                 sinon.assert.called(starStub);
                 userStub.restore();
                 githubStub.restore();
+                ioStub.restore();
                 done();
             }
         });
