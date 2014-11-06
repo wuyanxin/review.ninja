@@ -59,7 +59,7 @@
                 <div class="col-sm-4 text-right">
                   <div class="btn-group">
                       <button type="button" class="btn btn-default" ng-click="toggle()" style="padding:2px 12px 0px;"
-                              tooltip="{{ tooltiptext }} ninja star" tooltip-placement="bottom">
+                              tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star" tooltip-placement="bottom">
                           <span class="icon-ninja-star text-primary" style="font-size:25px"
                                 ng-class="{muted: !star.value}"></span>
                       </button>

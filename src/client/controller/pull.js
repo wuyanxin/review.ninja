@@ -41,10 +41,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             sha: $scope.head,
             repo_uuid: $scope.repo.id
         });
-        function gettooltiptext() {
-            return $scope.star.value ? 'Remove' : 'Add';
-        };
-        $scope.tooltiptext = gettooltiptext();
 
         // get the users for each star
         $scope.pull.stars.forEach(function(star) {
@@ -167,7 +163,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }, function(err, star) {
                 if(!err) {
                     $scope.star.value = fn === 'set' ? star.value : null;
-                    $scope.tooltiptext = gettooltiptext();
                 }
             });
         };
