@@ -14,40 +14,52 @@ var notification = require('../services/notification');
 
 module.exports = function(req, res) {
 
-    var actions = {
-        created: function() {
-            User.findOne({ _id: req.params.id }, function(err, user) {
-                if(err || !user) {
-                    return res.status(404).send('User not found');
-                }
-                if(req.args.comment.body.match(/(\+1)|(:\+1:)/)) {
-                    github.call({
-                        obj: 'pullRequests',
-                        fun: 'get',
-                        arg: {
-                            user: req.args.repository.owner.login,
-                            repo: req.args.repository.name,
-                            number: req.args.issue.number
-                        },
-                        token: user.token
-                    }, function(err, pull) {
-                        if(!err) {
-                            star.create(pull.head.sha, req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, req.args.issue.number, req.args.sender, user.token);
-                        }
-                    });
-                }
+    var user = req.args.repository.owner.login;
+    var repo = req.args.repository.name;
+    var number = req.args.issue.number;
+    var sender = req.args.sender;
+    var comment = req.args.comment.body;
+    var repo_uuid = req.args.repository.id;
 
-                var event = req.args.repository.owner.login + ':' +
-                            req.args.repository.name + ':' +
-                            'issue-comment-' + req.args.issue.id;
-                io.emit(event, req.args.comment.id);
-            });
+    User.findOne({ _id: req.params.id }, function(err, ninja) {
+
+        if(err || !ninja) {
+            return res.status(404).send('User not found');
         }
-    };
 
-    if (actions[req.args.action]) {
-        actions[req.args.action]();
-    }
+        var actions = {
+            created: function() {
 
-    res.end();
+                    //
+                    // Add ninja star if comment is +1 or thumbs up (:+1:)
+                    //
+
+                    if(comment.match(/(\+1)|(:\+1:)/)) {
+                        github.call({
+                            obj: 'pullRequests',
+                            fun: 'get',
+                            arg: {
+                                user: user,
+                                repo: repo,
+                                number: number
+                            },
+                            token: ninja.token
+                        }, function(err, pull) {
+                            if(!err) {
+                                star.create(pull.head.sha, user, repo, repo_uuid, number, sender, ninja.token);
+                            }
+                        });
+                    }
+
+                    var event = user + ':' + repo + ':' + 'issue-comment-' + req.args.issue.id;
+                    io.emit(event, req.args.comment.id);
+            }
+        };
+
+        if (actions[req.args.action]) {
+            actions[req.args.action]();
+        }
+
+        res.end();
+    });
 };
