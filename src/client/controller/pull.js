@@ -62,13 +62,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
-        $scope.fromlabel = function() {
-            if(pull.value.head.repo.owner.id === pull.value.head.user.id) {
-                return pull.value.head.ref;
-            }
-            return pull.value.head.label;
-        };
-
 
         //
         // Events
