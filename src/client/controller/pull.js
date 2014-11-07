@@ -181,6 +181,14 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     });
                 }
             });
+            $RPC.call('star', 'get', {
+                sha: $scope.head,
+                repo_uuid: $scope.repo.id
+            }, function(err, star) {
+                if(!err) {
+                    $scope.star.value = star.value;
+                }
+            });
         };
 
         $scope.refreshPullRequest = function() {
