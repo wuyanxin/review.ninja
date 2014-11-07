@@ -1,11 +1,11 @@
 // models
+var Star = require('mongoose').model('Star');
 var User = require('mongoose').model('User');
-var Milestone = require('mongoose').model('Milestone');
 
 //services
 var github = require('../services/github');
 var status = require('../services/status');
-var pullRequest = require('../services/pullRequest');
+var star = require('../services/star');
 var notification = require('../services/notification');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,10 +16,32 @@ module.exports = function(req, res) {
 
     var actions = {
         created: function() {
-            var event = req.args.repository.owner.login + ':' +
-                        req.args.repository.name + ':' +
-                        'issue-comment-' + req.args.issue.id;
-            io.emit(event, req.args.comment.id);
+            User.findOne({ _id: req.params.id }, function(err, user) {
+                if(err || !user) {
+                    return res.status(404).send('User not found');
+                }
+                if(req.args.comment.body.match(/(\+1)|(:\+1:)/)) {
+                    github.call({
+                        obj: 'pullRequests',
+                        fun: 'get',
+                        arg: {
+                            user: req.args.repository.owner.login,
+                            repo: req.args.repository.name,
+                            number: req.args.issue.number
+                        },
+                        token: user.token
+                    }, function(err, pull) {
+                        if(!err) {
+                            star.create(pull.head.sha, req.args.repository.owner.login, req.args.repository.name, req.args.repository.id, req.args.issue.number, req.args.sender, user.token);
+                        }
+                    });
+                }
+
+                var event = req.args.repository.owner.login + ':' +
+                            req.args.repository.name + ':' +
+                            'issue-comment-' + req.args.issue.id;
+                io.emit(event, req.args.comment.id);
+            });
         }
     };
 
