@@ -104,10 +104,12 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         $scope.$on('issue:open', function(event, issue) {
+            $scope.pull.milestone = issue.milestone;
             $scope.pull = Pull.milestone($scope.pull);
         });
 
         $scope.$on('issue:closed', function(event, issue) {
+            $scope.pull.milestone = issue.milestone;
             $scope.pull = Pull.milestone($scope.pull);
         });
 
