@@ -45,9 +45,9 @@ module.exports = function(req, res) {
         }, done);
     }
 
-    User.findOne({ _id: req.params.id }, function(err, user) {
+    User.findOne({ _id: req.params.id }, function(err, ninja) {
 
-        if(err || !user) {
+        if(err || !ninja) {
             return res.status(404).send('User not found');
         }
 
@@ -64,37 +64,39 @@ module.exports = function(req, res) {
                 return res.status(404).send('Milestone not found');
             }
 
-            var args = {
-                user: req.args.repository.owner.login,
-                repo: req.args.repository.name,
-                issue: req.args.issue.id,
-                sender: req.args.sender,
-                number: milestone.pull,
-                url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, milestone.pull)
-            };
+            var user = req.args.repository.owner.login;
+            var repo = req.args.repository.name;
+            var issue = req.args.issue.id;
+            var sender = req.args.sender;
+            var number = milestone.pull;
+            var repo_uuid = req.args.repository.id;
+            var token = ninja.token;
+
+            console.log('******************************************');
+            console.log('user:', user, 'repo:', repo, 'number:', number, 'repo_uuid:', repo_uuid, 'token:', token);
+            console.log('******************************************');
 
             var actions = {
                 opened: function() {
-                    getPull(req.args.repository.owner.login, req.args.repository.name, milestone.pull, user.token, function(err, pull) {
+                    getPull(user, repo, number, token, function(err, pull) {
                         if(!err) {
                             status.update({
-                                user: req.args.repository.owner.login,
-                                repo: req.args.repository.name,
-                                repo_uuid: req.args.repository.id,
+                                user: user,
+                                repo: repo,
+                                repo_uuid: repo_uuid,
                                 sha: pull.head.sha,
                                 number: pull.number,
-                                token: user.token
+                                token: token
                             });
 
-                            notification.sendmail(
-                                'new_issue',
-                                req.args.repository.owner.login,
-                                req.args.repository.name,
-                                req.args.repository.id,
-                                user.token,
-                                milestone.pull,
-                                args
-                            );
+                            notification.sendmail('new_issue', user, repo, repo_uuid, token, number, {
+                                user: user,
+                                repo: repo,
+                                number: number,
+                                issue: issue,
+                                sender: sender,
+                                url: url.reviewPullRequest(user, repo, number)
+                            });
 
                             // todo: emit to sockets
                         }
@@ -104,30 +106,29 @@ module.exports = function(req, res) {
                 closed: function() {
 
                     // send a notification if all issues are closed
-                    getMilestone(req.args.repository.owner.login, req.args.repository.name, milestone.number, user.token, function(err, mile) {
+                    getMilestone(user, repo, milestone.number, token, function(err, mile) {
                         if(!err && !mile.open_issues) {
-                            notification.sendmail(
-                                'closed_issue',
-                                req.args.repository.owner.login,
-                                req.args.repository.name,
-                                req.args.repository.id,
-                                user.token,
-                                milestone.pull,
-                                args
-                            );
+                            notification.sendmail('closed_issue', user, repo, repo_uuid, token, number, {
+                                user: user,
+                                repo: repo,
+                                number: number,
+                                issue: issue,
+                                sender: sender,
+                                url: url.reviewPullRequest(user, repo, number)
+                            });
                         }
                     });
 
                     // update the status
-                    getPull(req.args.repository.owner.login, req.args.repository.name, milestone.pull, user.token, function(err, pull) {
+                    getPull(user, repo, number, token, function(err, pull) {
                         if(!err) {
                             status.update({
-                                user: req.args.repository.owner.login,
-                                repo: req.args.repository.name,
-                                repo_uuid: req.args.repository.id,
+                                user: user,
+                                repo: repo,
+                                repo_uuid: repo_uuid,
                                 sha: pull.head.sha,
                                 number: pull.number,
-                                token: user.token
+                                token: token
                             });
 
                             // todo: emit to sockets
