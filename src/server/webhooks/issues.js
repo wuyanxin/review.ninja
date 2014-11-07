@@ -136,9 +136,30 @@ module.exports = function(req, res) {
                 },
 
                 reopened: function() {
-                    // udpate the status
-                    // send email if pull req is open and unmerged
-                    // todo: emit to sockets
+                    // update status if pull request is not merged and send email
+                    getPull(user, repo, mile.pull, ninja.token, function(err, pull) {
+                        if(!err && !pull.merged) {
+                            status.update({
+                                user: user,
+                                repo: repo,
+                                repo_uuid: repo_uuid,
+                                sha: pull.head.sha,
+                                number: pull.number,
+                                token: ninja.token
+                            });
+
+                            notification.sendmail('reopened_issue', user, repo, repo_uuid, ninja.token, mile.pull, {
+                                user: user,
+                                repo: repo,
+                                number: mile.pull,
+                                issue: issue,
+                                sender: sender,
+                                url: url.reviewPullRequest(user, repo, mile.pull)
+                            });
+
+                            // todo: emit to sockets
+                        }
+                    });
                 }
             };
 
