@@ -45,6 +45,17 @@ module.exports = function(req, res) {
         }, done);
     }
 
+    //
+    // Webhook handler
+    //
+
+    var user = req.args.repository.owner.login;
+    var repo = req.args.repository.name;
+    var issue = req.args.issue.id;
+    var sender = req.args.sender;
+    var number = req.args.issue.milestone.number;
+    var repo_uuid = req.args.repository.id;
+
     User.findOne({ _id: req.params.id }, function(err, ninja) {
 
         if(err || !ninja) {
@@ -56,25 +67,17 @@ module.exports = function(req, res) {
         }
 
         Milestone.findOne({
-            repo: req.args.repository.id,
-            number: req.args.issue.milestone.number
-        }, function(err, milestone) {
+            repo: repo_uuid,
+            number: number
+        }, function(err, mile) {
 
-            if(err || !milestone) {
+            if(err || !mile) {
                 return res.status(404).send('Milestone not found');
             }
 
-            var user = req.args.repository.owner.login;
-            var repo = req.args.repository.name;
-            var issue = req.args.issue.id;
-            var sender = req.args.sender;
-            var number = milestone.pull;
-            var repo_uuid = req.args.repository.id;
-            var token = ninja.token;
-
             var actions = {
                 opened: function() {
-                    getPull(user, repo, number, token, function(err, pull) {
+                    getPull(user, repo, mile.pull, ninja.token, function(err, pull) {
                         if(!err) {
                             status.update({
                                 user: user,
@@ -82,16 +85,16 @@ module.exports = function(req, res) {
                                 repo_uuid: repo_uuid,
                                 sha: pull.head.sha,
                                 number: pull.number,
-                                token: token
+                                token: ninja.token
                             });
 
-                            notification.sendmail('new_issue', user, repo, repo_uuid, token, number, {
+                            notification.sendmail('new_issue', user, repo, repo_uuid, ninja.token, mile.pull, {
                                 user: user,
                                 repo: repo,
-                                number: number,
+                                number: mile.pull,
                                 issue: issue,
                                 sender: sender,
-                                url: url.reviewPullRequest(user, repo, number)
+                                url: url.reviewPullRequest(user, repo, mile.pull)
                             });
 
                             // todo: emit to sockets
@@ -102,21 +105,21 @@ module.exports = function(req, res) {
                 closed: function() {
 
                     // send a notification if all issues are closed
-                    getMilestone(user, repo, milestone.number, token, function(err, mile) {
-                        if(!err && !mile.open_issues) {
-                            notification.sendmail('closed_issue', user, repo, repo_uuid, token, number, {
+                    getMilestone(user, repo, number, ninja.token, function(err, milestone) {
+                        if(!err && !milestone.open_issues) {
+                            notification.sendmail('closed_issue', user, repo, repo_uuid, ninja.token, mile.pull, {
                                 user: user,
                                 repo: repo,
-                                number: number,
+                                number: mile.pull,
                                 issue: issue,
                                 sender: sender,
-                                url: url.reviewPullRequest(user, repo, number)
+                                url: url.reviewPullRequest(user, repo, mile.pull)
                             });
                         }
                     });
 
                     // update the status
-                    getPull(user, repo, number, token, function(err, pull) {
+                    getPull(user, repo, mile.pull, ninja.token, function(err, pull) {
                         if(!err) {
                             status.update({
                                 user: user,
@@ -124,7 +127,7 @@ module.exports = function(req, res) {
                                 repo_uuid: repo_uuid,
                                 sha: pull.head.sha,
                                 number: pull.number,
-                                token: token
+                                token: ninja.token
                             });
 
                             // todo: emit to sockets

@@ -15,89 +15,76 @@ var notification = require('../services/notification');
 
 module.exports = function(req, res) {
 
-    User.findOne({ _id: req.params.id }, function(err, user) {
+    var user = req.args.repository.owner.login;
+    var repo = req.args.repository.name;
+    var number = req.args.number;
+    var sender = req.args.sender;
+    var repo_uuid = req.args.repository.id;
+    var sha = req.args.pull_request.head.sha;
 
-        if(err || !user) {
+    User.findOne({ _id: req.params.id }, function(err, ninja) {
+
+        if(err || !ninja) {
             return res.status(404).send('User not found');
         }
 
-        var args = {
-            user: req.args.repository.owner.login,
-            repo: req.args.repository.name,
-            repo_uuid: req.args.repository.id,
-            sha: req.args.pull_request.head.sha,
-            number: req.args.number,
-            token: user.token
-        };
-
         var notification_args = {
-            user: req.args.repository.owner.login,
-            repo: req.args.repository.name,
-            number: req.args.number,
-            sender: req.args.sender,
-            url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
+            user: user,
+            repo: repo,
+            number: number,
+            sender: sender,
+            url: url.reviewPullRequest(user, repo, number)
         };
 
         var actions = {
             opened: function() {
+                status.update({
+                    sha: sha,
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    repo_uuid: repo_uuid,
+                    token: ninja.token
+                });
 
-                status.update(args);
+                notification.sendmail('pull_request_opened', user, repo, repo_uuid, ninja.token, number, {
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    sender: sender,
+                    url: url.reviewPullRequest(user, repo, number)
+                });
 
-                notification.sendmail(
-                    'pull_request_opened',
-                    req.args.repository.owner.login,
-                    req.args.repository.name,
-                    req.args.repository.id,
-                    user.token,
-                    req.args.number,
-                    notification_args
-                );
-
-                pullRequest.badgeComment(
-                    req.args.repository.owner.login,
-                    req.args.repository.name,
-                    req.args.repository.id,
-                    req.args.number
-                );
+                pullRequest.badgeComment(user, repo, repo_uuid, number);
             },
             synchronize: function() {
+                status.update({
+                    sha: sha,
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    repo_uuid: repo_uuid,
+                    token: ninja.token
+                });
 
-                status.update(args);
+                notification.sendmail('pull_request_synchronized', user, repo, repo_uuid, ninja.token, number, {
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    sender: sender,
+                    url: url.reviewPullRequest(user, repo, number)
+                });
 
-                notification.sendmail(
-                    'pull_request_synchronized',
-                    req.args.repository.owner.login,
-                    req.args.repository.name,
-                    req.args.repository.id,
-                    user.token,
-                    req.args.number,
-                    notification_args
-                );
-
-                var event = req.args.repository.owner.login + ':' +
-                            req.args.repository.name + ':' +
-                            'pull-request-' + req.args.number + ':synchronize';
-
-                io.emit(event, req.args.pull_request.head.sha);
+                var event = user + ':' + repo + ':' + 'pull-request-' + number + ':synchronize';
+                io.emit(event, sha);
             },
             closed: function() {
-
                 if(req.args.pull_request.merged) {
-                    var event = req.args.repository.owner.login + ':' +
-                                req.args.repository.name + ':' +
-                                'pull-request-' + req.args.number + ':merged';
-
-                    io.emit(event, req.args.number);
+                    var event = user + ':' + repo + ':' + 'pull-request-' + number + ':merged';
+                    io.emit(event, number);
                 }
 
-                // close the milestone
-                milestone.close(
-                    req.args.repository.owner.login,
-                    req.args.repository.name,
-                    req.args.repository.id,
-                    req.args.number,
-                    user.token
-                );
+                milestone.close(user, repo, repo_uuid, number, ninja.token);
             },
             reopened: function() {
                 // a pull request you have reviewed has a been reopened
