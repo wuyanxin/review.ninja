@@ -72,10 +72,6 @@ module.exports = function(req, res) {
             var repo_uuid = req.args.repository.id;
             var token = ninja.token;
 
-            console.log('******************************************');
-            console.log('user:', user, 'repo:', repo, 'number:', number, 'repo_uuid:', repo_uuid, 'token:', token);
-            console.log('******************************************');
-
             var actions = {
                 opened: function() {
                     getPull(user, repo, number, token, function(err, pull) {
