@@ -8,6 +8,8 @@ module.exports = {
 
     terms: process.env.TERMS_URL,
 
+    milestone_prefix: process.env.MILESTONE_PREFIX || '',
+
     server: {
         github: {
             // optional
