@@ -80,7 +80,7 @@ describe('milestone:get', function(done) {
                 assert.deepEqual(args.arg, {
                     user: 'user',
                     repo: 'repo',
-                    title: 'Pull Request #2'
+                    title: 'ReviewNinja PR #2'
                 });
                 done(null, {number: 3});
             }
@@ -146,7 +146,7 @@ describe('milestone:get', function(done) {
                 assert.deepEqual(args.arg, {
                     user: 'user',
                     repo: 'repo',
-                    title: 'Pull Request #2'
+                    title: 'ReviewNinja PR #2'
                 });
                 done(null, {number: 3});
             }
@@ -227,7 +227,7 @@ describe('milestone:get', function(done) {
                 assert.deepEqual(args.arg, {
                     user: 'user',
                     repo: 'repo',
-                    title: 'Pull Request #2'
+                    title: 'ReviewNinja PR #2'
                 });
                 done('github error', null);
             }
@@ -285,7 +285,7 @@ describe('milestone:close', function(done) {
                 });
                 done(null, {
                     number: 3,
-                    title: 'Pull Request #2'
+                    title: 'ReviewNinja PR #2'
                 });
             }
 
@@ -294,7 +294,7 @@ describe('milestone:close', function(done) {
                     user: 'user',
                     repo: 'repo',
                     number: 3,
-                    title: 'Pull Request #2',
+                    title: 'ReviewNinja PR #2',
                     state: 'closed'
                 });
             }

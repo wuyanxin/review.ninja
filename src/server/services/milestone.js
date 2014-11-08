@@ -38,7 +38,7 @@ module.exports = {
                     arg: {
                         user: user,
                         repo: repo,
-                        title: 'Pull Request #' + number
+                        title: config.milestone_prefix + 'ReviewNinja PR #' + number
                     },
                     token: token
                 }, function(err, milestone) {
