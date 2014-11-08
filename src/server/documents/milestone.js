@@ -7,7 +7,6 @@ var MilestoneSchema = mongoose.Schema({
 });
 
 MilestoneSchema.index({
-    pull: 1,
     repo: 1,
     number: 1
 }, {
