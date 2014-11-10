@@ -9,13 +9,10 @@
 module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'Pull', 'Comment', 'repo', 'pull', 'socket',
     function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, Pull, Comment, repo, pull, socket) {
 
-        // get the repo
-        $scope.repo = repo.value;
-
         // get the pull request
-        $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value);
-        $scope.base = $scope.pull.base.sha;
-        $scope.head = $scope.pull.head.sha;
+        $scope.base = pull.value.base.sha;
+        $scope.head = pull.value.head.sha;
+        $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value);
 
         // file reference
         $scope.reference = {};
@@ -33,20 +30,13 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.tree = $HUB.call('gitdata', 'getTree', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            sha: $scope.head
+            sha: pull.value.head.sha
         });
 
         // get the star
         $scope.star = $RPC.call('star', 'get', {
-            sha: $scope.head,
-            repo_uuid: $scope.repo.id
-        });
-
-        // get the users for each star
-        $scope.pull.stars.forEach(function(star) {
-            star.user = $HUB.call('user', 'getFrom', {
-                user: star.name
-            });
+            sha: pull.value.head.sha,
+            repo_uuid: pull.value.base.repo.id
         });
 
         // get the pull req comments
@@ -129,70 +119,68 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         };
 
-        $scope.merge = function() {
-            $scope.merging = $HUB.call('pullRequests', 'merge', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: $stateParams.number
-            }, function(err, res) {
-
-                // todo: handle error or unmerged
-
-                if(!err && res.value.merged) {
-                    $scope.refreshPullRequest();
-                }
-            });
-        };
-
-        $scope.toggle = function() {
+        $scope.setStar = function() {
 
             var fn = $scope.star.value ? 'rmv' : 'set';
 
             $RPC.call('star', fn, {
                 repo: $stateParams.repo,
                 user: $stateParams.user,
-                sha: $scope.head,
-                number: $stateParams.number,
-                repo_uuid: $scope.repo.id
+                sha: $scope.pull.head.sha,
+                number: $scope.pull.number,
+                repo_uuid: $scope.pull.base.repo.id
             }, function(err, star) {
                 if(!err) {
-                    $scope.star.value = fn === 'set' ? star.value : null;
+                    $scope.star.value = !$scope.star.value ? star.value : null;
                 }
             });
         };
 
-        $scope.refreshStars = function() {
-            $RPC.call('star', 'all', {
-                sha: $scope.head,
-                repo_uuid: $scope.repo.id
-            }, function(err, stars) {
-                if(!err) {
-                    $scope.pull.stars = stars.value;
-                    $scope.pull.stars.forEach(function(star) {
-                        star.user = $HUB.call('user', 'getFrom', {
-                            user: star.name
-                        });
-                    });
-                }
-            });
-            $RPC.call('star', 'get', {
-                sha: $scope.head,
-                repo_uuid: $scope.repo.id
-            }, function(err, star) {
-                if(!err) {
-                    $scope.star.value = star.value;
+        $scope.mergePullRequest = function() {
+
+            $scope.merge = $HUB.call('pullRequests', 'merge', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.number
+            }, function(err, pull) {
+
+                // todo: handle error or unmerged
+
+                if(!err && pull.value.merged) {
+                    $scope.pull.merged = true;
+                    $scope.getPullRequest();
                 }
             });
         };
 
-        $scope.refreshPullRequest = function() {
-            $scope.refreshing = $HUB.wrap('pullRequests', 'get', {
+        $scope.getPullRequest = function() {
+            $HUB.wrap('pullRequests', 'get', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 number: $stateParams.number
             }, function(err, pull) {
                 if(!err) {
-                    $scope.pull = Pull.milestone(pull.value);
+                    if($scope.pull.head.sha !== pull.value.head.sha) {
+
+                        // clear star
+                        $scope.star.value = null;
+
+                        // update the comparison
+                        $scope.compComm($scope.base, pull.value.head.sha);
+
+                        // update the tree
+                        $HUB.call('gitdata', 'getTree', {
+                            user: $stateParams.user,
+                            repo: $stateParams.repo,
+                            sha: pull.value.head.sha
+                        }, function(err, tree) {
+                            if(!err) {
+                                $scope.tree.value = tree.value;
+                            }
+                        });
+                    }
+
+                    $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value);
                 }
             });
         };
@@ -213,6 +201,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         };
 
+        //
+        // Modals
+        //
+
         $scope.badge = function() {
             var modal = $modal.open({
                 templateUrl: '/modals/templates/badge.html',
@@ -224,47 +216,27 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // Websockets
         //
 
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':starred', function() {
-            $scope.refreshStars();
-        });
-
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':unstarred', function() {
-            $scope.refreshStars();
-        });
-
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':merged', function() {
-            if(!$scope.pull.value.merged && !$scope.refreshing.loading) {
-                $scope.refreshPullRequest();
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
+            if($scope.pull.number === args.number) {
+                if(args.action == 'starred' || args.action == 'unstarred') {
+                    $scope.pull = Pull.stars($scope.pull);
+                }
+                if(args.action == 'closed' || args.action == 'reopened' || args.action == 'synchronize') {
+                    $scope.getPullRequest();
+                }
             }
         });
 
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $stateParams.number, function(id) {
-            $HUB.call('issues', 'getComment', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                id: id
-            }, function(err, comment) {
-                if(!err && comment.value.user.id !== $rootScope.user.value.id) {
-                  $scope.comments.value.push(Comment.render(comment.value));
-                }
-            });
-        });
-
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':pull-request-' + $stateParams.number + ':synchronize', function(head) {
-
-            // update comparison
-            $scope.compComm($scope.base, head);
-
-            // update tree
-            $HUB.call('gitdata', 'getTree', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                sha: head
-            }, function(err, res) {
-                if(!err) {
-                    $scope.tree.value =  res.value;
-                }
-            });
-        });
+        // socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $stateParams.number, function(id) {
+        //     $HUB.call('issues', 'getComment', {
+        //         user: $stateParams.user,
+        //         repo: $stateParams.repo,
+        //         id: id
+        //     }, function(err, comment) {
+        //         if(!err && comment.value.user.id !== $rootScope.user.value.id) {
+        //           $scope.comments.value.push(Comment.render(comment.value));
+        //         }
+        //     });
+        // });
     }
 ]);
