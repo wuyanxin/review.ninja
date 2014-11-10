@@ -6,6 +6,7 @@ var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
 var sass = require('node-sass');
+var socket = require('./services/socket.js');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration
@@ -266,10 +267,22 @@ app.all('/api/:obj/:fun', function(req, res) {
 app.all('/github/webhook/:id', function(req, res) {
     var event = req.headers['x-github-event'];
     try {
+        
+        //
+        // handle webhook
+        //
+
         if (!webhooks[event]) {
             return res.status(400).send('Unsupported event');
         }
         webhooks[event](req, res);
+
+        //
+        // emit to sockets
+        //
+
+        socket.emit(event, req.args);
+
     } catch (err) {
         res.status(500).send('Internal server error');
     }
