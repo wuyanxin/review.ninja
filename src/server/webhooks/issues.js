@@ -77,6 +77,8 @@ module.exports = function(req, res) {
 
             var actions = {
                 opened: function() {
+
+                    // update status and send an email when issue is opened
                     getPull(user, repo, mile.pull, ninja.token, function(err, pull) {
                         if(!err) {
                             status.update({
@@ -96,8 +98,6 @@ module.exports = function(req, res) {
                                 sender: sender,
                                 url: url.reviewPullRequest(user, repo, mile.pull)
                             });
-
-                            // todo: emit to sockets
                         }
                     });
                 },
@@ -129,14 +129,13 @@ module.exports = function(req, res) {
                                 number: pull.number,
                                 token: ninja.token
                             });
-
-                            // todo: emit to sockets
                         }
                     });
                 },
 
                 reopened: function() {
-                    // update status if pull request is not merged and send email
+                    
+                    // update status if pull request is not merged
                     getPull(user, repo, mile.pull, ninja.token, function(err, pull) {
                         if(!err && !pull.merged) {
                             status.update({
@@ -147,17 +146,6 @@ module.exports = function(req, res) {
                                 number: pull.number,
                                 token: ninja.token
                             });
-
-                            notification.sendmail('reopened_issue', user, repo, repo_uuid, ninja.token, mile.pull, {
-                                user: user,
-                                repo: repo,
-                                number: mile.pull,
-                                issue: issue,
-                                sender: sender,
-                                url: url.reviewPullRequest(user, repo, mile.pull)
-                            });
-
-                            // todo: emit to sockets
                         }
                     });
                 }
