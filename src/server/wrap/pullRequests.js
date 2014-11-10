@@ -13,13 +13,12 @@ var Milestone = require('mongoose').model('Milestone');
 
 module.exports = {
     get: function(req, pull, done) {
-
-        pull.stars = [];
-        pull.milestone = null;
-
-        Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
+        Settings.findOne({
+            user: req.user.id,
+            repo: pull.base.repo.id
+        }, function(err, settings) {
             if(!err) {
-                pull.stars = stars;
+                pull.watched = !settings ? true : pullRequest.isWatched(pull, settings);
             }
 
             Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, milestone) {
@@ -70,21 +69,11 @@ module.exports = {
 
             // set the stars and milestone
             async.each(pulls, function(pull, callback) {
-
-                pull.stars = [];
-                pull.milestone = null;
-
-                Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
+                Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, milestone) {
                     if(!err) {
-                        pull.stars = stars;
+                        pull.milestone = milestone;
                     }
-
-                    Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, milestone) {
-                        if(!err) {
-                            pull.milestone = milestone;
-                        }
-                        return callback(null);
-                    });
+                    return callback(null);
                 });
             }, function() {
                 done(null, pulls);
