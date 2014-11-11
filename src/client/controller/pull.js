@@ -214,10 +214,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
             if($scope.pull.number === args.number) {
-                if(args.action == 'starred' || args.action == 'unstarred') {
+                if(args.action === 'starred' || args.action === 'unstarred') {
                     $scope.pull = Pull.stars($scope.pull);
                 }
-                if(args.action == 'closed' || args.action == 'reopened' || args.action == 'synchronize') {
+                if(args.action === 'closed' || args.action === 'reopened' || args.action === 'synchronize') {
                     $scope.getPullRequest();
                 }
             }

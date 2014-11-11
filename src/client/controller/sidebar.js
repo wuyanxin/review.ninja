@@ -78,6 +78,7 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
         //
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issues', function(args) {
+            var i, issue;
             if(args.action === 'opened' && $scope.pull.number === args.pull) {
                 $HUB.call('issues', 'getRepoIssue', {
                     user: $stateParams.user,
@@ -90,9 +91,9 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
                 });
             }
             if(args.action === 'closed' && $scope.pull.number === args.pull) {
-                for(var i=0; i<$scope.open.value.length; i++) {
+                for(i = 0; i < $scope.open.value.length; i++) {
                     if($scope.open.value[i].number === args.number) {
-                        var issue = $scope.open.value[i];
+                        issue = $scope.open.value[i];
                         issue.state = 'closed';
                         $scope.open.value.splice(i, 1);
                         $scope.closed.value.unshift(issue);
@@ -100,9 +101,9 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
                 }
             }
             if(args.action === 'reopened' && $scope.pull.number === args.pull) {
-                for(var i=0; i<$scope.closed.value.length; i++) {
+                for(i = 0; i < $scope.closed.value.length; i++) {
                     if($scope.closed.value[i].number === args.number) {
-                        var issue = $scope.closed.value[i];
+                        issue = $scope.closed.value[i];
                         issue.state = 'open';
                         $scope.closed.value.splice(i, 1);
                         $scope.open.value.unshift(issue);

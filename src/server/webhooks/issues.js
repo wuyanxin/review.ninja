@@ -134,7 +134,7 @@ module.exports = function(req, res) {
                 },
 
                 reopened: function() {
-                    
+
                     // update status if pull request is not merged
                     getPull(user, repo, mile.pull, ninja.token, function(err, pull) {
                         if(!err && !pull.merged) {

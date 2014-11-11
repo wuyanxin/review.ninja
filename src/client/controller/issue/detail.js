@@ -73,7 +73,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                 $HUB.call('issues', 'getComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
-                    id: id
+                    id: args.id
                 }, function(err, comment) {
                     if(!err) {
                         $scope.comments.value.push(Comment.render(comment.value));

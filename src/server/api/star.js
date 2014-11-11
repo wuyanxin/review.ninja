@@ -97,7 +97,7 @@ module.exports = {
                     text: 'Forbidden'
                 });
             }
-            
+
             star.remove(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user, req.user.token, done);
         });
     }

@@ -21,11 +21,11 @@ module.exports = {
                     done(room, data);
                 });
             },
-            pull_request: function() {
+            pull_request: function(done) {
                 data.number = args.pull_request.number;
                 done(room, data);
             },
-            issue_comment: function() {
+            issue_comment: function(done) {
                 data.id = args.comment.id;
                 data.number = args.issue.number;
                 done(room, data);
