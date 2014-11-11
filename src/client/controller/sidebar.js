@@ -14,8 +14,8 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
         $scope.open = $HUB.call('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            milestone: $scope.pull.milestone.number,
-            state: 'open'
+            state: 'open',
+            milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null,
         }, function(err, issues) {
             issues.value = issues.value || [];
             if(!err) {
@@ -28,8 +28,8 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
         $scope.closed = $HUB.call('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            milestone: $scope.pull.milestone.number,
-            state: 'closed'
+            state: 'closed',
+            milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null,
         }, function(err, issues) {
             issues.value = issues.value || [];
             if(!err) {
