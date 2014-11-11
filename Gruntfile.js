@@ -63,7 +63,7 @@ module.exports = function(grunt) {
                     json: function() {
                         var json = require('./src/tests/fixtures/webhooks/issue_comment/' + grunt.option('action') + '.json');
                         json.action = grunt.option('action');
-                        json.issue.number = grunt.option('issue');
+                        json.issue.number = grunt.option('number');
                         json.comment.id = grunt.option('comment');
                         json.comment.body = grunt.option('body');
                         json.repository.owner.login = grunt.option('user');
@@ -84,6 +84,7 @@ module.exports = function(grunt) {
                         json.action = grunt.option('action');
                         json.sender = grunt.option('sender');
                         json.issue.id = grunt.option('issue');
+                        json.issue.number = grunt.option('number');
                         json.issue.milestone.number = grunt.option('milestone');
                         json.repository.owner.login = grunt.option('user');
                         json.repository.name = grunt.option('repo');
