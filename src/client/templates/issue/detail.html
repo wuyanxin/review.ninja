@@ -75,8 +75,8 @@
                     </div>
 
                     <div class="pull-right">
-                      <i class="fa fa-lg fa-spinner fa-spin" ng-show="toggling.loading || commenting.loading" style="margin-right:10px;"></i>
-                      <button type="button" class="btn btn-info" ng-click="toggle()" ng-disabled="toggling.loading">
+                      <i class="fa fa-lg fa-spinner fa-spin" ng-show="set.loading || commenting.loading" style="margin-right:10px;"></i>
+                      <button type="button" class="btn btn-info" ng-click="setState()" ng-disabled="set.loading">
                         {{ issue.state==='open' ? 'Close' : 'Reopen' }} issue
                       </button>
                       <button type="submit" class="btn btn-primary"  ng-disabled="!comment">Comment</button>

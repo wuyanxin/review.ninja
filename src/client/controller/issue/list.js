@@ -6,20 +6,17 @@
 // resolve: issues
 // *****************************************************
 
-module.controller('IssueListCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'issues', 'Issue',
-    function($scope, $state, $stateParams, $HUB, $RPC, issues, Issue) {
-
-        // get the open issues
-        $scope.issues = issues;
+module.controller('IssueListCtrl', ['$scope', '$stateParams',
+    function($scope, $stateParams, $HUB, $RPC, Issue) {
 
         // emit to parent controller (repo.pull)
-        $scope.$emit('issue:set', null);
+        // $scope.$emit('issue:set', null);
 
-        $scope.$watch('issues.value', function(value) {
-            if(value) {
-                $scope.$emit('reference:set', $scope.issues.value);
-            }
-        });
+        // $scope.$watch('issues.value', function(value) {
+        //     if(value) {
+        //         $scope.$emit('reference:set', $scope.issues.value);
+        //     }
+        // });
 
 
         // update the comparison view

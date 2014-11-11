@@ -192,12 +192,8 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     repo: $stateParams.repo,
                     number: $stateParams.number,
                     body: $scope.comment
-                }, function(err, comment) {
-                    if(!err) {
-                        $scope.comment = null;
-                        $scope.comments.value.push(Comment.render(comment.value));
-                    }
                 });
+                $scope.comment = null;
             }
         };
 
@@ -227,16 +223,18 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
-        // socket.on($stateParams.user + ':' + $stateParams.repo + ':issue-comment-' + $stateParams.number, function(id) {
-        //     $HUB.call('issues', 'getComment', {
-        //         user: $stateParams.user,
-        //         repo: $stateParams.repo,
-        //         id: id
-        //     }, function(err, comment) {
-        //         if(!err && comment.value.user.id !== $rootScope.user.value.id) {
-        //           $scope.comments.value.push(Comment.render(comment.value));
-        //         }
-        //     });
-        // });
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issue_comment', function(args) {
+            if($scope.pull.number === args.number && args.action === 'created') {
+                $HUB.call('issues', 'getComment', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    id: args.id
+                }, function(err, comment) {
+                    if(!err) {
+                        $scope.comments.value.push(Comment.render(comment.value));
+                    }
+                });
+            }
+        });
     }
 ]);
