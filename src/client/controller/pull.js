@@ -54,50 +54,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
 
         //
-        // Events
-        //
-
-        $scope.$on('issue:set', function(event, issue) {
-            $scope.issue = issue;
-            $scope.selection = [];
-        });
-
-        $scope.$on('reference:set', function(event, issues) {
-
-            var reference = [];
-
-            issues.forEach(function(issue) {
-                if(issue.sha && issue.ref) {
-
-                    var key = issue.sha + '/' + issue.ref;
-
-                    if(!reference[key]) {
-                        reference[key] = [];
-                    }
-
-                    reference[key].push({
-                        ref: issue.ref,
-                        sha: issue.sha,
-                        issue: issue.number
-                    });
-                }
-            });
-
-            $scope.reference = reference;
-        });
-
-        $scope.$on('issue:open', function(event, issue) {
-            $scope.pull.milestone = issue.milestone;
-            $scope.pull = Pull.milestone($scope.pull);
-        });
-
-        $scope.$on('issue:closed', function(event, issue) {
-            $scope.pull.milestone = issue.milestone;
-            $scope.pull = Pull.milestone($scope.pull);
-        });
-
-
-        //
         // Actions
         //
 
