@@ -15,7 +15,7 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'open',
-            milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null,
+            milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
         }, function(err, issues) {
             issues.value = issues.value || [];
             if(!err) {
@@ -29,7 +29,7 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'closed',
-            milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null,
+            milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
         }, function(err, issues) {
             issues.value = issues.value || [];
             if(!err) {

@@ -69,7 +69,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issue_comment', function(args) {
-            if($scope.pull.number === args.number && args.action === 'created') {
+            if($scope.issue.number === args.number && args.action === 'created') {
                 $HUB.call('issues', 'getComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
