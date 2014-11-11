@@ -7,14 +7,16 @@
         <i class="fa fa-plus fa-stack-1x"></i>
       </span>
       <div class="pull-right">
-        <a ui-sref="repo.pull.issue.master({state:'open', issues:null})" 
-           class="btn btn-link inverse" ng-click="type='open'" 
-           ng-class="{active:($stateParams.state !== 'closed')}">
+        <a ui-sref="repo.pull.issue.master({issues: null})" 
+           ng-click="state='open'" 
+           class="btn btn-link inverse"
+           ng-class="{active:state === 'open'}">
           <span class="octicon octicon-issue-opened"></span> Open
         </a>
-        <a ui-sref="repo.pull.issue.master({state:'closed', issues:null})" 
-           class="btn btn-link inverse" ng-click="type='closed'" 
-           ng-class="{active:$stateParams.state === 'closed'}">
+        <a ui-sref="repo.pull.issue.master({issues: null})" 
+           ng-click="state='closed'"
+           class="btn btn-link inverse"
+           ng-class="{active:state === 'closed'}">
           <span class="octicon octicon-issue-closed"></span> Closed
         </a>
       </div>

@@ -1,10 +1,9 @@
-
 <div class="row scaffold">
   <div class="col-sm-9 pull">
     <div class="row">
       <div class="col-sm-12">
         <ol class="breadcrumb">
-          <li><a ui-sref="repo.master()">{{ repo.owner.login }} / {{ repo.name }}</a></li>
+          <li><a ui-sref="repo.master()">{{ pull.base.repo.owner.login }} / {{ pull.base.repo.name }}</a></li>
         </ol>
 
         <div class="row" style="margin:30px 0;">
@@ -22,7 +21,7 @@
             </p>
           </div>
           <div class="col-sm-3" style="padding-right:0;">
-            <merge-button pull="pull" merge="merge()" merging="(merging.loading || refreshing.loading)"></merge-button>
+            <merge-button pull="pull" merge="mergePullRequest()" merging="merge.loading"></merge-button>
           </div>
         </div>
 
@@ -39,13 +38,10 @@
               <div class="row">
                 <div class="col-sm-8">
                   <p>
-                    <span class="octicon octicon-diff"></span> 
                     Showing {{ pull.changed_files | pluralize:'changed file' }} with 
                     <strong>{{ pull.additions | pluralize:'addition' }}</strong> and 
                     <strong>{{ pull.deletions | pluralize:'deletion' }}</strong>
                   </p>
-
-                  <p ng-show="issue"><small>Comparing {{ pull.base.sha===base ? 'base' : 'issue' }} commit to head commit.</small></p>
 
                   <strong>Compare:</strong>
 
@@ -65,7 +61,7 @@
                   <div class="btn-group">
                       <button type="button" 
                               class="btn btn-default" 
-                              ng-click="toggle()" 
+                              ng-click="setStar()" 
                               style="padding:2px 12px 0px;"
                               tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star" 
                               tooltip-placement="bottom"
@@ -83,7 +79,7 @@
                           <a href="#">
                             <table>
                               <tr>
-                                <td><img ng-src="{{ star.user.value.avatar_url }}&s=56" width="56px" style="margin-right:16px;" /></td>
+                                <td><img ng-src="{{ star.user.value.avatar_url + '&s=56' }}" width="56px" style="margin-right:16px;" /></td>
                                 <td>
                                   <strong><a ng-href="{{ star.user.value.html_url }}" target="_blank">{{ star.name }}</a></strong><br />
                                   ninja starred this<br />

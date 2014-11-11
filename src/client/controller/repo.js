@@ -6,8 +6,8 @@
 // resolve: repo
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC', 'repo', 'Pull',
-    function($scope, $stateParams, $modal, $HUB, $RPC, repo, Pull) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC', 'repo', 'socket', 'Pull',
+    function($scope, $stateParams, $modal, $HUB, $RPC, repo, socket, Pull) {
 
         // get the repo
         $scope.repo = repo;
@@ -27,7 +27,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.milestone(pull);
+                    pull = Pull.milestone(pull) && Pull.stars(pull);
                     $scope.authors[pull.user.login] = true;
                 });
             }
@@ -41,8 +41,27 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.milestone(pull);
+                    pull = Pull.milestone(pull) && Pull.stars(pull);
                     $scope.authors[pull.user.login] = true;
+                });
+            }
+        });
+
+        //
+        // Websockets
+        //
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
+            if(args.action === 'opened') {
+                $HUB.wrap('pullRequests', 'get', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: args.number
+                }, function(err, pull) {
+                    if(!err) {
+                        $scope.open.value.unshift(Pull.milestone(pull.value) && Pull.stars(pull.value));
+                        $scope.authors[pull.value.user.login] = true;
+                    }
                 });
             }
         });

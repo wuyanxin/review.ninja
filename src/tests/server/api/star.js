@@ -175,8 +175,12 @@ describe('star:set', function() {
             });
         });
 
-        var emitStub = sinon.stub(io, 'emit', function(channel, arg) {
-            assert.equal(channel, 'user:repo:pull-request-2:starred');
+        var emitStub = sinon.stub(io, 'emit', function(channel, args) {
+            assert.equal(channel, 'user:repo:pull_request');
+            assert.deepEqual(args, {
+                action: 'starred',
+                number: 2
+            });
         });
 
         var req = {
@@ -216,96 +220,50 @@ describe('star:set', function() {
 
 describe('star:rmv', function() {
 
-    it('should return an error if it occurs when retrieving the star', function(done) {
-        var starStub = sinon.stub(Star, 'findOne', function(args, done) {
-            done('mongoose star error');
+    it('should return an error if github call repos one errors', function(done) {
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            done('github repos one error');
         });
 
         var req = {
             args: {
-                repo_uuid: 1,
-                sha: 'sha'
-            },
-            user: {id: 2}
-        };
-
-        star.rmv(req, function(err, res) {
-            assert.equal(err, 'mongoose star error');
-            sinon.assert.called(starStub);
-            starStub.restore();
-            done();
-        });
-    });
-
-    it('should create no notifications/statuses when removing a star return no star', function(done) {
-
-        var starStub = sinon.stub(Star, 'findOne', function(args, done) {
-            var star = {
-                remove: function(done) {
-                    done(null, {});
-                }
-            };
-            done(null, star);
-        });
-
-        var statusStub = sinon.stub(status, 'update', function(args) {
-            assert.deepEqual(args, {
-                user: 'user',
-                repo: 'repo',
-                repo_uuid: 1,
-                sha: 'sha',
-                number: 2,
-                token: 'token'
-            });
-        });
-
-        var notificationStub = sinon.stub(notification, 'sendmail',
-            function(notification_type, user, repo, repo_uuid, repo_token, pull_request_number, args) {
-                assert.equal(notification_type, 'unstar');
-                assert.equal(user, 'user');
-                assert.equal(repo, 'repo');
-                assert.equal(repo_uuid, 1);
-                assert.equal(repo_token, 'token');
-                assert.equal(pull_request_number, 2);
-                assert.deepEqual(args, {
-                    user: 'user',
-                    repo: 'repo',
-                    number: 2,
-                    sender: {id:3, login:'login', token:'token'},
-                    url: url.reviewPullRequest('user', 'repo', 2)
-                });
-            });
-
-        var emitStub = sinon.stub(io, 'emit', function(channel, arg) {
-            assert.equal(channel, 'user:repo:pull-request-2:unstarred');
-        });
-
-        var req = {
-            args: {
-                user: 'user',
-                repo: 'repo',
-                repo_uuid: 1,
-                sha: 'sha',
-                number: 2
+                repo_uuid: 1
             },
             user: {
-                id: 3,
-                login: 'login',
                 token: 'token'
             }
         };
 
-        star.rmv(req, function(err, res) {
-            sinon.assert.called(starStub);
-            sinon.assert.called(statusStub);
-            sinon.assert.called(notificationStub);
-            sinon.assert.called(emitStub);
-            starStub.restore();
-            statusStub.restore();
-            notificationStub.restore();
-            emitStub.restore();
+        star.rmv(req, function(err, star) {
+            assert.equal(err, 'github repos one error');
+            sinon.assert.called(githubStub);
+            githubStub.restore();
             done();
         });
     });
 
+    it('should return an error if github call repos one returns permission to pull does not exists', function(done) {
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            done(null, {permissions: {}});
+        });
+
+        var req = {
+            args: {
+                repo_uuid: 1
+            },
+            user: {
+                token: 'token'
+            }
+        };
+
+        star.rmv(req, function(err, star) {
+            assert.deepEqual(err, {
+                code: 403,
+                text: 'Forbidden'
+            });
+            sinon.assert.called(githubStub);
+            githubStub.restore();
+            done();
+        });
+    });
 });
