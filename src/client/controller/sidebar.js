@@ -6,8 +6,8 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'socket', 'Issue',
-    function($scope, $state, $stateParams, $HUB, $RPC, socket, Issue) {
+module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'socket', 'Issue', '$timeout',
+    function($scope, $state, $stateParams, $HUB, $RPC, socket, Issue, $timeout) {
 
         $scope.state = 'open';
 
@@ -67,11 +67,25 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
                             $scope.show = null;
                             $scope.title = null;
                             $scope.description = null;
+                            $scope.selection[0] = null;
                         });
                     }
                 });
             }
         };
+
+        //
+        // Watches
+        //
+
+        $scope.$watch('selection', function(newSelection, oldSelection) {
+            if(newSelection[0] && !oldSelection[0] && !$scope.show) {
+                $scope.highlight = true;
+                $timeout(function() {
+                    $scope.highlight = false;
+                }, 2000);
+            }
+        }, true);
 
         //
         // Websockets
