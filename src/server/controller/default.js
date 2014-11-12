@@ -47,7 +47,7 @@ router.all('/*', function(req, res) {
                     token: user.token
                 }, function(err, renderedHtml) {
                     var template = fs.readFileSync('src/server/templates/terms.ejs', 'utf-8');
-                    res.send(ejs.render(template, {termsHtml: renderedHtml.data}));
+                    res.send(ejs.render(template, {termsHtml: renderedHtml.body}));
                 });
             });
         });
