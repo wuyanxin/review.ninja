@@ -35,19 +35,9 @@
     position: absolute;
     width: 20px;
 
-    i {
+    .octicon {
       position: absolute;
-      visibility: hidden;
-
-      &.fa-circle {
-        font-size: 16px;
-        top: 2px;
-      }
     }
-  }
-
-  tr.selected .select i {
-    visibility: visible;
   }
 
   .chunk pre {

@@ -21,14 +21,14 @@
 								selected: selection[0].ref===headRef(line) || reference[baseRef(line)] || reference[headRef(line)] }">
 
 					<td class="select">
-						<i class="fa fa-circle text-warning" 
-						   ng-click="select(line)" 
-						   ng-show="selection[0].ref===headRef(line)">
-						</i>
-
 						<span class="octicon octicon-issue-opened text-warning" 
 						      ng-show="reference[baseRef(line)] || reference[headRef(line)]"
 						      ng-click="go(line)">
+						</span>
+						<span class="octicon octicon-issue-opened" 
+							  style="color: #dbcc91;"
+						   	  ng-click="select(line)" 
+						   	  ng-show="selection[0].ref===headRef(line)">
 						</span>
 					</td>
 
