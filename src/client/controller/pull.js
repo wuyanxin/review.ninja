@@ -14,6 +14,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.head = pull.value.head.sha;
         $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value);
 
+        // issues
+        $scope.state = 'open';
+        $scope.open = [];
+        $scope.closed = [];
+
         // file reference
         $scope.reference = {};
         $scope.selection = [];

@@ -9,9 +9,7 @@
 module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$RPC', 'socket', 'Issue',
     function($scope, $state, $stateParams, $HUB, $RPC, socket, Issue) {
 
-        $scope.state = 'open';
-
-        $scope.open = $HUB.call('issues', 'repoIssues', {
+        $scope.$parent.open = $HUB.call('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'open',
@@ -25,7 +23,7 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
             }
         });
 
-        $scope.closed = $HUB.call('issues', 'repoIssues', {
+        $scope.$parent.closed = $HUB.call('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'closed',
@@ -86,27 +84,27 @@ module.controller('SidebarCtrl', ['$scope', '$state', '$stateParams', '$HUB', '$
                     number: args.number
                 }, function(err, issue) {
                     if(!err) {
-                        $scope.open.value.unshift(Issue.parse(issue.value));
+                        $scope.$parent.open.value.unshift(Issue.parse(issue.value));
                     }
                 });
             }
             if(args.action === 'closed' && $scope.pull.number === args.pull) {
-                for(i = 0; i < $scope.open.value.length; i++) {
-                    if($scope.open.value[i].number === args.number) {
-                        issue = $scope.open.value[i];
+                for(i = 0; i < $scope.$parent.open.value.length; i++) {
+                    if($scope.$parent.open.value[i].number === args.number) {
+                        issue = $scope.$parent.open.value[i];
                         issue.state = 'closed';
-                        $scope.open.value.splice(i, 1);
-                        $scope.closed.value.unshift(issue);
+                        $scope.$parent.open.value.splice(i, 1);
+                        $scope.$parent.closed.value.unshift(issue);
                     }
                 }
             }
             if(args.action === 'reopened' && $scope.pull.number === args.pull) {
-                for(i = 0; i < $scope.closed.value.length; i++) {
-                    if($scope.closed.value[i].number === args.number) {
-                        issue = $scope.closed.value[i];
+                for(i = 0; i < $scope.$parent.closed.value.length; i++) {
+                    if($scope.$parent.closed.value[i].number === args.number) {
+                        issue = $scope.$parent.closed.value[i];
                         issue.state = 'open';
-                        $scope.closed.value.splice(i, 1);
-                        $scope.open.value.unshift(issue);
+                        $scope.$parent.closed.value.splice(i, 1);
+                        $scope.$parent.open.value.unshift(issue);
                     }
                 }
             }

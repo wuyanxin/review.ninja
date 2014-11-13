@@ -8,15 +8,15 @@
       </span>
       <div class="pull-right">
         <a ui-sref="repo.pull.issue.master({issues: null})" 
-           ng-click="state='open'" 
+           ng-click="$parent.state='open'"
            class="btn btn-link inverse"
-           ng-class="{active:state === 'open'}">
+           ng-class="{active:$parent.state === 'open'}">
           <span class="octicon octicon-issue-opened"></span> Open
         </a>
         <a ui-sref="repo.pull.issue.master({issues: null})" 
-           ng-click="state='closed'"
+           ng-click="$parent.state='closed'"
            class="btn btn-link inverse"
-           ng-class="{active:state === 'closed'}">
+           ng-class="{active:$parent.state === 'closed'}">
           <span class="octicon octicon-issue-closed"></span> Closed
         </a>
       </div>

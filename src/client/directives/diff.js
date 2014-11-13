@@ -15,9 +15,10 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 baseSha: '=',
                 headSha: '=',
                 selection: '=',
-                reference: '='
+                issues: '='
             },
             link: function(scope, elem, attrs) {
+                console.log('diff.js', scope.issues);
 
                 scope.file = null;
 
