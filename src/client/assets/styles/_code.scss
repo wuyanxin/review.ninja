@@ -1,7 +1,10 @@
 .code {
   width: 100%;
 
-  tr.selected,
+  tr.selected {
+    border: 2px solid #f8eec7
+  }
+
   tr:not(.chunk):hover {
     background-color: #f8eec7 !important;
   }
