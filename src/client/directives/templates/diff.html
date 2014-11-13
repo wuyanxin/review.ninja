@@ -1,4 +1,3 @@
-{{ issues.length }}
 <accordion class="diff">
 	<accordion-group is-open="open">
 		<accordion-heading>
@@ -14,7 +13,6 @@
 			This file was renamed.
 		</div>
 		<div ng-show="patch.length">
-
 			<table class="code">
         		<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
             		ng-class="{ addition: line.add, 
@@ -29,8 +27,8 @@
 						</i>
 
 						<span class="octicon octicon-issue-opened text-warning" 
-						   ng-click="go(reference[baseRef(line)], reference[headRef(line)])" 
-						   ng-show="reference[baseRef(line)] || reference[headRef(line)]">
+						      ng-show="reference[baseRef(line)] || reference[headRef(line)]"
+						      ng-click="go(line)">
 						</span>
 					</td>
 
@@ -40,9 +38,7 @@
 					<td><pre>{{ line.content }}</pre></td>
 
 				</tr>
-
 			</table>
-
 		</div>
 	</accordion-group>
 </accordion>
