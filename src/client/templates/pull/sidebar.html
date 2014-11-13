@@ -1,10 +1,10 @@
 <div class="panel panel-default inverse">
 
     <div class="panel-heading">
-      Issues
-      <span class="fa-stack" ng-click="show=true">
-        <i class="fa fa-circle fa-lg fa-stack-1x text-primary"></i>
-        <i class="fa fa-plus fa-stack-1x"></i>
+      <span class="lead">Issues</span>
+      <span class="fa-stack" style="margin-top:-5px;" ng-click="show=true">
+        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+        <i class="fa fa-plus fa-stack-1x" style="font-size:20px;"></i>
       </span>
       <div class="pull-right">
         <a ui-sref="repo.pull.issue.master({issues: null})" 
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="panel-body" ng-show="show">
+    <div class="panel-body" ng-show="show || selection[0]" ng-class="{highlight: highlight}">
         <table style="width:100%;">
           <tr>
             <td style="width:48px; vertical-align:top; padding-right:10px;">
@@ -37,19 +37,27 @@
                   <textarea class="form-control" 
                             ng-model="description" 
                             rows="3" 
-                            placeholder="Description {{ !selection[0] ? '- to link this issue to a line of code, click on a line number' : '' }}">
+                            placeholder="Description">
                   </textarea>
                 </div>
-                <div class="pull-right">
-                  <i class="fa fa-lg fa-link text-warning" 
-                     ng-show="selection[0] && !creating.loading"
-                     tooltip="{{ selection[0].line }}"
-                     tooltip-placement="bottom" 
-                     style="margin-right:10px;">
-                  </i>
-                  <i class="fa fa-lg fa-spinner fa-spin" ng-show="creating.loading" style="margin-right:10px;"></i>
-                  <button type="button" class="btn btn-info" ng-click="show=false">Cancel</button>
-                  <button type="submit" class="btn btn-primary" ng-disabled="!title">Submit</button>
+                <div class="form-group" style="margin:0;">
+                  <div class="btn-group" ng-show="selection[0] && !creating.loading" >
+                    <button type="button" 
+                            class="btn btn-simple" 
+                            tooltip="{{ selection[0].path }}"
+                            tooltip-placement="bottom"
+                            style="border-right:none;">
+                      <i class="fa fa-lg fa-link"></i> #{{ selection[0].head }}
+                    </button>
+                    <button type="button" class="btn btn-simple" style="border-left:none; padding-left:0px;">
+                      <i class="fa fa-times" ng-click="show=true; selection[0]=null;"></i>
+                    </button>
+                  </div>
+                  <i class="fa fa-2x fa-spinner fa-spin" ng-show="creating.loading" style="margin-right:10px;"></i>
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-info" ng-click="show=false; selection[0]=null;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="!title">Submit</button>
+                  </div>
                 </div>
                 <div style="clear:both;"></div>
               </form>

@@ -113,7 +113,9 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                         if(ref !== cur) {
                             scope.selection.push({
                                 ref: ref,
-                                line: scope.path + '#L' + line.head
+                                line: scope.path + '#L' + line.head,
+                                path: scope.path,
+                                head: line.head
                             });
                         }
                     }

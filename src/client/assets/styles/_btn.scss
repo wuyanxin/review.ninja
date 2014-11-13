@@ -15,7 +15,8 @@
 
     &.inverse {
       color: $gray;
-      padding: 3px 0 0 5px;
+      padding-right: 0;
+      padding-top: 5px;
 
       &:hover,
       &.active {
@@ -29,5 +30,20 @@
     border: 1px solid;
     color: $brand-merged;
     opacity: 1;
+  }
+
+  &.btn-simple {
+    background-color: #fff;
+    border-color: #ececec;
+    color: $brand-warning;
+
+    &:hover {
+      color: $brand-warning;
+      cursor: default;
+    }
+
+    &:active {
+      box-shadow: none;
+    }
   }
 }

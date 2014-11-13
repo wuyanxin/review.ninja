@@ -10,6 +10,16 @@
 
   .panel-body {
     border-bottom: 10px solid #fff;
+
+    -moz-transition: background-color 1000ms linear;
+    -ms-transition: background-color 1000ms linear;
+    -o-transition: background-color 1000ms linear;
+    -webkit-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
+
+    &.highlight {
+      background-color: #f8eec7;
+    }
   }
 }
 
