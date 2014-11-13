@@ -20,7 +20,7 @@
         </i> 
       </small>
     </td>
-    <td class="text-right text-primary">
+    <td class="text-right text-primary" ng-class="{true: 'zerocomments', false: 'morecomments'}[issue.comments === 0]">
       <i class="octicon octicon-comment"></i><br />
       {{ issue.comments }}
     </td>

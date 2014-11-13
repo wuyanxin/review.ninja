@@ -8,7 +8,7 @@
         <td>
             <p class="issueheading"><span class="octicon octicon-issue-opened"></span> {{ issue.title }} <span class="text-gray">#{{ issue.number }}<span></p>
         </td>
-        <td class="text-right" style="padding-right:10px;">
+        <td class="text-right" ng-class="{true: 'zerocomments', false: 'morecomments'}[comments.value.length === 0]" style="padding-right:10px;">
           <i class="octicon octicon-comment"></i> {{ comments.value.length }}
         </td>
     </tr>
