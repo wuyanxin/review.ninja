@@ -5,7 +5,9 @@
         <td class="back-angle" style="padding-left:10px;">
             <h3><a class="text-primary" ui-sref="repo.pull.issue.master()"><i class="fa fa-chevron-left"></i></a></h3>
         </td>
-        <td><h3>{{ issue.title }} <span class="text-gray">#{{ issue.number }}<span></h3></td>
+        <td><p class="issueheading">
+            <span class="octicon octicon-issue-opened"></span> {{ issue.title }} <span class="text-gray">#{{ issue.number }}<span></p>
+        </td>
         <td class="text-right" style="padding-right:10px;">
           <i class="fa fa-lg fa-comments text-primary"></i> {{ comments.value.length }}
         </td>
@@ -19,7 +21,6 @@
         </td>
         <td></td>
     </tr>
-
 </table>
 
 <div infinite-scroll="comments.getMore()" 
