@@ -133,7 +133,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
 
                     scope.issues.forEach(function(issue) {
                         if(issue.key === baseRef || issue.key === headRef) {
-                            issues.push(issue.number)
+                            issues.push(issue.number);
                         }
                     });
 
