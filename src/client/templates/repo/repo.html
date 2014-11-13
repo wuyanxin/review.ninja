@@ -65,11 +65,11 @@
             <td>
               <table class="git-merge text-primary">
                 <tr>
-                  <td><small>{{ pull.base.ref }}</small></td>
+                  <td><small>{{ pull.head.repo.id === pull.base.repo.id ? pull.base.ref : pull.base.label}}</small></td>
                   <td rowspan="2"><span class="mega-octicon octicon-git-pull-request octicon-rotate" style="margin-top:5px;"></span></td>
                 </tr>
                 <tr>
-                  <td><small>{{ pull.head.repo.owner.id === pull.head.user.id ? pull.head.ref : pull.head.label }}</small></td>
+                  <td><small>{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</small></td>
                 </tr>
               </table>
             </td>

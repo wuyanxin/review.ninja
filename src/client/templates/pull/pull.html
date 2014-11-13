@@ -15,8 +15,8 @@
             <p ng-bind-html="pull.html"></p>
             <p>
               {{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} 
-              into <span class="label label-default">{{ pull.base.ref }}</span> 
-              from <span class="label label-default">{{ pull.head.repo.owner.id === pull.head.user.id ? pull.head.ref : pull.head.label }}</span> 
+              into <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.base.ref : pull.base.label}}</span>
+              from <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</span>
               <span moment="pull.created_at"></span>
             </p>
           </div>
