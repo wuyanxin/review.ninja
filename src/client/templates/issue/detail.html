@@ -5,9 +5,11 @@
         <td class="back-angle" style="padding-left:10px;">
             <h3><a class="text-primary" ui-sref="repo.pull.issue.master()"><i class="fa fa-chevron-left"></i></a></h3>
         </td>
-        <td><h3>{{ issue.title }} <span class="text-gray">#{{ issue.number }}<span></h3></td>
-        <td class="text-right" style="padding-right:10px;">
-          <i class="fa fa-lg fa-comments text-primary"></i> {{ comments.value.length }}
+        <td>
+            <p class="issueheading"><span class="octicon octicon-issue-opened"></span> {{ issue.title }} <span class="text-gray">#{{ issue.number }}<span></p>
+        </td>
+        <td class="text-right" ng-class="{true: 'zerocomments', false: 'morecomments'}[comments.value.length === 0]" style="padding-right:10px;">
+          <i class="octicon octicon-comment"></i> {{ comments.value.length }}
         </td>
     </tr>
 
@@ -19,7 +21,6 @@
         </td>
         <td></td>
     </tr>
-
 </table>
 
 <div infinite-scroll="comments.getMore()" 

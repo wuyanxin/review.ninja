@@ -164,6 +164,19 @@ $code-font-size: 12px;
       overflow-x: hidden;
       overflow-y: scroll;
     }
+
+    .issueheading {
+      padding-top: 8px;
+      font-weight: normal;
+    }
+
+    .zerocomments {
+      color: $gray-darker;
+    }
+
+    .morecomments {
+      color: $brand-primary;
+    }
   }
 }
 
