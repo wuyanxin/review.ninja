@@ -6,8 +6,8 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'Pull', 'Issue', 'Comment', 'repo', 'pull', 'socket',
-    function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, Pull, Issue, Comment, repo, pull, socket) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'Pull', 'Issue', 'Comment', 'repo', 'pull', 'socket', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, Pull, Issue, Comment, repo, pull, socket, $timeout) {
 
         $scope.state = 'open';
 
@@ -209,6 +209,20 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 $scope.comment = null;
             }
         };
+
+
+        //
+        // Watches
+        //
+
+        $scope.$watch('selection', function(newSelection, oldSelection) {
+            if(newSelection[0] && !oldSelection[0] && !$scope.show) {
+                $scope.highlight = true;
+                $timeout(function() {
+                    $scope.highlight = false;
+                }, 1000);
+            }
+        }, true);
 
         //
         // Modals
