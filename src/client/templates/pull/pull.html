@@ -104,7 +104,7 @@
                   base-sha="base"
                   head-sha="head" 
                   selection="selection"
-                  issues="{true: open, false:closed}[state==='open']">
+                  issues="state==='open' ? open.value : closed.value">
             </diff>
 
           </tab>
