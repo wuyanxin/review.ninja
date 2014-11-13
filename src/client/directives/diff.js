@@ -18,18 +18,14 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 issues: '='
             },
             link: function(scope, elem, attrs) {
-                console.log('diff.js', scope.issues);
-
                 scope.file = null;
-
                 scope.open = true;
-
                 scope.expanded = false;
+                scope.reference = {};
 
                 //
                 // todo: clean up this code
                 //
-
                 scope.$watch('patch', function() {
 
                     if(scope.patch && scope.patch.length) {
@@ -92,8 +88,19 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 });
 
                 //
-                // actions
+                // Watches
                 //
+                scope.$watch('issues', function() {
+                    if(scope.issues) {
+                        scope.reference = {};
+                        scope.issues.forEach(function(issue) {
+                            if(issue.key) {
+                                scope.reference[issue.key] = true;
+                            }
+                        });
+                        console.log(scope.reference);
+                    }
+                });
 
                 scope.baseRef = function(line) {
                     return (scope.baseSha + '/' + scope.path + '#L' + line.base);
@@ -105,7 +112,6 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
 
                 scope.select = function(line) {
                     if(line.head) {
-
                         var ref = scope.headRef(line);
                         var cur = scope.selection[0] ? scope.selection[0].ref : null;
 
