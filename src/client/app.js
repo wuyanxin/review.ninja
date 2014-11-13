@@ -114,8 +114,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             //
             .state('repo.pull.issue', {
                 abstract: true,
-                templateUrl: '/templates/pull/sidebar.html',
-                controller: 'SidebarCtrl'
+                templateUrl: '/templates/pull/sidebar.html'
             })
 
             //

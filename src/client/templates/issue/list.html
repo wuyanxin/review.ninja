@@ -3,7 +3,7 @@
        infinite-scroll-disabled="state==='open' ? open.loading : closed.loading">
 
   <tr class="select" 
-      ng-repeat="issue in (state==='open' ? open : closed).value | filter:{state: state} | in:$stateParams.issues.split(','):'number'" 
+      ng-repeat="issue in (state==='open' ? open : closed).value | filter:{state: state} | in:$stateParams.issues.split(','):'number'"
       ui-sref="repo.pull.issue.detail({ issue: issue.number })">
 
     <td style="width:40px; padding-right:0;">
