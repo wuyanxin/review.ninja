@@ -15,6 +15,9 @@ module.exports = {
                     repo_uuid: args.repository.id,
                     number: args.issue.milestone ? args.issue.milestone.number : null
                 }, function(err, mile) {
+                    console.log('*******');
+                    console.log(err, mile);
+                    console.log('*******');
                     if(!err && mile) {
                         data.pull = mile.pull;
                     }
