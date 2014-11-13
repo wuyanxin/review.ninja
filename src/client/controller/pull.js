@@ -12,6 +12,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.state = 'open';
 
         // get the pull request
+        $scope.sha = null;
         $scope.base = pull.value.base.sha;
         $scope.head = pull.value.head.sha;
         $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value);

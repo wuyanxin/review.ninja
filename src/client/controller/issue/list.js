@@ -11,5 +11,8 @@ module.controller('IssueListCtrl', ['$scope', '$stateParams',
 
         // update the comparison view
         $scope.compComm($scope.pull.base.sha, $scope.head);
+
+        // set the issue sha
+        $scope.$parent.$parent.sha = null;
     }
 ]);

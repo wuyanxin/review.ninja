@@ -15,6 +15,9 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         // switch the comparison view
         $scope.compComm($scope.issue.sha, $scope.head);
 
+        // set the issue sha
+        $scope.$parent.$parent.sha = $scope.issue.sha;
+
         // get the comments
         $scope.comments = $HUB.call('issues', 'getComments', {
             user: $stateParams.user,
