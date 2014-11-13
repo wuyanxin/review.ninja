@@ -12,11 +12,14 @@ module.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
 
             var match = regex.exec(issue.body);
 
-            issue.body = match ? issue.body.replace(match[0], '').trim() : issue.body;
-
             if(match) {
                 issue.sha = match[1];
                 issue.ref = match[3];
+                issue.body = issue.body.replace(match[0], '').trim();
+
+                if(issue.sha && issue.ref) {
+                    issue.key = issue.sha + '/' + issue.ref;
+                }
             }
 
             return issue;
