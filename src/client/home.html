@@ -40,11 +40,11 @@
         <div class="clearfix"></div>
       </div>
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right" ng-show="user.loaded" style="font-size:12px;" ng-cloak>
-          <li><a target="_blank" href="http://docs.review.ninja">DOCUMENTATION</a></li>
-          <li><a target="_blank" href="http://www.review.ninja">ABOUT</a></li>
+        <ul class="nav navbar-nav navbar-right buttonstopbar" ng-show="user.loaded" style="font-size:12px;" ng-cloak>
+          <li><a class="action" target="_blank" href="http://docs.review.ninja">DOCUMENTATION</a></li>
+          <li><a class="action" target="_blank" href="http://www.review.ninja">ABOUT</a></li>
           <li><a>{{ user.value.login }}</a></li>
-          <li><a href="/logout" target="_self"><span class="octicon octicon-sign-out"></span></a></li>
+          <li><a class="action" href="/logout" target="_self"><span class="octicon octicon-sign-out"></span></a></li>
         </ul>
       </div>
     </div>
