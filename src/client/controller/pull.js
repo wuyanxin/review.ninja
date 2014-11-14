@@ -275,6 +275,8 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 }, function(err, issue) {
                     if(!err) {
                         $scope.open.value.unshift(Issue.parse(issue.value));
+                        $scope.pull.milestone = issue.value.milestone;
+                        $scope.pull = Pull.milestone($scope.pull);
                     }
                 });
             }
@@ -286,6 +288,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         $scope.open.value.splice(i, 1);
                         $scope.closed.value.unshift(issue);
                     }
+                    if($scope.pull.milestone) {
+                        $scope.pull.milestone.open_issues--;
+                        $scope.pull.milestone.closed_issues++;
+                    }
                 }
             }
             if(args.action === 'reopened' && $scope.pull.number === args.pull) {
@@ -295,6 +301,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         issue.state = 'open';
                         $scope.closed.value.splice(i, 1);
                         $scope.open.value.unshift(issue);
+                    }
+                    if($scope.pull.milestone) {
+                        $scope.pull.milestone.open_issues++;
+                        $scope.pull.milestone.closed_issues--;
                     }
                 }
             }
