@@ -134,6 +134,10 @@ $code-font-size: 12px;
 // 48px: issues panel header
 //
 
+.buttonstopbar > li > .action:hover {
+  color: #fff !important;
+}
+
 .scaffold {
   background: $gray-lighter;
 
