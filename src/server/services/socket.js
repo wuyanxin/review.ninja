@@ -12,7 +12,7 @@ module.exports = {
             issues: function(done) {
                 data.number = args.issue.number;
                 Milestone.findOne({
-                    repo_uuid: args.repository.id,
+                    repo: args.repository.id,
                     number: args.issue.milestone ? args.issue.milestone.number : null
                 }, function(err, mile) {
                     if(!err && mile) {
