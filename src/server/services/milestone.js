@@ -47,10 +47,10 @@ module.exports = {
                     }
 
                     Milestone.findOneAndUpdate({
-                        repo: repo_uuid,
-                        number: milestone.number
+                        pull: number,
+                        repo: repo_uuid
                     }, {
-                        pull: number
+                        number: milestone.number
                     }, {
                         upsert: true
                     }, done);

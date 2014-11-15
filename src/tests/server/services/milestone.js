@@ -88,11 +88,11 @@ describe('milestone:get', function(done) {
 
         var milestoneCreateStub = sinon.stub(Milestone, 'findOneAndUpdate', function(query, update, options, done) {
             assert.deepEqual(query, {
-                repo: 1,
-                number: 3
+                pull: 2,
+                repo: 1
             });
 
-            assert.equal(update.pull, 2);
+            assert.equal(update.number, 3);
             assert.equal(options.upsert, true);
 
             done(null, {
@@ -154,11 +154,11 @@ describe('milestone:get', function(done) {
 
         var milestoneCreateStub = sinon.stub(Milestone, 'findOneAndUpdate', function(query, update, options, done) {
             assert.deepEqual(query, {
-                repo: 1,
-                number: 3
+                pull: 2,
+                repo: 1
             });
 
-            assert.equal(update.pull, 2);
+            assert.equal(update.number, 3);
             assert.equal(options.upsert, true);
 
             done(null, {
