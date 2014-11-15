@@ -121,7 +121,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             // Pull request issues state (list of issues)
             //
             .state('repo.pull.issue.master', {
-                url: '?issues',
+                url: '',
                 templateUrl: '/templates/issue/list.html',
                 controller: 'IssueListCtrl'
             })
