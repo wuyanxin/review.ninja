@@ -46,6 +46,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                 state: state
             }, function(err, issue) {
                 if(!err) {
+                    $scope.$parent.$parent.state = issue.value.state;
                     $scope.issue = Issue.parse(issue.value) && Issue.render(issue.value);
                 }
             });
