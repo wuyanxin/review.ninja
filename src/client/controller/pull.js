@@ -63,7 +63,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             state: 'open',
             milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
         }, function(err, issues) {
-            $scope.state = $scope.state;
             issues.value = issues.value || [];
             if(!err) {
                 issues.affix.forEach(function(issue) {
@@ -79,7 +78,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             state: 'closed',
             milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
         }, function(err, issues) {
-            $scope.state = $scope.state;
             issues.value = issues.value || [];
             if(!err) {
                 issues.affix.forEach(function(issue) {
@@ -178,7 +176,8 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         $scope.createIssue = function() {
             if($scope.title) {
-                $scope.creating = $RPC.call('issue', 'add', {
+                $scope.creatingIssue = true;
+                $RPC.call('issue', 'add', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     sha: $scope.pull.head.sha,
@@ -194,6 +193,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                             $scope.title = null;
                             $scope.description = null;
                             $scope.reference.selection = {};
+                            $scope.creatingIssue = false;
                         });
                     }
                 });
