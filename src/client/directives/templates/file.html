@@ -1,22 +1,22 @@
 <table class="code">
-	<tr ng-repeat="line in content track by $index"
-        ng-class="{ selected: selection[0].ref===headRef(line) || reference[headRef(line)] }">
+  <tr ng-repeat="line in content track by $index"
+      ng-class="{ selected: isSelected(line), referenced: isReferenced(line) }">
 
-        <td class="select">
-            <i class="fa fa-circle text-warning" 
-               ng-click="select(line)" 
-               ng-show="selection[0].ref===headRef(line)">
-            </i>
+      <td class="select">
+        <span class="octicon octicon-issue-opened text-warning" 
+              ng-show="refStarts(line)"
+              ng-click="go(line)">
+        </span>
+        <span class="octicon octicon-issue-opened" 
+            style="color: #dbcc91;"
+              ng-click="clear()" 
+              ng-show="selStarts(line)">
+        </span>
+      </td>
 
-            <span class="octicon octicon-issue-opened text-warning" 
-               ng-click="go(reference[headRef(line)])" 
-               ng-show="reference[headRef(line)]">
-            </span>
-        </td>
+    <td class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
 
-		<td class="number" ng-click="select(line)"><pre>{{ line.head }}</pre></td>
+    <td class="code"><pre>{{ line.content }}</pre></td>
 
-		<td><pre>{{ line.content }}</pre></td>
-
-	</tr>
+  </tr>
 </table>

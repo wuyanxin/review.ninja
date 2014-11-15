@@ -1,14 +1,6 @@
 .code {
   width: 100%;
 
-  tr.selected {
-    border: 2px solid #f8eec7;
-  }
-
-  tr:not(.chunk):hover {
-    background-color: #f8eec7 !important;
-  }
-
   pre {
     background: none;
     border: 0;
@@ -17,41 +9,75 @@
     padding: 0 8px;
   }
 
+  .chunk pre,
+  .number pre {
+    color: $code-line-number-color;
+  }
+
   .number {
     border-right: 1px solid $code-line-number-color;
     text-align: right;
     width: 30px;
-
-    pre {
-      color: $code-line-number-color;
-    }
   }
 
-  tr:not(.chunk):not(.deletion):not(.disabled) .number {
+  tr:not(.chunk):not(.deletion) .number {
     cursor: pointer;
   }
 
   .select {
-    color: $code-line-select-color;
     cursor: pointer;
     margin-left: -20px;
     position: absolute;
-    width: 20px;
 
     .octicon {
       position: absolute;
     }
   }
 
-  .chunk pre {
-    color: $code-line-number-color;
+  .number, 
+  .select {
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;    
+    user-select: none;
+  }
+
+  //
+  // Highlighting
+  //
+
+  tr.referenced {
+    background-color: #f8eec7;
+  }
+
+  tr.selected {
+    background-color: #f8eec7;
+  }
+
+  tr:not(.chunk):hover {
+    background-color: #f8eec7;
+  }
+
+  tr:not(:hover):not(.addition):not(.deletion) .code {
+    background-color: #fff !important;
   }
 
   .addition {
-    background-color: #dfd;
+    background-color: #eaffea;
+
+    &:not(:hover).selected .code,
+    &:not(:hover).referenced .code {
+      background-color: #eaffea !important;
+    }
   }
 
   .deletion {
-    background-color: #fdd;
+    background-color: #ffecec;
+
+    &:not(:hover).selected .code,
+    &:not(:hover).referenced .code {
+      background-color: #ffecec !important;
+    }
   }
 }

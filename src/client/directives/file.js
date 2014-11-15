@@ -2,59 +2,80 @@
 // File Directive
 // *****************************************************
 
-module.directive('file', ['$state', function($state) {
+module.directive('file', ['$state', '$filter', 'Reference', function($state, $filter, Reference) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/file.html',
             scope: {
                 path: '=',
+                issues: '=',
+                number: '=',
                 content: '=',
                 headSha: '=',
                 selection: '=',
-                reference: '='
+                refIssues: '='
             },
             link: function(scope, elem, attrs) {
 
                 //
-                // actions
+                // Actions
                 //
 
-                scope.headRef = function(line) {
-                    return (scope.headSha + '/' + scope.path + '#L' + line.head);
+                scope.clear = function() {
+                    scope.selection = {};
                 };
 
-                scope.select = function(line) {
+                scope.selStarts = function(line) {
+                    return Reference.starts(scope.headSha, scope.path, line.head, scope.selection.ref);
+                };
+
+                scope.isSelected = function(line) {
+                    return Reference.includes(scope.headSha, scope.path, line.head, scope.selection.ref);
+                };
+
+                scope.refStarts = function(line) {
+                    var match = false;
+                    if(scope.issues) {
+                        $filter('filter')(scope.issues, {number: scope.number}).forEach(function(issue) {
+                            match = match || Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key);
+                        });
+                    }
+                    return match;
+                };
+
+                scope.isReferenced = function(line) {
+                    var match = false;
+                    if(scope.issues) {
+                        $filter('filter')(scope.issues, {number: scope.number}).forEach(function(issue) {
+                            match = match || Reference.includes(scope.baseSha, scope.path, line.head, issue.key) || Reference.includes(scope.headSha, scope.path, line.head, issue.key);
+                        });
+                    }
+                    return match;
+                };
+
+                scope.select = function(line, event) {
                     if(line.head) {
-
-                        var ref = scope.headRef(line);
-                        var cur = scope.selection[0] ? scope.selection[0].ref : null;
-
-                        scope.selection.length = 0;
-
-                        if(ref !== cur) {
-                            scope.selection.push({
-                                ref: ref,
-                                line: scope.path + '#L' + line.base
-                            });
-                        }
+                        var shift = scope.selection.start && event.shiftKey && scope.path === scope.selection.path;
+                        var start = !shift ? line.head : scope.selection.start;
+                        var end = shift ? line.head : null;
+                        scope.selection = Reference.select(scope.headSha, scope.path, start, end);
                     }
                 };
 
-                scope.go = function(headRefs) {
-
+                scope.go = function(line) {
                     var issues = [];
 
-                    if(headRefs) {
-                        for(var i = 0; i < headRefs.length; i++) {
-                            issues.push(headRefs[i].issue);
+                    scope.issues.forEach(function(issue) {
+                        if(Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key)) {
+                            issues.push(issue.number);
                         }
-                    }
+                    });
 
                     if(issues.length === 1) {
                         return $state.go('repo.pull.issue.detail', { issue: issues[0] });
                     }
 
-                    $state.go('repo.pull.issue.master', { issues: issues });
+                    scope.refIssues = issues;
                 };
             }
         };

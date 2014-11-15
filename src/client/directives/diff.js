@@ -2,8 +2,8 @@
 // Diff File Directive
 // *****************************************************
 
-module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
-    function($stateParams, $state, $HUB, $RPC) {
+module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference', '$filter',
+    function($stateParams, $state, $HUB, $RPC, Reference, $filter) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
@@ -12,16 +12,17 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 patch: '=',
                 status: '=',
                 issues: '=',
+                number: '=',
                 fileSha: '=',
                 baseSha: '=',
                 headSha: '=',
-                selection: '='
+                selection: '=',
+                refIssues: '='
             },
             link: function(scope, elem, attrs) {
                 scope.file = null;
                 scope.open = true;
                 scope.expanded = false;
-                scope.reference = {};
 
                 //
                 // Expand the diff
@@ -80,61 +81,55 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 });
 
                 //
-                // Watches
-                //
-
-                scope.$watch('issues', function() {
-                    if(scope.issues) {
-                        scope.reference = {};
-                        scope.issues.forEach(function(issue) {
-                            if(issue.key) {
-                                scope.reference[issue.key] = true;
-                            }
-                        });
-                    }
-                }, true);
-
-                //
-                // Helper functions
-                //
-
-                scope.baseRef = function(line) {
-                    return scope.baseSha + '/' + scope.path + '#L' + line.base;
-                };
-
-                scope.headRef = function(line) {
-                    return scope.headSha + '/' + scope.path + '#L' + line.head;
-                };
-
-                //
                 // Actions
                 //
 
-                scope.select = function(line) {
+                scope.clear = function() {
+                    scope.selection = {};
+                };
+
+                scope.selStarts = function(line) {
+                    return Reference.starts(scope.headSha, scope.path, line.head, scope.selection.ref);
+                };
+
+                scope.isSelected = function(line) {
+                    return Reference.includes(scope.headSha, scope.path, line.head, scope.selection.ref);
+                };
+
+                scope.refStarts = function(line) {
+                    var match = false;
+                    if(scope.issues) {
+                        $filter('filter')(scope.issues, {number: scope.number}).forEach(function(issue) {
+                            match = match || Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key);
+                        });
+                    }
+                    return match;
+                };
+
+                scope.isReferenced = function(line) {
+                    var match = false;
+                    if(scope.issues) {
+                        $filter('filter')(scope.issues, {number: scope.number}).forEach(function(issue) {
+                            match = match || Reference.includes(scope.baseSha, scope.path, line.head, issue.key) || Reference.includes(scope.headSha, scope.path, line.head, issue.key);
+                        });
+                    }
+                    return match;
+                };
+
+                scope.select = function(line, event) {
                     if(line.head) {
-                        var ref = scope.headRef(line);
-                        var cur = scope.selection[0] ? scope.selection[0].ref : null;
-
-                        scope.selection.length = 0;
-
-                        if(ref !== cur) {
-                            scope.selection.push({
-                                ref: ref,
-                                line: scope.path + '#L' + line.head,
-                                path: scope.path,
-                                head: line.head
-                            });
-                        }
+                        var shift = scope.selection.start && event.shiftKey && scope.path === scope.selection.path;
+                        var start = !shift ? line.head : scope.selection.start;
+                        var end = shift ? line.head : null;
+                        scope.selection = Reference.select(scope.headSha, scope.path, start, end);
                     }
                 };
 
                 scope.go = function(line) {
                     var issues = [];
-                    var baseRef = scope.baseRef(line);
-                    var headRef = scope.headRef(line);
 
                     scope.issues.forEach(function(issue) {
-                        if(issue.key === baseRef || issue.key === headRef) {
+                        if(Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key)) {
                             issues.push(issue.number);
                         }
                     });
@@ -143,7 +138,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                         return $state.go('repo.pull.issue.detail', { issue: issues[0] });
                     }
 
-                    $state.go('repo.pull.issue.master', { issues: issues });
+                    scope.refIssues = issues;
                 };
             }
         };
