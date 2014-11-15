@@ -10,8 +10,10 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
             scope: {
                 tree: '=',
                 headSha: '=',
+                number: '=',
+                issues: '=',
                 selection: '=',
-                reference: '='
+                refIssues: '='
             },
             link: function(scope, elem, attrs) {
 
@@ -30,7 +32,6 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                 scope.down = function(node) {
 
                     if(node.type === 'tree') {
-
                         $HUB.call('gitdata', 'getTree', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
@@ -42,9 +43,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                                 scope.tree = res.value;
                             }
                         });
-                    }
-                    else if(node.type === 'blob') {
-
+                    } else if(node.type === 'blob') {
                         $HUB.wrap('gitdata', 'getBlob', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,

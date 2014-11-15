@@ -9,17 +9,19 @@
 module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'Pull', 'Issue', 'Comment', 'repo', 'pull', 'socket', '$timeout',
     function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, Pull, Issue, Comment, repo, pull, socket, $timeout) {
 
+        // set the states
         $scope.state = 'open';
 
-        // get the pull request
+        // set the shas
         $scope.sha = null;
         $scope.base = pull.value.base.sha;
         $scope.head = pull.value.head.sha;
+
+        // get the pull request
         $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value);
 
-        // file reference (to be removed)
-        $scope.reference = {};
-        $scope.selection = [];
+        // set the line selection
+        $scope.reference = {selection: {}, issues: null};
 
         // get the files (for the diff view)
         $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
@@ -61,6 +63,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             state: 'open',
             milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
         }, function(err, issues) {
+            $scope.state = $scope.state;
             issues.value = issues.value || [];
             if(!err) {
                 issues.affix.forEach(function(issue) {
@@ -76,6 +79,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             state: 'closed',
             milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
         }, function(err, issues) {
+            $scope.state = $scope.state;
             issues.value = issues.value || [];
             if(!err) {
                 issues.affix.forEach(function(issue) {
@@ -182,17 +186,14 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     repo_uuid: $scope.pull.base.repo.id,
                     title: $scope.title,
                     body: $scope.description || '',
-                    reference: $scope.selection[0] ? $scope.selection[0].ref : null
+                    reference: $scope.reference.selection.ref
                 }, function(err, issue) {
                     if(!err) {
                         $state.go('repo.pull.issue.detail', {issue: issue.value.number}).then(function() {
                             $scope.show = null;
                             $scope.title = null;
                             $scope.description = null;
-
-                            if($scope.selection[0]) {
-                                $scope.selection[0] = null;
-                            }
+                            $scope.reference.selection = {};
                         });
                     }
                 });
@@ -206,8 +207,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     repo: $stateParams.repo,
                     number: $stateParams.number,
                     body: $scope.comment
+                }, function(err, comment) {
+                    if(!err) {
+                        $scope.comment = null;
+                    }
                 });
-                $scope.comment = null;
             }
         };
 
@@ -216,14 +220,14 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // Watches
         //
 
-        $scope.$watch('selection', function(newSelection, oldSelection) {
-            if(newSelection[0] && !oldSelection[0] && !$scope.show) {
+        $scope.$watch('reference.selection', function(newSelection, oldSelection) {
+            if(newSelection.ref && !oldSelection.ref && !$scope.show) {
                 $scope.highlight = true;
                 $timeout(function() {
                     $scope.highlight = false;
                 }, 1000);
             }
-        }, true);
+        });
 
         //
         // Modals
