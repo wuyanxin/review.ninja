@@ -50,18 +50,18 @@
                infinite-scroll-disabled="type==='open' ? !(!open.loading && !author) : !(!closed.loading && !author)"
                ng-show="matched.length">
 
-          <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))">
-            <td class="watched" ng-class="{active: pull.watched}"></td>
+          <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))"
+              ui-sref="repo.pull.issue.master({ number: pull.number })"
+              class="select">
 
+            <td class="watched" ng-class="{active: pull.watched}"></td>
             <td style="width:50px; padding-right:0;">
               <img ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
             </td>
-
             <td>
-              <a ui-sref="repo.pull.issue.master({ number: pull.number, state:'open' })">{{ pull.title }}</a><br />
+              <strong>{{ pull.title }}</strong><br />
               <small>#{{ pull.number }} opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
             </td>
-
             <td>
               <table class="git-merge text-primary">
                 <tr>
@@ -82,15 +82,14 @@
                     ng-show="pull.milestone.closed_issues && !pull.milestone.open_issues">
               </span>
             </td>
-
             <td class="text-center" style="width:45px;">
               <span class="text-primary" ng-show="pull.stars.length" ng-class="{muted: pull.milestone.open_issues}">
                 <span class="fa-lg icon-ninja-star"></span><br />
                 {{ pull.stars.length }}
               </span>
             </td>
+
           </tr>
-          
         </table>
 
         <p class="well text-center" ng-show="type==='open' && !open.loading && !matched.length">
