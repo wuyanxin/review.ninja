@@ -73,7 +73,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                 addAuth(options);
 
                 github.call(options, function(err, githubPullRequest) {
-                    Star.find({sha: githubPullRequest.head.sha, repo: githubRepo.id}, function(err, stars) {
+                    Star.find({sha: githubPullRequest ? githubPullRequest.head.sha : null, repo: githubRepo.id}, function(err, stars) {
                         if(err) {
                             return res.status(304).send();
                         }

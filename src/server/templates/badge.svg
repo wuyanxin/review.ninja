@@ -377,16 +377,16 @@
 			c-0.576,0.128-1.142-0.229-1.265-0.798c-0.123-0.569,0.245-1.134,0.821-1.263C26.681,51.847,27.247,52.204,27.37,52.773"/>
 	</g>
 	<g clip-path="url(#SVGID_2_)">
-		<text transform="matrix(1 0 0 1.2885 84.1025 42.0459)" fill="#FFA159" font-family="'HelveticaNeue-Bold'" font-size="10.0889"><%= openIssues %></text>
+		<text transform="matrix(1 0 0 1.2885 92 42)" fill="#FFA159" font-family="'HelveticaNeue-Bold'" font-size="10.0889"><%= openIssues %></text>
 	</g>
 	<g clip-path="url(#SVGID_2_)">
-		<text transform="matrix(1 0 0 1.2885 98.126 42.0459)" fill="#FFA159" font-family="'HelveticaNeue'" font-size="10.0889"> open issues</text>
+		<text transform="matrix(1 0 0 1.2885 105 42)" fill="#FFA159" font-family="'HelveticaNeue'" font-size="10.0889"> open issue<% if(openIssues != 1) { %>s<% } %></text>
 	</g>
 	<g clip-path="url(#SVGID_2_)">
-		<text transform="matrix(1 0 0 1.2885 84.1025 58.0488)" fill="#3E9A94" font-family="'HelveticaNeue-Bold'" font-size="10.0889"><%= stars %></text>
+		<text transform="matrix(1 0 0 1.2885 92 58)" fill="#3E9A94" font-family="'HelveticaNeue-Bold'" font-size="10.0889"><%= stars %></text>
 	</g>
 	<g clip-path="url(#SVGID_2_)">
-		<text transform="matrix(1 0 0 1.2885 92.5166 58.0488)" fill="#3E9A94" font-family="'HelveticaNeue'" font-size="10.0889"> ninja stars</text>
+		<text transform="matrix(1 0 0 1.2885 105 58)" fill="#3E9A94" font-family="'HelveticaNeue'" font-size="10.0889"> ninja star<% if(stars != 1) { %>s<% } %></text>
 	</g>
 	<g clip-path="url(#SVGID_2_)">
 		<defs>
