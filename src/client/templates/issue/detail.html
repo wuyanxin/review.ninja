@@ -32,6 +32,7 @@
             <td>
                 <div class="panel panel-default comment">
                     <div class="panel-heading">
+                        <div class="panel-arrow"></div>
                         <strong>{{ issue.user.login }}</strong> commented <span moment="issue.created_at"></span>
                     </div>
                     <div class="panel-body" ng-bind-html="issue.html"></div>
@@ -48,6 +49,7 @@
             <td>
                 <div class="panel panel-default comment">
                     <div class="panel-heading">
+                        <div class="panel-arrow"></div>
                         <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
                     </div>
                     <div class="panel-body" ng-bind-html="comment.html"></div>
@@ -66,7 +68,10 @@
                 </td>
                 <td>
                     <div class="panel panel-default comment">
-                        <div class="panel-heading"><strong>{{ user.value.login }}</strong></div>
+                        <div class="panel-heading">
+                            <div class="panel-arrow"></div>
+                            <strong>{{ user.value.login }}</strong>
+                        </div>
                         <div class="panel-body" style="padding:0;">
                             <textarea class="form-control" ng-model="comment" rows="4" placeholder="Leave an issue comment"></textarea>
                         </div>

@@ -136,6 +136,7 @@
                       <td>
                           <div class="panel panel-default comment">
                               <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
                                   <strong>{{ pull.user.login }}</strong> commented <span moment="pull.created_at"></span>
                               </div>
                               <div class="panel-body" ng-bind-html="pull.html"></div>
@@ -152,6 +153,7 @@
                       <td>
                           <div class="panel panel-default comment">
                               <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
                                   <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
                               </div>
                               <div class="panel-body" ng-bind-html="comment.html"></div>
@@ -170,7 +172,10 @@
                         </td>
                         <td>
                             <div class="panel panel-default comment">
-                                <div class="panel-heading"><strong>{{ user.value.login }}</strong></div>
+                                <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
+                                  <strong>{{ user.value.login }}</strong>
+                                </div>
                                 <div class="panel-body" style="padding:0;">
                                     <textarea class="form-control" ng-model="$parent.comment" rows="4" placeholder="Leave a pull request comment"></textarea>
                                 </div>
