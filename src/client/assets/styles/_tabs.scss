@@ -1,7 +1,7 @@
 .nav-tabs {
   > li > a {
     border-bottom: 0;
-    color: $brand-primary-muted;
+    color: #addada;
   }
 
   > li.active:last-child > a {
@@ -10,5 +10,6 @@
 
   a:hover {
     cursor: pointer;
+    color: #3e9a94;
   }
 }
