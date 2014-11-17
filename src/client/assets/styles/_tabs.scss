@@ -1,7 +1,12 @@
 .nav-tabs {
   > li > a {
-    border-bottom: 0;
-    color: #addada;
+    color: $brand-primary-muted;
+
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;    
+    user-select: none;
   }
 
   > li.active:last-child > a {
@@ -9,7 +14,7 @@
   }
 
   a:hover {
+    color: $brand-primary;
     cursor: pointer;
-    color: #3e9a94;
   }
 }
