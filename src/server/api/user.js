@@ -52,7 +52,7 @@ module.exports = {
                         if(repo.permissions.admin) {
                             webhook.get(req.args.user, req.args.repo, req.user.token,
                                 function(err, hook) {
-                                    if(!hook) {
+                                    if(!err && !hook) {
                                         github.call({
                                             obj: 'repos',
                                             fun: 'createHook',
