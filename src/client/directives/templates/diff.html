@@ -1,12 +1,14 @@
 <accordion class="diff">
 	<accordion-group is-open="open">
 		<accordion-heading>
-			<strong>{{ path }}</strong>
-			<button class="btn btn-xs btn-default pull-right" style="margin-left:5px;">
+			<strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ path }}</strong>
+			<!-- <button class="btn btn-xs btn-default pull-right" style="margin-left:5px;">
 				&nbsp;<i class="fa" ng-class="{ 'fa-plus':!open, 'fa-minus':open }"></i>&nbsp;
-			</button>
-			<button class="btn btn-xs btn-default pull-right" ng-click="expanded=!expanded; $event.stopPropagation();">
-				{{ expanded ? 'contract' : 'expand' }}
+			</button> -->
+			<button class="btn btn-xs btn-default pull-right" 
+					ng-disabled="!open"
+					ng-click="expanded=!expanded; $event.stopPropagation();">
+				&nbsp;<i class="fa" ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"></i>&nbsp;
 			</button>
 		</accordion-heading>
 		<div ng-show="status==='renamed' && !patch.length" style="padding:5px 10px;">
