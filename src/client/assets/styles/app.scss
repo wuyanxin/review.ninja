@@ -84,7 +84,7 @@ $nav-tabs-active-link-hover-bg: $gray-lighter;
 $navbar-default-bg: #333;
 $navbar-default-color: $gray;
 $navbar-default-link-color: $gray;
-$navbar-default-link-hover-color: $gray;
+$navbar-default-link-hover-color: #fff;
 $navbar-default-brand-hover-color: $gray;
 $navbar-default-link-active-color: $gray;
 $navbar-margin-bottom: 0;
@@ -132,10 +132,6 @@ $code-font-size: 12px;
 // 52px: navbar height
 // 48px: issues panel header
 //
-
-.buttonstopbar > li > .action:hover {
-  color: #fff !important;
-}
 
 .scaffold {
   background: $gray-lighter;

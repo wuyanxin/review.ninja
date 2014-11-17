@@ -41,11 +41,9 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right buttonstopbar" ng-show="user.loaded" style="font-size:12px;" ng-cloak>
-          <li><a class="action" target="_blank" href="http://docs.review.ninja">DOCUMENTATION</a></li>
-          <li><a class="action" target="_blank" href="http://www.review.ninja">ABOUT</a></li>
-          <li><a style="padding:12px 15px; font-size:13px; vertical-align:bottom; padding-right: 0px; padding-left: 40px;"><img ng-src="{{ user.value.avatar_url }}&s=32" width="26px" /></a></li>
-          <li><a style="padding-left: 15px; padding-right: 0px;">{{ user.value.login }}</a></li>
-          <li><a style="padding-left: 15px;" class="action" href="/logout" target="_self"><span class="fa fa-power-off"></span></a></li>
+          <li><a target="_blank" href="http://docs.review.ninja">DOCUMENTATION</a></li>
+          <li><a target="_blank" href="http://www.review.ninja">ABOUT</a></li>
+          <li><a target="_self" href="/logout">{{ user.value.login }}&nbsp;&nbsp; <span class="octicon octicon-sign-out"></span></a></li>
         </ul>
       </div>
     </div>
