@@ -10,7 +10,7 @@
       <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
     </td>
     <td>
-      <strong>#{{ issue.number }} {{ issue.title }}</strong><br />
+      <strong>{{ issue.title }}</strong> #{{ issue.number }}<br />
       <small>
         <span moment="issue.created_at"></span> &nbsp;
         <i class="fa fa-lg fa-link text-warning" 
@@ -20,9 +20,9 @@
         </i> 
       </small>
     </td>
-    <td class="text-right text-primary" ng-class="{true: 'zerocomments', false: 'morecomments'}[issue.comments === 0]">
+    <td class="text-right" ng-class="{'text-primary': (issue.body ? 1 : 0) + issue.comments}">
       <i class="octicon octicon-comment"></i><br />
-      {{ issue.comments }}
+      {{ (issue.body ? 1 : 0) + issue.comments }}
     </td>
   </tr>
 
