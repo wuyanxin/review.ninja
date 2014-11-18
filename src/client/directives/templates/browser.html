@@ -16,6 +16,7 @@
                 <td width="1px" ng-class="{inactivelink: !islink(node)}">
                     <span ng-show="node.type=='tree'" class="octicon octicon-file-directory"></span>
                     <span ng-show="node.type=='blob'" class="octicon octicon-file-text"></span>
+                    <span ng-show="node.type=='image'" class="fa fa-picture-o"></span>
                 </td>
                 <td>
                   <span ng-if="!islink(node)" class="inactivelink">{{ node.path }}</span>
