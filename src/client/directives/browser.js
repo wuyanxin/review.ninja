@@ -19,6 +19,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
 
                 scope.stack = [];
                 scope.path = [];
+                scope.maxfilesize = 10000;
 
                 scope.up = function() {
 
@@ -30,7 +31,6 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                 };
 
                 scope.down = function(node) {
-
                     if(node.type === 'tree') {
                         $HUB.call('gitdata', 'getTree', {
                             user: $stateParams.user,
@@ -38,6 +38,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                             sha: node.sha
                         }, function(err, res) {
                             if(!err) {
+                                console.log('res tree', res);
                                 scope.path.push(node.path);
                                 scope.stack.push(scope.tree);
                                 scope.tree = res.value;
@@ -50,6 +51,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                             sha: node.sha
                         }, function(err, res) {
                             if(!err) {
+                                console.log('res blob', res);
                                 scope.path.push(node.path);
                                 scope.stack.push(scope.tree);
                                 scope.file = res.value;
@@ -57,6 +59,10 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                         });
                     }
                 };
+
+                scope.islink = function(node) {
+                    return !node.size || node.size < scope.maxfilesize;
+                }
             }
         };
     }
