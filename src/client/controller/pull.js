@@ -23,6 +23,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // set the line selection
         $scope.reference = {selection: {}, issues: null};
 
+        // for the statuses
+        $scope.statuses = {};
+
         // get the files (for the diff view)
         $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
             user: $stateParams.user,
@@ -41,26 +44,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.star = $RPC.call('star', 'get', {
             sha: pull.value.head.sha,
             repo_uuid: pull.value.base.repo.id
-        });
-
-        // get the statuses
-        $scope.statuses = {};
-        $HUB.call('statuses', 'get', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            sha: pull.value.head.sha
-        }, function(err, statuses) {
-            if(!err) {
-                var states = {};
-                statuses.value.forEach(function(status) {
-                    if(!$scope.statuses[status.context]) {
-                        states[status.state] = status.state;
-                        $scope.statuses[status.context] = status;
-                    }
-                });
-
-                $scope.status = states.failure || states.error || states.pending || states.success || 'pending';
-            }
         });
 
         // get the pull req comments
@@ -110,6 +93,28 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         //
         // Actions
         //
+
+        $scope.getStatuses = function(sha) {
+            $HUB.call('statuses', 'get', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                sha: sha || $scope.pull.head.sha
+            }, function(err, statuses) {
+                if(!err) {
+                    var states = {};
+                    statuses.value.forEach(function(status) {
+                        if(!$scope.statuses[status.context]) {
+                            states[status.state] = status.state;
+                            $scope.statuses[status.context] = status;
+                        }
+                    });
+                    $scope.status = states.failure || states.error || states.pending || states.success || 'pending';
+                }
+            });
+        };
+
+        // get the statses
+        $scope.getStatuses();
 
         $scope.compComm = function(base, head) {
             if(($scope.base !== base || $scope.head !== head) && base !== head) {
@@ -176,6 +181,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
                         // update the comparison
                         $scope.compComm($scope.base, pull.value.head.sha);
+
+                        // update the statuses
+                        $scope.getStatuses(pull.value.head.sha);
 
                         // update the tree
                         $HUB.call('gitdata', 'getTree', {
@@ -263,6 +271,12 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         //
         // Websockets
         //
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'status', function(args) {
+            if($scope.pull.head.sha === args.sha) {
+                $scope.getStatuses();
+            }
+        });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
             if($scope.pull.number === args.number) {
