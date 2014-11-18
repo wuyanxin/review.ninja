@@ -4,7 +4,7 @@
             <a class="text-primary" ui-sref="repo.pull.issue.master()"><i class="fa fa-lg fa-caret-left"></i></a>
         </td>
         <td style="padding-left:5px;">
-            <h4 class="panel-title"><strong>{{ issue.title }}</strong> #{{ issue.number }}</h4>
+            <h4 class="panel-title"><strong>{{ issue.title }}</strong> <a class="link-external" target="_blank"  ng-href="{{issue.html_url}}">#{{ issue.number }}</a></h4>
             <span moment="issue.created_at"></span>&nbsp;
             <i class="fa fa-lg fa-link text-warning" 
                ng-show="issue.ref"
