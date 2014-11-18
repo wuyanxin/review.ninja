@@ -29,6 +29,10 @@ module.exports = {
                 data.id = args.comment.id;
                 data.number = args.issue.number;
                 done(room, data);
+            },
+            status: function(done) {
+                data.sha = args.commit.sha;
+                done(room, data);
             }
         };
 

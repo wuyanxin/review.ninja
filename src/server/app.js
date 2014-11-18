@@ -267,25 +267,17 @@ app.all('/api/:obj/:fun', function(req, res) {
 app.all('/github/webhook/:id', function(req, res) {
     var event = req.headers['x-github-event'];
     try {
-
-        //
-        // handle webhook
-        //
-
         if (!webhooks[event]) {
             return res.status(400).send('Unsupported event');
         }
         webhooks[event](req, res);
-
-        //
-        // emit to sockets
-        //
-
-        socket.emit(event, req.args);
-
     } catch (err) {
         res.status(500).send('Internal server error');
     }
+
+    try {
+        socket.emit(event, req.args);
+    } catch(err) {}
 });
 
 module.exports = app;
