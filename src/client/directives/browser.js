@@ -16,12 +16,12 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                 refIssues: '='
             },
             link: function(scope, elem, attrs) {
-
                 scope.stack = [];
                 scope.path = [];
+                scope.maxfilesize = 10000;
+                scope.imagefiles = ['jpg', 'png', 'bmp', 'psd'];
 
                 scope.up = function() {
-
                     if(scope.stack.length) {
                         scope.file = null;
                         scope.path.pop();
@@ -30,7 +30,6 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                 };
 
                 scope.down = function(node) {
-
                     if(node.type === 'tree') {
                         $HUB.call('gitdata', 'getTree', {
                             user: $stateParams.user,
@@ -41,9 +40,14 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                                 scope.path.push(node.path);
                                 scope.stack.push(scope.tree);
                                 scope.tree = res.value;
+                                var extension = node.path.split('.').pop();
+                                console.log('extension', extension);
+                                if(scope.imagefiles.indexOf(extension) !== -1) {
+                                    scope.tree.type = 'image';
+                                }
                             }
                         });
-                    } else if(node.type === 'blob') {
+                    } else if(node.type === 'blob' || node.type === 'image') {
                         $HUB.wrap('gitdata', 'getBlob', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
@@ -56,6 +60,10 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                             }
                         });
                     }
+                };
+
+                scope.islink = function(node) {
+                    return !node.size || node.size < scope.maxfilesize;
                 };
             }
         };
