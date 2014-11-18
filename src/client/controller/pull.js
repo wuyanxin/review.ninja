@@ -59,7 +59,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     }
                 });
 
-                $scope.status = states.failure || states.error || states.pending || 'success';
+                $scope.status = states.failure || states.error || states.pending || states.success || 'pending';
             }
         });
 
