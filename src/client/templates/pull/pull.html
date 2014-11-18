@@ -21,7 +21,12 @@
             </p>
           </div>
           <div class="col-sm-3" style="padding-right:0;">
-            <merge-button pull="pull" merge="mergePullRequest()" merging="merge.loading"></merge-button>
+            <merge-button pull="pull" 
+                          merge="mergePullRequest()" 
+                          merging="merge.loading" 
+                          status="status"
+                          ng-show="status">
+            </merge-button>
           </div>
         </div>
 
@@ -191,6 +196,27 @@
                 </table>
               </form>
             </div>
+          </tab>
+
+          <tab>
+            <tab-heading>
+              <span class="octicon octicon-check"></span> Status
+            </tab-heading>
+            <table class="table table-plain">
+              <tr>
+                <th>Context</th>
+                <th>Description</th>
+                <th>Status</th>
+              </tr>
+              <tr ng-repeat="status in statuses">
+                <td>{{ status.context }}</td>
+                <td><a ng-href="{{ status.target_url }}" target="_blank">{{ status.description }}</a></td>
+                <td ng-class="{'text-primary': status.state==='success', 'text-warning': status.state==='pending', 'text-danger': status.state==='failure'}">
+                  <span class="octicon" ng-class="{'octicon-check': status.state==='success', 'octicon-x': status.state!=='success'}"></span>
+                  {{ status.state }}
+                </td>
+              </tr>
+          </table>
           </tab>
 
         </tabset>

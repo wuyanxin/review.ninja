@@ -72,7 +72,7 @@ module.exports = function(req, res) {
         }, function(err, mile) {
 
             if(err || !mile) {
-                return res.status(404).send('Milestone not found');
+                return res.send('Milestone not found');
             }
 
             var actions = {
