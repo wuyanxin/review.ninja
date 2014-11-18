@@ -46,6 +46,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                 $scope.hasRepos = true;
                 if (!err && $scope.repos.indexOf(repo) < 0) {
                     repo.ninja = true;
+                    repo.adddate = -new Date();
                     $scope.repos.push(repo);
                 }
             });
