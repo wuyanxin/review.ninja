@@ -151,7 +151,7 @@
               </table>
 
               <table style="width:100%;">
-                  <tr ng-repeat="comment in comments.value">
+                  <tr ng-repeat="comment in comments.value" ng-show="comment.html">
                       <td style="width:42px; padding-right:10px; vertical-align:top;">
                           <img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" />
                       </td>
