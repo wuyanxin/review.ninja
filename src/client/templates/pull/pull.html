@@ -194,7 +194,9 @@
           </tab>
 
           <tab>
-            <tab-heading><span class="octicon octicon-check"></span> Status</tab-heading>
+            <tab-heading>
+              <span class="octicon" ng-class="{'octicon-check': status==='success', 'octicon-x': status!=='success'}"></span> Status
+            </tab-heading>
             <table class="table table-plain">
               <tr>
                 <th>Context</th>
