@@ -1,3 +1,29 @@
+.margin {
+  height: 0;
+  position: absolute;
+  width: 0;
+
+  tr {
+    height: 17px;
+  }
+
+  .select {
+    cursor: pointer;
+    margin-left: -20px;
+    position: absolute;
+
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;    
+    user-select: none;
+
+    .octicon {
+      position: absolute;
+    }
+  }
+}
+
 .code {
   width: 100%;
 
@@ -17,6 +43,13 @@
   .number {
     border-right: 1px solid $code-line-number-color;
     text-align: right;
+
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;    
+    user-select: none;
+
     width: 30px;
   }
 
@@ -24,31 +57,12 @@
     cursor: pointer;
   }
 
-  .select {
-    cursor: pointer;
-    margin-left: -20px;
-    position: absolute;
-
-    .octicon {
-      position: absolute;
-    }
-  }
-
-  .number, 
-  .select {
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;    
-    user-select: none;
-  }
-
   //
   // Highlighting
   //
 
   tr.referenced {
-    background-color: #f8eec7;
+    background-color: #e6c964;
   }
 
   tr.selected {
