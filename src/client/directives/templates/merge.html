@@ -2,16 +2,16 @@
 <button type="button" 
         class="btn btn-block" 
         ng-class="{
-          'btn-primary': !pull.merged && pull.stars.length && !pull.milestone.open_issues,
-          'btn-warning': !pull.merged && !pull.stars.length && !pull.milestone.open_issues,
-          'btn-danger': !pull.merged && pull.milestone.open_issues,
-          'btn-merged': pull.merged
+          'btn-primary': status==='success' && !pull.merged,
+          'btn-warning': status==='pending' && !pull.merged,
+          'btn-danger':  status==='failure' && !pull.merged,
+          'btn-merged':  pull.merged
         }"
         ng-disabled="!pull.mergeable" 
         ng-click="merge()">
 
   <span class="octicon octicon-git-merge"></span> 
-  <span ng-show="!pull.merged">Merge pull request</span>
+  <span ng-show="!pull.merged">{{ status==='failure' ? 'Merge with caution!' : 'Merge pull request'}}</span>
   <span ng-show="pull.merged">Merged</span>
   <i class="fa fa-spinner fa-spin" ng-show="merging"></i>
 </button>

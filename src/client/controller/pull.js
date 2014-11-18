@@ -43,6 +43,26 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             repo_uuid: pull.value.base.repo.id
         });
 
+        // get the statuses
+        $scope.statuses = {};
+        $HUB.call('statuses', 'get', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            sha: pull.value.head.sha
+        }, function(err, statuses) {
+            if(!err) {
+                var states = {};
+                statuses.value.forEach(function(status) {
+                    if(!$scope.statuses[status.context]) {
+                        states[status.state] = status.state;
+                        $scope.statuses[status.context] = status;
+                    }
+                });
+
+                $scope.status = states.failure || states.error || states.pending || 'success';
+            }
+        });
+
         // get the pull req comments
         $scope.comments = $HUB.call('issues', 'getComments', {
             user: $stateParams.user,

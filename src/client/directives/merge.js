@@ -9,6 +9,7 @@ module.directive('mergeButton', function() {
         scope: {
             pull: '=',
             merge: '&',
+            status: '=',
             merging: '='
         }
     };

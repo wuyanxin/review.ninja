@@ -9,7 +9,7 @@
     user-select: none;
   }
 
-  > li.active:last-child > a {
+  > li.active:nth-child(3) > a {
     background: #fff;
   }
 
