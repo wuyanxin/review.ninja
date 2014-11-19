@@ -12,10 +12,11 @@ $gray-lighter: #f9f9f9;
 
 // brand colours
 $brand-primary: #3e9a94;
+$brand-success: #4c9931;
 $brand-primary-muted: #addada;
 $brand-primary-hover: #2c827c;
-$brand-warning: #ffa159;
-$brand-danger: #ad3b25;
+$brand-warning: #aa870d;
+$brand-danger: #bd2c00;
 $brand-info: #d0eaea;
 $brand-merged: #6e5494;
 $link-color: #3c3c3d;
@@ -33,6 +34,7 @@ $headings-color: $gray-darker;
 $input-border: $gray-light;
 $input-color: $gray-darker;
 $input-color-placeholder: $gray;
+$input-border-focus: $brand-primary;
 
 // panels
 $panel-bg: transparent;
@@ -53,9 +55,9 @@ $component-active-bg: $gray-light;
 $component-active-color: #555;
 
 // buttons
-$btn-info-bg: #d0eaea;
+$btn-info-bg: $brand-info;
 $btn-info-color: $brand-primary;
-$btn-default-border: #ececec;
+$btn-default-border: $gray-light;
 $btn-default-color: $brand-primary;
 
 // wells
@@ -120,6 +122,7 @@ $code-font-size: 12px;
 @import 'git';
 @import 'git-merge';
 @import 'list-group';
+@import 'merge';
 @import 'panel';
 @import 'pull-list';
 @import 'table';
@@ -216,8 +219,8 @@ h4 {
   color: $brand-primary-muted;
 }
 
-img.muted {
-  opacity: 0.5;
+.text-success {
+  color: $brand-success;
 }
 
 .text-warning {
@@ -240,11 +243,8 @@ img.muted {
   color: $gray-dark;
 }
 
-.merge-message {
-  border-left: 5px solid;
-  line-height: normal;
-  margin-top: 10px;
-  padding-left: 10px;
+img.muted {
+  opacity: 0.5;
 }
 
 .link-external {

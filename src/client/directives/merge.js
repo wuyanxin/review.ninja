@@ -11,6 +11,20 @@ module.directive('mergeButton', function() {
             merge: '&',
             status: '=',
             merging: '='
+        },
+        link: function(scope, elem, attrs) {
+
+            var text = {
+                failure: 'failed',
+                pending: 'pending',
+                success: 'succeeded'
+            };
+
+            scope.$watch('status.state', function(state) {
+                if(state) {
+                    scope.status.text = text[state];
+                }
+            });
         }
     };
 });

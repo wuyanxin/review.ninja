@@ -1,7 +1,5 @@
-<table class="code">
-  <tr ng-repeat="line in content track by $index"
-      ng-class="{ selected: isSelected(line), referenced: isReferenced(line) }">
-
+<table class="margin">
+  <tr ng-repeat="line in content track by $index">
       <td class="select">
         <span class="octicon octicon-issue-opened text-warning" 
               ng-show="refStarts(line)"
@@ -13,10 +11,13 @@
               ng-show="selStarts(line)">
         </span>
       </td>
+  </tr>
+</table>
 
+<table class="code">
+  <tr ng-repeat="line in content track by $index"
+      ng-class="{ selected: isSelected(line), referenced: isReferenced(line) }">
     <td class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
-
     <td class="code"><pre>{{ line.content }}</pre></td>
-
   </tr>
 </table>

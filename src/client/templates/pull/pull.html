@@ -11,23 +11,21 @@
             <img class="img-responsive" style="margin-bottom: 12px" ng-src="{{ pull.user.avatar_url }}&s=100" />
           </div>
           <div class="col-sm-8">
-            <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }}</h2>
-            <p ng-bind-html="pull.html"></p>
+            <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }} <a class="link-external" target="_blank"  ng-href="{{pull.html_url}}">#{{ pull.number }}</a></h2>
             <p>
               {{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} 
               into <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.base.ref : pull.base.label}}</span>
               from <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</span>
-              <span moment="pull.created_at"></span>
+              <small moment="pull.created_at"></small>
             </p>
+            <p ng-bind-html="pull.html"></p>
           </div>
-          <div class="col-sm-3" style="padding-right:0;">
-            <merge-button pull="pull" 
-                          merge="mergePullRequest()" 
-                          merging="merge.loading" 
-                          status="status"
-                          ng-show="status">
-            </merge-button>
-          </div>
+          <merge-button pull="pull" 
+                        merge="mergePullRequest()" 
+                        merging="merge.loading" 
+                        status="status.value"
+                        ng-show="status.loaded">
+          </merge-button>
         </div>
 
       </div>
@@ -208,10 +206,10 @@
                 <th>Description</th>
                 <th>Status</th>
               </tr>
-              <tr ng-repeat="status in statuses">
+              <tr ng-repeat="status in status.value.statuses">
                 <td>{{ status.context }}</td>
                 <td><a ng-href="{{ status.target_url }}" target="_blank">{{ status.description }}</a></td>
-                <td ng-class="{'text-primary': status.state==='success', 'text-warning': status.state==='pending', 'text-danger': status.state==='failure'}">
+                <td ng-class="{'text-success': status.state==='success', 'text-warning': status.state==='pending', 'text-danger': status.state==='failure'}">
                   <span class="octicon" ng-class="{'octicon-check': status.state==='success', 'octicon-x': status.state!=='success'}"></span>
                   {{ status.state }}
                 </td>

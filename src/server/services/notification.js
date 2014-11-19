@@ -69,14 +69,15 @@ module.exports = function() {
             token: token
         }, function(err, emails) {
             var primary = null;
-            for(var key = 0; key < emails.length; key++) {
-                if(emails[key].primary) {
-                    primary = emails[key];
-                    break;
+            if(!err) {
+                for(var key = 0; key < emails.length; key++) {
+                    if(emails[key].primary) {
+                        primary = emails[key];
+                        break;
+                    }
                 }
             }
-
-            done(err,primary);
+            done(err, primary);
         });
     }
 

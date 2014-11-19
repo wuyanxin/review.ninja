@@ -29,7 +29,6 @@ module.exports = {
                     var issues = milestone ? milestone.open_issues : 0;
 
                     var status = issues ? 'failure' : stars.length ? 'success' : 'pending';
-
                     github.call({
                         obj: 'statuses',
                         fun: 'create',
@@ -39,7 +38,8 @@ module.exports = {
                             sha: args.sha,
                             state: status,
                             description: 'Review Ninja: ' + stars.length + ' stars, ' + issues + ' issues',
-                            target_url: url.reviewPullRequest(args.user, args.repo, args.number)
+                            target_url: url.reviewPullRequest(args.user, args.repo, args.number),
+                            context: 'code-review/reviewninja'
                         },
                         token: args.token
                     }, done);

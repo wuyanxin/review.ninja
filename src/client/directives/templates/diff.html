@@ -12,14 +12,8 @@
 			This file was renamed.
 		</div>
 		<div ng-show="patch.length">
-			<table class="code">
-        		<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
-            		ng-class="{ addition: line.add, 
-                        		deletion: line.del, 
-                        		chunk: line.chunk, 
-								selected: isSelected(line),
-								referenced: isReferenced(line) }">
-
+			<table class="margin">
+        		<tr ng-repeat="line in (expanded ? file : patch) track by $index">
 					<td class="select">
 						<span class="octicon octicon-issue-opened text-warning" 
 						      ng-show="refStarts(line)"
@@ -31,6 +25,15 @@
 						   	  ng-show="selStarts(line)">
 						</span>
 					</td>
+				</tr>
+			</table>
+			<table class="code">
+        		<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
+            		ng-class="{ addition: line.add, 
+                        		deletion: line.del, 
+                        		chunk: line.chunk, 
+								selected: isSelected(line),
+								referenced: isReferenced(line) }">
 
 					<td class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
 					<td class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
