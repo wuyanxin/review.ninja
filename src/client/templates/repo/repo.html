@@ -59,8 +59,8 @@
               <img ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
             </td>
             <td>
-              <strong>{{ pull.title }}</strong><br />
-              <small>#{{ pull.number }} opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
+              <strong>{{ pull.title }}</strong> #{{ pull.number }}<br />
+              <small>opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
             </td>
             <td>
               <table class="git-merge text-primary">
