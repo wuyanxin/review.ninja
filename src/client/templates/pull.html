@@ -13,10 +13,10 @@
           <div class="col-sm-8">
             <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }} <a class="link-external" target="_blank"  ng-href="{{pull.html_url}}">#{{ pull.number }}</a></h2>
             <p>
-              {{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} 
+              {{ pull.merged ? pull.merged_by.login + ' merged' : pull.user.login + ' wants to merge' }} {{ pull.commits | pluralize:'commit' }} 
               into <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.base.ref : pull.base.label}}</span>
               from <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</span>
-              <small moment="pull.created_at"></small>
+              <small moment="pull.merged_at || pull.created_at"></small>
             </p>
             <p ng-bind-html="pull.html"></p>
           </div>

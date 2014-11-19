@@ -60,7 +60,10 @@
             </td>
             <td>
               <strong>{{ pull.title }}</strong> #{{ pull.number }}<br />
-              <small>opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
+              <small ng-show="pull.state==='open'">opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
+              <small ng-show="pull.state==='closed'">
+                {{ pull.merged_at ? 'merged' : 'closed' }} <span moment="pull.merged_at || pull.closed_at"></span>
+              </small>
             </td>
             <td>
               <table class="git-merge text-primary">
