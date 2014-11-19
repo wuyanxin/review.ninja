@@ -72,7 +72,11 @@
                           <span class="icon-ninja-star text-primary" style="font-size:25px" ng-class="{muted: !star.value}"></span>
                       </button>
                     <div class="btn-group">
-                      <button type="button" class="btn btn-primary dropdown-toggle stars" data-toggle="dropdown" ng-disabled="!pull.stars.length" style="font-size:18px;">
+                      <button type="button" 
+                              class="btn btn-primary dropdown-toggle stars" 
+                              data-toggle="dropdown" 
+                              ng-disabled="!pull.stars.length" 
+                              style="font-size:18px; min-width:36px; min-height:39px;">
                         {{ pull.stars.length }}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
@@ -210,6 +214,9 @@
                   <span class="octicon" ng-class="{'octicon-check': status.state==='success', 'octicon-x': status.state!=='success'}"></span>
                   {{ status.state }}
                 </td>
+              </tr>
+              <tr ng-show="!status.value.statuses.length">
+                <td colspan="3">no statuses to show</td>
               </tr>
           </table>
           </tab>

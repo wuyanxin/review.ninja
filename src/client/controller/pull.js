@@ -152,10 +152,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     if($scope.pull.head.sha !== pull.value.head.sha) {
 
                         // clear star
-                        $scope.star = null;
+                        $scope.star.value = null;
 
                         // clear the statuses
-                        $scope.status = null;
+                        $scope.status.value = null;
 
                         // update the comparison
                         $scope.compComm($scope.base, pull.value.head.sha);

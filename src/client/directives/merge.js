@@ -31,6 +31,12 @@ module.directive('mergeButton', function() {
                         }
                     });
                 }
+
+                // the default status
+                scope.status = scope.status || {
+                    state: 'pending',
+                    statuses: []
+                };
             });
         }
     };
