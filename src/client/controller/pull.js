@@ -154,9 +154,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         // clear star
                         $scope.star.value = null;
 
-                        // clear the statuses
-                        $scope.status.value = null;
-
                         // update the comparison
                         $scope.compComm($scope.base, pull.value.head.sha);
                     }
