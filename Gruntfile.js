@@ -110,6 +110,21 @@ module.exports = function(grunt) {
                         return json;
                     }
                 }
+            },
+            status: {
+                options: {
+                    url: 'http://localhost:' + (process.env.PORT || 5000) + '/github/webhook/' + grunt.option('id'),
+                    headers: {
+                        'x-github-event': 'status'
+                    },
+                    json: function() {
+                        var json = require('./src/tests/fixtures/webhooks/status.json');
+                        json.commit.sha = grunt.option('sha');
+                        json.repository.name = grunt.option('repo');
+                        json.repository.id = grunt.option('repo_uuid');
+                        return json;
+                    }
+                }
             }
         }
     };
