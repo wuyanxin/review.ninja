@@ -25,7 +25,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', 'File',
                             sha: sha
                         }, function(err, tree) {
                             if(!err) {
-                                scope.tree = File.extensions(tree.value);
+                                scope.tree = File.getTreeTypes(tree.value);
                             }
                         });
                     }
@@ -49,7 +49,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', 'File',
                             if(!err) {
                                 scope.path.push(node.path);
                                 scope.stack.push(scope.tree);
-                                scope.tree = File.extensions(tree.value);
+                                scope.tree = File.getTreeTypes(tree.value);
                             }
                         });
                     } else {
