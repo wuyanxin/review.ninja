@@ -99,7 +99,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key);
+                            match = match || Reference.starts(scope.baseSha, scope.path, line.base, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key);
                         });
                     }
                     return match;
@@ -109,7 +109,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.includes(scope.baseSha, scope.path, line.head, issue.key) || Reference.includes(scope.headSha, scope.path, line.head, issue.key);
+                            match = match || Reference.includes(scope.baseSha, scope.path, line.base, issue.key) || Reference.includes(scope.headSha, scope.path, line.head, issue.key);
                         });
                     }
                     return match;
@@ -128,7 +128,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     var issues = [];
 
                     scope.issues.forEach(function(issue) {
-                        if(Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key)) {
+                        if(Reference.starts(scope.baseSha, scope.path, line.base, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key)) {
                             issues.push(issue.number);
                         }
                     });
