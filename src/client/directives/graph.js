@@ -21,9 +21,9 @@ module.directive('graph', function() {
                         if(scope.openIssues[i].sha === scope.headSha) {
                             return true;
                         }
-                    };
-                    return false;
+                    }
                 }
+                return false;
             };
         }
     };
