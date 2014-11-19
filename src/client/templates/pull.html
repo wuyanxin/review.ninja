@@ -108,7 +108,6 @@
                   head-sha="head" 
                   selection="reference.selection"
                   ref-issues="reference.issues"
-                  number="$stateParams.issue"
                   issues="state==='open' ? open.value : closed.value">
             </diff>
 
@@ -116,11 +115,9 @@
 
           <tab>
             <tab-heading><span class="octicon octicon-file-code"></span> Files</tab-heading>
-            <browser tree="tree.value" 
-                     head-sha="head" 
+            <browser sha="pull.head.sha" 
                      selection="reference.selection"
                      ref-issues="reference.issues"
-                     number="$stateParams.issue"
                      issues="state==='open' ? open.value : closed.value">
             </browser>
           </tab>

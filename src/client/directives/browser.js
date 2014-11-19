@@ -2,24 +2,34 @@
 // File Browser Directive
 // *****************************************************
 
-module.directive('browser', ['$stateParams', '$HUB', '$RPC',
-    function($stateParams, $HUB, $RPC) {
+module.directive('browser', ['$stateParams', '$HUB', '$RPC', 'File',
+    function($stateParams, $HUB, $RPC, File) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/browser.html',
             scope: {
-                tree: '=',
-                headSha: '=',
-                number: '=',
+                sha: '=',
                 issues: '=',
                 selection: '=',
                 refIssues: '='
             },
             link: function(scope, elem, attrs) {
-                scope.stack = [];
-                scope.path = [];
-                scope.maxfilesize = 10000;
-                scope.imagefiles = ['jpg', 'png', 'bmp', 'psd'];
+
+                scope.$watch('sha', function(sha) {
+                    if(sha) {
+                        scope.stack = [];
+                        scope.path = [];
+                        $HUB.call('gitdata', 'getTree', {
+                            user: $stateParams.user,
+                            repo: $stateParams.repo,
+                            sha: sha
+                        }, function(err, tree) {
+                            if(!err) {
+                                scope.tree = File.extensions(tree.value);
+                            }
+                        });
+                    }
+                });
 
                 scope.up = function() {
                     if(scope.stack.length) {
@@ -29,25 +39,20 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                     }
                 };
 
-                scope.down = function(node) {
+                scope.down = function(node, sha) {
                     if(node.type === 'tree') {
                         $HUB.call('gitdata', 'getTree', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
                             sha: node.sha
-                        }, function(err, res) {
+                        }, function(err, tree) {
                             if(!err) {
                                 scope.path.push(node.path);
                                 scope.stack.push(scope.tree);
-                                scope.tree = res.value;
-                                var extension = node.path.split('.').pop();
-                                console.log('extension', extension);
-                                if(scope.imagefiles.indexOf(extension) !== -1) {
-                                    scope.tree.type = 'image';
-                                }
+                                scope.tree = File.extensions(tree.value);
                             }
                         });
-                    } else if(node.type === 'blob' || node.type === 'image') {
+                    } else {
                         $HUB.wrap('gitdata', 'getBlob', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
@@ -60,10 +65,6 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC',
                             }
                         });
                     }
-                };
-
-                scope.islink = function(node) {
-                    return !node.size || node.size < scope.maxfilesize;
                 };
             }
         };

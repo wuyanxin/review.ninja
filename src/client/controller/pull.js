@@ -37,13 +37,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             number: $stateParams.number
         });
 
-        // get the tree (for the file browser)
-        $scope.tree = $HUB.call('gitdata', 'getTree', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            sha: pull.value.head.sha
-        });
-
         // get the star
         $scope.star = $RPC.call('star', 'get', {
             sha: pull.value.head.sha,
@@ -159,24 +152,13 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     if($scope.pull.head.sha !== pull.value.head.sha) {
 
                         // clear star
-                        $scope.star.value = null;
+                        $scope.star = null;
+
+                        // clear the statuses
+                        $scope.status = null;
 
                         // update the comparison
                         $scope.compComm($scope.base, pull.value.head.sha);
-
-                        // update the statuses
-                        $scope.getStatuses(pull.value.head.sha);
-
-                        // update the tree
-                        $HUB.call('gitdata', 'getTree', {
-                            user: $stateParams.user,
-                            repo: $stateParams.repo,
-                            sha: pull.value.head.sha
-                        }, function(err, tree) {
-                            if(!err) {
-                                $scope.tree.value = tree.value;
-                            }
-                        });
                     }
 
                     $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value);
@@ -254,11 +236,19 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // Websockets
         //
 
-        // socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'status', function(args) {
-        //     if($scope.pull.head.sha === args.sha) {
-        //         $scope.getStatuses();
-        //     }
-        // });
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'status', function(args) {
+            if($scope.pull.head.sha === args.sha) {
+                $HUB.call('statuses', 'getCombined', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    sha: $scope.pull.head.sha
+                }, function(err, status) {
+                    if(!err) {
+                        $scope.status.value = status.value;
+                    }
+                });
+            }
+        });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
             if($scope.pull.number === args.number) {

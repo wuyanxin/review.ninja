@@ -251,6 +251,12 @@ img.muted {
   color: $brand-primary !important;
 }
 
+a.disabled {
+  color: $gray-dark;
+  cursor: default;
+  pointer-events: none;
+}
+
 // Font Awesome and Octicons
 
 i.fa-times,
