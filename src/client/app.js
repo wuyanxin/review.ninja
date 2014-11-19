@@ -62,7 +62,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             //
             .state('repo.master', {
                 url: '',
-                templateUrl: '/templates/repo/repo.html',
+                templateUrl: '/templates/repo.html',
                 controller: 'RepoCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -76,7 +76,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             //
             .state('repo.settings', {
                 url: '/settings',
-                templateUrl: '/templates/repo/settings.html',
+                templateUrl: '/templates/settings.html',
                 controller: 'SettingsCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -91,7 +91,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             .state('repo.pull', {
                 abstract: true,
                 url: '/pull/:number',
-                templateUrl: '/templates/pull/pull.html',
+                templateUrl: '/templates/pull.html',
                 controller: 'PullCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -114,7 +114,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             //
             .state('repo.pull.issue', {
                 abstract: true,
-                templateUrl: '/templates/pull/sidebar.html'
+                templateUrl: '/templates/sidebar.html'
             })
 
             //
