@@ -1,0 +1,25 @@
+.merge {
+  border: 1px solid;
+  padding: 15px 20px;
+
+  button {
+    font-size: 16px;
+    margin-top: 12px;
+  }
+
+  .btn-merged {
+    border: 0;
+    margin-bottom: 5px;
+    margin-top: 0;
+    padding: 0;
+    text-align: left;
+
+    .octicon {
+      font-size: 18px;
+    }
+  }
+
+  p {
+    margin: 1px 0;
+  }
+}

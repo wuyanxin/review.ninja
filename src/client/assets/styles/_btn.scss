@@ -32,6 +32,14 @@
     opacity: 1;
   }
 
+  &.btn-success {
+    background-color: $brand-success;
+
+    &:hover {
+      background-color: darken($brand-success, 5%);
+    }
+  }
+
   &.btn-simple {
     background-color: #fff;
     border-color: #ececec;
