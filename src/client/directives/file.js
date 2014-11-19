@@ -2,14 +2,13 @@
 // File Directive
 // *****************************************************
 
-module.directive('file', ['$state', '$filter', 'Reference', function($state, $filter, Reference) {
+module.directive('file', ['$state', '$filter', '$stateParams', 'Reference', function($state, $filter, $stateParams, Reference) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/file.html',
             scope: {
                 path: '=',
                 issues: '=',
-                number: '=',
                 content: '=',
                 headSha: '=',
                 selection: '=',
@@ -36,7 +35,7 @@ module.directive('file', ['$state', '$filter', 'Reference', function($state, $fi
                 scope.refStarts = function(line) {
                     var match = false;
                     if(scope.issues) {
-                        $filter('filter')(scope.issues, {number: scope.number}).forEach(function(issue) {
+                        $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
                             match = match || Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key);
                         });
                     }
@@ -46,7 +45,7 @@ module.directive('file', ['$state', '$filter', 'Reference', function($state, $fi
                 scope.isReferenced = function(line) {
                     var match = false;
                     if(scope.issues) {
-                        $filter('filter')(scope.issues, {number: scope.number}).forEach(function(issue) {
+                        $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
                             match = match || Reference.includes(scope.baseSha, scope.path, line.head, issue.key) || Reference.includes(scope.headSha, scope.path, line.head, issue.key);
                         });
                     }

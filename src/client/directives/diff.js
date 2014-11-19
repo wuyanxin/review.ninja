@@ -12,7 +12,6 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 patch: '=',
                 status: '=',
                 issues: '=',
-                number: '=',
                 fileSha: '=',
                 baseSha: '=',
                 headSha: '=',
@@ -99,7 +98,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 scope.refStarts = function(line) {
                     var match = false;
                     if(scope.issues) {
-                        $filter('filter')(scope.issues, {number: scope.number}).forEach(function(issue) {
+                        $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
                             match = match || Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key);
                         });
                     }
@@ -109,7 +108,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 scope.isReferenced = function(line) {
                     var match = false;
                     if(scope.issues) {
-                        $filter('filter')(scope.issues, {number: scope.number}).forEach(function(issue) {
+                        $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
                             match = match || Reference.includes(scope.baseSha, scope.path, line.head, issue.key) || Reference.includes(scope.headSha, scope.path, line.head, issue.key);
                         });
                     }
