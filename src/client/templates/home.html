@@ -18,7 +18,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="form-group has-feedback">
-              <input type="text" ng-model="query" class="form-control" style="height:33px;" />
+              <input type="text" ng-model="query" class="form-control" style="height:33px;" placeholder="Type username/ or organization/ to find a repository"/>
               <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="searching.loading" style="top:0px;"></i>
               <i class="fa fa-lg fa-times form-control-feedback" ng-show="!searching.loading && query" ng-click="reset()" style="top:0px;"></i>
             </div>
@@ -26,9 +26,6 @@
               <button class="btn btn-info" type="submit" ng-disabled="!query">Find Repository</button>
             </span>
           </div>
-          <span class="help-block" style="margin-top:1px;">
-            Type <em>username/</em> or <em>organization/</em> to find a repository
-          </span>
         </div>
 
         <div class="list-group" style="max-height:200px; overflow-y:scroll;" ng-show="results.length">
