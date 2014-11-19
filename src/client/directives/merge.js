@@ -22,7 +22,13 @@ module.directive('mergeButton', function() {
 
             scope.$watch('status.state', function(state) {
                 if(state) {
+                    scope.status.count = 0;
                     scope.status.text = text[state];
+                    scope.status.statuses.forEach(function(status) {
+                        if(status.state === state) {
+                            scope.status.count++;
+                        }
+                    });
                 }
             });
         }

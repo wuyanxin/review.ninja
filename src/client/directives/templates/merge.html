@@ -7,7 +7,7 @@
           }">
 
   <div class="text-body" ng-show="!pull.merged">
-    <p>{{ status.total_count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
+    <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
     <p ng-show="status.state==='failure'">{{ (pull.milestone.open_issues || 0) | pluralize:'open issue' }}</p>
     <p ng-show="status.state==='success' || status.state==='pending'">{{ pull.stars.length | pluralize:'ninja star' }}</p>
   </div>
@@ -33,7 +33,7 @@
   </button>
 
   <div class="text-body" ng-show="pull.merged">
-    <p>{{ status.total_count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
+    <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
     <p>{{ (pull.milestone.closed_issues || 0) | pluralize:'closed issue' }}</p>
     <p>{{ (pull.milestone.open_issues || 0) | pluralize:'open issue' }}</p>
     <p>{{ pull.stars.length | pluralize:'ninja star' }}</p>
