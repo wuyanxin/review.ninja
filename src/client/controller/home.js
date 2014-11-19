@@ -48,6 +48,9 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                     repo.ninja = true;
                     repo.adddate = -new Date();
                     $scope.repos.push(repo);
+
+                    $scope.reset();
+                    $scope.query = repo.full_name;
                 }
             });
         };
