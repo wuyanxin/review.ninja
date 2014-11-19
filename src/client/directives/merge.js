@@ -20,7 +20,8 @@ module.directive('mergeButton', function() {
                 success: 'succeeded'
             };
 
-            scope.$watch('status.state', function(state) {
+            scope.$watch('status', function(status) {
+                var state = status.state;
                 if(state) {
                     scope.status.count = 0;
                     scope.status.text = text[state];
