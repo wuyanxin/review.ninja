@@ -25,18 +25,18 @@ module.directive('file', ['$state', '$filter', '$stateParams', 'Reference', func
                 };
 
                 scope.selStarts = function(line) {
-                    return Reference.starts(scope.headSha, scope.path, line.head, scope.selection.ref);
+                    return Reference.starts(scope.headSha, scope.path, line.base, scope.selection.ref);
                 };
 
                 scope.isSelected = function(line) {
-                    return Reference.includes(scope.headSha, scope.path, line.head, scope.selection.ref);
+                    return Reference.includes(scope.headSha, scope.path, line.base, scope.selection.ref);
                 };
 
                 scope.refStarts = function(line) {
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key);
+                            match = match || Reference.starts(scope.baseSha, scope.path, line.base, issue.key) || Reference.starts(scope.headSha, scope.path, line.base, issue.key);
                         });
                     }
                     return match;
@@ -46,17 +46,17 @@ module.directive('file', ['$state', '$filter', '$stateParams', 'Reference', func
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.includes(scope.baseSha, scope.path, line.head, issue.key) || Reference.includes(scope.headSha, scope.path, line.head, issue.key);
+                            match = match || Reference.includes(scope.baseSha, scope.path, line.base, issue.key) || Reference.includes(scope.headSha, scope.path, line.base, issue.key);
                         });
                     }
                     return match;
                 };
 
                 scope.select = function(line, event) {
-                    if(line.head) {
+                    if(line.base) {
                         var shift = scope.selection.start && event.shiftKey && scope.path === scope.selection.path;
-                        var start = !shift ? line.head : scope.selection.start;
-                        var end = shift ? line.head : null;
+                        var start = !shift ? line.base : scope.selection.start;
+                        var end = shift ? line.base : null;
                         scope.selection = Reference.select(scope.headSha, scope.path, start, end);
                     }
                 };
@@ -65,7 +65,7 @@ module.directive('file', ['$state', '$filter', '$stateParams', 'Reference', func
                     var issues = [];
 
                     scope.issues.forEach(function(issue) {
-                        if(Reference.starts(scope.baseSha, scope.path, line.head, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key)) {
+                        if(Reference.starts(scope.baseSha, scope.path, line.base, issue.key) || Reference.starts(scope.headSha, scope.path, line.base, issue.key)) {
                             issues.push(issue.number);
                         }
                     });

@@ -17,7 +17,7 @@
 <table class="code">
   <tr ng-repeat="line in content track by $index"
       ng-class="{ selected: isSelected(line), referenced: isReferenced(line) }">
-    <td class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
+    <td class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
     <td class="code"><pre>{{ line.content }}</pre></td>
   </tr>
 </table>
