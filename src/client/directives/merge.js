@@ -21,7 +21,7 @@ module.directive('mergeButton', function() {
             };
 
             scope.$watch('status', function(status) {
-                var state = status.state;
+                var state = status ? status.state : null;
                 if(state) {
                     scope.status.count = 0;
                     scope.status.text = text[state];
