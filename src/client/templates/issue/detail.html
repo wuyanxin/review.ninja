@@ -13,9 +13,9 @@
                style="padding-top:10px;">
             </i> 
         </td>
-        <td class="text-right" ng-class="{'text-primary': (issue.body ? 1 : 0) + issue.comments}" style="width:80px;">
+        <td class="text-right" ng-class="{'text-primary': issue.body || issue.comments || comments.value.length}" style="width:80px;">
             <i class="octicon octicon-comment"></i><br />
-            {{ (issue.body ? 1 : 0) + issue.comments }}
+            {{ (issue.body ? 1 : 0) + (comments.value.length || issue.comments) }}
         </td>
     </tr>
 </table>
