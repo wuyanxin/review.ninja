@@ -103,11 +103,8 @@
               </div>
             </div>
 
-            <diff ng-repeat="file in files.value" 
-                  path="file.filename" 
-                  patch="file.patch" 
-                  status="file.status" 
-                  file-sha="file.sha"
+            <diff ng-repeat="file in files" 
+                  file="file"
                   base-sha="base"
                   head-sha="head" 
                   selection="reference.selection"

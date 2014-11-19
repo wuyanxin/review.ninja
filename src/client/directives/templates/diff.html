@@ -1,19 +1,20 @@
 <accordion class="diff">
 	<accordion-group is-open="open">
 		<accordion-heading>
-			<strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ path }}</strong>
+			<strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong>
 			<button class="btn btn-xs btn-default pull-right" 
 					ng-disabled="!open"
+					ng-show="!file.image"
 					ng-click="expanded=!expanded; $event.stopPropagation();">
 				&nbsp;<i class="fa" ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"></i>&nbsp;
 			</button>
 		</accordion-heading>
-		<div ng-show="status==='renamed' && !patch.length" style="padding:5px 10px;">
+		<div ng-show="file.status==='renamed' && !file.patch.length" style="padding:5px 10px;">
 			This file was renamed.
 		</div>
-		<div ng-show="patch.length">
+		<div ng-show="file.patch.length">
 			<table class="margin">
-        		<tr ng-repeat="line in (expanded ? file : patch) track by $index">
+        		<tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
 					<td class="select">
 						<span class="octicon octicon-issue-opened text-warning" 
 						      ng-show="refStarts(line)"
@@ -28,7 +29,7 @@
 				</tr>
 			</table>
 			<table class="code">
-        		<tr ng-repeat="line in (expanded ? file : patch) track by $index" 
+        		<tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index" 
             		ng-class="{ addition: line.add, 
                         		deletion: line.del, 
                         		chunk: line.chunk, 
@@ -42,6 +43,9 @@
 
 				</tr>
 			</table>
+		</div>
+		<div class="image" ng-show="file.image">
+			<a ng-href="{{ file.image }}" target="_blank"><img class="center-block" ng-src="{{ file.image }}" /></a>
 		</div>
 	</accordion-group>
 </accordion>

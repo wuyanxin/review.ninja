@@ -8,18 +8,15 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
             scope: {
-                path: '=',
-                patch: '=',
-                status: '=',
+                file: '=',
                 issues: '=',
-                fileSha: '=',
                 baseSha: '=',
                 headSha: '=',
                 selection: '=',
                 refIssues: '='
             },
             link: function(scope, elem, attrs) {
-                scope.file = null;
+
                 scope.open = true;
                 scope.expanded = false;
 
@@ -27,26 +24,26 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 // Expand the diff
                 //
 
-                scope.$watch('patch', function() {
-                    if(scope.patch && scope.patch.length) {
+                scope.$watch('file.patch', function(patch) {
+                    if(patch && patch.length && !scope.file.image) {
                         $HUB.wrap('gitdata', 'getBlob', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
-                            sha: scope.fileSha
-                        }, function(err, res) {
+                            sha: scope.file.sha
+                        }, function(err, blob) {
                             if(!err) {
 
                                 var file = [], chunks = [];
                                 var index = 0;
 
                                 // find the chunks
-                                while (index < scope.patch.length) {
-                                    if(scope.patch[index].chunk) {
+                                while (index < scope.file.patch.length) {
+                                    if(scope.file.patch[index].chunk) {
                                         var start = 0, end = 0, c = [];
-                                        while( ++index < scope.patch.length && !scope.patch[index].chunk ) {
-                                            start = start ? start : scope.patch[index].head;
-                                            end = scope.patch[index].head ? scope.patch[index].head : end;
-                                            c.push(scope.patch[index]);
+                                        while( ++index < scope.file.patch.length && !scope.file.patch[index].chunk ) {
+                                            start = start ? start : scope.file.patch[index].head;
+                                            end = scope.file.patch[index].head ? scope.file.patch[index].head : end;
+                                            c.push(scope.file.patch[index]);
                                         }
 
                                         chunks.push({ start:start, end:end, chunk:c });
@@ -58,20 +55,20 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                                 index = 0;
 
                                 // insert the chunks
-                                while (index < res.value.content.length) {
-                                    if( chunks[0] && res.value.content[index].head === chunks[0].start ) {
+                                while (index < blob.value.content.length) {
+                                    if( chunks[0] && blob.value.content[index].head === chunks[0].start ) {
                                         chunk = chunks.shift();
                                         file = file.concat( chunk.chunk );
                                         index = chunk.end;
                                         continue;
                                     }
 
-                                    file.push( res.value.content[index] );
+                                    file.push( blob.value.content[index] );
                                     index = index + 1;
                                 }
 
                                 // set the file
-                                scope.file = file;
+                                scope.file.file = file;
                             }
 
                         });
@@ -88,18 +85,18 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 };
 
                 scope.selStarts = function(line) {
-                    return Reference.starts(scope.headSha, scope.path, line.head, scope.selection.ref);
+                    return Reference.starts(scope.headSha, scope.file.filename, line.head, scope.selection.ref);
                 };
 
                 scope.isSelected = function(line) {
-                    return Reference.includes(scope.headSha, scope.path, line.head, scope.selection.ref);
+                    return Reference.includes(scope.headSha, scope.file.filename, line.head, scope.selection.ref);
                 };
 
                 scope.refStarts = function(line) {
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.starts(scope.baseSha, scope.path, line.base, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key);
+                            match = match || Reference.starts(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue.key);
                         });
                     }
                     return match;
@@ -109,7 +106,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.includes(scope.baseSha, scope.path, line.base, issue.key) || Reference.includes(scope.headSha, scope.path, line.head, issue.key);
+                            match = match || Reference.includes(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.includes(scope.headSha, scope.file.filename, line.head, issue.key);
                         });
                     }
                     return match;
@@ -117,10 +114,10 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
 
                 scope.select = function(line, event) {
                     if(line.head) {
-                        var shift = scope.selection.start && event.shiftKey && scope.path === scope.selection.path;
+                        var shift = scope.selection.start && event.shiftKey && scope.file.filename === scope.selection.path;
                         var start = !shift ? line.head : scope.selection.start;
                         var end = shift ? line.head : null;
-                        scope.selection = Reference.select(scope.headSha, scope.path, start, end);
+                        scope.selection = Reference.select(scope.headSha, scope.file.filename, start, end);
                     }
                 };
 
@@ -128,7 +125,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     var issues = [];
 
                     scope.issues.forEach(function(issue) {
-                        if(Reference.starts(scope.baseSha, scope.path, line.base, issue.key) || Reference.starts(scope.headSha, scope.path, line.head, issue.key)) {
+                        if(Reference.starts(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue.key)) {
                             issues.push(issue.number);
                         }
                     });

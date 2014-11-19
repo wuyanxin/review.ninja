@@ -6,8 +6,8 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'Pull', 'Issue', 'Comment', 'repo', 'pull', 'socket', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, Pull, Issue, Comment, repo, pull, socket, $timeout) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'Pull', 'Issue', 'Comment', 'File', 'repo', 'pull', 'socket', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, Pull, Issue, Comment, File, repo, pull, socket, $timeout) {
 
         // set the states
         $scope.state = 'open';
@@ -31,10 +31,12 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         // get the files (for the diff view)
-        $scope.files = $HUB.wrap('pullRequests', 'getFiles', {
+        $HUB.wrap('pullRequests', 'getFiles', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.number
+        }, function(err, files) {
+            $scope.files = File.getFileTypes(files.value);
         });
 
         // get the star
@@ -98,11 +100,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     repo: $stateParams.repo,
                     base: base,
                     head: head
-                }, function(err, res) {
+                }, function(err, comp) {
                     if(!err) {
                         $scope.base = base;
                         $scope.head = head;
-                        $scope.files.value = res.value.files;
+                        $scope.files = File.getFileTypes(comp.value.files);
                     }
                 });
             }
