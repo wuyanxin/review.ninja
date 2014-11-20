@@ -11,15 +11,15 @@
   </div>
 
 	<div class="col-md-6">
-    <h2>Repositories <i class="fa fa-plus-circle text-primary" ng-click="show=!show"></i></h2>
+    <h2>Repositories <i class="fa fa-plus-circle text-primary" ng-click="show=!show; setFocus=true;"></i></h2>
 
     <div class="well well-sm" ng-show="show">
       <form ng-submit="search()">
         <div class="input-group">
           <div class="form-group has-feedback">
-            <input type="text" ng-model="query" class="form-control" style="height:33px;" />
+            <input type="text" ng-model="query" focus="setFocus" class="form-control" style="height:33px;" />
             <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="searching.loading" style="top:0px;"></i>
-            <i class="fa fa-lg fa-times form-control-feedback" ng-show="!searching.loading && query" ng-click="reset()" style="top:0px;"></i>
+            <i class="fa fa-lg fa-times form-control-feedback" ng-show="!searching.loading && query" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
           </div>
           <span class="input-group-btn">
             <button class="btn btn-info" type="submit" ng-disabled="!query">Find Repository</button>

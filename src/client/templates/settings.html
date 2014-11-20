@@ -36,7 +36,7 @@
               </label>
             </div>
             
-            <label>Watched branches <i class="fa fa-lg fa-plus-circle text-primary" ng-click="show=true"></i></label>
+            <label>Watched branches <i class="fa fa-lg fa-plus-circle text-primary" ng-click="show=true; setFocus=true;"></i></label>
 
             <a target="_blank" href="http://docs.review.ninja/quickstart/#configuration">
               <span class="fa-stack pull-right">
@@ -49,7 +49,7 @@
               <form role="form" ng-submit="addWatch(newWatch)" style="margin:0;">
                 <div class="form-group">
                   <label>Branch pattern</label>
-                  <input ng-model="newWatch" class="form-control" placeholder="eg. feature/*" />
+                  <input ng-model="newWatch" focus="setFocus" class="form-control" placeholder="eg. feature/*" />
                 </div>
 
                 <i class="fa fa-2x fa-spinner fa-spin" ng-show="set.loading" style="margin-left:5px;"></i>

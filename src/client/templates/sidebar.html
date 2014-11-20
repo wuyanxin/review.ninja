@@ -2,7 +2,7 @@
 
     <div class="panel-heading">
       <span class="lead">Issues</span>
-      <span class="fa-stack" style="margin-top:-5px;" ng-click="$parent.show=true">
+      <span class="fa-stack" style="margin-top:-5px;" ng-click="$parent.show=true; setFocus=true;">
         <i class="fa fa-circle fa-stack-2x text-primary"></i>
         <i class="fa fa-plus fa-stack-1x" style="font-size:20px;"></i>
       </span>
@@ -31,7 +31,7 @@
             <td>
               <form role="form" ng-submit="createIssue()">
                 <div class="form-group">
-                  <input type="text" ng-model="$parent.title" class="form-control" placeholder="Title">
+                  <input type="text" ng-model="$parent.title" focus="setFocus" class="form-control" placeholder="Title">
                 </div>
                 <div class="form-group">
                   <textarea class="form-control" 
