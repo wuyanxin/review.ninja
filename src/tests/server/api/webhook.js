@@ -149,7 +149,7 @@ describe('webhook:create', function() {
                     repo: 'repo',
                     name: 'web',
                     config: {url: 'https://review.ninja/github/webhook/mongooseId', content_type: 'json'},
-                    events: ['pull_request', 'issues', 'issue_comment'],
+                    events: ['pull_request', 'issues', 'issue_comment', 'status'],
                     active: true
                 },
                 token: 'token'
