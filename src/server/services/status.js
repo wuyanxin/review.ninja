@@ -37,7 +37,7 @@ module.exports = {
                             repo: args.repo,
                             sha: args.sha,
                             state: status,
-                            description: 'Review Ninja: ' + stars.length + ' stars, ' + issues + ' issues',
+                            description: 'ReviewNinja: ' + stars.length + (stars.length === 1 ? ' star, ' : ' stars, ') + issues + (issues === 1 ? ' issue' : ' issues'),
                             target_url: url.reviewPullRequest(args.user, args.repo, args.number),
                             context: 'code-review/reviewninja'
                         },

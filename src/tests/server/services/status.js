@@ -43,7 +43,7 @@ describe('status:update', function() {
                         repo: 'repo',
                         sha: 'sha',
                         state: 'pending',
-                        description: 'Review Ninja: 0 stars, 0 issues',
+                        description: 'ReviewNinja: 0 stars, 0 issues',
                         target_url: 'https://review.ninja/user/repo/pull/1',
                         context: 'code-review/reviewninja'
                     },
@@ -104,7 +104,7 @@ describe('status:update', function() {
                         repo: 'repo',
                         sha: 'sha',
                         state: 'success',
-                        description: 'Review Ninja: 1 stars, 0 issues',
+                        description: 'ReviewNinja: 1 star, 0 issues',
                         target_url: 'https://review.ninja/user/repo/pull/1',
                         context: 'code-review/reviewninja'
                     },
@@ -165,7 +165,7 @@ describe('status:update', function() {
                         repo: 'repo',
                         sha: 'sha',
                         state: 'failure',
-                        description: 'Review Ninja: 1 stars, 3 issues',
+                        description: 'ReviewNinja: 1 star, 3 issues',
                         target_url: 'https://review.ninja/user/repo/pull/1',
                         context: 'code-review/reviewninja'
                     },
