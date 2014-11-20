@@ -52,7 +52,8 @@ module.exports = {
         }
 
         var fileReference = '`none`';
-        var ninjaReference = '[' + '#' + req.args.number + ']' + '(' + url.reviewPullRequest(req.args.user, req.args.repo, req.args.number) + ')';
+
+        var ninjaReference = '[![#' + req.args.number + ']' + '(' + url.baseUrl + '/assets/images/icon-alt-36.png' + ')]' + '(' + url.reviewPullRequest(req.args.user, req.args.repo, req.args.number) + ')';
 
         if(req.args.reference) {
             var referenceUrl = url.githubFileReference(req.args.user, req.args.repo, req.args.reference);
@@ -61,8 +62,8 @@ module.exports = {
         }
 
         var body = req.args.body + '\r\n\r\n';
-        body += '|commit|file reference|ReviewNinja|\r\n';
-        body += '|------|--------------|-----------|\r\n';
+        body += '|commit|file reference|   |\r\n';
+        body += '|------|--------------|---|\r\n';
         body += '|' + req.args.sha + '|' + fileReference + '|' + ninjaReference + '|';
 
         milestone.get(req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user.token,
