@@ -7,23 +7,25 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
 
         $rootScope.user = $HUB.call('user', 'get', {});
 
-        $rootScope.$on('repos:get', function(event, repo) {
-            $scope.repo = repo;
-        });
-
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
-            if( !($stateParams.user && $stateParams.repo) ) {
+            if(!($stateParams.user && $stateParams.repo)) {
                 $scope.hook = {};
+                return;
             }
 
-            if( $stateParams.user && $stateParams.repo &&
-                $scope.repo && $scope.repo.permissions.admin &&
-                toParams.user !== fromParams.user ) {
-
-                $scope.hook = $RPC.call('webhook', 'get', {
+            if(toParams.user !== fromParams.user || toParams.repo !== fromParams.repo) {
+                console.log('HERE BRO');
+                $HUB.call('repos', 'get', {
                     user: $stateParams.user,
                     repo: $stateParams.repo
+                }, function(err, repo) {
+                    if(!err && repo.value.permissions.admin) {
+                        $scope.hook = $RPC.call('webhook', 'get', {
+                            user: $stateParams.user,
+                            repo: $stateParams.repo
+                        });
+                    }
                 });
             }
         });

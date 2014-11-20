@@ -47,10 +47,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                             return $HUBService.call('repos', 'get', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo
-                            }, function(err, repo) {
-                                if(!err) {
-                                    $rootScope.$emit('repos:get', repo.value);
-                                }
                             });
                         }
                     ]

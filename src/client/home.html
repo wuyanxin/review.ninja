@@ -51,7 +51,7 @@
 
   <!-- the webhook notification -->
   <div class="container-fluid" ng-cloak>
-    <div class="row" ng-show="hook.loaded && !hook.value && repo.permissions.admin">
+    <div class="row" ng-show="hook.loaded && !hook.error && !hook.value">
       <div class="col-md-12 alert alert-warning" style="margin:0;">
         <strong>Warning!</strong> A webhook is missing for this repository. 
         <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="creating.loading"></i>
