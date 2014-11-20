@@ -48,7 +48,7 @@ module.exports = {
                         },
                         token: token
                     }, function(err, repo) {
-                        if((err && err.code === 401) || (!err && !repo.permissions.admin) || !contains(hook.events)) {
+                        if((err && err.code === 401) || (!err && !repo.permissions) || (!err && !repo.permissions.admin) || !contains(hook.events)) {
                             // remove the webhook
                             github.call({
                                 obj: 'repos',
@@ -61,10 +61,11 @@ module.exports = {
                                 token: req.user.token
                             });
 
+                            err = null;
                             hook = null;
                         }
 
-                        done(null, hook);
+                        done(err, hook);
                     });
                 });
             }
