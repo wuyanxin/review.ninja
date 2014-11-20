@@ -80,7 +80,7 @@
                         {{ pull.stars.length }}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
-                        <li><a href="">You have {{ pull.stars.length | pluralize:'ninja star' }}!</a></li>
+                        <li><a href="">Pull Request has {{ pull.stars.length | pluralize:'ninja star' }}!</a></li>
                         <li class="divider"></li>
                         <li ng-repeat="star in pull.stars | orderBy:'-created_at'" class="star-dropdown-item">
                           <a href="#">
