@@ -15,7 +15,6 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
             }
 
             if(toParams.user !== fromParams.user || toParams.repo !== fromParams.repo) {
-                console.log('HERE BRO');
                 $HUB.call('repos', 'get', {
                     user: $stateParams.user,
                     repo: $stateParams.repo

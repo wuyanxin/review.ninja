@@ -19,6 +19,17 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         // set the default state
         $scope.type = 'open';
 
+        //
+        // Helper functions
+        //
+
+        var setAuthor = function(pull) {
+            var author = pull.user.login;
+            $scope.authors[author] = $scope.authors[author] || {};
+            $scope.authors[author][pull.state] = true;
+            $scope.authors[author].author = author;
+        };
+
         // get the open pull requests
         $scope.open = $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
@@ -28,7 +39,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
             if(!err) {
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull);
-                    $scope.authors[pull.user.login] = true;
+                    setAuthor(pull);
                 });
             }
         });
@@ -42,7 +53,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
             if(!err) {
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull);
-                    $scope.authors[pull.user.login] = true;
+                    setAuthor(pull);
                 });
             }
         });
@@ -60,7 +71,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
                 }, function(err, pull) {
                     if(!err) {
                         $scope.open.value.unshift(Pull.milestone(pull.value) && Pull.stars(pull.value));
-                        $scope.authors[pull.value.user.login] = true;
+                        setAuthor(pull.value);
                     }
                 });
             }
