@@ -6,6 +6,12 @@
     background: $gray-darker;
     border-bottom: 0;
     color: #fff;
+
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;    
+    user-select: none;
   }
 
   .panel-body {

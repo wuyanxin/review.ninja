@@ -211,6 +211,18 @@ h4 {
   margin-top: 10px;
 }
 
+h1,
+h2,
+h3,
+h4,
+.lead {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;    
+  user-select: none;
+}
+
 .text-body {
   color: $text-color;
 }
@@ -265,6 +277,12 @@ i.fa-plus-circle,
 i.fa-info,
 i.fa-link {
   cursor: pointer;
+
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;    
+  user-select: none;
 }
 
 i.fa-times {
@@ -304,6 +322,14 @@ textarea {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+}
+
+.no-select {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;    
+  user-select: none;
 }
 
 [ng\:cloak], 
