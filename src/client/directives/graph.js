@@ -8,11 +8,23 @@ module.directive('graph', function() {
         templateUrl: '/directives/templates/graph.html',
         scope: {
             baseSha: '=',
-            headSha: '=',
             issueSha: '=',
+            headSha: '=',
             activeSha: '=',
-            openIssue: '=',
+            openIssues: '=',
             compare: '&'
+        },
+        link: function(scope, elem, attrs) {
+            scope.headCommitIssues = function() {
+                if(scope.openIssues) {
+                    for (var i = 0; i < scope.openIssues.length; i++) {
+                        if(scope.openIssues[i].sha === scope.headSha) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
         }
     };
 });

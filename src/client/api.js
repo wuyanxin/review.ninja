@@ -125,15 +125,13 @@ module.factory('$HUB', ['$RAW', '$log',
 module.factory('$HUBService', ['$q', '$HUB',
     function($q, $HUB) {
 
-        var exec = function(type, o, f, d, c) {
+        var exec = function(type, o, f, d, c, p) {
             var deferred = $q.defer();
             $HUB[type](o, f, d, function(err, obj) {
-
                 if (typeof c === 'function') {
                     c(err, obj);
                 }
-
-                if(!err) {
+                if(!err || p) {
                     deferred.resolve(obj);
                 }
                 return deferred.reject();
@@ -142,11 +140,11 @@ module.factory('$HUBService', ['$q', '$HUB',
         };
 
         return {
-            call: function(o, f, d, c) {
-                return exec('call', o, f, d, c);
+            call: function(o, f, d, c, p) {
+                return exec('call', o, f, d, c, p);
             },
-            wrap: function(o, f, d, c) {
-                return exec('wrap', o, f, d, c);
+            wrap: function(o, f, d, c, p) {
+                return exec('wrap', o, f, d, c, p);
             }
         };
     }
@@ -161,15 +159,13 @@ module.factory('$HUBService', ['$q', '$HUB',
 module.factory('$RPCService', ['$q', '$RPC',
     function($q, $RPC) {
         return {
-            call: function(o, f, d, c) {
+            call: function(o, f, d, c, p) {
                 var deferred = $q.defer();
                 $RPC.call(o, f, d, function(err, obj) {
-
                     if (typeof c === 'function') {
                         c(err, obj);
                     }
-
-                    if(!err) {
+                    if(!err || p) {
                         deferred.resolve(obj);
                     }
                     return deferred.reject();

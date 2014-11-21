@@ -25,7 +25,7 @@
 <body ng-controller="RootCtrl">
 
 <!-- the navbar -->
-  <div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="navbar navbar-default navbar-static-top no-select" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -40,32 +40,25 @@
         <div class="clearfix"></div>
       </div>
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right" ng-show="user.loaded" style="font-size:12px;">
+        <ul class="nav navbar-nav navbar-right buttonstopbar" ng-show="user.loaded" style="font-size:12px;" ng-cloak>
           <li><a target="_blank" href="http://docs.review.ninja">DOCUMENTATION</a></li>
           <li><a target="_blank" href="http://www.review.ninja">ABOUT</a></li>
-          <li class="dropdown">
-            <a href="" class="dropdown-toggle" data-toggle="dropdown">
-              {{ user.value.login }} <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="/logout" target="_self">Sign out</a></li>
-            </ul>
-          </li>
+          <li><a target="_self" href="/logout">{{ user.value.login }}&nbsp;&nbsp; <span class="octicon octicon-sign-out"></span></a></li>
         </ul>
       </div>
     </div>
   </div>
 
   <!-- the webhook notification -->
-  <div class="container-fluid">
-    <div class="row" ng-show="hook.loaded && !hook.value && repo.permissions.admin" ng-cloak>
+  <div class="container-fluid" ng-cloak>
+    <div class="row" ng-show="hook.loaded && !hook.error && !hook.value">
       <div class="col-md-12 alert alert-warning" style="margin:0;">
         <strong>Warning!</strong> A webhook is missing for this repository. 
         <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="creating.loading"></i>
         <button type="button" class="btn btn-default btn-xs pull-right" ng-click="createWebhook()" ng-show="!creating.loading">Add Webhook</button>
       </div>
     </div>
-    <div class="row" ng-show="created" ng-cloak>
+    <div class="row" ng-show="created">
       <div class="col-md-12 alert alert-success" style="margin:0;">
         <button type="button" class="close" data-dismiss="alert">
           <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
@@ -75,7 +68,7 @@
     </div>
   </div>
 
-  <div class="container-fluid">
+  <div class="container-fluid" style="margin-bottom:40px;">
     <div class="row">
       <div class="col-md-12">
         <section ui-view></section>
@@ -84,7 +77,7 @@
   </div>
 
   <!-- COMPONENT SCRIPTS -->
-  <script src="//cdn.socket.io/socket.io-1.0.4.js"></script>
+  <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
   <script src="/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
@@ -109,19 +102,24 @@
   <script src="/filters/stargazer-accumulator.js"></script>
 
   <!-- SERVICES -->
-  <script src="/services/socket.js"></script>
+  <script src="/services/Comment.js"></script>
+  <script src="/services/File.js"></script>
   <script src="/services/Issue.js"></script>
   <script src="/services/Pull.js"></script>
+  <script src="/services/Reference.js"></script>
+  <script src="/services/socket.js"></script>
 
   <!-- DIRECTIVES -->
   <script src="/directives/browser.js"></script>
   <script src="/directives/diff.js"></script>
   <script src="/directives/file.js"></script>
+  <script src="/directives/focus.js"></script>
   <script src="/directives/graph.js"></script>
   <script src="/directives/merge.js"></script>
   <script src="/directives/moment.js"></script>
-  <script src="/directives/validate.js"></script>
-  <script src="/directives/vote.js"></script>
+
+  <!-- MODALS -->
+  <script src="/modals/badge.js"></script>
 
   <!-- CONTROLLERS -->
   <script src="/controller/root.js"></script>
@@ -129,7 +127,6 @@
   <script src="/controller/repo.js"></script>
   <script src="/controller/pull.js"></script>
   <script src="/controller/settings.js"></script>
-  <script src="/controller/sidebar.js"></script>
   <script src="/controller/issue/list.js"></script>
   <script src="/controller/issue/detail.js"></script>
 

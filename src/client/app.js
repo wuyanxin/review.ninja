@@ -47,10 +47,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                             return $HUBService.call('repos', 'get', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo
-                            }, function(err, repo) {
-                                if(!err) {
-                                    $rootScope.$emit('repos:get', repo.value);
-                                }
                             });
                         }
                     ]
@@ -62,7 +58,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             //
             .state('repo.master', {
                 url: '',
-                templateUrl: '/templates/repo/repo.html',
+                templateUrl: '/templates/repo.html',
                 controller: 'RepoCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -76,7 +72,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             //
             .state('repo.settings', {
                 url: '/settings',
-                templateUrl: '/templates/repo/settings.html',
+                templateUrl: '/templates/settings.html',
                 controller: 'SettingsCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -91,7 +87,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             .state('repo.pull', {
                 abstract: true,
                 url: '/pull/:number',
-                templateUrl: '/templates/pull/pull.html',
+                templateUrl: '/templates/pull.html',
                 controller: 'PullCtrl',
                 resolve: {
                     repo: ['repo', function(repo) {
@@ -114,41 +110,16 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             //
             .state('repo.pull.issue', {
                 abstract: true,
-                url: '?state',
-                templateUrl: '/templates/pull/sidebar.html',
-                controller: 'SidebarCtrl',
-                resolve: {
-                    issues: ['$HUBService', '$stateParams', 'Issue',
-                        function($HUBService, $stateParams, Issue) {
-                            return $HUBService.call('issues', 'repoIssues', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                state: $stateParams.state || 'open',
-                                labels: 'pull-request-' + $stateParams.number
-                            }, function(err, issues) {
-                                if(!err) {
-                                    issues.affix.forEach(function(issue) {
-                                        issue = Issue.parse(issue);
-                                    });
-                                }
-                            });
-                        }
-                    ]
-                }
+                templateUrl: '/templates/sidebar.html'
             })
 
             //
             // Pull request issues state (list of issues)
             //
             .state('repo.pull.issue.master', {
-                url: '?issues',
+                url: '',
                 templateUrl: '/templates/issue/list.html',
-                controller: 'IssueListCtrl',
-                resolve: {
-                    issues: ['issues', function(issues) {
-                        return issues;
-                    }]
-                }
+                controller: 'IssueListCtrl'
             })
 
             //
@@ -159,17 +130,13 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                 templateUrl: '/templates/issue/detail.html',
                 controller: 'IssueDetailCtrl',
                 resolve: {
-                    issue: ['$stateParams', 'issues',
-                        function($stateParams, issues) {
-
-                            var selected;
-
-                            issues.value.forEach(function(issue) {
-                                if(issue.number === parseInt($stateParams.issue)) {
-                                    selected = issue;
-                                }
+                    issue: ['$HUBService', '$stateParams',
+                        function($HUBService, $stateParams) {
+                            return $HUBService.call('issues', 'getRepoIssue', {
+                                user: $stateParams.user,
+                                repo: $stateParams.repo,
+                                number: $stateParams.issue
                             });
-                            return selected;
                         }
                     ]
                 }

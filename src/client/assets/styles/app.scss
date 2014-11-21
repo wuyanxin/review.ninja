@@ -12,10 +12,11 @@ $gray-lighter: #f9f9f9;
 
 // brand colours
 $brand-primary: #3e9a94;
-$brand-primary-muted: #abd5d5;
+$brand-success: #4c9931;
+$brand-primary-muted: #addada;
 $brand-primary-hover: #2c827c;
-$brand-warning: #ffa159;
-$brand-danger: #ad3b25;
+$brand-warning: #aa870d;
+$brand-danger: #bd2c00;
 $brand-info: #d0eaea;
 $brand-merged: #6e5494;
 $link-color: #3c3c3d;
@@ -33,6 +34,7 @@ $headings-color: $gray-darker;
 $input-border: $gray-light;
 $input-color: $gray-darker;
 $input-color-placeholder: $gray;
+$input-border-focus: $brand-primary;
 
 // panels
 $panel-bg: transparent;
@@ -53,9 +55,9 @@ $component-active-bg: $gray-light;
 $component-active-color: #555;
 
 // buttons
-$btn-info-bg: #d0eaea;
+$btn-info-bg: $brand-info;
 $btn-info-color: $brand-primary;
-$btn-default-border: #ececec;
+$btn-default-border: $gray-light;
 $btn-default-color: $brand-primary;
 
 // wells
@@ -63,6 +65,7 @@ $well-bg: $gray-lighter;
 $well-border: transparent;
 
 // list group
+$list-group-link-color: $text-color;
 $list-group-hover-bg: $gray-light;
 $list-group-border: transparent;
 
@@ -83,7 +86,7 @@ $nav-tabs-active-link-hover-bg: $gray-lighter;
 $navbar-default-bg: #333;
 $navbar-default-color: $gray;
 $navbar-default-link-color: $gray;
-$navbar-default-link-hover-color: $gray;
+$navbar-default-link-hover-color: #fff;
 $navbar-default-brand-hover-color: $gray;
 $navbar-default-link-active-color: $gray;
 $navbar-margin-bottom: 0;
@@ -119,12 +122,12 @@ $code-font-size: 12px;
 @import 'git';
 @import 'git-merge';
 @import 'list-group';
+@import 'merge';
 @import 'panel';
 @import 'pull-list';
 @import 'table';
 @import 'tabs';
 @import 'well';
-@import 'issues';
 
 
 //
@@ -135,12 +138,13 @@ $code-font-size: 12px;
 
 .scaffold {
   background: $gray-lighter;
+  margin-bottom: -40px;
 
   > .pull {
     background: $body-bg;
     min-height: 100vh;
     min-height: calc(100vh - 52px);
-    padding: 0 30px;
+    padding: 0 30px 40px;
   }
 
   > .sidebar {
@@ -187,6 +191,11 @@ $code-font-size: 12px;
   }
 }
 
+.tooltip-inner {
+  max-width: 500px;
+}
+
+
 // typography
 
 body {
@@ -203,6 +212,18 @@ h4 {
   margin-top: 10px;
 }
 
+h1,
+h2,
+h3,
+h4,
+.lead {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;    
+  user-select: none;
+}
+
 .text-body {
   color: $text-color;
 }
@@ -211,8 +232,8 @@ h4 {
   color: $brand-primary-muted;
 }
 
-img.muted {
-  opacity: 0.5;
+.text-success {
+  color: $brand-success;
 }
 
 .text-warning {
@@ -235,11 +256,18 @@ img.muted {
   color: $gray-dark;
 }
 
-.merge-message {
-  border-left: 5px solid;
-  line-height: normal;
-  margin-top: 10px;
-  padding-left: 10px;
+img.muted {
+  opacity: 0.5;
+}
+
+.link-external {
+  color: $brand-primary !important;
+}
+
+a.disabled {
+  color: $gray-dark;
+  cursor: default;
+  pointer-events: none;
 }
 
 // Font Awesome and Octicons
@@ -250,6 +278,12 @@ i.fa-plus-circle,
 i.fa-info,
 i.fa-link {
   cursor: pointer;
+
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;    
+  user-select: none;
 }
 
 i.fa-times {
@@ -278,6 +312,10 @@ small {
   vertical-align: middle;
 }
 
+textarea {
+  resize: none;
+}
+
 // Helper classes
 
 .center-block {
@@ -285,4 +323,21 @@ small {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+}
+
+.no-select {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;    
+  user-select: none;
+}
+
+[ng\:cloak], 
+[ng-cloak], 
+[data-ng-cloak], 
+[x-ng-cloak], 
+.ng-cloak, 
+.x-ng-cloak {
+  display: none !important;
 }

@@ -1,39 +1,49 @@
+<div class="col-sm-3 merge"
+     ng-class="{
+            'text-success': status.state==='success' && !pull.merged,
+            'text-warning': status.state==='pending' && !pull.merged,
+            'text-danger':  status.state==='failure' && !pull.merged,
+            'text-merged':  pull.merged,
+            'disabled': !pull.mergeable
+          }">
 
-<button type="button" 
-        class="btn btn-block" 
-        ng-class="{
-          'btn-primary': !pull.merged && pull.stars.length && !pull.open_issue,
-          'btn-warning': !pull.merged && !pull.stars.length && !pull.open_issue,
-          'btn-danger': !pull.merged && pull.open_issue,
-          'btn-merged': pull.merged
-        }"
-        ng-disabled="!pull.mergeable" 
-        ng-click="merge()">
+  <div class="text-body" ng-show="!pull.merged">
+    <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
+    <p ng-show="status.state==='failure'">
+      {{ (pull.milestone.open_issues || 0) | pluralize:'open issue' }}
+    </p>
+    <p ng-show="status.state==='success' || status.state==='pending'">
+      {{ (pull.stars.length || 0) | pluralize:'ninja star' }}
+    </p>
+    <small ng-show="!pull.mergeable">
+      Pull Request <a ng-href="{{ pull.html_url }}" class="link-external" target="_blank">#{{ pull.number }}</a> can't be merged automatically.
+    </small>
+  </div>
 
-  <span class="octicon octicon-git-merge"></span> 
-  <span ng-show="!pull.merged && pull.open_issue">YOLO</span>
-  <span ng-show="!pull.merged && !pull.open_issue">Merge pull request</span>
-  <span ng-show="pull.merged">Merged</span>
-  <i class="fa fa-spinner fa-spin" ng-show="merging"></i>
-</button>
+  <button type="button" 
+          class="btn btn-block" 
+          ng-class="{
+            'btn-success': status.state==='success' && !pull.merged,
+            'btn-warning': status.state==='pending' && !pull.merged,
+            'btn-danger':  status.state==='failure' && !pull.merged,
+            'btn-merged':  pull.merged
+          }"
+          ng-disabled="!pull.mergeable" 
+          ng-click="merge()">
 
-<div ng-show="!pull.merged && pull.stars.length && !pull.open_issue" class="merge-message text-primary">
-  Looking good<br />
-  <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
-</div>
+    <span ng-show="!pull.merged">
+      <span class="octicon octicon-git-merge"></span> {{ status.state==='failure' ? 'Merge with caution!' : 'Merge pull request'}}
+    </span>
+    <span ng-show="pull.merged">
+      <span class="octicon octicon-git-pull-request"></span> Merged
+    </span>
+    <i class="fa fa-spinner fa-spin" ng-show="merging"></i>
+  </button>
 
-<div ng-show="!pull.merged && !pull.stars.length && !pull.open_issue" class="merge-message text-warning">
-  Pending<br />
-  <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
-</div>
-
-<div ng-show="!pull.merged && pull.open_issue" class="merge-message text-danger">
-  Not looking so good<br />
-  <span class="text-body">open issue(s)</span>
-</div>
-
-<div ng-show="pull.merged" class="merge-message text-merged">
-  <span class="text-body">{{ pull.stars.length | pluralize:'ninja star' }}</span>
-  <span class="text-body" ng-show="pull.open_issue"><br />open issue(s)</span>
-  <span class="text-body" ng-show="pull.closed_issue"><br />closed issue(s)</span>
+  <div class="text-body" ng-show="pull.merged">
+    <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
+    <p>{{ (pull.milestone.closed_issues || 0) | pluralize:'closed issue' }}</p>
+    <p>{{ (pull.milestone.open_issues || 0) | pluralize:'open issue' }}</p>
+    <p>{{ (pull.stars.length || 0) | pluralize:'ninja star' }}</p>
+  </div>
 </div>

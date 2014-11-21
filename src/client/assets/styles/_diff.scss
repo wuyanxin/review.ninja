@@ -7,4 +7,13 @@
   .panel-title a:hover {
     cursor: pointer;
   }
+
+  .image {
+    background-color: $gray-light;
+    padding: 20px;
+
+    img {
+      max-width: 100%;
+    }
+  }
 }

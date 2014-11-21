@@ -9,27 +9,22 @@ var pullRequest = require('../services/pullRequest');
 // models
 var Star = require('mongoose').model('Star');
 var Settings = require('mongoose').model('Settings');
+var Milestone = require('mongoose').model('Milestone');
 
 module.exports = {
     get: function(req, pull, done) {
-        Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
-            pull.stars = [];
-
+        Settings.findOne({
+            user: req.user.id,
+            repo: pull.base.repo.id
+        }, function(err, settings) {
             if(!err) {
-                pull.stars = stars;
+                pull.watched = !settings ? true : pullRequest.isWatched(pull, settings);
             }
 
-            github.call({
-                obj: 'markdown',
-                fun: 'render',
-                arg: { 
-                    text: pull.body,
-                    mode: 'gfm',
-                    context: req.args.arg.user + '/' + req.args.arg.repo
-                },
-                token: req.user.token
-            }, function(err, render) {
-                pull.html = render ? render.data : null;
+            Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, milestone) {
+                if(!err) {
+                    pull.milestone = milestone;
+                }
                 done(null, pull);
             });
         });
@@ -63,20 +58,25 @@ module.exports = {
             repo: repo
         }, function(err, settings) {
 
-            // set watched
-            pullRequest.setWatched(pulls, settings);
+            if(err) {
+                return done(null, pulls);
+            }
 
-            // set the stars
+            // set watched
+            pulls.forEach(function(pull) {
+                pull.watched = !settings ? true : pullRequest.isWatched(pull, settings);
+            });
+
+            // set the stars and milestone
             async.each(pulls, function(pull, callback) {
-                Star.find({sha: pull.head.sha, repo: pull.base.repo.id}, function(err, stars) {
-                    pull.stars = [];
+                Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, milestone) {
                     if(!err) {
-                        pull.stars = stars;
+                        pull.milestone = milestone;
                     }
                     return callback(null);
                 });
             }, function() {
-                done(err, pulls);
+                done(null, pulls);
             });
         });
     }

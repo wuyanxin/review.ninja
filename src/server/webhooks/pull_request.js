@@ -4,9 +4,10 @@ var User = require('mongoose').model('User');
 //services
 var url = require('../services/url');
 var github = require('../services/github');
-var notification = require('../services/notification');
-var pullRequest = require('../services/pullRequest');
 var status = require('../services/status');
+var milestone = require('../services/milestone');
+var pullRequest = require('../services/pullRequest');
+var notification = require('../services/notification');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Pull Request Webhook Handler
@@ -14,83 +15,87 @@ var status = require('../services/status');
 
 module.exports = function(req, res) {
 
-    User.findOne({ _id: req.params.id }, function(err, user) {
+    var user = req.args.repository.owner.login;
+    var repo = req.args.repository.name;
+    var number = req.args.number;
+    var sender = req.args.sender;
+    var repo_uuid = req.args.repository.id;
+    var sha = req.args.pull_request.head.sha;
 
-      if(!user) {
-          return res.end();
-      }
+    User.findOne({ _id: req.params.id }, function(err, ninja) {
 
-      var args = {
-          user: req.args.repository.owner.login,
-          repo: req.args.repository.name,
-          repo_uuid: req.args.repository.id,
-          sha: req.args.pull_request.head.sha,
-          number: req.args.number,
-          token: user.token
-      };
+        if(err || !ninja) {
+            return res.status(404).send('User not found');
+        }
 
-      var notification_args = {
-          user: req.args.repository.owner.login,
-          repo: req.args.repository.name,
-          number: req.args.number,
-          sender: req.args.sender,
-          url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
-      };
+        var notification_args = {
+            user: user,
+            repo: repo,
+            number: number,
+            sender: sender,
+            url: url.reviewPullRequest(user, repo, number)
+        };
 
-      var actions = {
-          opened: function() {
+        var actions = {
+            opened: function() {
+                status.update({
+                    sha: sha,
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    repo_uuid: repo_uuid,
+                    token: ninja.token
+                });
 
-              status.update(args);
+                notification.sendmail('pull_request_opened', user, repo, repo_uuid, ninja.token, number, {
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    sender: sender,
+                    url: url.reviewPullRequest(user, repo, number)
+                });
 
-              notification.sendmail(
-                      'pull_request_opened',
-                      req.args.repository.owner.login,
-                      req.args.repository.name,
-                      req.args.repository.id,
-                      user.token,
-                      req.args.number,
-                      notification_args
-              );
+                pullRequest.badgeComment(user, repo, repo_uuid, number);
+            },
+            synchronize: function() {
+                status.update({
+                    sha: sha,
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    repo_uuid: repo_uuid,
+                    token: ninja.token
+                });
 
-              pullRequest.badgeComment(
-                      req.args.repository.owner.login,
-                      req.args.repository.name,
-                      req.args.repository.id,
-                      req.args.number
-              );
-          },
-          synchronize: function() {
+                notification.sendmail('pull_request_synchronized', user, repo, repo_uuid, ninja.token, number, {
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    sender: sender,
+                    url: url.reviewPullRequest(user, repo, number)
+                });
 
-              status.update(args);
+                var event = user + ':' + repo + ':' + 'pull-request-' + number + ':synchronize';
+                io.emit(event, sha);
+            },
+            closed: function() {
+                if(req.args.pull_request.merged) {
+                    var event = user + ':' + repo + ':' + 'pull-request-' + number + ':merged';
+                    io.emit(event, number);
+                }
 
-              notification.sendmail(
-                      'pull_request_synchronized',
-                      req.args.repository.owner.login,
-                      req.args.repository.name,
-                      req.args.repository.id,
-                      user.token,
-                      req.args.number,
-                      notification_args
-              );
+                milestone.close(user, repo, repo_uuid, number, ninja.token);
+            },
+            reopened: function() {
+                // a pull request you have reviewed has a been reopened
+                // send messages to responsible users?
+            }
+        };
 
-              io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':synchronize', req.args.pull_request.head.sha);
-          },
-          closed: function() {
-              // a pull request you have been reviewing has closed
-              if(req.args.pull_request.merged) {
-                  io.emit(req.args.repository.owner.login + ':' + req.args.repository.name + ':pull-request-' + req.args.number + ':merged', req.args.number);
-              }
-          },
-          reopened: function() {
-              // a pull request you have reviewed has a been reopened
-              // send messages to responsible users?
-          }
-      };
+        if (actions[req.args.action]) {
+            actions[req.args.action]();
+        }
 
-      if (actions[req.args.action]) {
-          actions[req.args.action]();
-      }
-
-      res.end();
+        res.end();
     });
 };

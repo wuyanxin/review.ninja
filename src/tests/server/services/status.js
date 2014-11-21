@@ -11,6 +11,7 @@ var github = require('../../../server/services/github');
 
 // models
 var Star = require('../../../server/documents/star').Star;
+var Milestone = require('../../../server/documents/milestone').Milestone;
 
 // service
 var status = require('../../../server/services/status');
@@ -20,8 +21,17 @@ describe('status:update', function() {
         var starStub = sinon.stub(Star, 'find', function(args, done) {
             done(null, null);
         });
+
+        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
+            assert.deepEqual(args, {
+                pull: 1,
+                repo: 1234
+            });
+            done(null, null);
+        });
+
         var githubStub = sinon.stub(github, 'call', function(args, done) {
-            if(args.obj === 'issues' && args.fun === 'repoIssues') {
+            if(args.obj === 'issues' && args.fun === 'getMilestone') {
                 done(null, null);
             }
             if(args.obj === 'statuses' && args.fun === 'create') {
@@ -33,8 +43,9 @@ describe('status:update', function() {
                         repo: 'repo',
                         sha: 'sha',
                         state: 'pending',
-                        description: 'Review Ninja: 0 stars, 0 issues',
-                        target_url: 'https://review.ninja/user/repo/pull/1'
+                        description: 'ReviewNinja: 0 stars, 0 issues',
+                        target_url: 'https://review.ninja/user/repo/pull/1',
+                        context: 'code-review/reviewninja'
                     },
                     token: 'token'
                 });
@@ -52,7 +63,12 @@ describe('status:update', function() {
         };
 
         status.update(args, function(err, status) {
+            sinon.assert.called(starStub);
+            sinon.assert.called(milestoneStub);
+            sinon.assert.called(githubStub);
+
             starStub.restore();
+            milestoneStub.restore();
             githubStub.restore();
             done();
         });
@@ -62,8 +78,21 @@ describe('status:update', function() {
         var starStub = sinon.stub(Star, 'find', function(args, done) {
             done(null, [{user: 'user', repo: 'repo'}]);
         });
+
+        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
+            assert.deepEqual(args, {
+                pull: 1,
+                repo: 1234
+            });
+            done(null, {
+                pull: 1,
+                repo: 123,
+                number: 2
+            });
+        });
+
         var githubStub = sinon.stub(github, 'call', function(args, done) {
-            if(args.obj === 'issues' && args.fun === 'repoIssues') {
+            if(args.obj === 'issues' && args.fun === 'getMilestone') {
                 done(null, null);
             }
             if(args.obj === 'statuses' && args.fun === 'create') {
@@ -75,8 +104,9 @@ describe('status:update', function() {
                         repo: 'repo',
                         sha: 'sha',
                         state: 'success',
-                        description: 'Review Ninja: 1 stars, 0 issues',
-                        target_url: 'https://review.ninja/user/repo/pull/1'
+                        description: 'ReviewNinja: 1 star, 0 issues',
+                        target_url: 'https://review.ninja/user/repo/pull/1',
+                        context: 'code-review/reviewninja'
                     },
                     token: 'token'
                 });
@@ -94,7 +124,12 @@ describe('status:update', function() {
         };
 
         status.update(args, function(err, status) {
+            sinon.assert.called(starStub);
+            sinon.assert.called(milestoneStub);
+            sinon.assert.called(githubStub);
+
             starStub.restore();
+            milestoneStub.restore();
             githubStub.restore();
             done();
         });
@@ -104,9 +139,22 @@ describe('status:update', function() {
         var starStub = sinon.stub(Star, 'find', function(args, done) {
             done(null, [{user: 'user', repo: 'repo'}]);
         });
+
+        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
+            assert.deepEqual(args, {
+                pull: 1,
+                repo: 1234
+            });
+            done(null, {
+                pull: 1,
+                repo: 123,
+                number: 2
+            });
+        });
+
         var githubStub = sinon.stub(github, 'call', function(args, done) {
-            if(args.obj === 'issues' && args.fun === 'repoIssues') {
-                done(null, [{number: 2}]);
+            if(args.obj === 'issues' && args.fun === 'getMilestone') {
+                done(null, {open_issues: 3});
             }
             if(args.obj === 'statuses' && args.fun === 'create') {
                 assert.deepEqual(args, {
@@ -117,8 +165,9 @@ describe('status:update', function() {
                         repo: 'repo',
                         sha: 'sha',
                         state: 'failure',
-                        description: 'Review Ninja: 1 stars, 1 issues',
-                        target_url: 'https://review.ninja/user/repo/pull/1'
+                        description: 'ReviewNinja: 1 star, 3 issues',
+                        target_url: 'https://review.ninja/user/repo/pull/1',
+                        context: 'code-review/reviewninja'
                     },
                     token: 'token'
                 });
@@ -136,7 +185,12 @@ describe('status:update', function() {
         };
 
         status.update(args, function(err, status) {
+            sinon.assert.called(starStub);
+            sinon.assert.called(milestoneStub);
+            sinon.assert.called(githubStub);
+
             starStub.restore();
+            milestoneStub.restore();
             githubStub.restore();
             done();
         });

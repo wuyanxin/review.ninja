@@ -32,7 +32,7 @@ describe('Home Controller', function() {
             login: 'login-3'
         }];
 
-        scope.query = 'query';
+        scope.query = 'user/repo';
 
         createCtrl = function() {
             return $controller('HomeCtrl', {
@@ -63,13 +63,6 @@ describe('Home Controller', function() {
             'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
             'uuid': 1387834
 
-        });
-
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
-            data: {
-                id: 1,
-                login: 'my-org'
-            }
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
@@ -107,15 +100,9 @@ describe('Home Controller', function() {
 
         });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
-            data: [{
-                id: 1,
-                login: 'my-org'
-            }]
-        });
-
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
+                id: 21620444,
                 name: 'repo-1',
                 user: 'me',
                 ninja: true,
@@ -128,18 +115,9 @@ describe('Home Controller', function() {
         scope.add({owner:{login:'login'}, name: 'name', id: '1234'});
 
         httpBackend.expect('POST', '/api/user/addRepo').respond(null);
-
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"get","arg":{"user":"login","repo":"name"}}').respond({
-            data: {
-                name: 'repo-2',
-                ninja: true,
-                user: 'me',
-                uuid: 1
-            }
-        });
-
         httpBackend.flush();
-        scope.repos.length.should.be.exactly(1);
+
+        scope.repos.length.should.be.exactly(2);
     });
 
 
@@ -158,13 +136,6 @@ describe('Home Controller', function() {
             ],
             'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
             'uuid': 1387834
-        });
-
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
-            data: [{
-                id: 1,
-                login: 'my-org'
-            }]
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
@@ -208,13 +179,6 @@ describe('Home Controller', function() {
             'uuid': 1387834
         });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"user","fun":"getOrgs","arg":{"per_page":100}}').respond({
-            data: [{
-                id: 1,
-                login: 'my-org'
-            }]
-        });
-
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
                 name: 'repo-1',
@@ -231,7 +195,7 @@ describe('Home Controller', function() {
 
         var repos = ['repo-1', 'repo-2'];
 
-        httpBackend.expect('POST', '/api/github/wrap','{"obj":"search","fun":"repos","arg":{"q":"query+in:name+fork:true+user:login+user:my-org"}}').respond({
+        httpBackend.expect('POST', '/api/github/wrap','{"obj":"search","fun":"repos","arg":{"q":"repo+in:name+fork:true+user:user"}}').respond({
             data: 'repos'
         });
 

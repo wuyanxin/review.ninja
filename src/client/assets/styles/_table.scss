@@ -2,7 +2,7 @@ table {
   background: none;
 }
 
-.table {
+.table:not(.table-plain) {
   background: $gray-lighter;
 
   > tbody > tr > td {
@@ -10,7 +10,27 @@ table {
   }
 }
 
+.table.table-plain {
+  border: 1px solid $gray-light;
+
+  th {
+    background: $gray-lighter;
+    padding: 10px 15px;
+  }
+  
+  td {
+    border-top: 1px solid $gray-light;
+    padding: 10px 15px;
+  }
+}
+
 .table-hover {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;    
+  user-select: none;
+
   tr.select:hover {
     cursor: pointer;
   }

@@ -42,6 +42,7 @@ describe('webhook:get', function() {
 
         webhook.get(req, function(err, hook) {
             assert.equal(err, 'github hook error');
+            sinon.assert.called(githubStub);
             githubStub.restore();
             done();
         });
@@ -73,6 +74,7 @@ describe('webhook:get', function() {
 
         webhook.get(req, function(err, hook) {
             assert.equal(hook, null);
+            sinon.assert.called(githubStub);
             githubStub.restore();
             done();
         });
@@ -105,6 +107,7 @@ describe('webhook:get', function() {
 
         webhook.get(req, function(err, hook) {
             assert.deepEqual(hook, {config: { url: 'https://review.ninja/github/webhook/1234' }});
+            sinon.assert.called(githubStub);
             githubStub.restore();
             done();
         });
@@ -125,6 +128,7 @@ describe('webhook:create', function() {
 
         webhook.create(req, function(err, hook) {
             assert.equal(hook, null);
+            sinon.assert.called(userStub);
             userStub.restore();
             done();
         });
@@ -145,7 +149,7 @@ describe('webhook:create', function() {
                     repo: 'repo',
                     name: 'web',
                     config: {url: 'https://review.ninja/github/webhook/mongooseId', content_type: 'json'},
-                    events: ['pull_request', 'issues', 'issue_comment'],
+                    events: ['pull_request', 'issues', 'issue_comment', 'status'],
                     active: true
                 },
                 token: 'token'
@@ -166,6 +170,8 @@ describe('webhook:create', function() {
         };
 
         webhook.create(req, function(err, hook) {
+            sinon.assert.called(userStub);
+            sinon.assert.called(githubStub);
             userStub.restore();
             githubStub.restore();
             done();

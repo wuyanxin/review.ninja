@@ -50,9 +50,9 @@ module.exports = {
 
                         // create hook, if it does not exist
                         if(repo.permissions.admin) {
-                            webhook.get(req.args.user, req.args.repo, req.user.token, 
+                            webhook.get(req.args.user, req.args.repo, req.user.token,
                                 function(err, hook) {
-                                    if(!hook) {
+                                    if(!err && !hook) {
                                         github.call({
                                             obj: 'repos',
                                             fun: 'createHook',
@@ -61,7 +61,7 @@ module.exports = {
                                                 repo: repo.name,
                                                 name: 'web',
                                                 config: { url: url.webhook(user._id), content_type: 'json' },
-                                                events: ['pull_request','issues', 'issue_comment'],
+                                                events: config.server.github.webhook_events,
                                                 active: true
                                             },
                                             token: req.user.token

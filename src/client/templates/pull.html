@@ -1,12 +1,9 @@
-
 <div class="row scaffold">
   <div class="col-sm-9 pull">
     <div class="row">
       <div class="col-sm-12">
-
         <ol class="breadcrumb">
-          <li><a ui-sref="repo.master()">{{ repo.owner.login }} / {{ repo.name }}</a></li>
-          <li class="pull-right settings-icon"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
+          <li><a ui-sref="repo.master()">{{ pull.base.repo.owner.login }} / {{ pull.base.repo.name }}</a></li>
         </ol>
 
         <div class="row" style="margin:30px 0;">
@@ -14,13 +11,21 @@
             <img class="img-responsive" style="margin-bottom: 12px" ng-src="{{ pull.user.avatar_url }}&s=100" />
           </div>
           <div class="col-sm-8">
-            <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }}</h2>
+            <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }} <a class="link-external" target="_blank"  ng-href="{{pull.html_url}}">#{{ pull.number }}</a></h2>
+            <p>
+              {{ pull.merged ? pull.merged_by.login + ' merged' : pull.user.login + ' wants to merge' }} {{ pull.commits | pluralize:'commit' }} 
+              into <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.base.ref : pull.base.label}}</span>
+              from <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</span>
+              <small moment="pull.merged_at || pull.created_at"></small>
+            </p>
             <p ng-bind-html="pull.html"></p>
-            <p>{{ pull.user.login }} wants to merge {{ pull.commits | pluralize:'commit' }} into <span class="label label-default">{{ pull.base.ref }}</span> from <span class="label label-default">{{ pull.head.label }}</span> <span moment="pull.created_at"></span></p>
           </div>
-          <div class="col-sm-3" style="padding-right:0;">
-            <merge-button pull="pull" merge="merge()" merging="(merging.loading || refreshing.loading)"></merge-button>
-          </div>
+          <merge-button pull="pull" 
+                        merge="mergePullRequest()" 
+                        merging="merge.loading" 
+                        status="status.value"
+                        ng-show="status.loaded">
+          </merge-button>
         </div>
 
       </div>
@@ -29,29 +34,27 @@
     <div class="row">
       <div class="col-sm-12">
         <tabset>
-          <tab heading="Diffs">
+          <tab>
+            <tab-heading><span class="octicon octicon-diff"></span> Diffs</tab-heading>
 
-            <div class="well" style="margin-top:-2px; border:1px solid #ececec;">
+            <div class="well" style="margin-top:-1px; border:1px solid #ececec;">
               <div class="row">
                 <div class="col-sm-8">
                   <p>
-                    <span class="octicon octicon-diff"></span> 
                     Showing {{ pull.changed_files | pluralize:'changed file' }} with 
                     <strong>{{ pull.additions | pluralize:'addition' }}</strong> and 
                     <strong>{{ pull.deletions | pluralize:'deletion' }}</strong>
                   </p>
-
-                  <p ng-show="issue"><small>Comparing {{ pull.base.sha===base ? 'base' : 'issue' }} commit to head commit.</small></p>
 
                   <strong>Compare:</strong>
 
                   <div class="clearfix"></div>
                   <graph class="git" 
                          base-sha="pull.base.sha" 
+                         issue-sha="sha"
                          head-sha="head" 
-                         issue-sha="issue.sha"
                          active-sha="base" 
-                         open-issue="pull.open_issue"
+                         open-issues="open.value"
                          compare="compComm(base, head)">
                   </graph>
                   <div class="clearfix"></div>
@@ -59,21 +62,31 @@
 
                 <div class="col-sm-4 text-right">
                   <div class="btn-group">
-                    <button type="button" class="btn btn-default" ng-click="toggle()" style="padding:4px 12px 0px;">
-                      <span class="icon-ninja-star text-primary" style="font-size:25px" ng-class="{muted: !star.value}"></span>
-                    </button>
+                      <button type="button" 
+                              class="btn btn-default" 
+                              ng-click="setStar()" 
+                              style="padding:2px 12px 0px;"
+                              tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star" 
+                              tooltip-placement="bottom"
+                              tooltip-append-to-body="true">
+                          <span class="icon-ninja-star text-primary" style="font-size:25px" ng-class="{muted: !star.value}"></span>
+                      </button>
                     <div class="btn-group">
-                      <button type="button" class="btn btn-primary dropdown-toggle stars" data-toggle="dropdown" ng-disabled="!pull.stars.length" style="font-size:18px;">
+                      <button type="button" 
+                              class="btn btn-primary dropdown-toggle stars" 
+                              data-toggle="dropdown" 
+                              ng-disabled="!pull.stars.length" 
+                              style="font-size:18px; min-width:36px; min-height:39px;">
                         {{ pull.stars.length }}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
-                        <li><a href="">You have {{ pull.stars.length | pluralize:'ninja star' }}!</a></li>
+                        <li><a href="">Pull Request has {{ pull.stars.length | pluralize:'ninja star' }}!</a></li>
                         <li class="divider"></li>
                         <li ng-repeat="star in pull.stars | orderBy:'-created_at'" class="star-dropdown-item">
                           <a href="#">
                             <table>
                               <tr>
-                                <td><img ng-src="{{ star.user.value.avatar_url }}&s=56" width="56px" style="margin-right:16px;" /></td>
+                                <td><img ng-src="{{ star.user.value.avatar_url + '&s=56' }}" width="56px" style="margin-right:16px;" /></td>
                                 <td>
                                   <strong><a ng-href="{{ star.user.value.html_url }}" target="_blank">{{ star.name }}</a></strong><br />
                                   ninja starred this<br />
@@ -90,29 +103,28 @@
               </div>
             </div>
 
-            <diff ng-repeat="file in files.value" 
-                  path="file.filename" 
-                  patch="file.patch" 
-                  status="file.status" 
-                  file-sha="file.sha"
+            <diff ng-repeat="file in files" 
+                  file="file"
                   base-sha="base"
                   head-sha="head" 
-                  selection="selection"
-                  reference="reference">
+                  selection="reference.selection"
+                  ref-issues="reference.issues"
+                  issues="state==='open' ? open.value : closed.value">
             </diff>
 
           </tab>
 
-          <tab heading="Files">
-            <browser tree="tree.value" 
-                     head-sha="head" 
-                     selection="selection"
-                     reference="reference">
+          <tab>
+            <tab-heading><span class="octicon octicon-file-code"></span> Files</tab-heading>
+            <browser sha="pull.head.sha" 
+                     selection="reference.selection"
+                     ref-issues="reference.issues"
+                     issues="state==='open' ? open.value : closed.value">
             </browser>
           </tab>
 
-          <tab heading="Conversation">
-
+          <tab>
+            <tab-heading><span class="octicon octicon-comment-discussion"></span> Conversation</tab-heading>
             <div infinite-scroll="comments.getMore()" 
                  infinite-scroll-disabled="comments.loading"
                  style="margin:20px 0;">
@@ -125,6 +137,7 @@
                       <td>
                           <div class="panel panel-default comment">
                               <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
                                   <strong>{{ pull.user.login }}</strong> commented <span moment="pull.created_at"></span>
                               </div>
                               <div class="panel-body" ng-bind-html="pull.html"></div>
@@ -134,13 +147,14 @@
               </table>
 
               <table style="width:100%;">
-                  <tr ng-repeat="comment in comments.value">
+                  <tr ng-repeat="comment in comments.value" ng-show="comment.html">
                       <td style="width:42px; padding-right:10px; vertical-align:top;">
                           <img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" />
                       </td>
                       <td>
                           <div class="panel panel-default comment">
                               <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
                                   <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
                               </div>
                               <div class="panel-body" ng-bind-html="comment.html"></div>
@@ -159,9 +173,12 @@
                         </td>
                         <td>
                             <div class="panel panel-default comment">
-                                <div class="panel-heading"><strong>{{ user.value.login }}</strong></div>
+                                <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
+                                  <strong>{{ user.value.login }}</strong>
+                                </div>
                                 <div class="panel-body" style="padding:0;">
-                                    <textarea class="form-control" ng-model="$parent.comment" rows="4" placeholder="Leave a comment"></textarea>
+                                    <textarea class="form-control" ng-model="$parent.comment" rows="4" placeholder="Leave a pull request comment"></textarea>
                                 </div>
                             </div>
 
@@ -177,6 +194,30 @@
             </div>
           </tab>
 
+          <tab>
+            <tab-heading>
+              <span class="octicon octicon-check"></span> Status
+            </tab-heading>
+            <table class="table table-plain">
+              <tr>
+                <th>Context</th>
+                <th>Description</th>
+                <th>Status</th>
+              </tr>
+              <tr ng-repeat="status in status.value.statuses">
+                <td>{{ status.context }}</td>
+                <td><a class="link-external" ng-href="{{ status.target_url }}" target="_blank">{{ status.description }}</a></td>
+                <td ng-class="{'text-success': status.state==='success', 'text-warning': status.state==='pending', 'text-danger': status.state==='failure'}">
+                  <span class="octicon" ng-class="{'octicon-check': status.state==='success', 'octicon-x': status.state!=='success'}"></span>
+                  {{ status.state }}
+                </td>
+              </tr>
+              <tr ng-show="!status.value.statuses.length">
+                <td colspan="3">There are no statuses to show.</td>
+              </tr>
+          </table>
+          </tab>
+
         </tabset>
 
       </div>
@@ -188,5 +229,4 @@
       <section ui-view></section>
     </div>
   </div>
-  
 </div>

@@ -47,7 +47,6 @@ module.exports = {
     },
 
     wrap: function(req, done) {
-
         github.call(merge(req.args, {
             token: req.user.token
         }), function(err, res, meta) {

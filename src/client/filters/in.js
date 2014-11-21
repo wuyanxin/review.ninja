@@ -10,12 +10,8 @@ filters.filter('in', function() {
         }
 
         var matched = [];
-
         items.forEach(function(item) {
-
-            var match = attr ? item[attr] : item;
-
-            if(array.indexOf( match.toString() ) > -1) {
+            if(array.indexOf(item[attr] || item) > -1) {
                 matched.push(item);
             }
         });

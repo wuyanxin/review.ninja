@@ -32,18 +32,9 @@ module.exports = function(config) {
             'http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
             'http://cdnjs.cloudflare.com/ajax/libs/angular-ui-utils/0.1.1/angular-ui-utils.min.js',
             'http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js',
-            'http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.min.js',
             'http://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js',
-            'http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js',
-            'https://www.google-analytics.com/analytics.js',
             'src/bower/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
-            'src/bower/angulartics/dist/angulartics.min.js',
-            'src/bower/angulartics/dist/angulartics-ga.min.js',
-
-            // TODO: CDN
             'src/bower/angular-mocks/angular-mocks.js',
-            'src/bower/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
-            'src/bower/angular-loggly-logger/angular-loggly-logger.js',
 
             // Client code
             'src/client/modules/config.js',

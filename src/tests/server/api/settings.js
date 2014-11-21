@@ -24,6 +24,7 @@ describe('settings:get', function(done){
 
         settings.get(req, function(err, res) {
             assert.deepEqual(res, {settings: 'object'});
+            sinon.assert.called(settingsStub);
             settingsStub.restore();
             done();
         });

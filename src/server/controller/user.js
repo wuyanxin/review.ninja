@@ -20,8 +20,7 @@ router.get('/auth/github/callback',
         failureRedirect: '/'
     }),
     function(req, res) {
-        res.redirect('/' + req.session.next ? req.session.next : '');
-        delete req.session.next;
+        res.redirect('/');
     }
 );
 

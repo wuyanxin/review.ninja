@@ -2,7 +2,6 @@ var GitHubApi = require('github');
 module.exports = {
 
     call: function(call, done) {
-
         var obj = call.obj;
         var fun = call.fun;
         var arg = call.arg || {};
@@ -33,7 +32,7 @@ module.exports = {
 
         if(basicAuth) {
             github.authenticate({
-                type: "basic",
+                type: 'basic',
                 username: basicAuth.user,
                 password: basicAuth.pass
             });

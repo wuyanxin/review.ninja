@@ -2,87 +2,73 @@
 // Diff File Directive
 // *****************************************************
 
-module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
-    function($stateParams, $state, $HUB, $RPC) {
+module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference', '$filter',
+    function($stateParams, $state, $HUB, $RPC, Reference, $filter) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
             scope: {
-                path: '=',
-                patch: '=',
-                status: '=',
-                fileSha: '=',
+                file: '=',
+                issues: '=',
                 baseSha: '=',
                 headSha: '=',
                 selection: '=',
-                reference: '='
+                refIssues: '='
             },
             link: function(scope, elem, attrs) {
 
-                scope.file = null;
-
                 scope.open = true;
-
                 scope.expanded = false;
 
                 //
-                // todo: clean up this code
+                // Expand the diff
                 //
 
-                scope.$watch('patch', function() {
-
-                    if(scope.patch && scope.patch.length) {
-
+                scope.$watch('file.patch', function(patch) {
+                    if(patch && patch.length && !scope.file.image) {
                         $HUB.wrap('gitdata', 'getBlob', {
                             user: $stateParams.user,
                             repo: $stateParams.repo,
-                            sha: scope.fileSha
-                        }, function(err, res) {
-
+                            sha: scope.file.sha
+                        }, function(err, blob) {
                             if(!err) {
 
                                 var file = [], chunks = [];
                                 var index = 0;
 
                                 // find the chunks
-                                while (index < scope.patch.length) {
-
-                                    if(scope.patch[index].chunk) {
-
+                                while (index < scope.file.patch.length) {
+                                    if(scope.file.patch[index].chunk) {
                                         var start = 0, end = 0, c = [];
-
-                                        while( ++index < scope.patch.length && !scope.patch[index].chunk ) {
-
-                                            start = start ? start : scope.patch[index].head;
-                                            end = scope.patch[index].head ? scope.patch[index].head : end;
-                                            c.push(scope.patch[index]);
+                                        while( ++index < scope.file.patch.length && !scope.file.patch[index].chunk ) {
+                                            start = start ? start : scope.file.patch[index].head;
+                                            end = scope.file.patch[index].head ? scope.file.patch[index].head : end;
+                                            c.push(scope.file.patch[index]);
                                         }
 
                                         chunks.push({ start:start, end:end, chunk:c });
                                         continue;
                                     }
-
                                     index = index + 1;
                                 }
 
                                 index = 0;
 
                                 // insert the chunks
-                                while (index < res.value.content.length) {
-
-                                    if( chunks[0] && res.value.content[index].head === chunks[0].start ) {
-
+                                while (index < blob.value.content.length) {
+                                    if( chunks[0] && blob.value.content[index].head === chunks[0].start ) {
                                         chunk = chunks.shift();
                                         file = file.concat( chunk.chunk );
                                         index = chunk.end;
                                         continue;
                                     }
 
-                                    file.push( res.value.content[index] );
+                                    file.push( blob.value.content[index] );
                                     index = index + 1;
                                 }
 
-                                scope.file = file;
+                                // set the file
+                                scope.file.file = file;
                             }
 
                         });
@@ -91,55 +77,64 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC',
                 });
 
                 //
-                // actions
+                // Actions
                 //
 
-                scope.baseRef = function(line) {
-                    return (scope.baseSha + '/' + scope.path + '#L' + line.base);
+                scope.clear = function() {
+                    scope.selection = {};
                 };
 
-                scope.headRef = function(line) {
-                    return (scope.headSha + '/' + scope.path + '#L' + line.head);
+                scope.selStarts = function(line) {
+                    return Reference.starts(scope.headSha, scope.file.filename, line.head, scope.selection.ref);
                 };
 
-                scope.select = function(line) {
+                scope.isSelected = function(line) {
+                    return Reference.includes(scope.headSha, scope.file.filename, line.head, scope.selection.ref);
+                };
+
+                scope.refStarts = function(line) {
+                    var match = false;
+                    if(scope.issues) {
+                        $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
+                            match = match || Reference.starts(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue.key);
+                        });
+                    }
+                    return match;
+                };
+
+                scope.isReferenced = function(line) {
+                    var match = false;
+                    if(scope.issues) {
+                        $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
+                            match = match || Reference.includes(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.includes(scope.headSha, scope.file.filename, line.head, issue.key);
+                        });
+                    }
+                    return match;
+                };
+
+                scope.select = function(line, event) {
                     if(line.head) {
-
-                        var ref = scope.headRef(line);
-                        var cur = scope.selection[0] ? scope.selection[0].ref : null;
-
-                        scope.selection.length = 0;
-
-                        if(ref !== cur) {
-                            scope.selection.push({
-                                ref: ref,
-                                line: scope.path + '#L' + line.base
-                            });
-                        }
+                        var shift = scope.selection.start && event.shiftKey && scope.file.filename === scope.selection.path;
+                        var start = !shift ? line.head : scope.selection.start;
+                        var end = shift ? line.head : null;
+                        scope.selection = Reference.select(scope.headSha, scope.file.filename, start, end);
                     }
                 };
 
-                scope.go = function(baseRefs, headRefs) {
-
+                scope.go = function(line) {
                     var issues = [];
 
-                    if(baseRefs) {
-                        for(var i = 0; i < baseRefs.length; i++) {
-                            issues.push(baseRefs[i].issue);
+                    scope.issues.forEach(function(issue) {
+                        if(Reference.starts(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue.key)) {
+                            issues.push(issue.number);
                         }
-                    }
-
-                    if(headRefs) {
-                        for(var j = 0; j < headRefs.length; j++) {
-                            issues.push(headRefs[j].issue);
-                        }
-                    }
+                    });
 
                     if(issues.length === 1) {
                         return $state.go('repo.pull.issue.detail', { issue: issues[0] });
                     }
 
-                    $state.go('repo.pull.issue.master', { issues: issues });
+                    scope.refIssues = issues;
                 };
             }
         };

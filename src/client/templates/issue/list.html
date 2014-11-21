@@ -1,16 +1,16 @@
 <table class="table table-hover"
-       infinite-scroll="issues.getMore()"
-       infinite-scroll-disabled="$stateParams.issues ? true: issues.loading">
+       infinite-scroll="(state==='open' ? open : closed).getMore()"
+       infinite-scroll-disabled="state==='open' ? open.loading : closed.loading">
 
   <tr class="select" 
-      ng-repeat="issue in issues.value | filter:{state: $stateParams.state || 'open'} | in:$stateParams.issues.split(','):'number'" 
+      ng-repeat="issue in (state==='open' ? open : closed).value | filter:{state: state} | in:reference.issues:'number'"
       ui-sref="repo.pull.issue.detail({ issue: issue.number })">
 
     <td style="width:40px; padding-right:0;">
       <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
     </td>
     <td>
-      <strong>#{{ issue.number }} {{ issue.title }}</strong><br />
+      <strong>{{ issue.title }}</strong> #{{ issue.number }}<br />
       <small>
         <span moment="issue.created_at"></span> &nbsp;
         <i class="fa fa-lg fa-link text-warning" 
@@ -20,12 +20,12 @@
         </i> 
       </small>
     </td>
-    <td class="text-right text-primary">
-      <i class="fa fa-lg fa-comments"></i><br />
-      {{ issue.comments }}
+    <td class="text-right" ng-class="{'text-primary': issue.body ||  issue.comments}">
+      <i class="octicon octicon-comment"></i><br />
+      {{ (issue.body ? 1 : 0) + issue.comments }}
     </td>
   </tr>
 
 </table>
 
-<i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="issues.loading"></i>
+<i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="state==='open' ? open.loading : closed.loading"></i>

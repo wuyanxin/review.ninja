@@ -33,26 +33,24 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         });
 
         //
-        // NOTE:
-        //  if ever a user has over 100 orgs
-        //  we will have to address this problem
-        //
-        $scope.orgs = $HUB.call('user', 'getOrgs', {
-            per_page: 100
-        });
-
-        //
         // Actions
         //
 
         $scope.add = function(repo) {
-            $scope.adding = $RPC.call('user', 'addRepo', {
+            $RPC.call('user', 'addRepo', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
             }, function(err) {
-                if (!err) {
-                    $state.go('repo.master', {user: repo.owner.login, repo:repo.name});
+                $scope.active = null;
+                $scope.hasRepos = true;
+                if(!err && $scope.repos.indexOf(repo) < 0) {
+                    repo.ninja = true;
+                    repo.adddate = -new Date();
+                    $scope.repos.push(repo);
+
+                    $scope.reset();
+                    $scope.query = repo.full_name;
                 }
             });
         };
@@ -63,36 +61,33 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                 repo: repo.name,
                 repo_uuid: repo.id
             }, function(err) {
-                if (!err) {
+                if(!err) {
                     repo.ninja = false;
                 }
             });
         };
 
-        $scope.searching = {};
-
         $scope.search = function() {
 
-            if(!$scope.query.length) {
-                $scope.results = [];
-            }
+            // clear results
+            $scope.results = [];
 
-            if($scope.query.length >= 3 && !$scope.searching.loading) {
+            // get query
+            var query = $scope.query.split('/');
+            query = (query[1] || '') + '+in:name+fork:true+user:' + query[0];
 
-                var query = $scope.query + '+in:name+fork:true+user:' + $rootScope.user.value.login;
+            $scope.searching = $HUB.wrap('search', 'repos', {
+                q: query
+            }, function(err, repos) {
+                if(!err) {
+                    $scope.results = repos.value;
+                }
+            });
+        };
 
-                $scope.orgs.value.forEach(function(org) {
-                    query += '+user:' + org.login;
-                });
-
-                $scope.searching = $HUB.wrap('search', 'repos', {
-                    q: query
-                }, function(err, repos) {
-                    if(!err && $scope.query.length) {
-                        $scope.results = repos.value;
-                    }
-                });
-            }
+        $scope.reset = function() {
+            $scope.query = null;
+            $scope.results = [];
         };
     }
 ]);

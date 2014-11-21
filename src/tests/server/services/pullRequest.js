@@ -11,15 +11,6 @@ var github = require('../../../server/services/github');
 // service
 var pullRequest = require('../../../server/services/pullRequest');
 
-describe('pullRequest:byLabels', function(done) {
-    it('should extract 1 for pull-request-1', function(done) {
-        var labels = [{name: 'review.ninja'}, {name: 'pull-request-1'}];
-        var pullRequestNumber = pullRequest.byLabels(labels);
-        assert.equal(pullRequestNumber, 1);
-        done();
-    });
-});
-
 describe('pullRequest:badgeComment', function(done) {
     it('should set github call parameters correctly', function(done) {
         config.server.github.user = 'githubUser';
@@ -41,34 +32,10 @@ describe('pullRequest:badgeComment', function(done) {
                 }
             });
         });
-        
+
         pullRequest.badgeComment('user', 'repo', 123, 456);
+        sinon.assert.called(githubStub);
         githubStub.restore();
-        done();
-    });
-});
-
-describe('pullRequest:setWatched', function(done) {
-    it('if settings are null do not set pull.watched', function(done) {
-        var pulls = [{
-            head: {ref: 'feature/one'},
-            base: {ref: 'master'}
-        }];
-        pullRequest.setWatched(pulls, null);
-        assert.equal(pulls[0].hasOwnProperty('watched'), false);
-        done();
-    });
-
-    it('if settings are not null, add watched property (watched by default)', function(done) {
-        var settings = {
-            watched: []
-        };
-        var pulls = [{
-            head: {ref: 'feature'},
-            base: {ref: 'master'}
-        }];
-        pullRequest.setWatched(pulls, settings);
-        assert.equal(pulls[0].watched, true);
         done();
     });
 });
