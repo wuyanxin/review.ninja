@@ -14,7 +14,7 @@
     <h2>Repositories <i class="fa fa-plus-circle text-primary" ng-click="show=!show; setFocus=true;"></i></h2>
 
     <div class="well well-sm" ng-show="show">
-      <form ng-submit="search()">
+      <form ng-submit="search()" style="margin-top: 15px;">
         <div class="input-group">
           <div class="form-group has-feedback">
             <input type="text" ng-model="query" focus="setFocus" class="form-control" style="height:33px;" />
@@ -73,7 +73,7 @@
       </table>
     </div>
 
-		<table class="table table-hover" style="margin-top: 15px;">
+		<table class="table table-hover">
 			<tr ng-repeat="repo in repos | filter:{ninja: true} | orderBy:['adddate', 'full_name']"
           ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })"
           class="select">
