@@ -140,6 +140,14 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                         }
                     ]
                 }
+            })
+
+            //
+            // 404 Error page
+            //
+            .state('error', {
+                url: '/error',
+                templateUrl: '/templates/error/error.html'
             });
 
         $urlRouterProvider.otherwise('/');
