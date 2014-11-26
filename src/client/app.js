@@ -158,6 +158,9 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
 ])
 .run(['$rootScope', '$state', '$stateParams',
     function($rootScope, $state, $stateParams) {
+        $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+            $state.go('error');
+        });
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
     }
