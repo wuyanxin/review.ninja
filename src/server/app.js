@@ -110,6 +110,10 @@ async.series([
                 outputStyle: 'compressed',
                 force: config.server.always_recompile_sass
             }));
+            if(p.indexOf('/bower', p.length - p.length) !== -1) {
+                console.log('true');
+                return app.use('/lib', express.static(p));
+            }
             app.use(express.static(p));
         });
         callback();
