@@ -34,7 +34,7 @@
              ng-class="{ active: active===repo }" 
              ng-click="$parent.active=repo; add(repo);"
              ng-repeat="repo in results | orderBy: 'full_name'">
-            {{ repo.full_name }}
+            {{ repo.owner.login }} / {{ repo.name }}
             <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo"></i>
           </a>
         </div>
