@@ -202,6 +202,14 @@ body {
   font-weight: 300;
 }
 
+body.error {
+  background: url(images/bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 h2 {
   margin-top: 30px;
 }
