@@ -154,7 +154,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     $scope.getPullRequest();
                 }
             });
-        }
+        };
 
         $scope.getPullRequest = function() {
             $HUB.wrap('pullRequests', 'get', {
