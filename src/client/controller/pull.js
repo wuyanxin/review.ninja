@@ -144,7 +144,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             });
         };
 
-        $scope.deleteBranch = function() {
+        $scope.deleteReference = function() {
             $HUB.call('gitdata', 'deleteReference', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
