@@ -21,6 +21,8 @@ module.directive('mergeButton', function() {
                 success: 'succeeded'
             };
 
+            scope.deleted = false;
+
             scope.$watch('status', function(status) {
                 var state = status ? status.state : null;
                 if(state) {
@@ -39,6 +41,19 @@ module.directive('mergeButton', function() {
                     statuses: []
                 };
             });
+
+            scope.getReference = function() {
+                $HUB.call('gitdata', 'getReference', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    ref: 'heads/' + $scope.pull.head.ref
+                }, function(err, result) {
+                    if(!err) {
+                        $scope.getPullRequest();
+                        scope.deleted = true;
+                    }
+                });
+            };
         }
     };
 });
