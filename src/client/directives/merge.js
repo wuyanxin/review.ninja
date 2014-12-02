@@ -49,7 +49,6 @@ module.directive('mergeButton', function() {
                     ref: 'heads/' + $scope.pull.head.ref
                 }, function(err, result) {
                     if(!err) {
-                        $scope.getPullRequest();
                         scope.deleted = true;
                     }
                 });
