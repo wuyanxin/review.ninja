@@ -10,6 +10,7 @@ module.directive('mergeButton', function() {
             pull: '=',
             merge: '&',
             status: '=',
+            delete: '&',
             merging: '='
         },
         link: function(scope, elem, attrs) {

@@ -40,6 +40,12 @@
     <i class="fa fa-spinner fa-spin" ng-show="merging"></i>
   </button>
 
+  <button type="button"
+          class="btn btn-block"
+          ng-click="delete()">
+    <span>Delete Branch</span>
+  </button>
+
   <div class="text-body" ng-show="pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
     <p>{{ (pull.milestone.closed_issues || 0) | pluralize:'closed issue' }}</p>
