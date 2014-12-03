@@ -150,7 +150,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                 templateUrl: '/templates/error/error.html'
             });
 
-        $urlRouterProvider.otherwise('/error');
+        $urlRouterProvider.otherwise('/');
 
         $locationProvider.html5Mode(true);
 
