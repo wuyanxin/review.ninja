@@ -29,7 +29,7 @@ module.directive('mergeButton', ['$HUB', function($HUB) {
                 ref: scope.ref
             }, function(err, ref) {
                 if(!err) {
-                    scope.branch = ref.code === 200;
+                    scope.branch = true;
                 }
             });
 
