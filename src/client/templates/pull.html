@@ -21,9 +21,12 @@
             <p ng-bind-html="pull.html"></p>
           </div>
           <merge-button pull="pull" 
-                        merge="mergePullRequest()" 
-                        merging="merge.loading" 
                         status="status.value"
+                        user="user",
+                        repo="repo",
+                        ref="'heads/' + pull.head.ref",
+                        number="number",
+                        getPullRequest="getPullRequest()",
                         ng-show="status.loaded">
           </merge-button>
         </div>

@@ -23,6 +23,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // set the line selection
         $scope.reference = {selection: {}, issues: null};
 
+        // attach params to scope to access them in template
+        $scope.user = $stateParams.user;
+        $scope.repo = $stateParams.repo;
+        $scope.number = $stateParams.number;
+
         // get the combined statuses
         $scope.status = $HUB.call('statuses', 'getCombined', {
             user: $stateParams.user,
@@ -123,23 +128,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }, function(err, star) {
                 if(!err) {
                     $scope.star.value = !$scope.star.value ? star.value : null;
-                }
-            });
-        };
-
-        $scope.mergePullRequest = function() {
-
-            $scope.merge = $HUB.call('pullRequests', 'merge', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: $stateParams.number
-            }, function(err, pull) {
-
-                // todo: handle error or unmerged
-
-                if(!err && pull.value.merged) {
-                    $scope.pull.merged = true;
-                    $scope.getPullRequest();
                 }
             });
         };
