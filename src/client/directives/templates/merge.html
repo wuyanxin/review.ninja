@@ -37,11 +37,17 @@
     <span ng-show="pull.merged">
       <span class="octicon octicon-git-pull-request"></span> Merged
     </span>
-    <span ng-click="delete()"
-          class="octicon octicon-trashcan branch-delete-icon pull-right">
-    </span>
-    <i class="fa fa-spinner fa-spin" ng-show="merging"></i>
+    <i class="fa fa-spinner fa-spin" ng-show="merge.loading"></i>
   </button>
+
+  <a href=""
+      ng-show="pull.merged && branch"
+      ng-click="deleteBranch()">
+    <span class="text-danger octicon octicon-trashcan branch-delete-icon pull-right"
+          tooltip="Delete branch"
+          tooltip-placement="bottom"
+          tooltip-append-to-body="true"></span>
+  </a>
 
   <div class="text-body" ng-show="pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
