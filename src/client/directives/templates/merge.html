@@ -7,6 +7,16 @@
             'disabled': !pull.mergeable
           }">
 
+  <a href=""
+      ng-show="pull.merged && branch"
+      ng-click="deleteBranch()"
+      style="position: absolute; right: 20px;">
+    <span class="text-danger octicon octicon-trashcan pull-right"
+          tooltip="Delete branch"
+          tooltip-placement="bottom"
+          tooltip-append-to-body="true"></span>
+  </a>
+
   <div class="text-body" ng-show="!pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
     <p ng-show="status.state==='failure'">
@@ -21,7 +31,7 @@
   </div>
 
   <button type="button" 
-          class="btn"
+          class="btn btn-block"
           ng-class="{
             'btn-success': status.state==='success' && !pull.merged,
             'btn-warning': status.state==='pending' && !pull.merged,
@@ -39,15 +49,6 @@
     </span>
     <i class="fa fa-spinner fa-spin" ng-show="merge.loading"></i>
   </button>
-
-  <a href=""
-      ng-show="pull.merged && branch"
-      ng-click="deleteBranch()">
-    <span class="text-danger octicon octicon-trashcan branch-delete-icon pull-right"
-          tooltip="Delete branch"
-          tooltip-placement="bottom"
-          tooltip-append-to-body="true"></span>
-  </a>
 
   <div class="text-body" ng-show="pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
