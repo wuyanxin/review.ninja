@@ -23,7 +23,10 @@
                       class="btn"
                       ng-class="{true: 'btn-warning', false: 'btn-success'}[settings.value.notifications.pull_request]"
                       ng-click="togglePullRequest()"
-                      ng-model="settings.value.notifications.pull_request">
+                      ng-model="settings.value.notifications.pull_request"
+                      tooltip="{{ settings.value.notifications.pull_request ? 'Deselect' : 'Select' }} Pull Requests"
+                      tooltip-placement="bottom"
+                      tooltip-append-to-body="true">
                       <i class="mega-octicon octicon-git-pull-request"></i>
               </button>
               <br>
@@ -34,7 +37,10 @@
                       class="btn"
                       ng-class="{true: 'btn-warning', false: 'btn-success'}[settings.value.notifications.issue]"
                       ng-click="toggleIssue()"
-                      ng-model="settings.value.notifications.issue">
+                      ng-model="settings.value.notifications.issue"
+                      tooltip="{{ settings.value.notifications.issue ? 'Deselect' : 'Select' }} Issues"
+                      tooltip-placement="bottom"
+                      tooltip-append-to-body="true">
                       <i class="mega-octicon octicon-issue-opened"></i>
               </button>
               <p>Issues</p>
@@ -44,7 +50,10 @@
                       class="btn"
                       ng-class="{true: 'btn-warning', false: 'btn-success'}[settings.value.notifications.star]"
                       ng-click="toggleStar()"
-                      ng-model="settings.value.notifications.star">
+                      ng-model="settings.value.notifications.star"
+                      tooltip="{{ settings.value.notifications.star ? 'Deselect' : 'Select' }} Ninja stars"
+                      tooltip-placement="bottom"
+                      tooltip-append-to-body="true">
                       <i class="icon-ninja-star"></i>
               </button>
               <p>Ninja stars</p>
