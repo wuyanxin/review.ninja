@@ -22,7 +22,7 @@ router.all('/count/star', function(req, res) {
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify({
             count: count,
-            text: 'There are ' + count + ' stars!'
+            text: 'There are ninja ' + count + ' stars!'
         }));
     });
 });
