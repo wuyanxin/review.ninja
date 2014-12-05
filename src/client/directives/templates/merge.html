@@ -7,15 +7,18 @@
             'disabled': !pull.mergeable
           }">
 
-  <a href=""
-      ng-show="pull.merged && branch"
-      ng-click="deleteBranch()"
-      style="position: absolute; right: 20px;">
-    <span class="text-danger octicon octicon-trashcan pull-right"
+  <div ng-show="pull.merged && branch">
+    <span class="trashcan text-danger octicon octicon-trashcan no-select"
+          ng-class="{confirm: showConfirmation}"
+          ng-click="confirm()"
           tooltip="Delete branch"
           tooltip-placement="bottom"
           tooltip-append-to-body="true"></span>
-  </a>
+
+    <a href="" class="trashcan-text no-select" ng-class="{confirm: showConfirmation}" ng-click="deleteBranch()">
+      <small style="vertical-align:baseline;">Confirm</small>
+    </a>
+  </div>
 
   <div class="text-body" ng-show="!pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>

@@ -2,18 +2,13 @@
 // Merge Directive
 // *****************************************************
 
-module.directive('mergeButton', ['$HUB', function($HUB) {
+module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($HUB, $stateParams, $timeout) {
     return {
         restrict: 'E',
         templateUrl: '/directives/templates/merge.html',
         scope: {
             pull: '=',
-            status: '=',
-            user: '=',
-            repo: '=',
-            ref: '=',
-            number: '=',
-            getPullRequest: '&'
+            status: '='
         },
         link: function(scope, elem, attrs) {
 
@@ -24,9 +19,9 @@ module.directive('mergeButton', ['$HUB', function($HUB) {
             };
 
             $HUB.call('gitdata', 'getReference', {
-                user: scope.user,
-                repo: scope.repo,
-                ref: scope.ref
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                ref: 'heads/' + scope.pull.head.ref
             }, function(err, ref) {
                 if(!err) {
                     scope.branch = true;
@@ -53,13 +48,13 @@ module.directive('mergeButton', ['$HUB', function($HUB) {
             });
 
             scope.deleteBranch = function() {
+                scope.showConfirmation = false;
                 $HUB.call('gitdata', 'deleteReference', {
-                    user: scope.user,
-                    repo: scope.repo,
-                    ref: scope.ref
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    ref: 'heads/' + scope.pull.head.ref
                 }, function(err, result) {
                     if(!err) {
-                        scope.getPullRequest();
                         scope.branch = false;
                     }
                 });
@@ -67,18 +62,21 @@ module.directive('mergeButton', ['$HUB', function($HUB) {
 
             scope.merge = function() {
                 $HUB.call('pullRequests', 'merge', {
-                    user: scope.user,
-                    repo: scope.repo,
-                    number: scope.number
-                }, function(err, pull) {
-
-                    // todo: handle error or unmerged
-
-                    if(!err && pull.value.merged) {
-                        scope.pull.merged = true;
-                        scope.getPullRequest();
-                    }
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number
                 });
+            };
+
+            //
+            // Helper funtion
+            //
+
+            scope.confirm = function() {
+                scope.showConfirmation = true;
+                $timeout(function() {
+                    scope.showConfirmation = false;
+                }, 10000);
             };
         }
     };

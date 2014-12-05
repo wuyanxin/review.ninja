@@ -127,6 +127,7 @@ $code-font-size: 12px;
 @import 'pull-list';
 @import 'table';
 @import 'tabs';
+@import 'trashcan';
 @import 'well';
 
 
@@ -276,7 +277,8 @@ i.fa-times,
 i.fa-plus,
 i.fa-plus-circle,
 i.fa-info,
-i.fa-link {
+i.fa-link,
+.octicon-trashcan {
   cursor: pointer;
 
   -khtml-user-select: none;
