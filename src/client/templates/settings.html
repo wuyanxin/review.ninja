@@ -34,15 +34,15 @@
             <form role="form" ng-submit="addWatch(newWatch)" style="margin: 15px;">
               <div class="input-group">
                 <div class="form-group has-feedback">
-                  <input type="text" ng-model="query" focus="true" class="form-control" style="height:33px;" />
-                  <i class="fa fa-lg fa-times form-control-feedback" ng-show="query" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
+                  <input type="text" ng-model="newWatch" focus="true" class="form-control" style="height:33px;" />
+                  <i class="fa fa-lg fa-times form-control-feedback" ng-show="newWatch" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
                 </div>
                 <span class="input-group-btn">
-                  <button class="btn btn-info" type="submit" ng-disabled="!query">Add branch</button>
+                  <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add branch</button>
                 </span>
               </div>
               <span class="help-block" style="margin-top:1px;">
-                Type branch name <eg>feature/*</eg> to watch a branch
+                Type branch name <em>feature/*</em> to watch a branch
               </span>
             </form>
           </div>
@@ -53,7 +53,7 @@
               <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
               <td style="text-align:right;">
                 <i class="fa fa-times"
-                   ng-click="remove(repo); $event.stopPropagation();"
+                   ng-click="removeWatch(watched); $event.stopPropagation();"
                    tooltip-placement="bottom"
                    tooltip="Remove">
                 </i>

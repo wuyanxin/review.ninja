@@ -36,7 +36,6 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         $scope.removeWatch = function(watch) {
             var watched = $scope.settings.value.watched;
             watched.splice(watched.indexOf(watch), 1);
-
             $scope.setWatched(watched);
         };
 
