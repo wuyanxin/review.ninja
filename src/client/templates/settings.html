@@ -15,68 +15,56 @@
 
     <div class="row">
       <div class="col-md-12">
+        <div>
+          <label>Get email notification about</label>
+          <span>Pull Requests</span>
+          <span>Issues</span>
+          <span>Ninja Stars</span>
+        </div>
+        <div>
+          <label>Watched branches</label>
+          <a target="_blank" href="http://docs.review.ninja/quickstart/#configuration">
+            <span class="fa-stack pull-right" style="right: 20px;">
+              <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
+              <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
+            </span>
+          </a>
 
-            <h3>Email notifications</h3>
-
-            <label>Email me about</label>
-
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" ng-model="settings.value.notifications.pull_request" ng-change="setNotifications()" /> Pull Requests
-              </label>
-            </div>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" ng-model="settings.value.notifications.issue" ng-change="setNotifications()" /> Issues
-              </label>
-            </div>
-            <div class="checkbox" style="margin-bottom:20px;">
-              <label>
-                <input type="checkbox" ng-model="settings.value.notifications.star" ng-change="setNotifications()" /> Ninja stars
-              </label>
-            </div>
-            
-            <label>Watched branches <i class="fa fa-lg fa-plus-circle text-primary" ng-click="show=true; setFocus=true;"></i></label>
-
-            <a target="_blank" href="http://docs.review.ninja/quickstart/#configuration">
-              <span class="fa-stack pull-right">
-                <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
-                <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
+          <div class="well-dark well-sm">
+            <form role="form" ng-submit="addWatch(newWatch)" style="margin: 15px;">
+              <div class="input-group">
+                <div class="form-group has-feedback">
+                  <input type="text" ng-model="query" focus="true" class="form-control" style="height:33px;" />
+                  <i class="fa fa-lg fa-times form-control-feedback" ng-show="query" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
+                </div>
+                <span class="input-group-btn">
+                  <button class="btn btn-info" type="submit" ng-disabled="!query">Add branch</button>
+                </span>
+              </div>
+              <span class="help-block" style="margin-top:1px;">
+                Type branch name <eg>feature/*</eg> to watch a branch
               </span>
-            </a>
+            </form>
+          </div>
 
-            <div class="well" ng-show="show">
-              <form role="form" ng-submit="addWatch(newWatch)" style="margin:0;">
-                <div class="form-group">
-                  <label>Branch pattern</label>
-                  <input ng-model="newWatch" focus="setFocus" class="form-control" placeholder="eg. feature/*" />
-                </div>
+          <table class="table table-hover" ng-show="settings.value.watched.length">
+            <tr ng-repeat="watched in settings.value.watched | orderBy:['adddate', 'full_name']"
+                class="select">
+              <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
+              <td style="text-align:right;">
+                <i class="fa fa-times"
+                   ng-click="remove(repo); $event.stopPropagation();"
+                   tooltip-placement="bottom"
+                   tooltip="Remove">
+                </i>
+              </td>
+            </tr>
+          </table>
+        </div>
 
-                <i class="fa fa-2x fa-spinner fa-spin" ng-show="set.loading" style="margin-left:5px;"></i>
-                <div class="pull-right">
-                  <button type="button" class="btn btn-info" ng-click="show=false">Close</button>
-                  <button type="submit" class="btn btn-primary" ng-disabled="!newWatch.length">Add</button>
-                </div>
-                <div style="clear:both;"></div>
-              </form>
-            </div>
 
-            <p ng-show="!show && !settings.value.watched.length">
-              Add branch patterns to tell ReviewNinja which branches you want to focus on.
-            </p>
 
-            <table class="table table-hover" ng-show="settings.value.watched.length">
-              <tr ng-repeat="watched in settings.value.watched">
-                <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
-                <td style="text-align:right;">
-                  <i class="fa fa-times" 
-                     ng-click="removeWatch(watched)" 
-                     tooltip-placement="bottom" 
-                     tooltip="Remove">
-                  </i>
-                </td>
-              </tr>
-            </table>
+
 
       </div>
     </div>

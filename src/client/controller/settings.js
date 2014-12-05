@@ -16,7 +16,6 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         });
 
         $scope.setWatched = function(watched) {
-
             $RPC.call('settings', 'setWatched', {
                 repo_uuid: repo.value.id,
                 watched: watched
@@ -31,7 +30,6 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         $scope.addWatch = function(watch) {
             var watched = $scope.settings.value.watched;
             watched.push(watch);
-
             $scope.setWatched(watched);
         };
 
@@ -51,5 +49,9 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
                     $scope.settings.value.notifications = settings.value.notifications;
                 }
             });
+        };
+
+        $scope.reset = function() {
+            $scope.query = null;
         };
     }]);
