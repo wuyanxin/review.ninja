@@ -15,6 +15,19 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             repo_uuid: repo.value.id
         });
 
+        var setNotifications = function() {
+            console.log('notifications', $scope.settings.value.notifications);
+
+            $RPC.call('settings', 'setNotifications', {
+                repo_uuid: repo.value.id,
+                notifications: $scope.settings.value.notifications
+            }, function(err, settings) {
+                if(!err) {
+                    $scope.settings.value.notifications = settings.value.notifications;
+                }
+            });
+        };
+
         $scope.setWatched = function(watched) {
             $RPC.call('settings', 'setWatched', {
                 repo_uuid: repo.value.id,
@@ -39,15 +52,19 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             $scope.setWatched(watched);
         };
 
-        $scope.setNotifications = function() {
-            $RPC.call('settings', 'setNotifications', {
-                repo_uuid: repo.value.id,
-                notifications: $scope.settings.value.notifications
-            }, function(err, settings) {
-                if(!err) {
-                    $scope.settings.value.notifications = settings.value.notifications;
-                }
-            });
+        $scope.togglePullRequest = function() {
+            $scope.settings.value.notifications.pull_request = !$scope.settings.value.notifications.pull_request;
+            setNotifications();
+        };
+
+        $scope.toggleIssue = function() {
+            $scope.settings.value.notifications.issue = !$scope.settings.value.notifications.issue;
+            setNotifications();
+        };
+
+        $scope.toggleStar = function() {
+            $scope.settings.value.notifications.star = !$scope.settings.value.notifications.star;
+            setNotifications();
         };
 
         $scope.reset = function() {

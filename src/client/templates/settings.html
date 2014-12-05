@@ -17,9 +17,39 @@
       <div class="col-md-12">
         <div>
           <label>Get email notification about</label>
-          <span>Pull Requests</span>
-          <span>Issues</span>
-          <span>Ninja Stars</span>
+          <div>
+            <div>
+              <button type="button"
+                      class="btn"
+                      ng-class="{true: 'btn-warning', false: 'btn-success'}[settings.value.notifications.pull_request]"
+                      ng-click="togglePullRequest()"
+                      ng-model="settings.value.notifications.pull_request">
+                      <i class="mega-octicon octicon-git-pull-request"></i>
+              </button>
+              <br>
+              <span>Pull Requests</span>
+            </div>
+            <div>
+              <button type="button"
+                      class="btn"
+                      ng-class="{true: 'btn-warning', false: 'btn-success'}[settings.value.notifications.issue]"
+                      ng-click="toggleIssue()"
+                      ng-model="settings.value.notifications.issue">
+                      <i class="mega-octicon octicon-git-pull-request"></i>
+              </button>
+              <p>Issues</p>
+            </div>
+            <div>
+              <button type="button"
+                      class="btn"
+                      ng-class="{true: 'btn-warning', false: 'btn-success'}[settings.value.notifications.star]"
+                      ng-click="toggleStar()"
+                      ng-model="settings.value.notifications.star">
+                      <i class="mega-octicon octicon-git-pull-request"></i>
+              </button>
+              <p>Ninja stars</p>
+            </div>
+          </div>
         </div>
         <div>
           <label>Watched branches</label>
@@ -61,6 +91,7 @@
             </tr>
           </table>
         </div>
+
 
 
 
