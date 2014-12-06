@@ -1,9 +1,10 @@
 logo: https://github.com/reviewninja/about.review.ninja/raw/master/_assets/images/ninja-christmas.png
+delay: 5
 branches:
   - master
   - release
 stats:
-  - url: http://review-ninja-staging.cfapps.io/count/user
+  - url: http://app.review.ninja/count/user
     icon: octicon octicon-organization
-  - url: http://review-ninja-staging.cfapps.io/count/star
+  - url: http://app.review.ninja/count/star
     icon: octicon octicon-star
