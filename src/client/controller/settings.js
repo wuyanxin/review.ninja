@@ -15,8 +15,20 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             repo_uuid: repo.value.id
         });
 
-        $scope.setWatched = function(watched) {
+        $scope.setNotifications = function() {
+            console.log('notifications', $scope.settings.value.notifications);
 
+            $RPC.call('settings', 'setNotifications', {
+                repo_uuid: repo.value.id,
+                notifications: $scope.settings.value.notifications
+            }, function(err, settings) {
+                if(!err) {
+                    $scope.settings.value.notifications = settings.value.notifications;
+                }
+            });
+        };
+
+        $scope.setWatched = function(watched) {
             $RPC.call('settings', 'setWatched', {
                 repo_uuid: repo.value.id,
                 watched: watched
@@ -30,26 +42,32 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
 
         $scope.addWatch = function(watch) {
             var watched = $scope.settings.value.watched;
-            watched.push(watch);
-
+            watched.unshift(watch);
             $scope.setWatched(watched);
         };
 
         $scope.removeWatch = function(watch) {
             var watched = $scope.settings.value.watched;
             watched.splice(watched.indexOf(watch), 1);
-
             $scope.setWatched(watched);
         };
 
-        $scope.setNotifications = function() {
-            $RPC.call('settings', 'setNotifications', {
-                repo_uuid: repo.value.id,
-                notifications: $scope.settings.value.notifications
-            }, function(err, settings) {
-                if(!err) {
-                    $scope.settings.value.notifications = settings.value.notifications;
-                }
-            });
+        $scope.togglePullRequest = function() {
+            $scope.settings.value.notifications.pull_request = !$scope.settings.value.notifications.pull_request;
+            $scope.setNotifications();
+        };
+
+        $scope.toggleIssue = function() {
+            $scope.settings.value.notifications.issue = !$scope.settings.value.notifications.issue;
+            $scope.setNotifications();
+        };
+
+        $scope.toggleStar = function() {
+            $scope.settings.value.notifications.star = !$scope.settings.value.notifications.star;
+            $scope.setNotifications();
+        };
+
+        $scope.reset = function() {
+            $scope.query = null;
         };
     }]);

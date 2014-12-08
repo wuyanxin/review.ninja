@@ -54,4 +54,18 @@
       box-shadow: none;
     }
   }
+
+  &.btn-settings {
+    padding: 15px;
+    margin-right: 50px;
+    outline:0;
+
+    &:hover {
+      background-color: $brand-primary;
+
+      i {
+        color: $brand-info;
+      }
+    }
+  }
 }
