@@ -54,4 +54,8 @@
       box-shadow: none;
     }
   }
+
+  &.btn-settings:hover {
+    background-color: $brand-primary;
+  }
 }
