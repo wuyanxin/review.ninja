@@ -18,6 +18,7 @@
         <div>
           <label>Get email notification about</label>
           <div style="height: 100px">
+            <span class="settingsbox">
               <a type="button"
                   class="btn btn-settings"
                   ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.pull_request]"
@@ -29,6 +30,9 @@
                   <i class="mega-octicon octicon-git-pull-request"
                      ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.pull_request]"></i>
               </a>
+              <p style="top: 200px;">Pull Requests</p>
+            </span>
+            <span class="settingsbox">
               <a type="button"
                   class="btn btn-settings"
                   ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.issue]"
@@ -40,6 +44,9 @@
                   <i class="mega-octicon octicon-issue-opened"
                      ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.issue]"></i>
               </a>
+              <p style="top: 200px;">Issues</p>
+            </span>
+            <span class="settingsbox">
               <a type="button"
                   class="btn btn-settings"
                   ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.star]"
@@ -52,6 +59,8 @@
                      ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.star]"
                      style="font-size: 23px"></i>
               </a>
+              <p style="top: 200px;">Ninja stars</p>
+            </span>
           </div>
         </div>
         <div>
