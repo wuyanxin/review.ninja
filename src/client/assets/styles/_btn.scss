@@ -55,7 +55,12 @@
     }
   }
 
-  &.btn-settings:hover {
-    background-color: $brand-primary;
+  &.btn-settings {
+    width: 54px;
+    height: 54px;
+
+    &:hover {
+      background-color: $brand-primary;
+    }
   }
 }
