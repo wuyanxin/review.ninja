@@ -15,7 +15,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             repo_uuid: repo.value.id
         });
 
-        var setNotifications = function() {
+        $scope.setNotifications = function() {
             console.log('notifications', $scope.settings.value.notifications);
 
             $RPC.call('settings', 'setNotifications', {
@@ -54,17 +54,17 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
 
         $scope.togglePullRequest = function() {
             $scope.settings.value.notifications.pull_request = !$scope.settings.value.notifications.pull_request;
-            setNotifications();
+            $scope.setNotifications();
         };
 
         $scope.toggleIssue = function() {
             $scope.settings.value.notifications.issue = !$scope.settings.value.notifications.issue;
-            setNotifications();
+            $scope.setNotifications();
         };
 
         $scope.toggleStar = function() {
             $scope.settings.value.notifications.star = !$scope.settings.value.notifications.star;
-            setNotifications();
+            $scope.setNotifications();
         };
 
         $scope.reset = function() {
