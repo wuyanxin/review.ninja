@@ -18,8 +18,7 @@
         <div>
           <label>Get email notification about</label>
           <div style="height: 100px">
-            <div style="float: left; padding-right: 50px;">
-              <button type="button"
+              <a type="button"
                       class="btn btn-settings"
                       ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.pull_request]"
                       ng-click="togglePullRequest()"
@@ -28,14 +27,9 @@
                       tooltip-placement="bottom"
                       tooltip-append-to-body="true">
                       <i class="mega-octicon octicon-git-pull-request"
-                         ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.pull_request]"
-                         style="font-size: 32px"></i>
-              </button>
-              <br>
-              <span class="text-primary">Pull Requests</span>
-            </div>
-            <div style="float: left; padding-right: 50px;">
-              <button type="button"
+                         ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.pull_request]"></i>
+              </a>
+              <a type="button"
                       class="btn btn-settings"
                       ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.issue]"
                       ng-click="toggleIssue()"
@@ -44,14 +38,9 @@
                       tooltip-placement="bottom"
                       tooltip-append-to-body="true">
                       <i class="mega-octicon octicon-issue-opened"
-                         ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.issue]"
-                         style="font-size: 32px"></i>
-              </button>
-              <br>
-              <span class="text-primary">Issues</span>
-            </div>
-            <div style="float: left; padding-right: 50px;">
-              <button type="button"
+                         ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.issue]"></i>
+              </a>
+              <a type="button"
                       class="btn btn-settings"
                       ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.star]"
                       ng-click="toggleStar()"
@@ -61,11 +50,8 @@
                       tooltip-append-to-body="true">
                       <i class="icon-ninja-star"
                          ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.star]"
-                         style="font-size: 32px"></i>
-              </button>
-              <br>
-              <span class="text-primary">Ninja stars</span>
-            </div>
+                         style="font-size: 23px"></i>
+              </a>
           </div>
         </div>
         <div>
