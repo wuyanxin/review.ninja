@@ -90,7 +90,7 @@
           </div>
 
           <table class="table table-hover" ng-show="settings.value.watched.length">
-            <tr ng-repeat="watched in settings.value.watched | orderBy:['adddate', 'full_name']"
+            <tr ng-repeat="watched in settings.value.watched"
                 class="select">
               <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
               <td style="text-align:right;">

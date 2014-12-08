@@ -42,7 +42,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
 
         $scope.addWatch = function(watch) {
             var watched = $scope.settings.value.watched;
-            watched.push(watch);
+            watched.unshift(watch);
             $scope.setWatched(watched);
         };
 
