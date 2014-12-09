@@ -16,8 +16,6 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         });
 
         $scope.setNotifications = function() {
-            console.log('notifications', $scope.settings.value.notifications);
-
             $RPC.call('settings', 'setNotifications', {
                 repo_uuid: repo.value.id,
                 notifications: $scope.settings.value.notifications

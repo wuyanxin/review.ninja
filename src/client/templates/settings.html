@@ -8,101 +8,100 @@
           <li><a ui-sref="repo.master()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
         </ol>
         
-        <h2><span class="mega-octicon octicon-gear"></span> Settings</h2>
+        <h2 style="margin-bottom:20px;"><span class="mega-octicon octicon-gear"></span> Settings</h2>
 
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
-        <div style="margin-top: 20px;">
-          <label>Get email notification about</label>
-          <div style="height: 120px">
-            <span class="settingsbox">
-              <a type="button"
-                  class="btn btn-settings"
-                  ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.pull_request]"
-                  ng-click="togglePullRequest()"
-                  ng-model="settings.value.notifications.pull_request"
-                  tooltip="{{ settings.value.notifications.pull_request ? 'Deselect' : 'Select' }} Pull Requests"
-                  tooltip-placement="bottom"
-                  tooltip-append-to-body="true">
-                  <i class="mega-octicon octicon-git-pull-request"
-                     ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.pull_request]"></i>
-              </a>
-              <p>Pull Requests</p>
-            </span>
-            <span class="settingsbox">
-              <a type="button"
-                  class="btn btn-settings"
-                  ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.issue]"
-                  ng-click="toggleIssue()"
-                  ng-model="settings.value.notifications.issue"
-                  tooltip="{{ settings.value.notifications.issue ? 'Deselect' : 'Select' }} Issues"
-                  tooltip-placement="bottom"
-                  tooltip-append-to-body="true">
-                  <i class="mega-octicon octicon-issue-opened"
-                     ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.issue]"></i>
-              </a>
-              <p>Issues</p>
-            </span>
-            <span class="settingsbox">
-              <a type="button"
-                  class="btn btn-settings"
-                  ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.star]"
-                  ng-click="toggleStar()"
-                  ng-model="settings.value.notifications.star"
-                  tooltip="{{ settings.value.notifications.star ? 'Deselect' : 'Select' }} Ninja stars"
-                  tooltip-placement="bottom"
-                  tooltip-append-to-body="true">
-                  <i class="icon-ninja-star"
-                     ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.star]"
-                     style="font-size: 23px"></i>
-              </a>
-              <p>Ninja stars</p>
-            </span>
-          </div>
-        </div>
-        <div>
-          <label>Watched branches</label>
-          <a target="_blank" href="http://docs.review.ninja/quickstart/#configuration">
-            <span class="fa-stack pull-right" style="right: 20px;">
-              <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
-              <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
-            </span>
+        <label>Get email notification about</label>
+        <div style="clear:both;"></div>
+        <div class="pull-left">
+          <a type="button"
+              class="btn btn-settings"
+              ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.pull_request]"
+              ng-click="togglePullRequest()"
+              ng-model="settings.value.notifications.pull_request"
+              tooltip="{{ settings.value.notifications.pull_request ? 'Deselect' : 'Select' }} Pull Requests"
+              tooltip-placement="bottom"
+              tooltip-append-to-body="true">
+              <i class="mega-octicon octicon-git-pull-request"
+                 ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.pull_request]"></i>
           </a>
-
-          <div class="well-dark well-sm">
-            <form role="form" ng-submit="addWatch(newWatch)" style="margin: 15px;">
-              <div class="input-group">
-                <div class="form-group has-feedback">
-                  <input type="text" ng-model="newWatch" focus="true" class="form-control" style="height:33px;" />
-                  <i class="fa fa-lg fa-times form-control-feedback" ng-show="newWatch" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
-                </div>
-                <span class="input-group-btn">
-                  <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add branch</button>
-                </span>
-              </div>
-              <span class="help-block" style="margin-top:1px;">
-                Type branch name <em>feature/*</em> to watch a branch
-              </span>
-            </form>
-          </div>
-
-          <table class="table table-hover" ng-show="settings.value.watched.length">
-            <tr ng-repeat="watched in settings.value.watched"
-                class="select">
-              <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
-              <td style="text-align:right;">
-                <i class="fa fa-times"
-                   ng-click="removeWatch(watched); $event.stopPropagation();"
-                   tooltip-placement="bottom"
-                   tooltip="Remove">
-                </i>
-              </td>
-            </tr>
-          </table>
+          <p>Pull Requests</p>
         </div>
+        <div class="pull-left">
+          <a type="button"
+              class="btn btn-settings"
+              ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.issue]"
+              ng-click="toggleIssue()"
+              ng-model="settings.value.notifications.issue"
+              tooltip="{{ settings.value.notifications.issue ? 'Deselect' : 'Select' }} Issues"
+              tooltip-placement="bottom"
+              tooltip-append-to-body="true">
+              <i class="mega-octicon octicon-issue-opened"
+                 ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.issue]"></i>
+          </a>
+          <p>Issues</p>
+        </div>
+        <div class="pull-left">
+          <a  type="button"
+              class="btn btn-settings"
+              style="max-height: 64px"
+              ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.star]"
+              ng-click="toggleStar()"
+              ng-model="settings.value.notifications.star"
+              tooltip="{{ settings.value.notifications.star ? 'Deselect' : 'Select' }} Ninja stars"
+              tooltip-placement="bottom"
+              tooltip-append-to-body="true">
+              <i class="icon-ninja-star"
+                 ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.star]"
+                 style="position:relative; top:-3px; font-size:32px;"></i>
+          </a>
+          <p>Ninja stars</p>
+        </div>
+        <div style="clear:both;"></div>
+      </div>
+      <div class="col-md-12">
+        <label>Watched branches</label>
+        <a target="_blank" href="http://docs.review.ninja/quickstart/#configuration">
+          <span class="fa-stack pull-right">
+            <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
+            <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
+          </span>
+        </a>
+
+        <div class="well-dark well-sm">
+          <form role="form" ng-submit="addWatch(newWatch)" style="margin: 15px;">
+            <div class="input-group">
+              <div class="form-group has-feedback">
+                <input type="text" ng-model="newWatch" focus="true" class="form-control" style="height:33px;" />
+                <i class="fa fa-lg fa-times form-control-feedback" ng-show="newWatch" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
+              </div>
+              <span class="input-group-btn">
+                <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add branch</button>
+              </span>
+            </div>
+            <span class="help-block" style="margin-top:1px;">
+              Type branch name <em>feature/*</em> to watch a branch
+            </span>
+          </form>
+        </div>
+
+        <table class="table table-hover" ng-show="settings.value.watched.length">
+          <tr ng-repeat="watched in settings.value.watched"
+              class="select">
+            <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
+            <td style="text-align:right;">
+              <i class="fa fa-times"
+                 ng-click="removeWatch(watched); $event.stopPropagation();"
+                 tooltip-placement="bottom"
+                 tooltip="Remove">
+              </i>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
 
