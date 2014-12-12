@@ -61,7 +61,7 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($H
             };
 
             scope.merge = function() {
-                $HUB.call('pullRequests', 'merge', {
+                scope.merging = $HUB.call('pullRequests', 'merge', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number

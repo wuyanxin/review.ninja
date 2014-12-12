@@ -56,9 +56,12 @@
   }
 
   &.btn-settings {
+    margin-bottom: 15px;
+    margin-right: 64px;
+    margin-top: 15px;
+    outline: 0;
     padding: 15px;
-    margin-right: 50px;
-    outline:0;
+    width: 64px;
 
     &:hover {
       background-color: $brand-primary;

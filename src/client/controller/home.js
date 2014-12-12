@@ -50,7 +50,6 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                     $scope.repos.push(repo);
 
                     $scope.reset();
-                    $scope.query = repo.full_name;
                 }
             });
         };
