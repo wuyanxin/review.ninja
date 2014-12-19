@@ -30,7 +30,7 @@ router.get('/auth/github/callback',
 router.get('/logout',
     function(req, res, next) {
         req.logout();
-        res.redirect('http://www.review.ninja/');
+        res.redirect('/');
     }
 );
 
