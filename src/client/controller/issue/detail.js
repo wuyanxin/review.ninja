@@ -67,6 +67,14 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
             }
         };
 
+        $scope.statustext = function() {
+            console.log('status: ', $scope.issue.state);
+            if($scope.issue.state === 'open') {
+                return $scope.comment ? 'Close and comment' : 'Close issue';
+            }
+            return 'Reopen';
+        };
+
         //
         // Websockets
         //
