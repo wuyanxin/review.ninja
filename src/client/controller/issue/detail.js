@@ -71,7 +71,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
             if($scope.issue.state === 'open') {
                 return $scope.comment ? 'Close and comment' : 'Close issue';
             }
-            return 'Reopen';
+            return 'Reopen issue';
         };
 
         //
