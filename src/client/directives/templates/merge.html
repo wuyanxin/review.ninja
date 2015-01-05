@@ -20,6 +20,10 @@
     </a>
   </div>
 
+  <div ng-show="pull.merged && !branch">
+    <small class="deletion-confirmed">Branch delted</small>
+  </div>
+
   <div class="text-body" ng-show="!pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
     <p ng-show="status.state==='failure'">
