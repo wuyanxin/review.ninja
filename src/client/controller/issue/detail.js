@@ -68,7 +68,6 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         };
 
         $scope.statustext = function() {
-            console.log('status: ', $scope.issue.state);
             if($scope.issue.state === 'open') {
                 return $scope.comment ? 'Close and comment' : 'Close issue';
             }
@@ -90,6 +89,22 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                         $scope.comments.value.push(Comment.render(comment.value));
                     }
                 });
+            }
+        });
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issues', function(args) {
+            if($scope.issue.number === args.number) {
+                $HUB.call('issues', 'getRepoIssue', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.issue
+                }, function(err, issue) {
+                    if(!err) {
+                        $scope.$parent.$parent.state = issue.value.state;
+                        $scope.issue = Issue.parse(issue.value) && Issue.render(issue.value);
+                    }
+                });
+
             }
         });
     }
