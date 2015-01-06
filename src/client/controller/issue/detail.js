@@ -36,9 +36,9 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
 
         $scope.setState = function() {
+            addComment();
 
             var state = $scope.issue.state === 'open' ? 'closed' : 'open';
-
             $scope.set = $HUB.call('issues', 'edit', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
@@ -75,7 +75,6 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issue_comment', function(args) {
             if($scope.issue.number === args.number && args.action === 'created') {
-                console.log('socket issue comment', args);
                 $HUB.call('issues', 'getComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
@@ -90,7 +89,6 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issues', function(args) {
             if($scope.issue.number === args.number) {
-                console.log('socket issues', args);
                 $HUB.call('issues', 'getRepoIssue', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
@@ -99,7 +97,6 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                     if(!err) {
                         $scope.$parent.$parent.state = issue.value.state;
                         $scope.issue = Issue.parse(issue.value) && Issue.render(issue.value);
-                        console.log('issue', $scope.issue);
                     }
                 });
 
