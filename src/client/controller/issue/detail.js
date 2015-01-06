@@ -36,7 +36,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
 
         $scope.setState = function() {
-            addComment();
+            $scope.addComment();
 
             var state = $scope.issue.state === 'open' ? 'closed' : 'open';
             $scope.set = $HUB.call('issues', 'edit', {
