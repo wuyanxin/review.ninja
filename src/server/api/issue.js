@@ -62,7 +62,7 @@ module.exports = {
         }
 
         var body = req.args.body + '\r\n\r\n';
-        body += '|commit|file reference| PR |   |\r\n';
+        body += '|commit|file reference| Pull Request |   |\r\n';
         body += '|------|--------------|----|---|\r\n';
         body += '|' + req.args.sha + '|' + fileReference + '| #' + req.args.number + ' |' + ninjaReference + '|';
 
