@@ -62,8 +62,8 @@ module.exports = {
         }
 
         var body = req.args.body + '\r\n\r\n';
-        body += '|commit|file reference| Pull Request |   |\r\n';
-        body += '|------|--------------|--------------|---|\r\n';
+        body += '|commit|file reference|pull request|   |\r\n';
+        body += '|------|--------------|------------|---|\r\n';
         body += '|' + req.args.sha + '|' + fileReference + '| #' + req.args.number + ' |' + ninjaReference + '|';
 
         milestone.get(req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user.token,
