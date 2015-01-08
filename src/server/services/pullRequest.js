@@ -7,6 +7,8 @@ module.exports = {
         var badgeUrl = url.pullRequestBadge(repo_uuid, number);
         var pullUrl = url.reviewPullRequest(user, repo, number);
 
+        var badgelink = '<a href="' + pullUrl + '" target="_blank"><img src="' + badgeUrl + '" alt="ReviewNinja"/>';
+
         if(config.server.github.user) {
             github.call({
                 obj: 'issues',
@@ -15,7 +17,7 @@ module.exports = {
                     user: user,
                     repo: repo,
                     number: number,
-                    body: '[![ReviewNinja](' + badgeUrl + ')](' + pullUrl + ')'
+                    body: badgelink
                 },
                 basicAuth: {
                     user: config.server.github.user,
