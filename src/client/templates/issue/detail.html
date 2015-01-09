@@ -12,7 +12,7 @@
                tooltip-placement="bottom"
                style="padding-top:10px;">
             </i>
-            <span> This issue is linked to {{ issue.ref }}</span>
+            <span ng-show="issue.ref"> This issue is linked to {{ issue.ref }}</span>
         </td>
         <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments || !!comments.value.length]" style="width:80px;">
             <i class="octicon octicon-comment"></i><br />
