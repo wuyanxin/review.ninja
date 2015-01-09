@@ -5,13 +5,14 @@
         </td>
         <td style="padding-left:5px;">
             <h4 class="panel-title"><strong>{{ issue.title }}</strong> <a class="link-external" target="_blank"  ng-href="{{issue.html_url}}">#{{ issue.number }}</a></h4>
-            <span moment="issue.created_at"></span>&nbsp;
+            <p style="padding-top:15px">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span>&nbsp;</p>
             <i class="fa fa-lg fa-link text-warning" 
                ng-show="issue.ref"
                tooltip="{{ issue.ref }}"
                tooltip-placement="bottom"
                style="padding-top:10px;">
-            </i> 
+            </i>
+            <span> This issue is linked to {{ issue.ref }}</span>
         </td>
         <td class="text-right" ng-class="{'text-primary': issue.body || issue.comments || comments.value.length}" style="width:80px;">
             <i class="octicon octicon-comment"></i><br />
