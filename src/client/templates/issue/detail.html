@@ -27,13 +27,13 @@
     <table style="width:100%" ng-show="issue.html">
         <tr>
             <td style="width:42px; padding-right:10px; vertical-align:top;">
-                <a href="{{ user.value.html_url }}"><img ng-src="{{ issue.user.avatar_url }}&s=42" width="42px" /></a>
+                <img ng-src="{{ issue.user.avatar_url }}&s=42" width="42px" />
             </td>
             <td>
                 <div class="panel panel-default comment">
                     <div class="panel-heading">
                         <div class="panel-arrow"></div>
-                        <a href="{{ user.value.html_url }}"><strong>{{ issue.user.login }}</strong></a> commented <span moment="issue.created_at"></span>
+                        <strong>{{ issue.user.login }}</strong> commented <span moment="issue.created_at"></span>
                     </div>
                     <div class="panel-body" ng-bind-html="issue.html"></div>
                 </div>
@@ -44,13 +44,13 @@
     <table style="width:100%">
         <tr ng-repeat="comment in comments.value" ng-show="comment.html">
             <td style="width:42px; padding-right:10px; vertical-align:top;">
-                <a href="{{ user.value.html_url }}"><img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" /></a>
+                <img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" />
             </td>
             <td>
                 <div class="panel panel-default comment">
                     <div class="panel-heading">
                         <div class="panel-arrow"></div>
-                        <a href="{{ user.value.html_url }}"><strong>{{ comment.user.login }}</strong></a> commented <span moment="comment.created_at"></span>
+                        <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
                     </div>
                     <div class="panel-body" ng-bind-html="comment.html"></div>
                 </div>
@@ -64,13 +64,13 @@
         <table style="width:100%" ng-show="!comments.loading && !comments.hasMore">
             <tr>
                 <td style="width:42px; padding-right:10px; vertical-align:top;">
-                    <a href="{{ user.value.html_url }}"><img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" /></a>
+                    <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
                 </td>
                 <td>
                     <div class="panel panel-default comment">
                         <div class="panel-heading">
                             <div class="panel-arrow"></div>
-                            <a href="{{ user.value.html_url }}"><strong>{{ user.value.login }}</strong></a>
+                            <strong>{{ user.value.login }}</strong>
                         </div>
                         <div class="panel-body" style="padding:0;">
                             <textarea class="form-control" ng-model="comment" rows="4" placeholder="Leave an issue comment"></textarea>

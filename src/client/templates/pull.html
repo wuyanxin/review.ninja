@@ -8,7 +8,7 @@
 
         <div class="row" style="margin:30px 0;">
           <div class="col-sm-1" style="padding:0;">
-            <a href=""><img class="img-responsive" style="margin-bottom: 12px" ng-src="{{ pull.user.avatar_url }}&s=100" /></a>
+            <img class="img-responsive" style="margin-bottom: 12px" ng-src="{{ pull.user.avatar_url }}&s=100" />
           </div>
           <div class="col-sm-8">
             <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }} <a class="link-external" target="_blank"  ng-href="{{pull.html_url}}">#{{ pull.number }}</a></h2>
@@ -84,7 +84,7 @@
                           <a href="#">
                             <table>
                               <tr>
-                                <td><a href="{{ user.value.html_url }}"><img ng-src="{{ star.user.value.avatar_url + '&s=56' }}" width="56px" style="margin-right:16px;" /></a></td>
+                                <td><img ng-src="{{ star.user.value.avatar_url + '&s=56' }}" width="56px" style="margin-right:16px;" /></td>
                                 <td>
                                   <strong><a ng-href="{{ star.user.value.html_url }}" target="_blank">{{ star.name }}</a></strong><br />
                                   ninja starred this<br />
@@ -147,13 +147,13 @@
               <table style="width:100%;">
                   <tr ng-repeat="comment in comments.value" ng-show="comment.html">
                       <td style="width:42px; padding-right:10px; vertical-align:top;">
-                          <a href="{{ user.value.html_url }}"><img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" /></a>
+                          <img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" />
                       </td>
                       <td>
                           <div class="panel panel-default comment">
                               <div class="panel-heading">
                                   <div class="panel-arrow"></div>
-                                  <a href="{{ user.value.html_url }}"><strong>{{ comment.user.login }}</strong></a> commented <span moment="comment.created_at"></span>
+                                  <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
                               </div>
                               <div class="panel-body" ng-bind-html="comment.html"></div>
                           </div>
@@ -167,13 +167,13 @@
                 <table style="width:100%" ng-show="!comments.loading && !comments.hasMore">
                     <tr>
                         <td style="width:42px; padding-right:10px; vertical-align:top;">
-                            <a href="{{ user.value.html_url }}"><img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" /></a>
+                            <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
                         </td>
                         <td>
                             <div class="panel panel-default comment">
                                 <div class="panel-heading">
                                   <div class="panel-arrow"></div>
-                                  <a href="{{ user.value.html_url }}"><strong>{{ user.value.login }}</strong></a>
+                                  <strong>{{ user.value.login }}</strong>
                                 </div>
                                 <div class="panel-body" style="padding:0;">
                                     <textarea class="form-control" ng-model="$parent.comment" rows="4" placeholder="Leave a pull request comment"></textarea>
