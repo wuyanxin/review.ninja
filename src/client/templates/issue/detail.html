@@ -4,7 +4,12 @@
             <a class="text-primary" ui-sref="repo.pull.issue.master()"><i class="fa fa-lg fa-angle-left"></i></a>
         </td>
         <td style="padding-left:5px;">
-            <h4 class="panel-title"><strong>{{ issue.title }}</strong> <a class="link-external" target="_blank"  ng-href="{{issue.html_url}}">#{{ issue.number }}</a></h4>
+            <h4 class="panel-title"><strong>{{ issue.title }}</strong> <a class="link-external" target="_blank"  ng-href="{{issue.html_url}}">#{{ issue.number }}</a>
+            <span class="text-center pull-right" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments || !!comments.value.length]">
+                <i class="octicon octicon-comment"></i>
+                {{ (issue.body ? 1 : 0) + (comments.value.length || issue.comments) }}
+            </span>
+            </h4>
             <p style="padding-top:15px">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span>&nbsp;</p>
             <i class="fa fa-lg fa-link text-warning" 
                ng-show="issue.ref"
@@ -13,10 +18,6 @@
                style="padding-top:10px;">
             </i>
             <span ng-show="issue.ref"> This issue is linked to {{ issue.ref }}</span>
-        </td>
-        <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments || !!comments.value.length]" style="width:80px;">
-            <i class="octicon octicon-comment"></i><br />
-            {{ (issue.body ? 1 : 0) + (comments.value.length || issue.comments) }}
         </td>
     </tr>
 </table>
