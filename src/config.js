@@ -17,6 +17,7 @@ module.exports = {
             host: process.env.GITHUB_HOST || 'github.com',
             api: process.env.GITHUB_API_HOST || 'api.github.com',
             enterprise: !!process.env.GITHUB_HOST, // flag enterprise version
+            enterprisepath: process.env.GITHUB_ENTERPRISEPATH || '/api/v3',
             version: process.env.GITHUB_VERSION || '3.0.0',
 
             // required
