@@ -18,6 +18,7 @@ module.exports = {
             api: process.env.GITHUB_API_HOST || 'api.github.com',
             pathprefix: process.env.GITHUB_API_PATHPREFIX,
             version: process.env.GITHUB_VERSION || '3.0.0',
+            port: process.env.GITHUB_PROTOCOL === 'http' ? 80 : 443,
 
             // required
             client: process.env.GITHUB_CLIENT,
