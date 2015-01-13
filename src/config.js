@@ -16,8 +16,7 @@ module.exports = {
             protocol: process.env.GITHUB_PROTOCOL || 'https',
             host: process.env.GITHUB_HOST || 'github.com',
             api: process.env.GITHUB_API_HOST || 'api.github.com',
-            enterprise: !!process.env.GITHUB_HOST, // flag enterprise version
-            enterprisepath: process.env.GITHUB_ENTERPRISEPATH || '/api/v3',
+            pathprefix: process.env.GITHUB_API_PATHPREFIX,
             version: process.env.GITHUB_VERSION || '3.0.0',
 
             // required
