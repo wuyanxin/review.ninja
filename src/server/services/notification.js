@@ -159,6 +159,7 @@ module.exports = function() {
                                     args.sender && args.sender.id !== collaborator.uuid ) {
                                     var transporter = buildTransporter();
                                     var template = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
+                                    args.filename = notificationArgs[notificationType].template;
 
                                     var mailOptions = {
                                         from: 'ReviewNinja <noreply@review.ninja>',
