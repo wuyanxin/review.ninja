@@ -31,7 +31,6 @@ describe('notification:', function() {
                 fun(null, [
                     {primary: 'test@testmail.de'}
                 ]);
-
             }
         });
         var settingsStub = sinon.stub(Settings, 'findOne', function(arg, fun) {
@@ -71,7 +70,7 @@ describe('notification:', function() {
         });
 
 
-        assert(nodemailer.createTransport.called, 'ransporter not created');
+        assert(nodemailer.createTransport.called, 'transporter not created');
         assert(transporter.sendMail.called, 'mail not send via transporter');
 
         githubStub.restore();
