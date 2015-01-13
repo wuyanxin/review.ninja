@@ -12,7 +12,8 @@ module.exports = {
             protocol: config.server.github.protocol,
             version: config.server.github.version,
             host: config.server.github.api,
-            pathPrefix: config.server.github.pathprefix
+            pathPrefix: config.server.github.pathprefix,
+            port: config.server.github.port
         });
 
         if(!obj || !github[obj]) {
