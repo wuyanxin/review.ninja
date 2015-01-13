@@ -21,7 +21,8 @@ function GitHubApiMock(args) {
         protocol: 'https',
         version: '3.0.0',
         host: 'api.github.com',
-        pathPrefix: undefined
+        pathPrefix: undefined,
+        port: 443
     });
 
     this.obj = {
