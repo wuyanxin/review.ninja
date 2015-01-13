@@ -3,6 +3,8 @@ var assert = require('assert');
 var sinon = require('sinon');
 
 var nodemailer = require('nodemailer');
+var ejs = require('ejs');
+var fs = require('fs');
 
 // config
 global.config = require('../../../config');
@@ -15,6 +17,27 @@ var User = require('mongoose').model('User');
 var pullRequest = require('../../../server/services/pullRequest');
 
 describe('notification:', function() {
+    it('should render the email content for new_issue', function(done) {
+        var expectedcontent = '<h1>ReviewNinja</h1>\n\n\nA new issue has been raised for <a href="testurl">testuser/testrepo #1</a> by testsenderlogin.\n\n<img src="mailninja.png" />\n\n<p>Automatic notification by ReviewNinja.</p>\n\n';
+
+        var filename = 'src/server/templates/new_issue.ejs';
+        var template = fs.readFileSync(filename, 'utf-8');
+        var content = ejs.render(template, {
+            filename: filename,
+            url: 'testurl',
+            user: 'testuser',
+            repo: 'testrepo',
+            number: 1,
+            sender: {
+                login: 'testsenderlogin'
+            }
+        });
+
+        assert.equal(content, expectedcontent, 'Rendered content of email template for "new issue" wrong');
+
+        done();
+    });
+
     it('should send an email', function(done) {
         var collaborators = [];
         collaborators.push({
