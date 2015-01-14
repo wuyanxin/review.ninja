@@ -1,5 +1,5 @@
 <accordion class="diff">
-	<accordion-group is-open="open">
+	<accordion-group is-open="$parent.open">
 		<accordion-heading>
 			<strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong>
 			<button class="btn btn-xs btn-default pull-right" 

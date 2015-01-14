@@ -26,7 +26,6 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     repo: $stateParams.repo,
                     ref: scope.headSha
                 }, function(err, res) {
-                    console.log(res);
                     if(!err) {
                         res.value.ignored.forEach(function(ignore) {
                             if(scope.file.filename.match(ignore)) {

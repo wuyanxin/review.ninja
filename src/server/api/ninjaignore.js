@@ -27,7 +27,6 @@ module.exports = {
                     }
                 }
             } catch(ex) {
-                console.log('ex', ex);
                 return done(ex);
             }
             done(err, { ignored: ignores });
