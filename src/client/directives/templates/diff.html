@@ -1,7 +1,7 @@
 <accordion class="diff">
-	<accordion-group is-open="open">
+	<accordion-group is-open="$parent.open">
 		<accordion-heading>
-			<strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong>
+			<strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong><i ng-show="ignored" class="ignored"> - ignored file</i>
 			<button class="btn btn-xs btn-default pull-right" 
 					ng-disabled="!open"
 					ng-show="!file.image"
