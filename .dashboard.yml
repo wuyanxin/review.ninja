@@ -1,4 +1,4 @@
-logo: https://github.com/reviewninja/about.review.ninja/raw/master/_assets/images/ninja-christmas.png
+logo: https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-500.png
 delay: 5
 branches:
   - master
