@@ -20,12 +20,12 @@ module.exports = {
             var ignores = [];
             try {
                 var ninja = new Buffer(file.content, 'base64').toString('ascii');
-                var ignores = ninja.split('\n');
+                ignores = ninja.split('\n');
                 for (var i = 0; i < ignores.length; i++) {
                     if(ignores[i] === '') {
                         ignores.splice(i, 1);
                     }
-                };
+                }
             } catch(ex) {
                 console.log('ex', ex);
                 return done(ex);

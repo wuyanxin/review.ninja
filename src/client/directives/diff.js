@@ -35,7 +35,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                                 scope.open = false;
                             }
                         });
-                    };
+                    }
                 });
 
                 //
