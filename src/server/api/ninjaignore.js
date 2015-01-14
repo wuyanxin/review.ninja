@@ -2,7 +2,7 @@
 var github = require('../services/github');
 
 module.exports = {
-    ninjaignore: function(req, done) {
+    get: function(req, done) {
         github.call({
             obj: 'repos',
             fun: 'getContent',
@@ -14,13 +14,23 @@ module.exports = {
             },
             token: req.user.token
         }, function(err, file) {
-            var ninja;
+            if(err) {
+                return done(err);
+            }
+            var ignores = [];
             try {
-                ninja = new Buffer(file.content, 'base64').toString('ascii');
+                var ninja = new Buffer(file.content, 'base64').toString('ascii');
+                var ignores = ninja.split('\n');
+                for (var i = 0; i < ignores.length; i++) {
+                    if(ignores[i] === '') {
+                        ignores.splice(i, 1);
+                    }
+                };
             } catch(ex) {
                 console.log('ex', ex);
+                return done(ex);
             }
-            done(err, ninja);
+            done(err, { ignored: ignores });
         });
     }
 };
