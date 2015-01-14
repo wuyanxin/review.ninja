@@ -37,6 +37,10 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($H
                         if(status.state === state) {
                             scope.status.count++;
                         }
+                        // Count error statuses as 'failed' when combined status is 'failure'
+                        if(status.state === 'failure' && status === 'errored') {
+                            scope.status.count++;
+                        }
                     });
                 }
 
