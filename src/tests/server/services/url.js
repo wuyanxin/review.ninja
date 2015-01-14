@@ -44,8 +44,8 @@ describe('url:githubProfile', function(done) {
 });
 
 describe('url:githubProfile', function(done) {
-    it('should be /api/v3/user in enterprise mode', function(done) {
-        config.server.github.enterprise = true;
+    it('should be /api/v3/user if pathprefix is set', function(done) {
+        config.server.github.pathprefix = '/api/v3';
         assert.equal(url.githubProfile(), 'https://api.github.com/api/v3/user');
         done();
     });
