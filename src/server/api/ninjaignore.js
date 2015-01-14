@@ -2,7 +2,7 @@
 var github = require('../services/github');
 
 module.exports = {
-    ninjaignore: function(pull, file) {
+    ninjaignore: function(req, done) {
         github.call({
             obj: 'repos',
             fun: 'getContent',
@@ -23,4 +23,4 @@ module.exports = {
             done(err, ninja);
         });
     }
-}
+};
