@@ -36,9 +36,7 @@ module.exports = function() {
         githubCallback: url.resolve(baseUrl, '/auth/github/callback'),
         githubAuthorization: url.resolve(githubBase, '/login/oauth/authorize'),
         githubToken: url.resolve(githubBase, '/login/oauth/access_token'),
-        githubProfile: function() {
-            return url.resolve(githubApiBase, config.server.github.enterprise ? '/api/v3/user' : '/user');
-        },
+        githubProfile: url.resolve(githubApiBase, (config.server.github.pathprefix || '') + '/user'),
         githubFileReference: function(user, repo, fileReference) {
             return url.resolve(githubBase, '/' + user + '/' + repo + '/blob/' + fileReference);
         },
