@@ -23,6 +23,7 @@
     "Huang, Chelsea <chelsea.huang@sap.com>",
     "Kunzmann, Michael <michael.kunzmann@sap.com>",
     "Reynard, Rachel <rachel.reynard@sap.com>",
+    "Schwarz-Fritz, Fabian <f.schwarz-fritz@sap.com>",
     "Tornow, Dominik <dominik.tornow@sap.com>",
     "Xiong, Jie <jie.xiong01@sap.com>"
   ],
@@ -40,7 +41,6 @@
     "github": "git+https://github.com/reviewninja/node-github.git",
     "glob": "^4.0.0",
     "merge": "^1.1.3",
-    "minimap": "^0.1.1",
     "mongoose": "^3.8.11",
     "node-sass": "^0.9.3",
     "nodemailer": "^1.2.1",

@@ -1,3 +1,6 @@
+// libraries
+var minimatch = require('minimatch');
+
 // services
 var github = require('../services/github');
 
@@ -14,22 +17,21 @@ module.exports = {
             },
             token: req.user.token
         }, function(err, file) {
-            if(err) {
-                return done(err);
-            }
-            var ignores = [];
-            try {
-                var ninja = new Buffer(file.content, 'base64').toString('ascii');
-                ignores = ninja.split('\n');
-                for (var i = 0; i < ignores.length; i++) {
-                    if(ignores[i] === '') {
-                        ignores.splice(i, 1);
-                    }
+            if(!err) {
+                try {
+                    var ninja = new Buffer(file.content, 'base64').toString('ascii');
+                    ninja.split('\n').forEach(function(ignore) {
+                        if(ignore !== '') {
+                            req.args.files.forEach(function(file) {
+                                file.ignored = minimatch(file.filename, ignore);
+                            });
+                        }
+                    });
+                } catch(ex) {
+                    return done(ex, req.args.files);
                 }
-            } catch(ex) {
-                return done(ex);
             }
-            done(err, { ignored: ignores });
+            done(err, req.args.files);
         });
     }
 };

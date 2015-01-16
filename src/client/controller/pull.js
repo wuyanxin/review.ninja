@@ -36,7 +36,16 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             repo: $stateParams.repo,
             number: $stateParams.number
         }, function(err, files) {
-            $scope.files = File.getFileTypes(files.value);
+            var fileTypes = File.getFileTypes(files.value);
+
+            $RPC.call('ninjaignore', 'get', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                ref: $scope.pull.head.sha,
+                files: fileTypes
+            }, function(err, files) {
+                $scope.files = files.value;
+            });
         });
 
         // get the star

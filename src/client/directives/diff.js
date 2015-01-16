@@ -17,25 +17,8 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
             },
             link: function(scope, elem, attrs) {
 
-                scope.open = true;
+                scope.open = !scope.file.ignored;
                 scope.expanded = false;
-                scope.ignored = false;
-
-                $RPC.call('ninjaignore', 'get', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    ref: scope.headSha
-                }, function(err, res) {
-                    if(!err) {
-                        res.value.ignored.forEach(function(ignore) {
-                            if(scope.file.filename.match(ignore)) {
-                                console.log('matched', ignore, scope.file);
-                                scope.ignored = true;
-                                scope.open = false;
-                            }
-                        });
-                    }
-                });
 
                 //
                 // Expand the diff

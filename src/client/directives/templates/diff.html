@@ -1,14 +1,14 @@
 <accordion class="diff">
     <accordion-group is-open="$parent.open">
         <accordion-heading>
-            <strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong><i ng-show="ignored" class="ignored"> - ignored file</i>
+            <strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong><i ng-show="file.ignored" class="ignored"> - ignored file</i>
             <button class="btn btn-xs btn-default pull-right" 
                     ng-disabled="!open"
                     ng-show="!file.image"
                     ng-click="expanded=!expanded; $event.stopPropagation();">
                 &nbsp;<i class="fa" ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"></i>&nbsp;
             </button>
-            <a ng-show="ignored" target="_blank" href="http://docs.review.ninja/quickstart/#ignored">
+            <a ng-show="file.ignored" target="_blank" href="http://docs.review.ninja/quickstart/#ignored">
                 <span class="fa-stack">
                   <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
                   <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
