@@ -20,7 +20,7 @@ module.exports = {
             if(!err) {
                 try {
                     var ninja = new Buffer(file.content, 'base64').toString('ascii');
-                    ninja.split('\n').forEach(function(ignore) {
+                    ninja.split(/[\r\n]+/).forEach(function(ignore) {
                         if(ignore !== '') {
                             req.args.files.forEach(function(file) {
                                 file.ignored = minimatch(file.filename, ignore);
