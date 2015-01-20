@@ -11,7 +11,7 @@
     <span class="trashcan text-danger octicon octicon-trashcan no-select"
           ng-class="{confirm: showConfirmation}"
           ng-click="confirm()"
-          tooltip="Delete branch"
+          tooltip="Delete branch ({{ pull.head.ref }})"
           tooltip-placement="bottom"
           tooltip-append-to-body="true"></span>
 
