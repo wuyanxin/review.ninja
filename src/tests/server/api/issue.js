@@ -7,6 +7,7 @@ global.config = require('../../../config');
 
 // documents
 var Milestone = require('../../../server/documents/milestone').Milestone;
+var Repo = require('../../../server/documents/repo').Repo;
 
 // services
 var github = require('../../../server/services/github');

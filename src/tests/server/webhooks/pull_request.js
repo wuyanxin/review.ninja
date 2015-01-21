@@ -10,6 +10,7 @@ global.io = {emit: function() {}};
 
 // documents
 var User = require('../../../server/documents/user').User;
+var Repo = require('../../../server/documents/repo').Repo;
 
 // webhooks
 var pull_request = require('../../../server/webhooks/pull_request');

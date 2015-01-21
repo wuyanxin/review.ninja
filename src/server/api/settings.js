@@ -3,18 +3,6 @@ var Settings = require('mongoose').model('Settings');
 
 module.exports = {
 
-    /************************************************************************************************************
-
-        Provide brief description here
-
-        @models
-
-        + Settings, where user=user_uuid, repo=repo_uuid
-
-        @github (if needed)
-
-    ************************************************************************************************************/
-
     get: function(req, done) {
         Settings.findOne({user: req.user.id, repo: req.args.repo_uuid}, function(err, settings) {
             // check if settings exist and return them
