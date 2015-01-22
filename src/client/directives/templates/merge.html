@@ -45,7 +45,7 @@
             'btn-danger':  status.state==='failure' && !pull.merged,
             'btn-merged':  pull.merged
           }"
-          ng-disabled="!pull.mergeable || !pushaccess" 
+          ng-disabled="!pull.mergeable || !permissions.push" 
           ng-click="merge()">
 
     <span ng-show="!pull.merged">
