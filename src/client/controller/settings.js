@@ -19,6 +19,12 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             repo_uuid: repo.value.id
         });
 
+        var reposettingsCallback = function(err, reposettings) {
+            if(!err) {
+                $scope.reposettings.value = reposettings.value;
+            }
+        };
+
         $scope.setNotifications = function() {
             $RPC.call('settings', 'setNotifications', {
                 repo_uuid: repo.value.id,
@@ -54,17 +60,20 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             $scope.setWatched(watched);
         };
 
+        $scope.changeThreshold = function() {
+            $RPC.call('repo', 'setThreshold', {
+                repo_uuid: repo.value.id,
+                threshold: $scope.reposettings.value.threshold
+            }, reposettingsCallback);
+        };
+
         $scope.toggleComments = function() {
             $scope.reposettings.value.comment = !$scope.reposettings.value.comment;
 
             $RPC.call('repo', 'setComment', {
                 repo_uuid: repo.value.id,
                 comment: $scope.reposettings.value.comment
-            }, function(err, reposettings) {
-                if(!err) {
-                    $scope.reposettings.value = reposettings.value;
-                }
-            });
+            }, reposettingsCallback);
         };
 
         $scope.togglePullRequest = function() {
