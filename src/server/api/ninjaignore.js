@@ -27,11 +27,10 @@ module.exports = {
                             });
                         }
                     });
-                } catch(ex) {
-                    return done(ex, req.args.files);
-                }
+                } catch(err) {}
             }
-            done(err, req.args.files);
+
+            done(null, req.args.files);
         });
     }
 };

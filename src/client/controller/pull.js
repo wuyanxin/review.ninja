@@ -34,18 +34,21 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $HUB.wrap('pullRequests', 'getFiles', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            number: $stateParams.number
+            number: $stateParams.number,
+            ref: pull.value.head.sha
         }, function(err, files) {
-            var fileTypes = File.getFileTypes(files.value);
-
-            $RPC.call('ninjaignore', 'get', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                ref: $scope.pull.head.sha,
-                files: fileTypes
-            }, function(err, files) {
-                $scope.files = files.value;
-            });
+            if(!err) {
+                $RPC.call('ninjaignore', 'get', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    ref: $scope.pull.head.sha,
+                    files: files.value
+                }, function(err, files) {
+                    if(!err) {
+                        $scope.files = File.getFileTypes(files.value);
+                    }
+                });
+            }
         });
 
         // get the star
