@@ -52,6 +52,10 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($H
                 };
             });
 
+            scope.branchAccess = function() {
+
+            };
+
             scope.deleteBranch = function() {
                 scope.showConfirmation = false;
                 $HUB.call('gitdata', 'deleteReference', {

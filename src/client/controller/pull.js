@@ -12,8 +12,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // set the states
         $scope.state = 'open';
 
-        $scope.repo = repo;
-        console.log('repo', $scope.repo);
+        $scope.permissions = repo.value.permissions;
+        $scope.permissions.push = false;
+        $scope.permissions.pull = false;
+        console.log('permission', $scope.permissions);
 
         // set the shas
         $scope.sha = null;

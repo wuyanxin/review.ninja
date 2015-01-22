@@ -20,7 +20,7 @@
             </p>
             <p ng-bind-html="pull.html"></p>
           </div>
-          <merge-button pushaccess="repo.permissions.push"
+          <merge-button pushaccess="permissions.push"
                         pull="pull" 
                         status="status.value"
                         ng-show="status.loaded">
@@ -64,6 +64,7 @@
                       <button type="button" 
                               class="btn btn-default" 
                               ng-click="setStar()" 
+                              ng-show="permissions.pull"
                               style="padding:2px 12px 0px;"
                               tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star" 
                               tooltip-placement="bottom"
