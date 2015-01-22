@@ -15,6 +15,29 @@
 
     <div class="row">
       <div class="col-md-12">
+        <label>Threshold</label>
+        <p>Before a pull request can be merged,
+        <input type="text" ng-model="reposettings.value.threshold" style="width: 50px"/> ninja stars are necessary.</p>
+      </div>
+      <div class="col-md-12" style="margin-top: 30px;">
+        <label>ReviewNinja comments</label>
+        <div style="clear:both;"></div>
+        <div class="pull-left text-primary">
+          <a type="button"
+              class="btn btn-settings"
+              ng-class="{true: 'btn-primary', false: 'btn-info'}[reposettings.value.comment]"
+              ng-click="toggleComments()"
+              ng-model="reposettings.value.comment"
+              tooltip="{{ reposettings.value.comment ? 'Deactivate' : 'Activate' }} comments"
+              tooltip-placement="bottom"
+              tooltip-append-to-body="true">
+              <i class="fa fa-2x fa-comments"
+                 ng-class="{true: 'text-info', false: 'text-primary'}[reposettings.value.comment]"></i>
+          </a>
+          <p>ReviewNinja<br>comments</p>
+        </div>
+      </div>
+      <div class="col-md-12" style="margin-top: 30px;">
         <label>Get Email notifications about:</label>
         <div style="clear:both;"></div>
         <div class="pull-left text-primary">
