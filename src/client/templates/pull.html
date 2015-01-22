@@ -20,7 +20,8 @@
             </p>
             <p ng-bind-html="pull.html"></p>
           </div>
-          <merge-button pull="pull" 
+          <merge-button pushaccess="repo.permissions.push"
+                        pull="pull" 
                         status="status.value"
                         ng-show="status.loaded">
           </merge-button>

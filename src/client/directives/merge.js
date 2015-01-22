@@ -7,6 +7,7 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($H
         restrict: 'E',
         templateUrl: '/directives/templates/merge.html',
         scope: {
+            pushaccess: '=',
             pull: '=',
             status: '='
         },
