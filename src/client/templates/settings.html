@@ -14,118 +14,55 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12">
-        <label>Threshold</label>
-        <p>Before a pull request can be merged,
-        <input type="text" ng-model="reposettings.value.threshold" ng-change="changeThreshold()"
-               style="width: 50px"/> ninja stars are necessary.</p>
-      </div>
-      <div class="col-md-12" style="margin-top: 30px;">
-        <label>ReviewNinja comments</label>
-        <div style="clear:both;"></div>
-        <div class="pull-left text-primary">
-          <a type="button"
-              class="btn btn-settings"
-              ng-class="{true: 'btn-primary', false: 'btn-info'}[reposettings.value.comment]"
-              ng-click="toggleComments()"
-              ng-model="reposettings.value.comment"
-              tooltip="{{ reposettings.value.comment ? 'Deactivate' : 'Activate' }} comments"
-              tooltip-placement="bottom"
-              tooltip-append-to-body="true">
-              <i class="fa fa-2x fa-comments"
-                 ng-class="{true: 'text-info', false: 'text-primary'}[reposettings.value.comment]"></i>
-          </a>
-          <p>ReviewNinja<br>comments</p>
+      <div class="col-md-12" style="margin-top: 10px;">
+        <p class="settingsheading">Merge threshold</p>
+        <!-- right allign input text-->
+        <div class="indent">
+          For {{ repo.value.owner.login }}/{{ repo.value.name }} <input type="text" ng-model="reposettings.value.threshold" ng-change="changeThreshold()"
+               style="width: 50px" /> ninja stars are required to merge.
         </div>
       </div>
-      <div class="col-md-12" style="margin-top: 30px;">
-        <label>Get Email notifications about:</label>
-        <div style="clear:both;"></div>
-        <div class="pull-left text-primary">
-          <a type="button"
-              class="btn btn-settings"
-              ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.pull_request]"
-              ng-click="togglePullRequest()"
-              ng-model="settings.value.notifications.pull_request"
-              tooltip="{{ settings.value.notifications.pull_request ? 'Deactivate' : 'Activate' }} Notification"
-              tooltip-placement="bottom"
-              tooltip-append-to-body="true">
-              <i class="mega-octicon octicon-git-pull-request"
-                 ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.pull_request]"></i>
-          </a>
-          <p>Pull Requests</p>
+      <div class="col-md-12" style="margin-top: 20px;">
+        <p class="settingsheading">ReviewNinja content in GitHub</p>
+        <div class="indent">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Allow ReviewNinja to comment in {{ repo.value.owner.login }}/{{ repo.value.name }} pull request conversations in GitHub.
+            </label>
+          </div>
         </div>
-        <div class="pull-left text-primary">
-          <a type="button"
-              class="btn btn-settings"
-              ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.issue]"
-              ng-click="toggleIssue()"
-              ng-model="settings.value.notifications.issue"
-              tooltip="{{ settings.value.notifications.issue ? 'Deactivate' : 'Activate' }} Notification"
-              tooltip-placement="bottom"
-              tooltip-append-to-body="true">
-              <i class="mega-octicon octicon-issue-opened"
-                 ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.issue]"></i>
-          </a>
-          <p>Issues</p>
-        </div>
-        <div class="pull-left text-primary">
-          <a  type="button"
-              class="btn btn-settings"
-              style="max-height: 64px"
-              ng-class="{true: 'btn-primary', false: 'btn-info'}[settings.value.notifications.star]"
-              ng-click="toggleStar()"
-              ng-model="settings.value.notifications.star"
-              tooltip="{{ settings.value.notifications.star ? 'Deactivate' : 'Activate' }} Notification"
-              tooltip-placement="bottom"
-              tooltip-append-to-body="true">
-              <i class="icon-ninja-star"
-                 ng-class="{true: 'text-info', false: 'text-primary'}[settings.value.notifications.star]"
-                 style="position:relative; top:-3px; font-size:32px;"></i>
-          </a>
-          <p>Ninja stars</p>
-        </div>
-        <div style="clear:both;"></div>
       </div>
-      <div class="col-md-12" style="margin-top: 30px;">
-        <label>Watched branches:</label>
-        <a target="_blank" href="http://docs.review.ninja/quickstart/#configuration">
-          <span class="fa-stack pull-right">
-            <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
-            <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
-          </span>
-        </a>
-
-        <div class="well-dark well-sm">
-          <form role="form" ng-submit="addWatch(newWatch)" style="margin: 15px;">
-            <div class="input-group">
-              <div class="form-group has-feedback">
-                <input type="text" ng-model="newWatch" focus="true" class="form-control" style="height:33px;" />
-                <i class="fa fa-lg fa-times form-control-feedback" ng-show="newWatch" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
-              </div>
-              <span class="input-group-btn">
-                <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add branch</button>
-              </span>
-            </div>
-            <span class="help-block" style="margin-top:1px;">
-              Type branch name <em>feature/*</em> to watch a branch
+      <div class="col-md-12" style="margin-top: 20px;">
+        <p class="settingsheading">Notifications
+          <a target="_blank" href="http://docs.review.ninja/quickstart/#configuration">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
+              <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
             </span>
-          </form>
+          </a>
+        </p>
+        <p>ReviewNinja notifications are separate from GitHub notifications.</p>
+        <div class="indent">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Receive emails when a pull request is opened or updated
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Receive emails when issues are opened or closed
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Receive emails when a ninja star is given or removed
+            </label>
+          </div>
         </div>
-
-        <table class="table table-hover" ng-show="settings.value.watched.length">
-          <tr ng-repeat="watched in settings.value.watched"
-              class="select">
-            <td><i class="fa fa-bullseye"></i>&nbsp; {{ watched }}</td>
-            <td style="text-align:right;">
-              <i class="fa fa-times"
-                 ng-click="removeWatch(watched); $event.stopPropagation();"
-                 tooltip-placement="bottom"
-                 tooltip="Remove">
-              </i>
-            </td>
-          </tr>
-        </table>
+        <div class="indent"><em>Optional:</em> Filter emails by branch: 
+          <input type="text" value="E.g., feature/*" /><button class="btn btn-info">add</button>
+        </div>
+        <p class="indent">Branch filters: <span>## TAG1 ##</span><span>## TAG1 ##</span><span>## TAG1 ##</span><span>## TAG1 ##</span><span>## TAG1 ##</span><span>## TAG1 ##</span></p>
       </div>
     </div>
 
