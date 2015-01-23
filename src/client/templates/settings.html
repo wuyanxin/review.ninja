@@ -18,8 +18,15 @@
         <p class="settingsheading">Merge threshold</p>
         <!-- right allign input text-->
         <div class="indent">
-          For {{ repo.value.owner.login }}/{{ repo.value.name }} <input type="text" ng-model="reposettings.value.threshold" ng-change="changeThreshold()"
-               style="width: 50px" /> ninja stars are required to merge.
+          <form name="form">
+            For {{ repo.value.owner.login }}/{{ repo.value.name }}
+            <input type="text" name="thresholdvalue"
+                   ng-model="reposettings.value.threshold"
+                   ng-change="changeThreshold()"
+                   ng-pattern="numberPattern"
+                   ng-class="{'text-warning': form.thresholdvalue.$invalid}"
+                   style="width: 50px"/> ninja stars are required to merge.
+          </form>
         </div>
       </div>
       <div class="col-md-12" style="margin-top: 20px;">

@@ -19,6 +19,8 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             repo_uuid: repo.value.id
         });
 
+        $scope.numberPattern = /[0-9]+/;
+
         var reposettingsCallback = function(err, reposettings) {
             if(!err) {
                 $scope.reposettings.value = reposettings.value;
