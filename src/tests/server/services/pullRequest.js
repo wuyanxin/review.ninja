@@ -7,14 +7,27 @@ global.config = require('../../../config');
 
 // services
 var github = require('../../../server/services/github');
-
-// service
 var pullRequest = require('../../../server/services/pullRequest');
+
+// models
+var Repo = require('../../../server/documents/repo').Repo;
 
 describe('pullRequest:badgeComment', function(done) {
     it('should set github call parameters correctly', function(done) {
         config.server.github.user = 'githubUser';
         config.server.github.pass = 'githubUserApiKey';
+
+        var repoStub = sinon.stub(Repo, 'findOneAndUpdate', function(query, args, opts, done) {
+
+            assert.equal(query.repo, 123);
+            assert.equal(opts.upsert, true);
+
+            done(null, {
+                repo: 123,
+                comment: true,
+                threshold: 1
+            });
+        });
 
         var githubStub = sinon.stub(github, 'call', function(args, done) {
             assert.deepEqual(args, {
@@ -36,6 +49,33 @@ describe('pullRequest:badgeComment', function(done) {
         pullRequest.badgeComment('user', 'repo', 123, 456);
         sinon.assert.called(githubStub);
         githubStub.restore();
+        repoStub.restore();
+        done();
+    });
+
+    it('should not post a comment if comment setting is set to false', function(done) {
+
+        var repoStub = sinon.stub(Repo, 'findOneAndUpdate', function(query, args, opts, done) {
+
+            assert.equal(query.repo, 123);
+            assert.equal(opts.upsert, true);
+
+            done(null, {
+                repo: 123,
+                comment: false,
+                threshold: 1
+            });
+        });
+
+        var githubSpy = sinon.spy(github, 'call');
+
+        pullRequest.badgeComment('user', 'repo', 123, 456);
+
+        assert(!githubSpy.called);
+
+        githubSpy.restore();
+        repoStub.restore();
+        
         done();
     });
 });
