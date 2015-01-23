@@ -18,7 +18,7 @@ var pullRequest = require('../../../server/services/pullRequest');
 
 describe('notification:', function() {
     it('should render the email content for new_issue', function(done) {
-        var expectedcontent = '<h1>ReviewNinja</h1>\n\n\nA new issue has been raised for <a href="testurl">testuser/testrepo #1</a> by testsenderlogin.\n\n<img src="/assets/images/review-ninja-250.png" />\n\n<p>Automatic notification by ReviewNinja.</p>\n<p>Visit <a href="http://www.review.ninja">review.ninja</a> to hear more about review.ninja.</p>\n\n';
+        var expectedcontent = '<h1>ReviewNinja</h1>\n\n\nA new issue has been raised for <a href="testurl">testuser/testrepo #1</a> by testsenderlogin.\n\n<p>--</p>\n<p>Automatic notification by ReviewNinja.<br>\nVisit <a href="http://www.review.ninja">review.ninja</a> to hear more about review.ninja.</p>\n\n';
 
         var filename = 'src/server/templates/new_issue.ejs';
         var template = fs.readFileSync(filename, 'utf-8');
