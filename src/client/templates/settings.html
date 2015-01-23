@@ -20,7 +20,7 @@
         <div class="indent">
           <form name="form">
             For {{ repo.value.owner.login }}/{{ repo.value.name }}
-            <input type="text" name="thresholdvalue"
+            <input type="number" name="thresholdvalue"
                    ng-model="reposettings.value.threshold"
                    ng-change="changeThreshold()"
                    ng-pattern="numberPattern"
