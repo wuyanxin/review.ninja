@@ -6,8 +6,8 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$HUB', '$RPC', 'Pull', 'Issue', 'Comment', 'File', 'repo', 'pull', 'socket', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $modal, $HUB, $RPC, Pull, Issue, Comment, File, repo, pull, socket, $timeout) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Issue', 'Comment', 'File', 'repo', 'pull', 'socket', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Issue, Comment, File, repo, pull, socket, $timeout) {
 
         // set the states
         $scope.state = 'open';
@@ -28,6 +28,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             user: $stateParams.user,
             repo: $stateParams.repo,
             sha: $scope.pull.head.sha
+        });
+
+        // get the repository settings for threshold
+        $scope.reposettings = $RPC.call('repo', 'get', {
+            repo_uuid: repo.value.id
         });
 
         // get the files (for the diff view)
@@ -99,6 +104,21 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 });
             }
         });
+
+        //
+        // UI text
+        //
+
+        $scope.getStarText = function() {
+            if($scope.pull.stars && $scope.reposettings.value) {
+                var stars = $scope.pull.stars.length;
+                var threshold = $scope.reposettings.value.threshold;
+                if(stars < threshold) {
+                    return "Pull Request needs " + $filter('pluralize')(threshold - stars, 'ninja star');
+                }
+                return "Pull Request has  " + $filter('pluralize')(stars, 'ninja star');
+            }
+        };
 
 
         //
