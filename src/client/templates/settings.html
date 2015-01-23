@@ -69,9 +69,22 @@
         <div class="indent"><em>Optional:</em> Filter emails by branch: 
           <input type="text" value="E.g., feature/*" /><button class="btn btn-info">add</button>
         </div>
-        <p class="indent">Branch filters: <span>## TAG1 ##</span><span>## TAG1 ##</span><span>## TAG1 ##</span><span>## TAG1 ##</span><span>## TAG1 ##</span><span>## TAG1 ##</span></p>
+        <div class="indent">
+          <div class="btn-group">
+          <!-- ng-repeat="watched in settings.value.watched" -->
+            <span ng-repeat="watched in settings.value.watched">
+              <button type="button"
+                      class="btn btn-simple"
+                      style="border-right:none;">
+                <i class="fa fa-bullseye"></i> {{watched}}
+              </button>
+              <button type="button" class="btn btn-simple" style="border-left:none; padding-left:0px;">
+                <i class="fa fa-times" ng-click="removeWatch(watched)"></i>
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 </div>
