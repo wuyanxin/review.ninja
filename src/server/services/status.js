@@ -36,8 +36,12 @@ module.exports = {
                     }, function(err, milestone) {
 
                         var issues = milestone ? milestone.open_issues : 0;
+                        var status = issues ? 'failure' : reachedThreshold ? 'success' : 'pending';
 
-                        var status = issues ? 'failure' : stars.length >= repo.threshold ? 'success' : 'pending';
+                        var reachedThreshold =  stars.length >= repo.threshold;
+                        var diff = repo.threshold - stars.length;
+                        var startext = reachedThreshold ? stars.length + (stars.length === 1 ? ' star, ' : ' stars, ')
+                                                        : diff + (diff === 1 ? ' star' : ' stars') + ' needed, ';
                         github.call({
                             obj: 'statuses',
                             fun: 'create',
@@ -46,7 +50,7 @@ module.exports = {
                                 repo: args.repo,
                                 sha: args.sha,
                                 state: status,
-                                description: 'ReviewNinja: ' + stars.length + (stars.length === 1 ? ' star, ' : ' stars, ') + issues + (issues === 1 ? ' issue' : ' issues'),
+                                description: 'ReviewNinja: ' + startext + issues + (issues === 1 ? ' issue' : ' issues'),
                                 target_url: url.reviewPullRequest(args.user, args.repo, args.number),
                                 context: 'code-review/reviewninja'
                             },

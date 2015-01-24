@@ -57,7 +57,7 @@ describe('status:update', function() {
                         repo: 'repo',
                         sha: 'sha',
                         state: 'pending',
-                        description: 'ReviewNinja: 0 stars, 0 issues',
+                        description: 'ReviewNinja: 1 star needed, 0 issues',
                         target_url: 'https://review.ninja/user/repo/pull/1',
                         context: 'code-review/reviewninja'
                     },
@@ -132,7 +132,7 @@ describe('status:update', function() {
                         user: 'user',
                         repo: 'repo',
                         sha: 'sha',
-                        state: 'success',
+                        state: 'pending',
                         description: 'ReviewNinja: 1 star, 0 issues',
                         target_url: 'https://review.ninja/user/repo/pull/1',
                         context: 'code-review/reviewninja'
