@@ -41,7 +41,7 @@ module.exports = {
                         var reachedThreshold =  stars.length >= repo.threshold;
                         var diff = repo.threshold - stars.length;
                         var startext = reachedThreshold ? stars.length + (stars.length === 1 ? ' star, ' : ' stars, ')
-                                                        : diff + (diff === 1 ? ' star ' : ' stars ') + ' necessary, ';
+                                                        : diff + (diff === 1 ? ' star' : ' stars') + ' needed, ';
                         github.call({
                             obj: 'statuses',
                             fun: 'create',
