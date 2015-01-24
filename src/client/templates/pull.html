@@ -72,14 +72,16 @@
                       </button>
                     <div class="btn-group">
                       <button type="button" 
-                              class="btn btn-primary dropdown-toggle stars" 
+                              class="btn dropdown-toggle stars"
+                              ng-class="{'btn-warning': pull.stars.length < reposettings.value.threshold,
+                                         'btn-primary': pull.stars.length >= reposettings.value.threshold}"
                               data-toggle="dropdown" 
                               ng-disabled="!pull.stars.length" 
                               style="font-size:18px; min-width:36px; min-height:39px;">
                         {{ pull.stars.length }}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
-                        <li><a href="">Pull Request has {{ pull.stars.length | pluralize:'ninja star' }}!</a></li>
+                        <li><a href="">{{ getStarText() }}</a></li>
                         <li class="divider"></li>
                         <li ng-repeat="star in pull.stars | orderBy:'-created_at'" class="star-dropdown-item">
                           <a href="#">
