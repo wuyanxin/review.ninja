@@ -116,9 +116,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 var stars = $scope.pull.stars.length;
                 var threshold = $scope.reposettings.value.threshold;
                 if(stars < threshold) {
-                    return "Pull Request needs " + $filter('pluralize')(threshold - stars, 'ninja star');
+                    return 'Pull Request needs ' + $filter('pluralize')(threshold - stars, 'ninja star');
                 }
-                return "Pull Request has  " + $filter('pluralize')(stars, 'ninja star');
+                return 'Pull Request has  ' + $filter('pluralize')(stars, 'ninja star');
             }
         };
 

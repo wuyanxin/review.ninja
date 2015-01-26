@@ -36,9 +36,9 @@ module.exports = {
                     }, function(err, milestone) {
 
                         var issues = milestone ? milestone.open_issues : 0;
-                        var status = issues ? 'failure' : reachedThreshold ? 'success' : 'pending';
-
                         var reachedThreshold =  stars.length >= repo.threshold;
+
+                        var status = issues ? 'failure' : reachedThreshold ? 'success' : 'pending';
                         var diff = repo.threshold - stars.length;
                         var startext = reachedThreshold ? stars.length + (stars.length === 1 ? ' star, ' : ' stars, ')
                                                         : diff + (diff === 1 ? ' star' : ' stars') + ' needed, ';
