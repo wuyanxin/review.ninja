@@ -12,6 +12,8 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // set the states
         $scope.state = 'open';
 
+        $scope.repo = repo.value;
+
         // set the shas
         $scope.sha = null;
         $scope.base = pull.value.base.sha;

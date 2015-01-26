@@ -7,6 +7,7 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($H
         restrict: 'E',
         templateUrl: '/directives/templates/merge.html',
         scope: {
+            permissions: '=',
             pull: '=',
             status: '='
         },
@@ -50,6 +51,10 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($H
                     statuses: []
                 };
             });
+
+            scope.branchAccess = function() {
+
+            };
 
             scope.deleteBranch = function() {
                 scope.showConfirmation = false;
