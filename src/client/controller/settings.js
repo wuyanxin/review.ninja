@@ -50,10 +50,9 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             });
         };
 
-        $scope.addWatch = function(watch) {
-            console.log('watch', watch);
+        $scope.addWatch = function() {
             var watched = $scope.settings.value.watched;
-            watched.unshift(watch);
+            watched.unshift($scope.newWatch);
             $scope.setWatched(watched);
         };
 

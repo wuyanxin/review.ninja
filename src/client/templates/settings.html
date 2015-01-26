@@ -66,12 +66,19 @@
             </label>
           </div>
         </div>
-        <div class="indent"><em>Optional:</em> Filter emails by branch: 
-          <input type="text" value="E.g., feature/*" ng-model="newWatch" /><button class="btn btn-info" ng-click="addWatch(newWatch)">add</button>
-        </div>
+        <div class="indent"><em>Optional:</em> Filter emails by branch: </div>
+        <form class="indent" ng-submit="addWatch()">
+          <div class="input-group" style="width:300px">
+            <div class="form-group has-feedback" style="margin-top: 15px;">
+              <input type="text" ng-model="newWatch" value="E.g., feature/*" style="height:33px; width:400px" />
+            </div>
+            <span class="input-group-btn">
+              <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add</button>
+            </span>
+          </div>
+        </form>
         <div class="indent">
           <div class="btn-group">
-          <!-- ng-repeat="watched in settings.value.watched" -->
             <span ng-repeat="watch in settings.value.watched">
               <button type="button"
                       class="btn btn-simple"
