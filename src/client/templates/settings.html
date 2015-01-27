@@ -17,13 +17,14 @@
         <p class="settingsheading">Merge threshold</p>
         <div class="indent">
           <form name="form">
-            For {{ repo.value.owner.login }}/{{ repo.value.name }}
-            <input type="number" min="0" max="100" required name="thresholdvalue"
-                   ng-model="reposettings.value.threshold"
-                   ng-change="changeThreshold()"
-                   ng-pattern="numberPattern"
-                   ng-class="{'text-warning': form.thresholdvalue.$invalid}"
-                   style="width: 50px"/> ninja stars are required to merge.
+            <p> For {{ repo.value.owner.login }}/{{ repo.value.name }}
+              <input type="number" min="0" max="100" required name="thresholdvalue"
+                     ng-model="reposettings.value.threshold"
+                     ng-change="changeThreshold()"
+                     ng-pattern="numberPattern"
+                     ng-class="{'text-warning': form.thresholdvalue.$invalid}"
+                     style="width: 50px"/> ninja stars are required to merge.
+            </p>
           </form>
         </div>
       </div>
@@ -60,7 +61,7 @@
             <label for="star">Receive emails when a ninja star is given or removed</label>
           </div>
           <div style="margin-top: 15px">
-            <em>Optional:</em> Filter emails by branch:
+            <p><em>Optional:</em> Filter emails by branch:</p>
             <form style="margin-top: 10px; margin-bottom: 10px" ng-submit="addWatch()">
               <div class="input-group" style="width:300px">
                 <div class="form-group has-feedback">
