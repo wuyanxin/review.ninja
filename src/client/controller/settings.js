@@ -70,8 +70,6 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         };
 
         $scope.toggleComments = function() {
-            $scope.reposettings.value.comment = !$scope.reposettings.value.comment;
-
             $RPC.call('repo', 'setComment', {
                 repo_uuid: repo.value.id,
                 comment: $scope.reposettings.value.comment

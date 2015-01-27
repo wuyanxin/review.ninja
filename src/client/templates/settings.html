@@ -34,7 +34,7 @@
         <div class="indent">
           <div class="checkbox">
             <label>
-              <input type="checkbox"> Allow ReviewNinja to comment in {{ repo.value.owner.login }}/{{ repo.value.name }} pull request conversations in GitHub.
+              <input type="checkbox" ng-model="reposettings.value.comment" ng-change="toggleComments()"> Allow ReviewNinja to comment in {{ repo.value.owner.login }}/{{ repo.value.name }} pull request conversations in GitHub.
             </label>
           </div>
         </div>
