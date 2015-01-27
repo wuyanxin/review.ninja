@@ -35,9 +35,6 @@
     <small ng-show="!pull.mergeable">
       Pull Request <a ng-href="{{ pull.html_url }}" class="link-external" target="_blank">#{{ pull.number }}</a> can't be merged automatically.
     </small>
-    <small ng-show="pull.mergeable && !permissions.push">
-      No permissions to merge Pull Request <a ng-href="{{ pull.html_url }}" class="link-external" target="_blank">#{{ pull.number }}</a>.
-    </small>
   </div>
 
   <button type="button" 
@@ -48,7 +45,8 @@
             'btn-danger':  status.state==='failure' && !pull.merged,
             'btn-merged':  pull.merged
           }"
-          ng-disabled="!pull.mergeable || !permissions.push" 
+          ng-show="permissions.push"
+          ng-disabled="!pull.mergeable"
           ng-click="merge()">
 
     <span ng-show="!pull.merged">
