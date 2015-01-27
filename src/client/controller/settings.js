@@ -62,7 +62,13 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             $scope.setWatched(watched);
         };
 
-        $scope.changeThreshold = function() {
+        $scope.changeThreshold = function(invalid) {
+            if(invalid) {
+                $('#threshold').popover('show');
+            } else {
+                $('.popover').popover('hide');
+            }
+
             $RPC.call('repo', 'setThreshold', {
                 repo_uuid: repo.value.id,
                 threshold: $scope.reposettings.value.threshold
