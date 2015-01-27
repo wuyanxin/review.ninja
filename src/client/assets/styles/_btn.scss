@@ -56,19 +56,16 @@
   }
 
   &.btn-settings {
-    margin-bottom: 15px;
-    margin-right: 64px;
-    margin-top: 15px;
-    outline: 0;
-    padding: 15px;
-    width: 64px;
+    background-color: #fff;
+    border-color: #ececec;
+    color: $brand-primary;
 
     &:hover {
-      background-color: $brand-primary;
+      cursor: default;
+    }
 
-      i {
-        color: $brand-info;
-      }
+    &:active {
+      box-shadow: none;
     }
   }
 }
