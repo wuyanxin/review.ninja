@@ -59,28 +59,30 @@
             <input id="star" type="checkbox" />
             <label for="star">Receive emails when a ninja star is given or removed</label>
           </div>
-          <em>Optional:</em> Filter emails by branch: </div>
-          <form class="indent" style="margin-top: 10px; margin-bottom: 10px" ng-submit="addWatch()">
-            <div class="input-group" style="width:300px">
-              <div class="form-group has-feedback">
-                <input type="text" ng-model="newWatch" value="E.g., feature/*" class="form-control" style="height:33px; width:400px" />
+          <div style="margin-top: 15px">
+            <em>Optional:</em> Filter emails by branch:
+            <form style="margin-top: 10px; margin-bottom: 10px" ng-submit="addWatch()">
+              <div class="input-group" style="width:300px">
+                <div class="form-group has-feedback">
+                  <input type="text" ng-model="newWatch" value="E.g., feature/*" class="form-control" style="height:33px; width:400px" />
+                </div>
+                <span class="input-group-btn">
+                  <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add</button>
+                </span>
               </div>
-              <span class="input-group-btn">
-                <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add</button>
+            </form>
+            <div class="btn-group">
+              <span ng-repeat="watch in settings.value.watched">
+                <button type="button"
+                        class="btn btn-settings"
+                        style="border-right:none;">
+                  {{ watch }}
+                </button>
+                <button type="button" class="btn btn-simple" style="border-left:none; padding-left:0px;">
+                  <i class="fa fa-times" ng-click="removeWatch(watch); $event.stopPropagation();"></i>
+                </button>
               </span>
             </div>
-          </form>
-          <div class="btn-group indent">
-            <span ng-repeat="watch in settings.value.watched">
-              <button type="button"
-                      class="btn btn-settings"
-                      style="border-right:none;">
-                {{ watch }}
-              </button>
-              <button type="button" class="btn btn-simple" style="border-left:none; padding-left:0px;">
-                <i class="fa fa-times" ng-click="removeWatch(watch); $event.stopPropagation();"></i>
-              </button>
-            </span>
           </div>
         </div>
       </div>
