@@ -76,21 +76,6 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             }, reposettingsCallback);
         };
 
-        $scope.togglePullRequest = function() {
-            $scope.settings.value.notifications.pull_request = !$scope.settings.value.notifications.pull_request;
-            $scope.setNotifications();
-        };
-
-        $scope.toggleIssue = function() {
-            $scope.settings.value.notifications.issue = !$scope.settings.value.notifications.issue;
-            $scope.setNotifications();
-        };
-
-        $scope.toggleStar = function() {
-            $scope.settings.value.notifications.star = !$scope.settings.value.notifications.star;
-            $scope.setNotifications();
-        };
-
         $scope.reset = function() {
             $scope.query = null;
         };

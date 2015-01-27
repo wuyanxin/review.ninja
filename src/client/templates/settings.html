@@ -48,15 +48,21 @@
         <div class="indent">
           <p>ReviewNinja notifications are separate from GitHub notifications.</p>
           <div>
-            <input id="pull" type="checkbox" />
+            <input id="pull" type="checkbox"
+                   ng-model="settings.value.notifications.pull_request"
+                   ng-change="setNotifications()" />
             <label for="pull">Receive emails when a pull request is opened or updated</label>
           </div>
           <div>
-            <input id="issue" type="checkbox" />
+            <input id="issue" type="checkbox"
+                   ng-model="settings.value.notifications.issue"
+                   ng-change="setNotifications()"/>
             <label for="issue">Receive emails when issues are opened or closed</label>
           </div>
           <div>
-            <input id="star" type="checkbox" />
+            <input id="star" type="checkbox"
+                   ng-model="settings.value.notifications.star"
+                   ng-change="setNotifications()"/>
             <label for="star">Receive emails when a ninja star is given or removed</label>
           </div>
           <div style="margin-top: 15px">
