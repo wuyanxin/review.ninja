@@ -1,6 +1,5 @@
 <div class="row">
   <div class="settings col-md-8 col-md-offset-2">
-
     <div class="row">
       <div class="col-md-12">
 
@@ -16,7 +15,6 @@
     <div class="row">
       <div class="col-md-12" style="margin-top: 10px;">
         <p class="settingsheading">Merge threshold</p>
-        <!-- right allign input text-->
         <div class="indent">
           <form name="form">
             For {{ repo.value.owner.login }}/{{ repo.value.name }}
@@ -47,8 +45,8 @@
             </span>
           </a>
         </p>
-        <p>ReviewNinja notifications are separate from GitHub notifications.</p>
         <div class="indent">
+          <p>ReviewNinja notifications are separate from GitHub notifications.</p>
           <div>
             <input id="pull" type="checkbox" />
             <label for="pull">Receive emails when a pull request is opened or updated</label>
@@ -61,20 +59,18 @@
             <input id="star" type="checkbox" />
             <label for="star">Receive emails when a ninja star is given or removed</label>
           </div>
-        </div>
-        <div class="indent"><em>Optional:</em> Filter emails by branch: </div>
-        <form class="indent" style="margin-top: 10px; margin-bottom: 10px" ng-submit="addWatch()">
-          <div class="input-group" style="width:300px">
-            <div class="form-group has-feedback">
-              <input type="text" ng-model="newWatch" value="E.g., feature/*" class="form-control" style="height:33px; width:400px" />
+          <em>Optional:</em> Filter emails by branch: </div>
+          <form class="indent" style="margin-top: 10px; margin-bottom: 10px" ng-submit="addWatch()">
+            <div class="input-group" style="width:300px">
+              <div class="form-group has-feedback">
+                <input type="text" ng-model="newWatch" value="E.g., feature/*" class="form-control" style="height:33px; width:400px" />
+              </div>
+              <span class="input-group-btn">
+                <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add</button>
+              </span>
             </div>
-            <span class="input-group-btn">
-              <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add</button>
-            </span>
-          </div>
-        </form>
-        <div class="indent">
-          <div class="btn-group">
+          </form>
+          <div class="btn-group indent">
             <span ng-repeat="watch in settings.value.watched">
               <button type="button"
                       class="btn btn-settings"
