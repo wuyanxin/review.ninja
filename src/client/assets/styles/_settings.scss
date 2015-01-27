@@ -47,3 +47,8 @@ input[type=checkbox]:checked + label:before {
     line-height: 10px;
     text-align: center;
 }
+
+input[type=number] {
+    text-align: right;
+    width: 45px;
+}

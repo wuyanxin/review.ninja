@@ -18,12 +18,11 @@
         <div class="indent">
           <form name="form">
             <p> For {{ repo.value.owner.login }}/{{ repo.value.name }}
-              <input type="number" min="0" max="100" required name="thresholdvalue"
+              <input type="number" min="0" max="99" required name="thresholdvalue"
                      ng-model="reposettings.value.threshold"
                      ng-change="changeThreshold()"
                      ng-pattern="numberPattern"
-                     ng-class="{'text-warning': form.thresholdvalue.$invalid}"
-                     style="width: 50px"/> ninja stars are required to merge.
+                     ng-class="{'text-warning': form.thresholdvalue.$invalid}"/> ninja stars are required to merge.
             </p>
           </form>
         </div>
