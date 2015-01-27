@@ -7,7 +7,7 @@
         <ol class="breadcrumb">
           <li><a ui-sref="repo.master()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
         </ol>
-        
+
         <h2 style="margin-bottom:20px;"><span class="mega-octicon octicon-gear"></span> Settings</h2>
 
       </div>
@@ -32,10 +32,9 @@
       <div class="col-md-12" style="margin-top: 20px;">
         <p class="settingsheading">ReviewNinja content in GitHub</p>
         <div class="indent">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="reposettings.value.comment" ng-change="toggleComments()"> Allow ReviewNinja to comment in {{ repo.value.owner.login }}/{{ repo.value.name }} pull request conversations in GitHub.
-            </label>
+          <div>
+            <input id="comments" type="checkbox" ng-model="reposettings.value.comment" ng-change="toggleComments()" />
+            <label for="comments">Allow ReviewNinja to comment in {{ repo.value.owner.login }}/{{ repo.value.name }} pull request conversations in GitHub.</label>
           </div>
         </div>
       </div>
@@ -50,20 +49,17 @@
         </p>
         <p>ReviewNinja notifications are separate from GitHub notifications.</p>
         <div class="indent">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Receive emails when a pull request is opened or updated
-            </label>
+          <div>
+            <input id="pull" type="checkbox" />
+            <label for="pull">Receive emails when a pull request is opened or updated</label>
           </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Receive emails when issues are opened or closed
-            </label>
+          <div>
+            <input id="issue" type="checkbox" />
+            <label for="issue">Receive emails when issues are opened or closed</label>
           </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Receive emails when a ninja star is given or removed
-            </label>
+          <div>
+            <input id="star" type="checkbox" />
+            <label for="star">Receive emails when a ninja star is given or removed</label>
           </div>
         </div>
         <div class="indent"><em>Optional:</em> Filter emails by branch: </div>
