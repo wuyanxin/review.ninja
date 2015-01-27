@@ -75,7 +75,7 @@ describe('pullRequest:badgeComment', function(done) {
 
         githubSpy.restore();
         repoStub.restore();
-        
+
         done();
     });
 });
