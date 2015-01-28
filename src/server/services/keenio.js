@@ -7,7 +7,7 @@ module.exports = (function(){
         projectId: global.config.server.keen.pid,
         writeKey: global.config.server.keen.writeKey,
         readKey: global.config.server.keen.readKey,
-        protocol: "https",
+        protocol: "http",
         host: "api.keen.io/3.0",
         requestType: "jsonp"
     });

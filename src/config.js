@@ -70,10 +70,10 @@ module.exports = {
         },
 
         keen: {
-            enabled: !!process.env.KEENIO_PID && !!process.env.KEENIO_WRITE && !!process.env.KEENIO_READ,
             pid: process.env.KEENIO_PID,
-            writeKey: process.env.KEENIO_WRITE,
-            readKey: process.env.KEENIO_READ
+            masterKey: process.env.KEENIO_MASTER_KEY,
+            writeKey: process.env.KEENIO_WRITE_KEY,
+            readKey: process.env.KEENIO_READ_KEY
         },
 
         static: {

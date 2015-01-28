@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var keenio = require('../services/keenio');
 
 var StarSchema = mongoose.Schema({
     sha: String,
@@ -6,6 +7,14 @@ var StarSchema = mongoose.Schema({
     user: Number,
     name: String,
     created_at: Date
+});
+
+StarSchema.post('save', function(doc) {
+    keenio.client.addEvent('starDocument', { doc: doc._doc, action: 'save' });
+});
+
+StarSchema.post('remove', function(doc) {
+    keenio.client.addEvent('starDocument', { doc: doc._doc, action: 'remove' });
 });
 
 StarSchema.index({
