@@ -69,6 +69,13 @@ module.exports = {
             uri: process.env.MONGODB || process.env.MONGOLAB_URI
         },
 
+        keen: {
+            enabled: !!process.env.KEENIO_PID && !!process.env.KEENIO_WRITE && !!process.env.KEENIO_READ,
+            pid: process.env.KEENIO_PID,
+            writeKey: process.env.KEENIO_WRITE,
+            readKey: process.env.KEENIO_READ
+        },
+
         static: {
             lib: [__dirname + '/bower'],
             app: [__dirname + '/client']
