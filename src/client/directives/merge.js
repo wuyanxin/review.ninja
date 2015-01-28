@@ -9,7 +9,8 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($H
         scope: {
             permissions: '=',
             pull: '=',
-            status: '='
+            status: '=',
+            getLongStarText: '&'
         },
         link: function(scope, elem, attrs) {
 
