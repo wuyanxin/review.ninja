@@ -76,15 +76,15 @@
             </td>
 
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
-              <span class="text-primary" ng-class="{muted: pull.milestone.open_issues}">
+              <span class="text-warning" ng-class="{muted: pull.milestone.open_issues}">
                 <span class="octicon octicon-large octicon-issue-opened text-warning"></span><br />
-                {{ pull.milestone.open_issues }}
+                {{ pull.milestone.open_issues || 0 }}
               </span>
             </td>
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
               <span class="text-primary" ng-class="{muted: pull.milestone.open_issues}">
-                <span class="octicon octicon-large octicon-issue-closed text-primary"></span><br />
-                {{ pull.milestone.closed_issues }}
+                <span class="octicon octicon-large octicon-issue-closed"></span><br />
+                {{ pull.milestone.closed_issues || 0}}
               </span>
             </td>
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
@@ -99,7 +99,6 @@
                 {{ pull.commentsCount }}
               </span>
             </td>
-
           </tr>
         </table>
 
