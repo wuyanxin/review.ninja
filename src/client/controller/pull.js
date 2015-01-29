@@ -111,31 +111,15 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // UI text
         //
 
-        var calculateThreshold = function(notReached, reached) {
+        $scope.getStarText = function() {
             if($scope.pull.stars && $scope.reposettings.value) {
                 var stars = $scope.pull.stars.length;
                 var threshold = $scope.reposettings.value.threshold;
                 if(stars < threshold) {
-                    return notReached(threshold, stars);
+                    return 'Pull Request needs ' + $filter('pluralize')(threshold - stars, 'more ninja star');
                 }
-                return reached(stars);
+                return 'No more ninja stars needed';
             }
-        };
-
-        $scope.getStarText = function() {
-            return calculateThreshold(function(threshold, stars) {
-                return 'Pull Request needs ' + $filter('pluralize')(threshold - stars + ' more', 'ninja star');
-            }, function(stars) {
-                return 'Pull Request has  ' + $filter('pluralize')(stars, 'ninja star');
-            });
-        };
-
-        $scope.getLongStarText = function() {
-            return calculateThreshold(function(threshold, stars) {
-                return $filter('pluralize')(threshold - stars + ' more', 'ninja star') + ' needed';
-            }, function(stars) {
-                return $filter('pluralize')(stars, 'ninja star');
-            });
         };
 
         //

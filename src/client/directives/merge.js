@@ -2,15 +2,15 @@
 // Merge Directive
 // *****************************************************
 
-module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($HUB, $stateParams, $timeout) {
+module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', '$filter', function($HUB, $stateParams, $timeout, $filter) {
     return {
         restrict: 'E',
         templateUrl: '/directives/templates/merge.html',
         scope: {
             permissions: '=',
             pull: '=',
-            status: '=',
-            getLongStarText: '&'
+            reposettings: '=',
+            status: '='
         },
         link: function(scope, elem, attrs) {
 
@@ -52,6 +52,18 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', function($H
                     statuses: []
                 };
             });
+
+
+            scope.getStarText = function() {
+                if(scope.pull.stars && scope.reposettings.value) {
+                    var stars = scope.pull.stars.length;
+                    var threshold = scope.reposettings.value.threshold;
+                    if(stars < threshold) {
+                        return $filter('pluralize')(threshold - stars, 'more ninja star') + ' needed';
+                    }
+                    return $filter('pluralize')(stars, 'ninja star');
+                }
+            };
 
             scope.deleteBranch = function() {
                 scope.showConfirmation = false;
