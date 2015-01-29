@@ -34,7 +34,9 @@ module.exports = {
         }, {
             threshold: req.args.threshold
         }, {}, function(err, obj) {
-            keenio.client.addEvent('SetThreshold', req.args);
+            if (!err) {
+                keenio.client.addEvent('SetThreshold', req.args);
+            }
             done(err, obj);
         });
     }

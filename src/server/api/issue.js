@@ -86,14 +86,16 @@ module.exports = {
                     },
                     token: req.user.token
                 }, function(err, obj) {
-                    keenio.client.addEvent('AddIssue', {
-                        user: req.args.user,
-                        repo: req.args.repo,
-                        body: body,
-                        title: req.args.title,
-                        labels: ['review.ninja'],
-                        milestone: milestone.number
-                    });
+                    if (!err) {
+                        keenio.client.addEvent('AddIssue', {
+                            user: req.args.user,
+                            repo: req.args.repo,
+                            body: body,
+                            title: req.args.title,
+                            labels: ['review.ninja'],
+                            milestone: milestone.number
+                        });
+                    }
                     done(err, obj);
                 });
             }
