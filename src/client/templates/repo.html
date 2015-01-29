@@ -90,7 +90,10 @@
               </span>
             </td>
             <td class="text-center" style="width:50px; padding-left:15px; padding-right:15px">
-              
+              <span class="text-primary" ng-class="{muted: pull.milestone.open_issues}">
+                <span class="octicon octicon-large octicon-comment-discussion"></span><br />
+                {{ pull.commentsCount }}
+              </span>
             </td>
 
           </tr>

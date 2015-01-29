@@ -19,7 +19,6 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
                     }
                 });
             }
-
             return pull;
         },
 
@@ -36,7 +35,6 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
                     }
                 });
             }
-
             return pull;
         },
 
@@ -55,7 +53,19 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
                     });
                 }
             });
+            return pull;
+        },
 
+        commentsCount: function(pull) {
+            $HUB.call('issues', 'getComments', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: pull.number
+            }, function(err, comments) {
+                if(!err) {
+                    pull.commentsCount = comments.value.length;
+                }
+            });
             return pull;
         }
     };
