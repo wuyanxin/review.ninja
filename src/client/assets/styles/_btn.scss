@@ -70,4 +70,28 @@
       box-shadow: none;
     }
   }
+
+  &.btn-ninja {
+    background-color: white;
+    border: 1px solid $gray-light;
+    color: $brand-primary-muted;
+    height:40px;
+    width:50px;
+
+    &:hover {
+      background-color: $gray-lighter;
+
+      .icon-ninja-star.muted {
+        color: $brand-primary;
+      }
+    }
+
+    &.btn-threshold-reached {
+      color: $brand-primary;
+    }
+
+    &.btn-threshold-missing {
+      color: $brand-warning;
+    }
+  }
 }
