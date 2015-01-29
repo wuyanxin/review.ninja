@@ -75,7 +75,7 @@
               </table>
             </td>
 
-            <td class="text-center" style="width:70px;">
+            <td class="text-center" style="width:50px; padding-left:15px; padding-right:15px">
               <span class="octicon octicon-large octicon-issue-opened text-warning" 
                     ng-show="pull.milestone.open_issues">
               </span>
@@ -83,11 +83,14 @@
                     ng-show="pull.milestone.closed_issues && !pull.milestone.open_issues">
               </span>
             </td>
-            <td class="text-center" style="width:70px;">
+            <td class="text-center" style="width:50px; padding-left:15px; padding-right:15px">
               <span class="text-primary" ng-show="pull.stars.length" ng-class="{muted: pull.milestone.open_issues}">
                 <span class="fa-lg icon-ninja-star"></span><br />
                 {{ pull.stars.length }}
               </span>
+            </td>
+            <td class="text-center" style="width:50px; padding-left:15px; padding-right:15px">
+              
             </td>
 
           </tr>
