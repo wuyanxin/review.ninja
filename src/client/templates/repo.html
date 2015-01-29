@@ -75,21 +75,25 @@
               </table>
             </td>
 
-            <td class="text-center" style="width:50px; padding-left:15px; padding-right:15px">
-              <span class="octicon octicon-large octicon-issue-opened text-warning" 
-                    ng-show="pull.milestone.open_issues">
-              </span>
-              <span class="octicon octicon-large octicon-issue-closed text-primary" 
-                    ng-show="pull.milestone.closed_issues && !pull.milestone.open_issues">
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+              <span class="text-primary" ng-class="{muted: pull.milestone.open_issues}">
+                <span class="octicon octicon-large octicon-issue-opened text-warning"></span><br />
+                {{ pull.milestone.open_issues }}
               </span>
             </td>
-            <td class="text-center" style="width:50px; padding-left:15px; padding-right:15px">
-              <span class="text-primary" ng-show="pull.stars.length" ng-class="{muted: pull.milestone.open_issues}">
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+              <span class="text-primary" ng-class="{muted: pull.milestone.open_issues}">
+                <span class="octicon octicon-large octicon-issue-closed text-primary"></span><br />
+                {{ pull.milestone.closed_issues }}
+              </span>
+            </td>
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+              <span class="text-primary" ng-class="{muted: pull.milestone.open_issues}">
                 <span class="fa-lg icon-ninja-star"></span><br />
                 {{ pull.stars.length }}
               </span>
             </td>
-            <td class="text-center" style="width:50px; padding-left:15px; padding-right:15px">
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
               <span class="text-primary" ng-class="{muted: pull.milestone.open_issues}">
                 <span class="octicon octicon-large octicon-comment-discussion"></span><br />
                 {{ pull.commentsCount }}

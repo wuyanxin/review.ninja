@@ -7,7 +7,6 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
     return {
 
         milestone: function(pull) {
-
             if(pull.milestone) {
                 $HUB.call('issues', 'getMilestone', {
                     user: pull.base.repo.owner.login,
@@ -23,7 +22,6 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
         },
 
         render: function(pull) {
-
             if(pull.body) {
                 $HUB.wrap('markdown', 'render', {
                     text: pull.body,
@@ -39,7 +37,6 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
         },
 
         stars: function(pull) {
-
             $RPC.call('star', 'all', {
                 sha: pull.head.sha,
                 repo_uuid: pull.base.repo.id
