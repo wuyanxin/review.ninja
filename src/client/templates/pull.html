@@ -13,7 +13,7 @@
           <div class="col-sm-8">
             <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }} <a class="link-external" target="_blank"  ng-href="{{pull.html_url}}">#{{ pull.number }}</a></h2>
             <p>
-              {{ pull.merged ? pull.merged_by.login + ' merged' : pull.user.login + ' wants to merge' }} {{ pull.commits | pluralize:'commit' }} 
+              {{ pull.merged ? pull.merged_by.login + ' merged' : pull.user.login + ' wants to merge' }} {{ pull.commits | pluralize:'commit' }}
               into <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.base.ref : pull.base.label}}</span>
               from <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</span>
               <small moment="pull.merged_at || pull.created_at"></small>
@@ -21,8 +21,10 @@
             <p ng-bind-html="pull.html"></p>
           </div>
           <merge-button permissions="repo.permissions"
-                        pull="pull" 
+                        pull="pull"
+                        reposettings="reposettings"
                         status="status.value"
+                        get-long-star-text="getLongStarText()"
                         ng-show="status.loaded">
           </merge-button>
         </div>
@@ -40,19 +42,19 @@
               <div class="row">
                 <div class="col-sm-8">
                   <p>
-                    Showing {{ pull.changed_files | pluralize:'changed file' }} with 
-                    <strong>{{ pull.additions | pluralize:'addition' }}</strong> and 
+                    Showing {{ pull.changed_files | pluralize:'changed file' }} with
+                    <strong>{{ pull.additions | pluralize:'addition' }}</strong> and
                     <strong>{{ pull.deletions | pluralize:'deletion' }}</strong>
                   </p>
 
                   <strong>Compare:</strong>
 
                   <div class="clearfix"></div>
-                  <graph class="git" 
-                         base-sha="pull.base.sha" 
+                  <graph class="git"
+                         base-sha="pull.base.sha"
                          issue-sha="sha"
-                         head-sha="head" 
-                         active-sha="base" 
+                         head-sha="head"
+                         active-sha="base"
                          open-issues="open.value"
                          compare="compComm(base, head)">
                   </graph>
@@ -61,23 +63,23 @@
 
                 <div class="col-sm-4 text-right">
                   <div class="btn-group">
-                      <button type="button" 
-                              class="btn btn-default" 
-                              ng-click="setStar()" 
+                      <button type="button"
+                              class="btn btn-default btn-ninja"
+                              ng-click="setStar()"
                               style="padding:2px 12px 0px;"
-                              tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star" 
+                              tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star"
                               tooltip-placement="bottom"
                               tooltip-append-to-body="true">
-                          <span class="icon-ninja-star text-primary" style="font-size:25px" ng-class="{muted: !star.value}"></span>
+                          <span class="icon-ninja-star text-primary" style="font-size:25px;" ng-class="{muted: !star.value}"></span>
                       </button>
                     <div class="btn-group">
-                      <button type="button" 
-                              class="btn dropdown-toggle stars"
-                              ng-class="{'btn-warning': pull.stars.length < reposettings.value.threshold,
-                                         'btn-primary': pull.stars.length >= reposettings.value.threshold}"
-                              data-toggle="dropdown" 
-                              ng-disabled="!pull.stars.length" 
-                              style="font-size:18px; min-width:36px; min-height:39px;">
+                      <button type="button"
+                              class="btn dropdown-toggle btn-ninja"
+                              ng-class="{'btn-threshold-missing': pull.stars.length < reposettings.value.threshold,
+                                         'btn-threshold-reached': pull.stars.length >= reposettings.value.threshold}"
+                              data-toggle="dropdown"
+                              ng-disabled="!pull.stars.length"
+                              style="font-size:18px;">
                         {{ pull.stars.length }}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
@@ -104,10 +106,10 @@
               </div>
             </div>
 
-            <diff ng-repeat="file in files" 
+            <diff ng-repeat="file in files"
                   file="file"
                   base-sha="base"
-                  head-sha="head" 
+                  head-sha="head"
                   selection="reference.selection"
                   ref-issues="reference.issues"
                   issues="state==='open' ? open.value : closed.value">
@@ -117,7 +119,7 @@
 
           <tab>
             <tab-heading><span class="octicon octicon-file-code"></span> Files</tab-heading>
-            <browser sha="pull.head.sha" 
+            <browser sha="pull.head.sha"
                      selection="reference.selection"
                      ref-issues="reference.issues"
                      issues="state==='open' ? open.value : closed.value">
@@ -126,7 +128,7 @@
 
           <tab>
             <tab-heading><span class="octicon octicon-comment-discussion"></span> Conversation</tab-heading>
-            <div infinite-scroll="comments.getMore()" 
+            <div infinite-scroll="comments.getMore()"
                  infinite-scroll-disabled="comments.loading"
                  style="margin:20px 0;">
 
@@ -197,7 +199,7 @@
 
           <tab>
             <tab-heading>
-              <span class="octicon octicon-check"></span> Status
+              <span class="octicon octicon-check"></span> Services
             </tab-heading>
             <table class="table table-plain">
               <tr>
