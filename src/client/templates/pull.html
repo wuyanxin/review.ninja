@@ -78,7 +78,10 @@
                                          'btn-threshold-reached': pull.stars.length >= reposettings.value.threshold}"
                               data-toggle="dropdown"
                               ng-disabled="!pull.stars.length"
-                              style="font-size:18px;">
+                              style="font-size:18px;"
+                              tooltip="Show reviewers that starred"
+                              tooltip-placement="bottom"
+                              tooltip-append-to-body="true">
                         {{ pull.stars.length }}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
