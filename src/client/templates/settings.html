@@ -79,18 +79,14 @@
                 </span>
               </div>
             </form>
-            <div class="btn-group">
-              <span ng-repeat="watch in settings.value.watched">
-                <button type="button"
-                        class="btn btn-settings"
-                        style="border-right:none;">
-                  {{ watch }}
-                </button>
-                <button type="button" class="btn btn-simple" style="border-left:none; padding-left:0px;">
-                  <i class="fa fa-times" ng-click="removeWatch(watch); $event.stopPropagation();"></i>
-                </button>
-              </span>
-            </div>
+
+            <button ng-repeat="watch in settings.value.watched"
+                    type="button"
+                    class="btn btn-simple"
+                    style="margin-right: 10px;">
+              {{ watch }}&nbsp;&nbsp;
+              <i class="fa fa-times" ng-click="removeWatch(watch)"></i>
+            </button>
           </div>
         </div>
       </div>

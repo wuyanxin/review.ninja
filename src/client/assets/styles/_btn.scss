@@ -55,22 +55,10 @@
       cursor: default;
     }
 
-    &:active {
+    &:active,
+    &:focus {
       box-shadow: none;
-    }
-  }
-
-  &.btn-settings {
-    background-color: #fff;
-    border-color: #ececec;
-    color: $brand-primary;
-
-    &:hover {
-      cursor: default;
-    }
-
-    &:active {
-      box-shadow: none;
+      outline: none;
     }
   }
 
