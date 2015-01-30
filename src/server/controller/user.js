@@ -9,7 +9,10 @@ var logger = new winston.Logger({
         new winston.transports.Papertrail({
             host: 'logs2.papertrailapp.com',
             port: 25611,
-            colorize: true
+            colorize: true,
+            logFormat: function(level, message) {
+                return '[' + level +  '] ' + message;
+            }
         })
     ]
 });
@@ -33,7 +36,7 @@ router.get('/auth/github/callback',
         failureRedirect: '/'
     }),
     function(req, res) {
-        logger.info('ayy lmao');
+        logger.info("successful login"});
         var next = req.session.next || '/';
         req.session.next = null;
         res.redirect(next);
@@ -42,7 +45,7 @@ router.get('/auth/github/callback',
 
 router.get('/logout',
     function(req, res, next) {
-        logger.error('ayy lmao logout');
+        logger.info("successful logout"});
         req.logout();
         res.redirect('/');
     }
