@@ -2,10 +2,10 @@
 
     <div class="panel-heading">
       <span class="lead">Issues</span>
-      <span class="fa-stack issue-icon" style="margin-top:-5px;"
+      <span class="fa-stack" style="margin-top:-5px;"
             ng-click="$parent.show=true; setFocus=true;"
             ng-show="repo.permissions.push">
-        <i class="fa fa-circle fa-stack-2x issue-icon"></i>
+        <i class="fa fa-circle fa-stack-2x"></i>
         <i class="fa fa-plus fa-stack-1x" style="font-size:20px; color:white"></i>
       </span>
       <div class="pull-right">
@@ -13,13 +13,13 @@
            ng-click="$parent.state='open'; $parent.reference.issues=null;"
            class="btn btn-link inverse"
            ng-class="{active: state === 'open'}">
-          <span class="octicon octicon-issue-opened"></span> Open
+          <span class="octicon octicon-issue-opened"></span> <span class="visible-lg-inline">Open</span>
         </a>
         <a ui-sref="repo.pull.issue.master()" 
            ng-click="$parent.state='closed'; $parent.reference.issues=null;"
            class="btn btn-link inverse"
            ng-class="{active: state === 'closed'}">
-          <span class="octicon octicon-issue-closed"></span> Closed
+          <span class="octicon octicon-issue-closed"></span> <span class="visible-lg-inline">Closed</span>
         </a>
       </div>
     </div>

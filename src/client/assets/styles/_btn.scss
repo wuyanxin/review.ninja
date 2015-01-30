@@ -1,11 +1,14 @@
 .btn {
-  white-space: normal;
   
   &.btn-link {
     color: $brand-primary-muted;
 
     &:hover {
       color: $brand-primary;
+      text-decoration: none;
+    }
+
+    &:focus {
       text-decoration: none;
     }
 
@@ -72,11 +75,11 @@
   }
 
   &.btn-ninja {
-    background-color: white;
+    background-color: #fff;
     border: 1px solid $gray-light;
     color: $brand-primary-muted;
-    height:40px;
-    width:50px;
+    height: 40px;
+    width: 50px;
 
     &:hover {
       background-color: $gray-lighter;

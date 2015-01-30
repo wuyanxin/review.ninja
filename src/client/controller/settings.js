@@ -15,17 +15,12 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             repo_uuid: repo.value.id
         });
 
+        $scope.threshold = 1;
+        $scope.comment = true;
+
         $scope.reposettings = $RPC.call('repo', 'get', {
             repo_uuid: repo.value.id
         });
-
-        $scope.numberPattern = /[0-9]+/;
-
-        var reposettingsCallback = function(err, reposettings) {
-            if(!err) {
-                $scope.reposettings.value = reposettings.value;
-            }
-        };
 
         $scope.setNotifications = function() {
             $RPC.call('settings', 'setNotifications', {
@@ -62,27 +57,25 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             $scope.setWatched(watched);
         };
 
-        $scope.changeThreshold = function(invalid) {
-            if(invalid) {
-                $('#threshold').popover('show');
-            } else {
-                $('.popover').popover('hide');
-            }
-
+        $scope.changeThreshold = function() {
             $RPC.call('repo', 'setThreshold', {
                 repo_uuid: repo.value.id,
                 threshold: $scope.reposettings.value.threshold
-            }, reposettingsCallback);
+            }, function(err, settings) {
+                if(!err) {
+                    $scope.reposettings.value.threshold = settings.value.threshold;
+                }
+            });
         };
 
         $scope.toggleComments = function() {
             $RPC.call('repo', 'setComment', {
                 repo_uuid: repo.value.id,
                 comment: $scope.reposettings.value.comment
-            }, reposettingsCallback);
-        };
-
-        $scope.reset = function() {
-            $scope.query = null;
+            }, function(err, settings) {
+                if(!err) {
+                    $scope.reposettings.value.comment = settings.value.comment;
+                }
+            });
         };
     }]);

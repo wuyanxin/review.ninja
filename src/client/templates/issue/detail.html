@@ -1,23 +1,23 @@
 <table class="table" style="table-layout:fixed; margin-bottom:0px;">
     <tr class="no-select">
-        <td style="padding-top:18px; padding-right:0px; width:35px;">
+        <td style="padding-right:0px; width:35px;">
             <a class="text-primary" ui-sref="repo.pull.issue.master()"><i class="fa fa-lg fa-angle-left"></i></a>
         </td>
-        <td style="padding-left:5px;">
-            <h4 class="panel-title"><strong>{{ issue.title }}</strong> <a class="link-external" target="_blank"  ng-href="{{issue.html_url}}">#{{ issue.number }}</a>
-            <span class="text-center pull-right" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments || !!comments.value.length]">
-                <i class="octicon octicon-comment"></i>
-                {{ (issue.body ? 1 : 0) + (comments.value.length || issue.comments) }}
-            </span>
+        <td>
+            <h4 class="panel-title">
+                <strong>{{ issue.title }}</strong> 
+                <a class="link-external" target="_blank"  ng-href="{{ issue.html_url }}">#{{ issue.number }}</a>
             </h4>
-            <p style="padding-top:15px">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span>&nbsp;</p>
+            <p style="padding-top:15px">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span></p>
             <i class="fa fa-lg fa-link text-warning" 
                ng-show="issue.ref"
-               tooltip="{{ issue.ref }}"
-               tooltip-placement="bottom"
                style="padding-top:10px;">
             </i>
             <span ng-show="issue.ref"> This issue is linked to {{ issue.ref }}</span>
+        </td>
+        <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments || !!comments.value.length]" style="width:50px; padding-left:0;">
+            <i class="octicon octicon-comment"></i>
+            {{ (issue.body ? 1 : 0) + (comments.value.length || issue.comments) }}
         </td>
     </tr>
 </table>
@@ -34,7 +34,6 @@
             <td>
                 <div class="panel panel-default comment">
                     <div class="panel-heading">
-                        <div class="panel-arrow"></div>
                         <strong>{{ issue.user.login }}</strong> commented <span moment="issue.created_at"></span>
                     </div>
                     <div class="panel-body" ng-bind-html="issue.html"></div>
@@ -51,7 +50,6 @@
             <td>
                 <div class="panel panel-default comment">
                     <div class="panel-heading">
-                        <div class="panel-arrow"></div>
                         <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
                     </div>
                     <div class="panel-body" ng-bind-html="comment.html"></div>
@@ -71,7 +69,6 @@
                 <td>
                     <div class="panel panel-default comment">
                         <div class="panel-heading">
-                            <div class="panel-arrow"></div>
                             <strong>{{ user.value.login }}</strong>
                         </div>
                         <div class="panel-body" style="padding:0;">
