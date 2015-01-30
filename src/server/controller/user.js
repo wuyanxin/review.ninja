@@ -1,6 +1,18 @@
 var passport = require('passport');
 var express = require('express');
 var path = require('path');
+var winston = require('winston');
+require('winston-papertrail').Papertrail;
+
+var logger = new winston.Logger({
+    transports: [
+        new winston.transports.Papertrail({
+            host: 'logs2.papertrailapp.com',
+            port: 25611,
+            colorize: true
+        })
+    ]
+});
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // User controller
@@ -21,6 +33,7 @@ router.get('/auth/github/callback',
         failureRedirect: '/'
     }),
     function(req, res) {
+        logger.info('ayy lmao');
         var next = req.session.next || '/';
         req.session.next = null;
         res.redirect(next);
@@ -29,6 +42,7 @@ router.get('/auth/github/callback',
 
 router.get('/logout',
     function(req, res, next) {
+        logger.error('ayy lmao logout');
         req.logout();
         res.redirect('/');
     }
