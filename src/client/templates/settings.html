@@ -15,23 +15,23 @@
     <div class="row">
       <div class="col-md-12" style="margin-top: 10px;">
         <p class="settingsheading">Merge threshold</p>
-        <div class="indent">
+        <div style="margin-left: 15px;">
           <form name="form">
             <p>For <strong>{{ repo.value.owner.login }}/{{ repo.value.name }}</strong>
               <input id="threshold" type="number" min="0" max="99" required name="thresholdvalue"
                      ng-model="reposettings.value.threshold"
-                     ng-change="changeThreshold(form.thresholdvalue.$invalid)"
-                     ng-pattern="numberPattern"
-                     ng-class="{'text-warning': form.thresholdvalue.$invalid}"
-                     data-toggle="popover" data-placement="right" trigger="manual"
-                     data-content="Threshold must be between 1-99."/> ninja stars are required to merge.
+                     ng-change="changeThreshold()"
+                     ng-pattern="/[0-9]+/"
+                     ng-class="{'text-warning': form.$invalid}"
+                     class="text-right" /> ninja stars are required to merge.
+               <small class="text-danger" ng-show="form.$invalid && reposettings.loaded"><br />Threshold must be between 0 and 99.</small>
             </p>
           </form>
         </div>
       </div>
       <div class="col-md-12" style="margin-top: 20px;">
         <p class="settingsheading">ReviewNinja content in GitHub</p>
-        <div class="indent">
+        <div style="margin-left: 15px;">
           <div>
             <input id="comments" type="checkbox" ng-model="reposettings.value.comment" ng-change="toggleComments()" />
             <label for="comments">Allow ReviewNinja to comment in <strong>{{ repo.value.owner.login }}/{{ repo.value.name }}</strong> pull request conversations in GitHub.</label>
@@ -47,7 +47,7 @@
             </span>
           </a>
         </p>
-        <div class="indent">
+        <div style="margin-left: 15px;">
           <p>ReviewNinja notifications are separate from GitHub notifications.</p>
           <div>
             <input id="pull" type="checkbox"

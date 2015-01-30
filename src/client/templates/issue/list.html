@@ -18,7 +18,7 @@
         </i> 
       </small>
     </td>
-    <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments]">
+    <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments]" style="width:50px; padding-left:0;">
       <i class="octicon octicon-comment"></i>
       {{ (issue.body ? 1 : 0) + issue.comments }}
     </td>

@@ -1,12 +1,12 @@
-.well {
+.well,
+.well-sm {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   box-shadow: none;
 
   margin-bottom: 10px;
-}
 
-.well-dark {
-  @extend .well;
-  background-color: $gray-light;
+  &.well-dark {
+    background-color: $gray-light;
+  }
 }

@@ -1,14 +1,11 @@
-.settingsheading {
+.settings {
+  .settingsheading {
     font-size: 16px;
     font-weight: bold;
-    margin-bottom:0px;
-}
+    margin-bottom: 0;
+  }
 
-.indent {
-    margin-left: 15px;
-}
-
-label {
+  label {
     cursor: pointer;
     display: inline-block;
     font-size: 14px;
@@ -16,39 +13,40 @@ label {
     margin-right: 15px;
     padding-left: 25px;
     position: relative;
-}
+  }
 
-input[type=checkbox] {
+  input[type=checkbox] {
     display: none;
-}
+  }
 
-label:before {
+  label:before {
     border: 2px solid $brand-primary-muted;
-    content: "";
+    content: '';
     display: inline-block;
     height: 16px;
     left: 0;
     margin-right: 10px;
+    position: absolute;
     top: 2px;
     vertical-align: middle;
-    position: absolute;
     width: 16px;
-}
+  }
 
-.checkbox label:before {
+  .checkbox label:before {
     border-radius: 3px;
-}
+  }
 
-input[type=checkbox]:checked + label:before {
+  input[type=checkbox]:checked + label:before {
     color: $brand-primary-hover;
-    content: "\f00c";
+    content: '\f00c';
     font-family: FontAwesome;
     font-size: 16px;
     line-height: 10px;
     text-align: center;
-}
+  }
 
-input[type=number] {
+  input[type=number] {
     text-align: right;
     width: 45px;
+  }
 }
