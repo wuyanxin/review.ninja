@@ -49,7 +49,6 @@
           <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))"
               ui-sref="repo.pull.issue.master({ number: pull.number })"
               class="select">
-
             <td class="watched" ng-class="{active: pull.watched}"></td>
             <td style="width:50px; padding-right:0;">
               <img ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
@@ -97,7 +96,10 @@
             </td>
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
               <span class="text-primary">
-                <span class="fa-lg icon-ninja-star"></span><br />
+                <span class="fa-lg icon-ninja-star"
+                    tooltip="{{ getStarUsers(pull) }}"
+                    tooltip-placement="bottom"
+                    tooltip-append-to-body="true"></span><br />
                 {{ pull.stars.length }}
               </span>
             </td>

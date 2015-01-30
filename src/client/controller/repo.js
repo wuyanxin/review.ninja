@@ -87,5 +87,18 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
                 controller: 'BadgeCtrl'
             });
         };
+
+        //
+        // UI text
+        //
+
+        $scope.getStarUsers = function(pull) {
+            if(pull.stars && pull.stars.length > 0) {
+                return pull.stars.map(function(star) {
+                    return star.name;
+                }).join(' and ');
+            }
+            return 'No user starred';
+        };
     }
 ]);
