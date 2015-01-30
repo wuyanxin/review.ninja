@@ -75,7 +75,7 @@
             </td>
 
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
-              <span class="text-grey">
+              <span class="text-grey" ng-class="{'text-primary': pull.commentsCount}">
                 <span class="octicon octicon-large octicon-comment-discussion"></span><br />
                 {{ pull.commentsCount }}
               </span>
@@ -84,7 +84,7 @@
                 ng-show="pull.milestone.open_issues">
               <span class="text-warning">
                 <span class="octicon octicon-large octicon-issue-opened"></span><br />
-                {{ pull.milestone.open_issues}}
+                {{ pull.milestone.open_issues }}
               </span>
             </td>
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px"
