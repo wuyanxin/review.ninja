@@ -73,7 +73,7 @@ module.exports = {
                             );
                         }
                     }
-                    keenio.client.addEvent('AddRepo', {
+                    keenio.addEvent('AddRepo', {
                         user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid });
                     done(err, {repos: user ? user.repos : null});
                 });
@@ -91,7 +91,7 @@ module.exports = {
                         if(repo !== req.args.repo_uuid) {
                             repos.push(repo);
                         } else {
-                            keenio.client.addEvent('RemoveRepo', {
+                            keenio.addEvent('RemoveRepo', {
                                 user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid });
                         }
                     });

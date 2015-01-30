@@ -68,7 +68,7 @@ module.exports = {
             star.create(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number,
                 req.user, req.user.token, function(err, obj) {
                     if (!err) {
-                        keenio.client.addEvent('AddStar', {
+                        keenio.addEvent('AddStar', {
                             sha: req.args.sha,
                             user: req.args.user,
                             repo: req.args.repo,
@@ -113,7 +113,7 @@ module.exports = {
             star.remove(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user,
                 req.user.token, function(err, obj) {
                     if (!err) {
-                        keenio.client.addEvent('RemoveStar', {
+                        keenio.addEvent('RemoveStar', {
                             sha: req.args.sha,
                             user: req.args.user,
                             repo: req.args.repo,

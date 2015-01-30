@@ -87,7 +87,7 @@ module.exports = {
                     token: req.user.token
                 }, function(err, obj) {
                     if (!err) {
-                        keenio.client.addEvent('AddIssue', {
+                        keenio.addEvent('AddIssue', {
                             user: req.args.user,
                             repo: req.args.repo,
                             body: body,

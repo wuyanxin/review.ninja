@@ -1,6 +1,6 @@
 var keenio = require('../services/keenio');
 
 module.exports = function(req, res, next) {
-    keenio.client.addEvent(req.args.fun + '_' + req.args.obj, req.args);
+    keenio.addEvent(req.args.fun + '_' + req.args.obj, req.args);
     next();
 };

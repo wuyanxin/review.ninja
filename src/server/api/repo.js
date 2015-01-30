@@ -23,7 +23,7 @@ module.exports = {
         }, {
             comment: req.args.comment
         }, {}, function(err, obj) {
-            keenio.client.addEvent('AddComment', req.args);
+            keenio.addEvent('AddComment', req.args);
             done(err, obj);
         });
     },
@@ -35,7 +35,7 @@ module.exports = {
             threshold: req.args.threshold
         }, {}, function(err, obj) {
             if (!err) {
-                keenio.client.addEvent('SetThreshold', req.args);
+                keenio.addEvent('SetThreshold', req.args);
             }
             done(err, obj);
         });
