@@ -52,7 +52,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.milestone(pull) && Pull.stars(pull);
+                    pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setAuthor(pull);
                 });
             }

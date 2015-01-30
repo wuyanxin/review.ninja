@@ -57,10 +57,11 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
             $HUB.call('issues', 'getComments', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                number: pull.number
+                number: pull.number,
+                per_page: 10
             }, function(err, comments) {
                 if(!err) {
-                    pull.commentsCount = comments.value.length;
+                    pull.commentsCount = comments.value.length < 10 ? comments.value.length : comments.value.length + '+';
                 }
             });
             return pull;
