@@ -9,7 +9,7 @@
           <li class="pull-right settings-icon"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
           <li class="pull-right" style="margin-top:-2px;"><a href="" ng-click="badge()"><img src="/assets/images/wereviewninja-24.png" /></a></li>
         </ol>
-        
+
         <h2><span class="mega-octicon octicon-git-pull-request"></span> Pull Requests</h2>
 
       </div>
@@ -40,8 +40,8 @@
           </div>
         </div>
 
-        <table class="table table-hover pull-list" 
-               infinite-scroll="type==='open' ? open.getMore() : closed.getMore()" 
+        <table class="table table-hover pull-list"
+               infinite-scroll="type==='open' ? open.getMore() : closed.getMore()"
                infinite-scroll-disabled="type==='open' ? !(!open.loading && !author) : !(!closed.loading && !author)"
                ng-show="matched.length"
                style="margin-bottom:10px;">
@@ -110,8 +110,8 @@
           There are no closed pull requests to show.
         </p>
 
-        <span class="fa-stack center-block" 
-              ng-show="author" 
+        <span class="fa-stack center-block"
+              ng-show="author"
               ng-click="author=null;">
           <i class="fa fa-circle fa-stack-2x text-info"></i>
           <i class="fa fa-times fa-stack-1x" style="margin-top:-1px;" tooltip="Clear filters" tooltip-placement="bottom" tooltip-append-to-body="true"></i>
