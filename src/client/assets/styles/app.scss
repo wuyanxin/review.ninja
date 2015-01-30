@@ -16,6 +16,7 @@ $brand-success: #4c9931;
 $brand-primary-muted: lighten($brand-primary, 20%);
 $brand-primary-hover: darken($brand-primary, 10%);
 $brand-warning: #df843e;
+$brand-warning-muted: lighten($brand-warning, 20%);
 $brand-danger: #bd2c00;
 $brand-info: #d0eaea;
 $brand-merged: #6e5494;
@@ -241,6 +242,10 @@ h4,
 
 .text-warning {
   color: $brand-warning;
+
+  &.muted {
+    color: $brand-warning-muted;
+  }
 }
 
 .text-danger {
