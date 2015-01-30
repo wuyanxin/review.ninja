@@ -7,7 +7,6 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
     return {
 
         milestone: function(pull) {
-
             if(pull.milestone) {
                 $HUB.call('issues', 'getMilestone', {
                     user: pull.base.repo.owner.login,
@@ -19,12 +18,10 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
                     }
                 });
             }
-
             return pull;
         },
 
         render: function(pull) {
-
             if(pull.body) {
                 $HUB.wrap('markdown', 'render', {
                     text: pull.body,
@@ -36,12 +33,10 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
                     }
                 });
             }
-
             return pull;
         },
 
         stars: function(pull) {
-
             $RPC.call('star', 'all', {
                 sha: pull.head.sha,
                 repo_uuid: pull.base.repo.id
@@ -55,7 +50,19 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
                     });
                 }
             });
+            return pull;
+        },
 
+        commentsCount: function(pull) {
+            $HUB.call('issues', 'getComments', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: pull.number
+            }, function(err, comments) {
+                if(!err) {
+                    pull.commentsCount = comments.value.length;
+                }
+            });
             return pull;
         }
     };
