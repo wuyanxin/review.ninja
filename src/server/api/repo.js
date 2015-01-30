@@ -1,3 +1,4 @@
+var keenio = require('../services/keenio');
 // models
 var Repo = require('mongoose').model('Repo');
 
@@ -21,7 +22,10 @@ module.exports = {
             repo: req.args.repo_uuid
         }, {
             comment: req.args.comment
-        }, {}, done);
+        }, {}, function(err, obj) {
+            keenio.addEvent('AddComment', req.args);
+            done(err, obj);
+        });
     },
 
     setThreshold: function(req, done) {
@@ -29,7 +33,12 @@ module.exports = {
             repo: req.args.repo_uuid
         }, {
             threshold: req.args.threshold
-        }, {}, done);
+        }, {}, function(err, obj) {
+            if (!err) {
+                keenio.addEvent('SetThreshold', req.args);
+            }
+            done(err, obj);
+        });
     }
 
 };

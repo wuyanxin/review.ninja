@@ -2,6 +2,8 @@
 var url = require('../services/url');
 var github = require('../services/github');
 var webhook = require('../services/webhook');
+var keenio = require('../services/keenio');
+
 // models
 var User = require('mongoose').model('User');
 
@@ -71,7 +73,8 @@ module.exports = {
                             );
                         }
                     }
-
+                    keenio.addEvent('AddRepo', {
+                        user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid });
                     done(err, {repos: user ? user.repos : null});
                 });
             });
@@ -87,13 +90,15 @@ module.exports = {
                     user.repos.forEach(function(repo) {
                         if(repo !== req.args.repo_uuid) {
                             repos.push(repo);
+                        } else {
+                            keenio.addEvent('RemoveRepo', {
+                                user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid });
                         }
                     });
 
                     user.repos = repos;
                     user.save();
                 }
-
                 done(err, {repos: user ? user.repos : null});
             });
         }

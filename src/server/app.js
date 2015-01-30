@@ -38,6 +38,7 @@ app.use(passport.session());
 app.use('/api', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 app.use('/github/webhook', require('./middleware/param'));
+app.use('/api', require('./middleware/keen'));
 
 async.series([
 
