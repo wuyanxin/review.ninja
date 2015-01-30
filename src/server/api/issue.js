@@ -2,6 +2,7 @@
 var url = require('../services/url');
 var github = require('../services/github');
 var milestone = require('../services/milestone');
+var keenio = require('../services/keenio');
 
 module.exports = {
 
@@ -84,7 +85,19 @@ module.exports = {
                         milestone: milestone.number
                     },
                     token: req.user.token
-                }, done);
+                }, function(err, obj) {
+                    if (!err) {
+                        keenio.addEvent('AddIssue', {
+                            user: req.args.user,
+                            repo: req.args.repo,
+                            body: body,
+                            title: req.args.title,
+                            labels: ['review.ninja'],
+                            milestone: milestone.number
+                        });
+                    }
+                    done(err, obj);
+                });
             }
         );
     }
