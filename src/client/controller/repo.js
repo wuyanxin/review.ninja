@@ -93,12 +93,11 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         //
 
         $scope.getStarUsers = function(pull) {
-            if(pull.stars && pull.stars.length > 0) {
-                return pull.stars.map(function(star) {
+            if(pull.stars && pull.stars.length) {
+                return pull.stars.slice(0, 3).map(function(star) {
                     return star.name;
-                }).join(' and ');
+                }).join(', ') + (pull.stars.length > 3 ? ' and ' + (pull.stars.length - 3) + ' others starred' : ' starred');
             }
-            return 'No user starred';
         };
     }
 ]);

@@ -75,7 +75,7 @@
             </td>
 
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
-              <span class="text-grey" ng-class="{'text-primary': pull.commentsCount}">
+              <span class="text-primary" ng-class="{muted: !pull.commentsCount}">
                 <span class="octicon octicon-large octicon-comment-discussion"></span><br />
                 {{ pull.commentsCount }}
               </span>
@@ -89,13 +89,13 @@
             </td>
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px"
                  ng-show="!pull.milestone.open_issues">
-              <span class="text-primary">
+              <span class="text-primary" ng-class="{muted: !pull.milestone.closed_issues}">
                 <span class="octicon octicon-large octicon-issue-closed"></span><br />
-                {{ pull.milestone.closed_issues || 0}}
+                {{ pull.milestone.closed_issues || 0 }}
               </span>
             </td>
             <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
-              <span class="text-primary">
+              <span class="text-primary" ng-class="{muted: !pull.stars.length}">
                 <span class="fa-lg icon-ninja-star"
                     tooltip="{{ getStarUsers(pull) }}"
                     tooltip-placement="bottom"
