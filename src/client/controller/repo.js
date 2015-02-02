@@ -38,7 +38,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.milestone(pull) && Pull.stars(pull);
+                    pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setAuthor(pull);
                 });
             }
@@ -52,7 +52,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.milestone(pull) && Pull.stars(pull);
+                    pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setAuthor(pull);
                 });
             }
@@ -86,6 +86,18 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
                 templateUrl: '/modals/templates/badge.html',
                 controller: 'BadgeCtrl'
             });
+        };
+
+        //
+        // UI text
+        //
+
+        $scope.getStarUsers = function(pull) {
+            if(pull.stars && pull.stars.length) {
+                return pull.stars.slice(0, 3).map(function(star) {
+                    return star.name;
+                }).join(', ') + (pull.stars.length > 3 ? ' and ' + (pull.stars.length - 3) + ' others starred' : ' starred');
+            }
         };
     }
 ]);

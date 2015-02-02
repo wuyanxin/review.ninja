@@ -2,7 +2,7 @@
 
     <div class="panel-heading">
       <span class="lead">Issues</span>
-      <span class="fa-stack" style="margin-top:-5px;"
+      <span class="fa-stack plus-icon" style="margin-top:-5px;"
             ng-click="$parent.show=true; setFocus=true;"
             ng-show="repo.permissions.push">
         <i class="fa fa-circle fa-stack-2x"></i>
@@ -49,9 +49,7 @@
                             tooltip="{{ reference.selection.path }}"
                             tooltip-placement="bottom"
                             style="border-right:none;">
-                      <i class="fa fa-lg fa-link"></i> line {{ reference.selection.start }} {{ reference.selection.end ? 'to line ' + reference.selection.end : '' }}
-                    </button>
-                    <button type="button" class="btn btn-simple" style="border-left:none; padding-left:0px;">
+                      <i class="fa fa-lg fa-link"></i> line {{ reference.selection.start }} {{ reference.selection.end ? 'to line ' + reference.selection.end : '' }}&nbsp;&nbsp;
                       <i class="fa fa-times" ng-click="$parent.show=true; $parent.reference.selection={};"></i>
                     </button>
                   </div>

@@ -9,7 +9,7 @@
           <li class="pull-right settings-icon"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
           <li class="pull-right" style="margin-top:-2px;"><a href="" ng-click="badge()"><img src="/assets/images/wereviewninja-24.png" /></a></li>
         </ol>
-        
+
         <h2><span class="mega-octicon octicon-git-pull-request"></span> Pull Requests</h2>
 
       </div>
@@ -40,8 +40,8 @@
           </div>
         </div>
 
-        <table class="table table-hover pull-list" 
-               infinite-scroll="type==='open' ? open.getMore() : closed.getMore()" 
+        <table class="table table-hover pull-list"
+               infinite-scroll="type==='open' ? open.getMore() : closed.getMore()"
                infinite-scroll-disabled="type==='open' ? !(!open.loading && !author) : !(!closed.loading && !author)"
                ng-show="matched.length"
                style="margin-bottom:10px;">
@@ -49,7 +49,6 @@
           <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))"
               ui-sref="repo.pull.issue.master({ number: pull.number })"
               class="select">
-
             <td class="watched" ng-class="{active: pull.watched}"></td>
             <td style="width:50px; padding-right:0;">
               <img ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
@@ -75,21 +74,35 @@
               </table>
             </td>
 
-            <td class="text-center" style="width:70px;">
-              <span class="octicon octicon-large octicon-issue-opened text-warning" 
-                    ng-show="pull.milestone.open_issues">
-              </span>
-              <span class="octicon octicon-large octicon-issue-closed text-primary" 
-                    ng-show="pull.milestone.closed_issues && !pull.milestone.open_issues">
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+              <span class="text-primary" ng-class="{muted: !pull.commentsCount}">
+                <span class="octicon octicon-large octicon-comment-discussion"></span><br />
+                {{ pull.commentsCount }}
               </span>
             </td>
-            <td class="text-center" style="width:70px;">
-              <span class="text-primary" ng-show="pull.stars.length" ng-class="{muted: pull.milestone.open_issues}">
-                <span class="fa-lg icon-ninja-star"></span><br />
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px"
+                ng-show="pull.milestone.open_issues">
+              <span class="text-warning">
+                <span class="octicon octicon-large octicon-issue-opened"></span><br />
+                {{ pull.milestone.open_issues }}
+              </span>
+            </td>
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px"
+                 ng-show="!pull.milestone.open_issues">
+              <span class="text-primary" ng-class="{muted: !pull.milestone.closed_issues}">
+                <span class="octicon octicon-large octicon-issue-closed"></span><br />
+                {{ pull.milestone.closed_issues || 0 }}
+              </span>
+            </td>
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+              <span class="text-primary" ng-class="{muted: !pull.stars.length}">
+                <span class="fa-lg icon-ninja-star"
+                    tooltip="{{ getStarUsers(pull) }}"
+                    tooltip-placement="bottom"
+                    tooltip-append-to-body="true"></span><br />
                 {{ pull.stars.length }}
               </span>
             </td>
-
           </tr>
         </table>
 
@@ -101,8 +114,8 @@
           There are no closed pull requests to show.
         </p>
 
-        <span class="fa-stack center-block" 
-              ng-show="author" 
+        <span class="fa-stack center-block"
+              ng-show="author"
               ng-click="author=null;">
           <i class="fa fa-circle fa-stack-2x text-info"></i>
           <i class="fa fa-times fa-stack-1x" style="margin-top:-1px;" tooltip="Clear filters" tooltip-placement="bottom" tooltip-append-to-body="true"></i>

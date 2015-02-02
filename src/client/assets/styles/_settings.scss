@@ -10,43 +10,5 @@
     display: inline-block;
     font-size: 14px;
     font-weight: 200;
-    margin-right: 15px;
-    padding-left: 25px;
-    position: relative;
-  }
-
-  input[type=checkbox] {
-    display: none;
-  }
-
-  label:before {
-    border: 2px solid $brand-primary-muted;
-    content: '';
-    display: inline-block;
-    height: 16px;
-    left: 0;
-    margin-right: 10px;
-    position: absolute;
-    top: 2px;
-    vertical-align: middle;
-    width: 16px;
-  }
-
-  .checkbox label:before {
-    border-radius: 3px;
-  }
-
-  input[type=checkbox]:checked + label:before {
-    color: $brand-primary-hover;
-    content: '\f00c';
-    font-family: FontAwesome;
-    font-size: 16px;
-    line-height: 10px;
-    text-align: center;
-  }
-
-  input[type=number] {
-    text-align: right;
-    width: 45px;
   }
 }

@@ -13,8 +13,8 @@ $gray-lighter: #f9f9f9;
 // brand colours
 $brand-primary: #3e9a94;
 $brand-success: #4c9931;
-$brand-primary-muted: #addada;
-$brand-primary-hover: #2c827c;
+$brand-primary-muted: lighten($brand-primary, 20%);
+$brand-primary-hover: darken($brand-primary, 10%);
 $brand-warning: #df843e;
 $brand-danger: #bd2c00;
 $brand-info: #d0eaea;
@@ -121,6 +121,7 @@ $code-font-size: 12px;
 @import 'diff';
 @import 'git';
 @import 'git-merge';
+@import 'icon';
 @import 'list-group';
 @import 'merge';
 @import 'panel';
@@ -223,7 +224,7 @@ h4,
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  -webkit-user-select: none;    
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -285,7 +286,7 @@ i.fa-info,
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  -webkit-user-select: none;    
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -332,15 +333,15 @@ textarea {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  -webkit-user-select: none;    
+  -webkit-user-select: none;
   user-select: none;
 }
 
-[ng\:cloak], 
-[ng-cloak], 
-[data-ng-cloak], 
-[x-ng-cloak], 
-.ng-cloak, 
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
 .x-ng-cloak {
   display: none !important;
 }
