@@ -3,6 +3,7 @@ var colors = require('colors');
 var express = require('express');
 var glob = require('glob');
 var merge = require('merge');
+var papertrail = require('./services/papertrail.js');
 var passport = require('passport');
 var path = require('path');
 var sass = require('node-sass');
@@ -39,6 +40,7 @@ app.use('/api', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 app.use('/github/webhook', require('./middleware/param'));
 app.use('/api', require('./middleware/keen'));
+app.use('/api', require('./middleware/papertrail'));
 
 async.series([
 
