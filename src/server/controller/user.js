@@ -22,7 +22,6 @@ router.get('/auth/github/callback',
         failureRedirect: '/'
     }),
     function(req, res) {
-        console.log(req.user.login);
         papertrail.info('successful login by ' + req.user.login);
         var next = req.session.next || '/';
         req.session.next = null;
