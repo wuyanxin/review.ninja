@@ -31,7 +31,6 @@ router.get('/auth/github/callback',
 
 router.get('/logout',
     function(req, res, next) {
-        console.log(req.user.login);
         papertrail.info('successful logout by ' + req.user.login);
         req.logout();
         res.redirect('/');
