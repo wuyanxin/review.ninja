@@ -58,6 +58,12 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
             }
         });
 
+        // get the collaborators
+        $scope.collaborators = $HUB.call('repos', 'getCollaborators', {
+            user: $stateParams.user,
+            repo: $stateParams.repo
+        });
+
         //
         // Websockets
         //
