@@ -1,3 +1,6 @@
+// libraries
+var async = require('async');
+
 // models
 var User = require('mongoose').model('User');
 
@@ -19,14 +22,14 @@ module.exports = {
         done(null, comp);
     },
 
-    getCollaborators: function(req, col, done) {
-        col.collaborators.forEach(function(collaborator) {
+    getCollaborators: function(req, collaborators, done) {
+        async.each(collaborators, function(collaborator, callback) {
             User.findOne({ uuid: collaborator.id }, function(err, user) {
-                if(!err) {
-                    collaborator.reviewNinjaUser = !!user;
-                }
+                collaborator.ninja = !!user;
+                callback(null);
             });
+        }, function() {
+            done(null, collaborators);
         });
-        done(null, col);
     }
 };
