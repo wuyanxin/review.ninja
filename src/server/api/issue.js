@@ -73,28 +73,23 @@ module.exports = {
                     return done(err);
                 }
 
+                var arg = {
+                    user: req.args.user,
+                    repo: req.args.repo,
+                    body: body,
+                    title: req.args.title,
+                    labels: ['review.ninja'],
+                    milestone: milestone.number
+                };
+
                 github.call({
                     obj: 'issues',
                     fun: 'create',
-                    arg: {
-                        user: req.args.user,
-                        repo: req.args.repo,
-                        body: body,
-                        title: req.args.title,
-                        labels: ['review.ninja'],
-                        milestone: milestone.number
-                    },
+                    arg: arg,
                     token: req.user.token
                 }, function(err, obj) {
                     if (!err) {
-                        keenio.addEvent('AddIssue', {
-                            user: req.args.user,
-                            repo: req.args.repo,
-                            body: body,
-                            title: req.args.title,
-                            labels: ['review.ninja'],
-                            milestone: milestone.number
-                        });
+                        keenio.addEvent('issue:add', arg);
                     }
                     done(err, obj);
                 });
