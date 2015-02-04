@@ -139,4 +139,24 @@ describe('notification:', function() {
 
         done();
     });
+
+    it('should not send an invitation of there is no email of the collaborator', function(done) {
+        var githubStub = sinon.stub(github, 'call', function(arg, done) {
+            done(null, { email: ''});
+        });
+        var transporter = {
+            sendMail: sinon.stub()
+        };
+        var nodemailerStub = sinon.stub(nodemailer, 'createTransport').returns(transporter);
+
+        notification.invite(null, null, null, null, null);
+
+        assert(nodemailer.createTransport.notCalled, 'transporter called and created even if no email');
+        assert(transporter.sendMail.notCalled, 'mail send via transporter even if no email');
+
+        githubStub.restore();
+        nodemailerStub.restore();
+
+        done();
+    });
 });
