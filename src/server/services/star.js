@@ -3,6 +3,7 @@ var Star = require('mongoose').model('Star');
 var url = require('./url');
 var github = require('./github');
 var status = require('../services/status');
+var keenio = require('../services/keenio');
 var notification = require('../services/notification');
 
 module.exports = {
@@ -31,6 +32,13 @@ module.exports = {
                     number: number,
                     sender: sender,
                     url: url.reviewPullRequest(user, repo, number)
+                });
+                keenio.addEvent('star:create', {
+                    user: sender.id,
+                    repo: repo_uuid,
+                    name: sender.login,
+                    sha: sha,
+                    number: number
                 });
             }
 
@@ -67,6 +75,13 @@ module.exports = {
                         number: number,
                         sender: sender,
                         url: url.reviewPullRequest(user, repo, number)
+                    });
+                    keenio.addEvent('star:remove', {
+                        user: sender.id,
+                        repo: repo_uuid,
+                        name: sender.login,
+                        sha: sha,
+                        number: number
                     });
                 }
 

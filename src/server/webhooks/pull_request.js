@@ -1,10 +1,12 @@
 // models
 var User = require('mongoose').model('User');
+var Milestone = require('mongoose').model('Milestone');
 
 //services
 var url = require('../services/url');
 var github = require('../services/github');
 var status = require('../services/status');
+var keenio = require('../services/keenio');
 var milestone = require('../services/milestone');
 var pullRequest = require('../services/pullRequest');
 var notification = require('../services/notification');
@@ -82,6 +84,32 @@ module.exports = function(req, res) {
                 if(req.args.pull_request.merged) {
                     var event = user + ':' + repo + ':' + 'pull-request-' + number + ':merged';
                     io.emit(event, number);
+
+                    Milestone.findOne({
+                        pull: number,
+                        repo: repo_uuid
+                    }, function(err, mile) {
+                        github.call({
+                            obj: 'issues',
+                            fun: 'getMilestone',
+                            arg: {
+                                user: user,
+                                repo: repo,
+                                number: mile ? mile.number : null
+                            },
+                            token: ninja.token
+                        }, function(err, mile) {
+                            // log to keenio
+                            keenio.addEvent('pull_request:merged', {
+                                user: sender.id,
+                                repo: repo_uuid,
+                                name: sender.login,
+                                pull: number,
+                                mile: milestone.number,
+                                open_issues: mile ? mile.open_issues : 0
+                            });
+                        });
+                    });
                 }
 
                 milestone.close(user, repo, repo_uuid, number, ninja.token);

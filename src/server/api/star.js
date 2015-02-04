@@ -4,7 +4,6 @@ var Star = require('mongoose').model('Star');
 // services
 var github = require('../services/github');
 var star = require('../services/star');
-var keenio = require('../services/keenio');
 
 module.exports = {
 
@@ -65,13 +64,7 @@ module.exports = {
                 });
             }
 
-            star.create(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number,
-                req.user, req.user.token, function(err, obj) {
-                    if (!err) {
-                        keenio.addEvent('star:set', req.args);
-                    }
-                    done(err, obj);
-            });
+            star.create(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user, req.user.token, done);
 
         });
     },
@@ -104,13 +97,7 @@ module.exports = {
                 });
             }
 
-            star.remove(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user,
-                req.user.token, function(err, obj) {
-                    if (!err) {
-                        keenio.addEvent('star:rmv', req.args);
-                    }
-                    done(err, obj);
-                });
+            star.remove(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user, req.user.token, done);
         });
     }
 };
