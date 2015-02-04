@@ -109,6 +109,26 @@
           </tab>
           <tab>
             <tab-heading><span class="octicon octicon-squirrel"></span> Team</tab-heading>
+            <table class="table table-plain">
+              <tr>
+                <th>Collaborator</th>
+                <th style="text-align: right;">Some HEADING</th>
+              </tr>
+              <tr ng-repeat="collaborator in collaborators.value | orderBy:'!ninja'">
+                <td>
+                  <img style="margin-right: 10px" ng-src="{{ collaborator.avatar_url }}&s=20" />
+                  <a ng-href="{{ collaborator.html_url }}">{{ collaborator.login }}</a>
+                </td>
+                <td style="text-align: right;">
+                  <button class="btn btn-default"
+                          ng-click="invite(collaborator)"
+                          ng-show="!collaborator.ninja">Send invite email</button>
+                </td>
+              </tr>
+              <tr ng-show="!collaborators.value.length">
+                <td colspan="2">There are no collaborators to show for { pull.base.repo.owner.login }} / {{ pull.base.repo.name }}.</td>
+              </tr>
+            </table>
           </tab>
         </tabset>
       </div>
