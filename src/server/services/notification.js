@@ -154,7 +154,6 @@ module.exports = function() {
                     html: ejs.render(template, args)
                 };
                 transporter.sendMail(mailOptions, function(err, response) {
-                    console.log('arguments', arguments);
                     if (err) {
                         return;
                     }
