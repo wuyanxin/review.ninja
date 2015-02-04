@@ -94,6 +94,14 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
             });
         };
 
+        $scope.invite = function(collaborator) {
+            $RPC.call('invitation', 'invite', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                invitee: collaborator.login
+            });
+        };
+
         //
         // UI text
         //
