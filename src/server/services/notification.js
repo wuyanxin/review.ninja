@@ -131,7 +131,7 @@ module.exports = function() {
             github.call({
                 obj: 'user',
                 fun: 'getFrom',
-                arg : {
+                arg: {
                     user: invitee
                 },
                 token: token

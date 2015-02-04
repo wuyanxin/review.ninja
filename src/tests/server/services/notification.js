@@ -104,4 +104,39 @@ describe('notification:', function() {
 
         done();
     });
+
+    it('should send an invitation to the collaborator', function(done) {
+        var githubStub = sinon.stub(github, 'call', function(arg, done) {
+            assert.equal(arg.obj, 'user');
+            assert.equal(arg.fun, 'getFrom');
+            assert.equal(arg.arg.user, 'invitee');
+            assert.equal(arg.token, 'token');
+            done(null, { email: 'email@testmail.com'});
+        });
+
+        var transporter = {
+            sendMail: function(mailOptions, done) {
+                console.log('asdf', mailOptions);
+                // assert.equal();
+                assert.equal(mailOptions.to, 'email@testmail.com');
+                assert.equal(mailOptions.subject, 'You are invited to ReviewNinja');
+                assert.equal(mailOptions.html, '<h1>ReviewNinja</h1>\n\n\ninviter invited you to join URL ">' +
+                    '[object Object]/repo in ReviewNinja.\n\n<p>--</p>\n<p>Automatic notification by ReviewNinja.<br>' +
+                    '\nVisit <a href="http://www.review.ninja">review.ninja</a> to hear more about review.ninja.</p>\n\n');
+                done();
+            },
+            close: sinon.spy()
+        };
+        var nodemailerStub = sinon.stub(nodemailer, 'createTransport').returns(transporter);
+
+        notification.invite('user', 'repo', 'invitee', 'inviter', 'token');
+
+        assert(nodemailer.createTransport.called, 'transporter not created');
+        assert(transporter.close.called, 'mail not send via transporter');
+
+        githubStub.restore();
+        nodemailerStub.restore();
+
+        done();
+    });
 });
