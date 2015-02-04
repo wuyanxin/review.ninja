@@ -108,15 +108,22 @@
             <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)"></i>
           </tab>
           <tab>
-            <tab-heading><span class="octicon octicon-squirrel"></span> Team</tab-heading>
-            <table class="table table-plain">
-              <tr>
-                <th>Collaborator</th>
-                <th style="text-align: right;">Some HEADING</th>
-              </tr>
+            <tab-heading><span class="fa fa-users"></span> Team</tab-heading>
+            <div class="well well-sm no-select">
+              <a href="" class="btn btn-link">
+                <span class="fa fa-user"></span> Collaborator
+              </a>
+              <a href="" class="btn btn-link">
+                <span class="fa fa-graduation-cap"></span> Ninja Rank
+              </a>
+              <a href="" class="btn btn-link pull-right">
+                <span class="fa fa-bolt"></span> Power
+              </a>
+            </div>
+            <table class="table table-hover pull-list">
               <tr ng-repeat="collaborator in collaborators.value | orderBy:'!ninja'">
                 <td>
-                  <img style="margin-right: 10px" ng-src="{{ collaborator.avatar_url }}&s=20" />
+                  <img style="width:50px; margin-right: 10px" ng-src="{{ collaborator.avatar_url }}&s=50 " width="50px"  />
                   <a ng-href="{{ collaborator.html_url }}">{{ collaborator.login }}</a>
                 </td>
                 <td style="text-align: right;">
