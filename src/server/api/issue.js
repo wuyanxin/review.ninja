@@ -2,7 +2,6 @@
 var url = require('../services/url');
 var github = require('../services/github');
 var milestone = require('../services/milestone');
-var keenio = require('../services/keenio');
 
 module.exports = {
 
@@ -73,26 +72,19 @@ module.exports = {
                     return done(err);
                 }
 
-                var arg = {
-                    user: req.args.user,
-                    repo: req.args.repo,
-                    body: body,
-                    title: req.args.title,
-                    labels: ['review.ninja'],
-                    milestone: milestone.number
-                };
-
                 github.call({
                     obj: 'issues',
                     fun: 'create',
-                    arg: arg,
+                    arg: {
+                        user: req.args.user,
+                        repo: req.args.repo,
+                        body: body,
+                        title: req.args.title,
+                        labels: ['review.ninja'],
+                        milestone: milestone.number
+                    },
                     token: req.user.token
-                }, function(err, obj) {
-                    if (!err) {
-                        keenio.addEvent('issue:add', arg);
-                    }
-                    done(err, obj);
-                });
+                }, done);
             }
         );
     }
