@@ -91,10 +91,6 @@ module.exports = function() {
     };
 
     var notificationArgs = {
-        invite: {
-            subject: 'You are invited to ReviewNinja',
-            template:'src/server/templates/invite.ejs'
-        },
         pull_request_opened: {
             subject:'A new pull request is ready for review',
             template:'src/server/templates/pullReqOpened.ejs'
@@ -127,40 +123,6 @@ module.exports = function() {
     };
 
     return {
-        invite: function (user, repo, invitee, inviter, token) {
-            github.call({
-                obj: 'user',
-                fun: 'getFrom',
-                arg: {
-                    user: invitee
-                },
-                token: token
-            }, function(err, user) {
-                if (err || !user || !user.email) {
-                    return;
-                }
-                var transporter = buildTransporter();
-                var template = fs.readFileSync(notificationArgs.invite.template, 'utf-8');
-                var args = {
-                    filename: notificationArgs.invite.template,
-                    user: user,
-                    repo: repo,
-                    inviter: inviter
-                };
-                var mailOptions = {
-                    from: 'ReviewNinja <noreply@review.ninja>',
-                    to: user.email,
-                    subject: notificationArgs.invite.subject,
-                    html: ejs.render(template, args)
-                };
-                transporter.sendMail(mailOptions, function(err, response) {
-                    if (err) {
-                        return;
-                    }
-                    transporter.close();
-                });
-            });
-        },
         sendmail: function (notificationType, user, repo, repoUuid, token, number, args) {
             getPullRequest(number, user, repo, token, function(err, pull) {
                 if(err) {
