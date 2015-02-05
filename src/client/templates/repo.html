@@ -118,16 +118,23 @@
           </tab>
           <tab>
             <tab-heading><span class="fa fa-users"></span> Team</tab-heading>
-            <div class="well well-sm no-select">
-              <a href="" class="btn btn-link">
-                <span class="fa fa-user"></span> Collaborator
-              </a>
-              <a href="" class="btn btn-link">
-                <span class="fa fa-graduation-cap"></span> Ninja Rank
-              </a>
-              <a href="" class="btn btn-link pull-right">
-                <span class="fa fa-bolt"></span> Power
-              </a>
+            <div class="well well-sm no-select clearfix">
+              <div class="btn-group pull-right">
+                <a href="" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                  Sort
+                  <small><i class="fa fa-chevron-down"></i></small>
+                </a>
+                <ul class="dropdown-menu" role="menu" style="margin:-5px 10px 0 0">
+                  <li>
+                    <a href="" ng-click="">
+                      <span>Author</span>
+                    </a>
+                    <a href="" ng-click="">
+                      <span>Invitation</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
             <table class="table table-hover pull-list">
               <tr ng-repeat="collaborator in collaborators.value | orderBy:'!ninja'">
