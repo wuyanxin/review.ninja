@@ -54,6 +54,7 @@
     "request": "^2.37.0",
     "socket.io": "^1.0.6",
     "valid-url": "^1.0.9",
+    "winston-papertrail": "^1.0.1",
     "x-frame-options": "0.0.0"
   },
   "devDependencies": {

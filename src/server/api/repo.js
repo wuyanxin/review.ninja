@@ -23,7 +23,9 @@ module.exports = {
         }, {
             comment: req.args.comment
         }, {}, function(err, obj) {
-            keenio.addEvent('AddComment', req.args);
+            if(!err) {
+                keenio.addEvent('repo:setComment', req.args);
+            }
             done(err, obj);
         });
     },
@@ -35,7 +37,7 @@ module.exports = {
             threshold: req.args.threshold
         }, {}, function(err, obj) {
             if (!err) {
-                keenio.addEvent('SetThreshold', req.args);
+                keenio.addEvent('repo:setThreshold', req.args);
             }
             done(err, obj);
         });
