@@ -67,19 +67,28 @@
               </td>
               <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
                 <span class="text-primary" ng-class="{muted: !pull.commentsCount}">
-                <span class="octicon octicon-large octicon-comment-discussion"></span>
+                <span class="octicon octicon-large octicon-comment-discussion"
+                      tooltip="{{ pull.commentsCount | pluralize:'conversation comment'}}"
+                      tooltip-placement="bottom"
+                      tooltip-append-to-body="true"></span>
                   <br/> {{ pull.commentsCount }}
                 </span>
               </td>
               <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px" ng-show="pull.milestone.open_issues">
                 <span class="text-warning">
-                  <span class="octicon octicon-large octicon-issue-opened"></span>
+                  <span class="octicon octicon-large octicon-issue-opened"
+                        tooltip="{{ pull.milestone.open_issues | pluralize:'open issue'}}"
+                        tooltip-placement="bottom"
+                        tooltip-append-to-body="true"></span>
                     <br/> {{ pull.milestone.open_issues }}
                   </span>
                 </td>
                 <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px" ng-show="!pull.milestone.open_issues">
                   <span class="text-primary" ng-class="{muted: !pull.milestone.closed_issues}">
-                    <span class="octicon octicon-large octicon-issue-closed"></span>
+                    <span class="octicon octicon-large octicon-issue-closed"
+                          tooltip="{{ pull.milestone.closed_issues || 0 | pluralize:'closed issue'}}"
+                          tooltip-placement="bottom"
+                          tooltip-append-to-body="true"></span>
                     <br/> {{ pull.milestone.closed_issues || 0 }}
                   </span>
                 </td>

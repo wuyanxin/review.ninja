@@ -1,4 +1,6 @@
 var GitHubApi = require('github');
+var papertrail = require('../services/papertrail');
+
 module.exports = {
 
     call: function(call, done) {
@@ -40,6 +42,9 @@ module.exports = {
         }
 
         github[obj][fun](arg, function(err, res) {
+            if(err) {
+                papertrail.error(JSON.stringify(err));
+            }
 
             var meta = null;
 

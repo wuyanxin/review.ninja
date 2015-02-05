@@ -76,6 +76,11 @@ module.exports = {
             readKey: process.env.KEENIO_READ_KEY
         },
 
+        papertrail: {
+            host: process.env.PAPERTRAIL_HOST,
+            port: process.env.PAPERTRAIL_PORT
+        },
+
         static: {
             lib: [__dirname + '/bower'],
             app: [__dirname + '/client']

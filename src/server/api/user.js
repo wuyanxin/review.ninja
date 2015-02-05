@@ -73,8 +73,9 @@ module.exports = {
                             );
                         }
                     }
-                    keenio.addEvent('AddRepo', {
-                        user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid });
+
+                    keenio.addEvent('user:addRepo', req.args);
+
                     done(err, {repos: user ? user.repos : null});
                 });
             });
@@ -90,15 +91,15 @@ module.exports = {
                     user.repos.forEach(function(repo) {
                         if(repo !== req.args.repo_uuid) {
                             repos.push(repo);
-                        } else {
-                            keenio.addEvent('RemoveRepo', {
-                                user: req.args.user, repo: req.args.repo, repo_uuid: req.args.repo_uuid });
                         }
                     });
 
                     user.repos = repos;
                     user.save();
                 }
+
+                keenio.addEvent('user:rmvRepo', req.args);
+
                 done(err, {repos: user ? user.repos : null});
             });
         }
