@@ -140,7 +140,7 @@
               <tr ng-repeat="collaborator in collaborators.value | orderBy:'!ninja'">
                 <td>
                   <img style="width:50px; margin-right: 10px" ng-src="{{ collaborator.avatar_url }}&s=50 " width="50px"  />
-                  <a ng-href="{{ collaborator.html_url }}">{{ collaborator.login }} Rank:  {{collaborator.karma.rank}}</a>
+                  <a ng-href="{{ collaborator.html_url }}"><strong>{{ collaborator.karma }}</strong> {{ collaborator.login }} </a>
                 </td>
                 <td style="text-align: right;">
                   <button class="btn btn-default"

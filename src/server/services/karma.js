@@ -5,13 +5,14 @@ module.exports = (function () {
 
     var karma = {};
 
-    var toRank = function (kP) {
+    var toRank = function (stats) {
         var ranks = config.server.karma.ranks;
 
         for (var i = 0; i < ranks.length; i++) {
-            if (kP >= ranks[i].start
-                && kP < ranks[i].end) {
-                return ranks[i];
+            if (stats.power >= ranks[i].start
+                && stats.power < ranks[i].end) {
+                stats.rank = ranks[i];
+                return stats;
             }
         }
     };
@@ -20,18 +21,18 @@ module.exports = (function () {
         star: {
             q: function (userId, repoId) {
                 return [
-                    new Keen.Query("count", {
-                        eventCollection: "star:rmv",
+                    new Keen.Query('count', {
+                        eventCollection: 'star:rmv',
                         filters: [
-                            {"property_name": "user", "operator": "eq", "property_value": userId},
-                            {"property_name": "repo", "operator": "eq", "property_value": repoId}
+                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
+                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId}
                         ]
                     }),
-                    new Keen.Query("count", {
-                        eventCollection: "star:create",
+                    new Keen.Query('count', {
+                        eventCollection: 'star:create',
                         filters: [
-                            {"property_name": "user", "operator": "eq", "property_value": userId},
-                            {"property_name": "repo", "operator": "eq", "property_value": repoId}
+                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
+                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId}
                         ]
                     })
                 ];
@@ -41,25 +42,25 @@ module.exports = (function () {
         issue: {
             q: function (userId, repoId) {
                 return [
-                    new Keen.Query("count", {
-                        eventCollection: "issue:add",
+                    new Keen.Query('count', {
+                        eventCollection: 'issue:add',
                         filters: [
-                            {"property_name": "user", "operator": "eq", "property_value": userId},
-                            {"property_name": "repo", "operator": "eq", "property_value": repoId} // name
+                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
+                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId} // name
                         ]
                     }),
                     new Keen.Query("count", {
                         eventCollection: "issues:edit",
                         filters: [
-                            {"property_name": "user", "operator": "eq", "property_value": userId},
-                            {"property_name": "repo", "operator": "eq", "property_value": repoId} // name
+                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
+                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId} // name
                         ]
                     }),
                     new Keen.Query("count", {
                         eventCollection: "issues:createComment",
                         filters: [
-                            {"property_name": "user", "operator": "eq", "property_value": userId},
-                            {"property_name": "repo", "operator": "eq", "property_value": repoId} // name
+                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
+                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId} // name
                         ]
                     })
                 ];
@@ -69,11 +70,11 @@ module.exports = (function () {
         repo: {
             q: function (userId, repoId) {
                 return [
-                    new Keen.Query("count", {
-                        eventCollection: "user:addRepo",
+                    new Keen.Query('count', {
+                        eventCollection: 'user:addRepo',
                         filters: [
-                            {"property_name": "user", "operator": "eq", "property_value": userId},
-                            {"property_name": "repo", "operator": "eq", "property_value": repoId}
+                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
+                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId}
                         ]
                     })
                 ];
@@ -99,18 +100,22 @@ module.exports = (function () {
         }
         keenio.run(queries, function (err, res) {
             if (!err) {
-                var power = 0;
+                var stats = {};
+                stats.power = 0;
                 var j = 0;
                 for (var modifier in modifierQueryMap) {
                     // is modifier enabled
                     if (config.server.karma.modifiers[modifier]) {
+                        var power = 0;
                         for (var i = 0; i < modifierQueryMap[modifier].c; i++) {
-                            power += res[j].result * config.server.karma.modifiers[modifier];
+                            power = res[j].result * config.server.karma.modifiers[modifier];
                             j++;
                         }
+                        stats.power += power;
+                        stats[modifier] = power;
                     }
                 }
-                fnResult(toRank(power));
+                fnResult(toRank(stats));
             }
         });
     };
