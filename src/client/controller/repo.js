@@ -61,7 +61,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         // get the collaborators
         $scope.collaborators = $HUB.wrap('repos', 'getCollaborators', {
             user: $stateParams.user,
-            repo: $stateParams.repo
+            repo: $stateParams.repo,
+            repoId: $scope.repo
         });
 
         //
