@@ -24,15 +24,15 @@ module.exports = (function () {
                     new Keen.Query('count', {
                         eventCollection: 'star:rmv',
                         filters: [
-                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
-                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId}
+                            {property_name: 'user', operator: 'eq', property_value: userId},
+                            {property_name: 'repo', operator: 'eq', property_value: repoId}
                         ]
                     }),
                     new Keen.Query('count', {
                         eventCollection: 'star:create',
                         filters: [
-                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
-                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId}
+                            {property_name: 'user', operator: 'eq', property_value: userId},
+                            {property_name: 'repo', operator: 'eq', property_value: repoId}
                         ]
                     })
                 ];
@@ -45,22 +45,22 @@ module.exports = (function () {
                     new Keen.Query('count', {
                         eventCollection: 'issue:add',
                         filters: [
-                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
-                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId} // name
+                            {property_name: 'user', operator: 'eq', property_value: userId},
+                            {property_name: 'repo', operator: 'eq', property_value: repoId} // name
                         ]
                     }),
-                    new Keen.Query("count", {
-                        eventCollection: "issues:edit",
+                    new Keen.Query('count', {
+                        eventCollection: 'issues:edit',
                         filters: [
-                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
-                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId} // name
+                            {property_name: 'user', operator: 'eq', property_value: userId},
+                            {property_name: 'repo', operator: 'eq', property_value: repoId} // name
                         ]
                     }),
-                    new Keen.Query("count", {
-                        eventCollection: "issues:createComment",
+                    new Keen.Query('count', {
+                        eventCollection: 'issues:createComment',
                         filters: [
-                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
-                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId} // name
+                            {property_name: 'user', operator: 'eq', property_value: userId},
+                            {property_name: 'repo', operator: 'eq', property_value: repoId} // name
                         ]
                     })
                 ];
@@ -73,8 +73,8 @@ module.exports = (function () {
                     new Keen.Query('count', {
                         eventCollection: 'user:addRepo',
                         filters: [
-                            {"property_name": 'user', "operator": 'eq', "property_value": userId},
-                            {"property_name": 'repo', "operator": 'eq', "property_value": repoId}
+                            {property_name: 'user', operator: 'eq', property_value: userId},
+                            {property_name: 'repo', operator: 'eq', property_value: repoId}
                         ]
                     })
                 ];
