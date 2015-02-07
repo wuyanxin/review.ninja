@@ -144,6 +144,11 @@ $code-font-size: 12px;
   margin-bottom: -40px;
 
   > .pull {
+
+    img {
+      max-width: 100%;
+    }
+
     background: $body-bg;
     min-height: 100vh;
     min-height: calc(100vh - 52px);
