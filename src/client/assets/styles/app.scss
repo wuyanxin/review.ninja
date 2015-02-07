@@ -125,7 +125,6 @@ $code-font-size: 12px;
 @import 'list-group';
 @import 'merge';
 @import 'panel';
-@import 'pull-description';
 @import 'pull-list';
 @import 'settings';
 @import 'table';
@@ -145,6 +144,11 @@ $code-font-size: 12px;
   margin-bottom: -40px;
 
   > .pull {
+
+    img {
+      max-width: 100%;
+    }
+
     background: $body-bg;
     min-height: 100vh;
     min-height: calc(100vh - 52px);

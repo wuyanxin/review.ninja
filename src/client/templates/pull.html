@@ -18,7 +18,7 @@
               from <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</span>
               <small moment="pull.merged_at || pull.created_at"></small>
             </p>
-            <p class="pull-description" ng-bind-html="pull.html"></p>
+            <p ng-bind-html="pull.html"></p>
           </div>
           <merge-button permissions="repo.permissions"
                         pull="pull"
