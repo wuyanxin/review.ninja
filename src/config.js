@@ -78,7 +78,8 @@ module.exports = {
 
         papertrail: {
             host: process.env.PAPERTRAIL_HOST,
-            port: process.env.PAPERTRAIL_PORT
+            port: process.env.PAPERTRAIL_PORT,
+            location: process.env.PAPERTRAIL_LOCATION
         },
 
         static: {
