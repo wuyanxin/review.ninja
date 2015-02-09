@@ -158,14 +158,17 @@ module.exports = function() {
                                     settings.notifications[eventType[notificationType]] &&
                                     args.sender && args.sender.id !== collaborator.uuid ) {
                                     var transporter = buildTransporter();
-                                    var template = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
-                                    args.filename = notificationArgs[notificationType].template;
+                                    var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
+                                    args.actionText = ejs.render(textTemplate, args);
+                                    args.icon = 'octicon octicon-issue-opened';
+
+                                    var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
 
                                     var mailOptions = {
                                         from: 'ReviewNinja <noreply@review.ninja>',
                                         to: email.email,
                                         subject: notificationArgs[notificationType].subject,
-                                        html: ejs.render(template, args)
+                                        html: ejs.render(emailTemplate, args)
                                     };
 
                                     transporter.sendMail(mailOptions, function(err, response) {
