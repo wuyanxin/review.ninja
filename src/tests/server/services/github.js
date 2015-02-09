@@ -1,3 +1,5 @@
+'use strict';
+
 // unit test
 var rewire = require('rewire');
 var assert = require('assert');

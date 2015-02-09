@@ -270,7 +270,10 @@ app.all('/api/:obj/:fun', function(req, res) {
         if(err) {
             return res.status(err.code > 0 ? err.code : 500).send(JSON.stringify(err.text || err));
         }
-        obj ? res.send(JSON.stringify(obj)) : res.send();
+
+        var ret = obj ? JSON.stringify(obj) : null;
+
+        res.send(ret);
     });
 });
 
