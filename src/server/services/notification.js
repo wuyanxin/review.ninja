@@ -5,6 +5,7 @@ var fs = require('fs');
 var ejs = require('ejs');
 var github = require('./github');
 var pullRequest = require('./pullRequest');
+var url = require('./url');
 
 var Settings = require('mongoose').model('Settings');
 var User = require('mongoose').model('User');
@@ -126,7 +127,6 @@ module.exports = function() {
 
     return {
         sendmail: function (notificationType, user, repo, repoUuid, token, number, args) {
-            console.log('sendmail');
             getPullRequest(number, user, repo, token, function(err, pull) {
                 if(err) {
                     return;
@@ -165,7 +165,8 @@ module.exports = function() {
                                     var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
                                     args.pullrequestname = pull.title;
                                     args.actionText = ejs.render(textTemplate, args);
-                                    args.icon = 'src/server/templates/issue.png';
+                                    args.icon = url.baseUrl + '/asserts/images/email_issue.png';
+                                    args.baseUrl = url.baseUrl;
 
                                     var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
 
