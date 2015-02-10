@@ -130,6 +130,9 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
                 templateUrl: '/templates/issue/detail.html',
                 controller: 'IssueDetailCtrl',
                 resolve: {
+                    repo: ['repo', function(repo) {
+                        return repo; // inherited from parent state
+                    }],
                     issue: ['$HUBService', '$stateParams',
                         function($HUBService, $stateParams) {
                             return $HUBService.call('issues', 'getRepoIssue', {
