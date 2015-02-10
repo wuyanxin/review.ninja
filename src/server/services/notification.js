@@ -95,32 +95,38 @@ module.exports = function() {
 
         pull_request_opened: {
             subject:'A new pull request is ready for review',
-            template:'src/server/templates/pullReqOpened.ejs'
+            template:'src/server/templates/pullReqOpened.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
         pull_request_synchronized: {
             subject:  'New commits added to pull request',
-            template: 'src/server/templates/pullReqSync.ejs'
+            template: 'src/server/templates/pullReqSync.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
         star: {
             subject: 'Pull request has been starred',
-            template: 'src/server/templates/starred.ejs'
+            template: 'src/server/templates/starred.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_comment.png'
         },
 
         unstar: {
             subject: 'Pull request has been unstarred',
-            template: 'src/server/templates/unstarred.ejs'
+            template: 'src/server/templates/unstarred.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_comment.png'
         },
 
         new_issue: {
             subject: 'A new issue has been raised',
-            template: 'src/server/templates/new_issue.ejs'
+            template: 'src/server/templates/new_issue.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_issue.png'
         },
 
         closed_issue: {
             subject: 'All issues have been closed',
-            template: 'src/server/templates/issue_closed.ejs'
+            template: 'src/server/templates/issue_closed.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_issue.png'
         }
 
     };
@@ -165,7 +171,7 @@ module.exports = function() {
                                     var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
                                     args.pullrequestname = pull.title;
                                     args.actionText = ejs.render(textTemplate, args);
-                                    args.icon = url.baseUrl + '/assets/images/email_issue.png';
+                                    args.icon = notificationArgs[notificationType].imageurl;
                                     args.baseUrl = url.baseUrl;
 
                                     var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
