@@ -5,6 +5,7 @@ var fs = require('fs');
 var ejs = require('ejs');
 var github = require('./github');
 var pullRequest = require('./pullRequest');
+var url = require('./url');
 
 var Settings = require('mongoose').model('Settings');
 var User = require('mongoose').model('User');
@@ -94,32 +95,38 @@ module.exports = function() {
 
         pull_request_opened: {
             subject:'A new pull request is ready for review',
-            template:'src/server/templates/pullReqOpened.ejs'
+            template:'src/server/templates/pullReqOpened.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
         pull_request_synchronized: {
             subject:  'New commits added to pull request',
-            template: 'src/server/templates/pullReqSync.ejs'
+            template: 'src/server/templates/pullReqSync.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
         star: {
             subject: 'Pull request has been starred',
-            template: 'src/server/templates/starred.ejs'
+            template: 'src/server/templates/starred.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_star.png'
         },
 
         unstar: {
             subject: 'Pull request has been unstarred',
-            template: 'src/server/templates/unstarred.ejs'
+            template: 'src/server/templates/unstarred.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_star.png'
         },
 
         new_issue: {
             subject: 'A new issue has been raised',
-            template: 'src/server/templates/new_issue.ejs'
+            template: 'src/server/templates/new_issue.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_issue.png'
         },
 
         closed_issue: {
             subject: 'All issues have been closed',
-            template: 'src/server/templates/issue_closed.ejs'
+            template: 'src/server/templates/issue_closed.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_issue.png'
         }
 
     };
@@ -142,6 +149,7 @@ module.exports = function() {
 
                     collaborators.forEach(function(collaborator){
                         getPrimaryEmail(collaborator.token, function(err, email) {
+
                             if(err || !email) {
                                 return;
                             }
@@ -150,6 +158,7 @@ module.exports = function() {
                                 user: collaborator.uuid,
                                 repo: repoUuid
                             }, function(err, settings) {
+
                                 if(err || !settings || !settings.watched) {
                                     return;
                                 }
@@ -157,15 +166,21 @@ module.exports = function() {
                                 if( pullRequest.isWatched(pull, settings) &&
                                     settings.notifications[eventType[notificationType]] &&
                                     args.sender && args.sender.id !== collaborator.uuid ) {
+
                                     var transporter = buildTransporter();
-                                    var template = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
-                                    args.filename = notificationArgs[notificationType].template;
+                                    var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
+                                    args.pullrequestname = pull.title;
+                                    args.actionText = ejs.render(textTemplate, args);
+                                    args.icon = notificationArgs[notificationType].imageurl;
+                                    args.baseUrl = url.baseUrl;
+
+                                    var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
 
                                     var mailOptions = {
                                         from: 'ReviewNinja <noreply@review.ninja>',
                                         to: email.email,
                                         subject: notificationArgs[notificationType].subject,
-                                        html: ejs.render(template, args)
+                                        html: ejs.render(emailTemplate, args)
                                     };
 
                                     transporter.sendMail(mailOptions, function(err, response) {

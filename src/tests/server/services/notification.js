@@ -18,19 +18,18 @@ var pullRequest = require('../../../server/services/pullRequest');
 
 describe('notification:', function() {
     it('should render the email content for new_issue', function(done) {
-        var expectedcontent = '<h1>ReviewNinja</h1>\n\n\nA new issue has been raised for <a href="testurl">testuser/testrepo #1</a> by testsenderlogin.\n\n<p>--</p>\n<p>Automatic notification by ReviewNinja.<br>\nVisit <a href="http://www.review.ninja">review.ninja</a> to hear more about review.ninja.</p>\n\n';
+        var expectedcontent = 'A new issue has been opened by "testuserlogin" on "pullrequestname" for "testuser/testrepo".\n';
 
         var filename = 'src/server/templates/new_issue.ejs';
         var template = fs.readFileSync(filename, 'utf-8');
         var content = ejs.render(template, {
             filename: filename,
-            url: 'testurl',
+            sender: {
+                login: 'testuserlogin'
+            },
             user: 'testuser',
             repo: 'testrepo',
-            number: 1,
-            sender: {
-                login: 'testsenderlogin'
-            }
+            pullrequestname: 'pullrequestname'
         });
 
         assert.equal(content, expectedcontent, 'Rendered content of email template for "new issue" wrong');
@@ -83,11 +82,10 @@ describe('notification:', function() {
 
         notification.sendmail('star', 'ninja', 'reviewninja', '123', '456', 789, {
             sender: {
-                id: 'senderid',
-                login: 'senderlogin'
+                id: 'senderid'
             },
-            url: 'testurl',
-            number: 'testnumber',
+            login: 'testuserlogin',
+            pullrequestname: 'pullrequestname',
             repo: 'testrepo',
             user: 'testuser'
         });
