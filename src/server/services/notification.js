@@ -163,7 +163,7 @@ module.exports = function() {
                                     var transporter = buildTransporter();
                                     var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
                                     args.actionText = ejs.render(textTemplate, args);
-                                    args.icon = 'octicon octicon-issue-opened';
+                                    args.icon = 'src/server/templates/issue.png';
                                     console.log('2, cone set arguments', args);
                                     var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
                                     console.log('3, emailTemplate', emailTemplate);
