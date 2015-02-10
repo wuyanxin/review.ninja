@@ -24,7 +24,9 @@ describe('notification:', function() {
         var template = fs.readFileSync(filename, 'utf-8');
         var content = ejs.render(template, {
             filename: filename,
-            login: 'testuserlogin',
+            sender: {
+                login: 'testuserlogin'
+            },
             user: 'testuser',
             repo: 'testrepo',
             pullrequestname: 'pullrequestname'

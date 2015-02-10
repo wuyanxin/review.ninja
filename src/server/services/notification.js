@@ -163,6 +163,7 @@ module.exports = function() {
 
                                     var transporter = buildTransporter();
                                     var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
+                                    args.pullrequestname = pull.title;
                                     args.actionText = ejs.render(textTemplate, args);
                                     args.icon = 'src/server/templates/issue.png';
 
