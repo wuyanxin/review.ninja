@@ -1,0 +1,26 @@
+.btn-group {
+  .star-dropdown {
+    // margin-bottom: 0;
+    max-height: 350px;
+    overflow-y: scroll;
+    padding: 0;
+
+    > li {
+      border-bottom: 1px solid $gray-light;
+      padding: 10px 15px;
+
+      > a {
+        padding: 0;
+      }
+
+      > a:hover {
+        background-color: transparent !important;
+        cursor: default;
+      }
+
+      img {
+        padding-right: 10px;
+      }
+    }
+  }
+}

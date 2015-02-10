@@ -62,41 +62,37 @@
                 </div>
 
                 <div class="col-sm-4 text-right">
-                  <div class="btn-group">
+                  <div class="btn-group btn-group-lg">
+                    <button type="button"
+                            class="btn btn-ninja"
+                            ng-click="setStar()"
+                            tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star"
+                            tooltip-placement="bottom"
+                            tooltip-append-to-body="true">
+                        <span class="fa-lg icon-ninja-star text-primary" ng-class="{muted: !star.value}"></span>
+                    </button>
+                    <div class="btn-group btn-group-lg">
                       <button type="button"
-                              class="btn btn-default btn-ninja"
-                              ng-click="setStar()"
-                              style="padding:5px 12px 0px;"
-                              tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star"
-                              tooltip-placement="bottom"
-                              tooltip-append-to-body="true">
-                          <span class="icon-ninja-star text-primary" style="font-size:25px;" ng-class="{muted: !star.value}"></span>
-                      </button>
-                    <div class="btn-group">
-                      <button type="button"
-                              class="btn dropdown-toggle btn-ninja"
-                              ng-class="{'btn-threshold-missing': pull.stars.length < reposettings.value.threshold,
+                              class="btn btn-ninja dropdown-toggle"
+                              ng-class="{'btn-threshold-missing': pull.stars.length <  reposettings.value.threshold,
                                          'btn-threshold-reached': pull.stars.length >= reposettings.value.threshold}"
                               data-toggle="dropdown"
                               ng-disabled="!pull.stars.length"
-                              style="font-size:18px;">
+                              style="font-size:20px;">
                         {{ pull.stars.length }}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
                         <li><a href="">{{ getStarText() }}</a></li>
-                        <li class="divider"></li>
-                        <li ng-repeat="star in pull.stars | orderBy:'-created_at'" class="star-dropdown-item">
+                        <!-- <li class="divider"></li> -->
+                        <li ng-repeat="star in pull.stars | orderBy:'-created_at'">
                           <a href="#">
-                            <table>
-                              <tr>
-                                <td><img ng-src="{{ star.user.value.avatar_url + '&s=56' }}" width="56px" style="margin-right:16px;" /></td>
-                                <td>
-                                  <strong><a ng-href="{{ star.user.value.html_url }}" target="_blank">{{ star.name }}</a></strong><br />
-                                  ninja starred this<br />
-                                  <small moment="star.created_at"></small>
-                                </td>
-                              </tr>
-                            </table>
+                            <img ng-src="{{ star.user.value.avatar_url + '&s=56' }}" width="56px" class="pull-left" />
+                            <div class="truncate pull-right" style="width: 125px;">
+                              <strong><a ng-href="{{ star.user.value.html_url }}" target="_blank">{{ star.name }}</a></strong><br />
+                              ninja starred this<br />
+                              <small moment="star.created_at"></small>
+                            </div>
+                            <div class="clearfix"></div>
                           </a>
                         </li>
                       </ul>
