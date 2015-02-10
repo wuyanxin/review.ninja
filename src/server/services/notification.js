@@ -143,7 +143,7 @@ module.exports = function() {
 
                     collaborators.forEach(function(collaborator){
                         getPrimaryEmail(collaborator.token, function(err, email) {
-                            console.log('0 email', email);
+
                             if(err || !email) {
                                 return;
                             }
@@ -152,6 +152,7 @@ module.exports = function() {
                                 user: collaborator.uuid,
                                 repo: repoUuid
                             }, function(err, settings) {
+
                                 if(err || !settings || !settings.watched) {
                                     return;
                                 }
@@ -159,27 +160,26 @@ module.exports = function() {
                                 if( pullRequest.isWatched(pull, settings) &&
                                     settings.notifications[eventType[notificationType]] &&
                                     args.sender && args.sender.id !== collaborator.uuid ) {
-                                    console.log('1, args', args);
+
                                     var transporter = buildTransporter();
                                     var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
                                     args.actionText = ejs.render(textTemplate, args);
                                     args.icon = 'src/server/templates/issue.png';
-                                    console.log('2, cone set arguments', args);
+
                                     var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
-                                    console.log('3, emailTemplate', emailTemplate);
+
                                     var mailOptions = {
                                         from: 'ReviewNinja <noreply@review.ninja>',
                                         to: email.email,
                                         subject: notificationArgs[notificationType].subject,
                                         html: ejs.render(emailTemplate, args)
                                     };
-                                    console.log('4, emailtemlpate overall', emailTemplate);
+
                                     transporter.sendMail(mailOptions, function(err, response) {
-                                        console.log('5a, ', err);
                                         if (err) {
                                             return;
                                         }
-                                        console.log('5, ', response);
+
                                         transporter.close();
                                     });
                                 }
