@@ -18,7 +18,7 @@ var pullRequest = require('../../../server/services/pullRequest');
 
 describe('notification:', function() {
     it('should render the email content for new_issue', function(done) {
-        var expectedcontent = 'A new issue has been raised for <a href="testurl">testuser/testrepo #1</a> by testsenderlogin.\n';
+        var expectedcontent = 'A new issue has been raised for <a style="color: #349b94;" href="testurl">testuser/testrepo #1</a> by testsenderlogin.\n';
 
         var filename = 'src/server/templates/new_issue.ejs';
         var template = fs.readFileSync(filename, 'utf-8');
