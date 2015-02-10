@@ -6,8 +6,11 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'Comment', 'issue', 'socket',
-    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, Comment, issue, socket) {
+module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'Comment', 'repo', 'issue', 'socket',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, Comment, repo, issue, socket) {
+
+        // get the repo
+        $scope.repo = repo.value;
 
         // get the issue
         $scope.issue = Issue.parse(issue.value) && Issue.render(issue.value);
