@@ -108,13 +108,13 @@ module.exports = function() {
         star: {
             subject: 'Pull request has been starred',
             template: 'src/server/templates/starred.ejs',
-            imageurl: url.baseUrl + '/assets/images/email_comment.png'
+            imageurl: url.baseUrl + '/assets/images/email_star.png'
         },
 
         unstar: {
             subject: 'Pull request has been unstarred',
             template: 'src/server/templates/unstarred.ejs',
-            imageurl: url.baseUrl + '/assets/images/email_comment.png'
+            imageurl: url.baseUrl + '/assets/images/email_star.png'
         },
 
         new_issue: {
