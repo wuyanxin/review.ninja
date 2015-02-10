@@ -165,7 +165,7 @@ module.exports = function() {
                                     var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
                                     args.pullrequestname = pull.title;
                                     args.actionText = ejs.render(textTemplate, args);
-                                    args.icon = url.baseUrl + '/asserts/images/email_issue.png';
+                                    args.icon = url.baseUrl + '/assets/images/email_issue.png';
                                     args.baseUrl = url.baseUrl;
 
                                     var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
