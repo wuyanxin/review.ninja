@@ -165,7 +165,7 @@ module.exports = function() {
 
                                 if( pullRequest.isWatched(pull, settings) &&
                                     settings.notifications[eventType[notificationType]] &&
-                                    args.sender /* && args.sender.id !== collaborator.uuid */ ) {
+                                    args.sender && args.sender.id !== collaborator.uuid ) {
 
                                     var transporter = buildTransporter();
                                     var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
