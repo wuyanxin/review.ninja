@@ -45,6 +45,9 @@ module.exports = function() {
         reviewPullRequest: function(user, repo, number) {
             return url.resolve(baseUrl, '/' + user + '/' + repo + '/pull/' + number);
         },
+        reviewSettings: function(user, repo, number) {
+            return url.resolve(baseUrl, '/' + user + '/' + repo + '/settings');
+        },
         pullRequestBadge: function(repo_uuid, number) {
             return url.resolve(baseUrl, '/' + repo_uuid + '/pull/' + number + '/badge');
         }
