@@ -8,55 +8,50 @@
                 margin: 0 auto;
                 padding: 0 auto;
                 text-align:center;">
-    <div id="content" 
-         style="box-shadow: 0px 0px 10px 0px #ccc;
+    <div style="box-shadow: 0px 0px 10px 0px #ccc;
                 margin:0px auto;
                 text-align: left;
                 max-width: 600px;
                 background-color: #fff;">
-      <div id="header"
-           style="background-color: #d0eaea;
+      <div style="background-color: #d0eaea;
                   padding-top: 30px;
                   padding-bottom: 30px;
                   padding-left: 40px;
                   padding-right: 40px;">
-        <img src="<%- baseUrl %>/asserts/images/email_logo.png" width="240px" height="38px" />
+        <img src="<%- baseUrl %>/assets/images/email_logo.png" width="240px" height="38px" />
       </div>
-      <div id="main"
-           style="margin: 70px 30px 80px;">
+      <div style="margin: 70px 30px 80px;">
         <table>
           <tr>
+            <td style="vertical-align: top; padding: 10px;">
+              <div style="color: #ef4e14; width: 42px;">
+                <img src="<%- icon%>" height="42px"></span>
+              </div>
+            </td>
             <td style="vertical-align: top;
-                       padding: 10px;">
-              <div id="icondiv"
-                      style="color: #ef4e14;
-                             width: 42px;">
-                             <img src="<%- icon%>" height="42px"></span></div></td>
-            <td style="vertical-align: top;
-                       padding: 10px;" 
-              id="message"
-                style="color: #349b94;
-                       font-size: 2.25em;
-                       line-height: 1.2em;"><%- actionText %></td>
+                       padding: 10px; 
+                       color: #349b94;
+                       font-size: 2em;
+                       line-height: 1.2em;">
+              <%- actionText %>
+            </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;
-                       padding: 10px;">
-              </td>
-            <td style="vertical-align: top;
-                       padding: 10px;">
-              <button href="#" 
-            style="background-color: #ef4e14;
+            <td style="vertical-align: top; padding: 10px;"></td>
+            <td style="vertical-align: top; padding: 10px;">
+              <a href="<%- url %>" 
+                 style="background-color: #ef4e14;
                    border-style: none;
                    color: white;
                    font-size: 14pt;
                    font-weight: 600;
-                   padding: 14px;">View in ReviewNinja</button></td>
+                   text-decoration: none;
+                   padding: 14px;">View in ReviewNinja</a>
+            </td>
           </tr>
         </table>
       </div>
-      <div id="footer"
-           style="background-color: #ecebeb;
+      <div style="background-color: #ecebeb;
                   clear: both;
                   color: #666;
                   font-size: 1em;
@@ -65,11 +60,10 @@
                   padding-left: 40px;
                   padding-right: 15px;
                   padding-top: 10px;
-                  line-height: 1.15em;">
-        <p style="margin-right: 125px">You received this email because you asked to be notified about issues opened or closed in ReviewNinja. You can <a style="color: #349b94;" href="#">manage notifications in ReviewNinja</a>.</p>
-        <img id="ninja" src="<%- baseUrl %>/asserts/images/email_ninja.png" width="140px"
-             style="float: right;
-                    margin-top: -150px;"/>
+                  line-height: 1em;">
+        <p style="margin-right: 125px">You received this email because you asked to be notified about issues opened or closed in ReviewNinja. You can <a style="color: #349b94;" href="<%- url %>">manage notifications in ReviewNinja</a>.</p>
+        <img id="ninja" src="<%- baseUrl %>/assets/images/email_ninja.png" width="140px"
+             style="float: right; margin-top: -150px;"/>
       </div>
     </div>
   </body>

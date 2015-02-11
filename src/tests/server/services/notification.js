@@ -87,7 +87,8 @@ describe('notification:', function() {
             login: 'testuserlogin',
             pullrequestname: 'pullrequestname',
             repo: 'testrepo',
-            user: 'testuser'
+            user: 'testuser',
+            url: 'url'
         });
 
 
