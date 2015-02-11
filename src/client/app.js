@@ -1,5 +1,6 @@
 var module = angular.module('app',
-    ['ninja.filters',
+    ['ninja.config',
+     'ninja.filters',
      'ui.utils',
      'ui.router',
      'ui.bootstrap',
@@ -20,8 +21,8 @@ angular.element(document).ready(function() {
 // States
 // *************************************************************
 
-module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
-    function($stateProvider, $urlRouterProvider, $locationProvider) {
+module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$logProvider', '$configProvider',
+    function($stateProvider, $urlRouterProvider, $locationProvider, $logProvider, $configProvider) {
 
         $stateProvider
 
@@ -156,10 +157,11 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
 
         $locationProvider.html5Mode(true);
 
+        $logProvider.debugEnabled($configProvider.log);
     }
 ])
-.run(['$rootScope', '$state', '$stateParams',
-    function($rootScope, $state, $stateParams) {
+.run(['$config', '$rootScope', '$state', '$stateParams',
+    function($config, $rootScope, $state, $stateParams) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
     }
