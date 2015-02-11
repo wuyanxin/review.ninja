@@ -112,59 +112,58 @@ module.exports = {
         ],
 
         karma: {
-            modifiers: {
-                star: 1,
-                issue: 1,
-                repo: 3,
-                merge: 3
-            },
+            modifiers: [
+                { type: 'star', multiplier: 1 },
+                { type: 'issue', multiplier: 1 },
+                { type: 'repo', multiplier: 3 },
+            ],
             ranks: [{
-                rank: 'Neonate',
+                title: 'Neonate',
                 start: 1,
                 end: 29,
                 colour: '0xF8F7FA'
             }, {
-                rank: 'Initiate',
+                title: 'Initiate',
                 start: 30,
                 end: 59,
                 colour: '0xFCFCA7'
             }, {
-                rank: 'Apprentice',
+                title: 'Apprentice',
                 start: 60,
                 end: 89,
                 colour: '0xFCC9A7'
             }, {
-                rank: 'Journeyman',
+                title: 'Journeyman',
                 start: 89,
                 end: 119,
                 colour: '0xB3DF93'
             }, {
-                rank: 'Journeyman',
+                title: 'Journeyman',
                 start: 120,
                 end: 149,
                 colour: '0xB3DF93'
             }, {
-                rank: 'Disciple',
+                title: 'Disciple',
                 start: 150,
                 end: 179,
                 colour: '0x6E8EA2'
             }, {
-                rank: 'Expert',
+                title: 'Expert',
                 start: 180,
                 end: 209,
                 colour: '0x9366A6'
             }, {
-                rank: 'Veteran',
+                title: 'Veteran',
                 start: 210,
                 end: 239,
                 colour: '0x5B3014'
             }, {
-                rank: 'Master',
+                title: 'Master',
                 start: 240,
                 end: 279,
                 colour: '0xD60929'
             }, {
-                rank: 'Grandmaster',
+                title: 'Grandmaster',
                 start: 280,
                 end: 1000000,
                 colour: '0x353131'

@@ -1,123 +1,87 @@
-var Keen = require('keen-js');
-var keenio = require('../services/keenio');
+var Action = require('mongoose').model('Action');
 
 module.exports = (function () {
 
     var karma = {};
 
-    var toRank = function (stats) {
+    karma.rankForUserAndRepo = function (user, repo, fnResult) {
+        var results = [];
+        var done = 0;
+        // Only use queries that have modifiers set in the config
+        for (var i = 0; i < config.server.karma.modifiers.length; i++) {
+            var m = config.server.karma.modifiers[i].type;
+            if (modifierPromiseMap[m]) {
+                queryToCountScore(m, modifierPromiseMap[m].q(user, repo), function(obj) {
+                    done++;
+                    results.push(obj);
+                    if (done === config.server.karma.modifiers.length) {
+                        fnResult(addRank(results));
+                    }
+                });
+            }
+        }
+    };
+
+    var addRank = function(scoreModifierPairs) {
+        var score = 0;
+        for (var i = 0; i < scoreModifierPairs.length; i++) {
+            score += scoreModifierPairs[i].count;
+        }
+        var karma = {}
+        karma.details = scoreModifierPairs;
+        karma.total = score;
+        karma.rank = toRank(score);
+        return karma;
+    };
+
+    var toRank = function (score) {
         var ranks = config.server.karma.ranks;
 
         for (var i = 0; i < ranks.length; i++) {
-            if (stats.power >= ranks[i].start
-                && stats.power < ranks[i].end) {
-                stats.rank = ranks[i];
-                return stats;
+            if (score >= ranks[i].start
+                && score < ranks[i].end) {
+                return ranks[i];
             }
         }
     };
 
-    var modifierQueryMap = {
+    var queryToCountScore = function(type, query, fnCallback) {
+        query.count(function(err, count) {
+            fnCallback({ type: type, count: count });
+        });
+    };
+
+    var modifierPromiseMap = {
         star: {
-            q: function (userId, repoId) {
-                return [
-                    new Keen.Query('count', {
-                        eventCollection: 'star:rmv',
-                        filters: [
-                            {property_name: 'user', operator: 'eq', property_value: userId},
-                            {property_name: 'repo', operator: 'eq', property_value: repoId}
-                        ]
-                    }),
-                    new Keen.Query('count', {
-                        eventCollection: 'star:create',
-                        filters: [
-                            {property_name: 'user', operator: 'eq', property_value: userId},
-                            {property_name: 'repo', operator: 'eq', property_value: repoId}
-                        ]
-                    })
-                ];
-            },
-            c: 2
+            q: function (user, repo) {
+                return Action.where({
+                    user: user,
+                    repo: repo
+                }).and([
+                    { $or: [{type: 'star:add'}, {type: 'star:rmv'}]}
+                ]);
+            }
         },
         issue: {
-            q: function (userId, repoId) {
-                return [
-                    new Keen.Query('count', {
-                        eventCollection: 'issue:add',
-                        filters: [
-                            {property_name: 'user', operator: 'eq', property_value: userId},
-                            {property_name: 'repo', operator: 'eq', property_value: repoId} // name
-                        ]
-                    }),
-                    new Keen.Query('count', {
-                        eventCollection: 'issues:edit',
-                        filters: [
-                            {property_name: 'user', operator: 'eq', property_value: userId},
-                            {property_name: 'repo', operator: 'eq', property_value: repoId} // name
-                        ]
-                    }),
-                    new Keen.Query('count', {
-                        eventCollection: 'issues:createComment',
-                        filters: [
-                            {property_name: 'user', operator: 'eq', property_value: userId},
-                            {property_name: 'repo', operator: 'eq', property_value: repoId} // name
-                        ]
-                    })
-                ];
-            },
-            c: 3
+            q: function (user, repo) {
+                return Action.where({
+                    user: user,
+                    repo: repo
+                }).and([
+                    { $or: [{type: 'issues:add'}, {type: 'issues:rmv'}, {type: 'issues:createComment'}]}
+                ]);
+            }
         },
         repo: {
-            q: function (userId, repoId) {
-                return [
-                    new Keen.Query('count', {
-                        eventCollection: 'user:addRepo',
-                        filters: [
-                            {property_name: 'user', operator: 'eq', property_value: userId},
-                            {property_name: 'repo', operator: 'eq', property_value: repoId}
-                        ]
-                    })
-                ];
-            },
-            c: 1
-        },
-        merge: {
-            q: function (userId, repo) {
-                // TODO: merge with no issues
-                return [];
-            },
-            c: 0
-        }
-    };
-
-    karma.rankForUserAndRepo = function (userId, repo, fnResult) {
-        var queries = [];
-        // Only use queries that have modifiers
-        for (var m in config.server.karma.modifiers) {
-            if (modifierQueryMap[m]) {
-                queries = queries.concat(modifierQueryMap[m].q(userId, repo));
+            q: function (user, repo) {
+                return Action.where({
+                    user: user,
+                    repo: repo,
+                    type: 'user:addRepo'
+                });
             }
         }
-        keenio.run(queries, function (err, res) {
-            if (!err) {
-                var stats = {};
-                stats.power = 0;
-                var j = 0;
-                for (var modifier in modifierQueryMap) {
-                    // is modifier enabled
-                    if (config.server.karma.modifiers[modifier]) {
-                        var power = 0;
-                        for (var i = 0; i < modifierQueryMap[modifier].c; i++) {
-                            power = res[j].result * config.server.karma.modifiers[modifier];
-                            j++;
-                        }
-                        stats.power += power;
-                        stats[modifier] = power;
-                    }
-                }
-                fnResult(toRank(stats));
-            }
-        });
+        // TODO: merge with no issues
     };
 
     return karma;

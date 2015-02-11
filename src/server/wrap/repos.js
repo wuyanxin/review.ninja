@@ -28,8 +28,7 @@ module.exports = {
     getCollaborators: function(req, collaborators, done) {
         async.each(collaborators, function(collaborator, callback) {
             User.findOne({ uuid: collaborator.id }, function(err, user) {
-                var repo = req.args.arg.repoId.affix.id;
-                karma.rankForUserAndRepo(collaborator.id, repo, function(obj) {
+                karma.rankForUserAndRepo(collaborator.login, req.args.arg.repo, function(obj) {
                     collaborator.karma = obj;
                     collaborator.ninja = !!user;
                     callback(null);

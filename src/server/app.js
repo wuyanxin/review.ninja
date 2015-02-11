@@ -46,6 +46,9 @@ app.use('/github/webhook', require('./middleware/papertrail'));
 // keen middleware
 app.use('/api/github', require('./middleware/keen'));
 
+// karma middleware
+app.use('/api', require('./middleware/karma'));
+
 async.series([
 
     function(callback) {
