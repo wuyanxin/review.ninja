@@ -8,7 +8,6 @@
 
 module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$modal', 'repo',
     function($scope, $stateParams, $HUB, $RPC, $modal, repo) {
-
         $scope.repo = repo;
 
         $scope.settings = $RPC.call('settings', 'get', {
