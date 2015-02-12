@@ -4,51 +4,67 @@ module.exports = (function () {
 
     var karma = {};
 
-    karma.rankForUserAndRepo = function (user, repo, fnResult) {
+    karma.karmaForUserAndRepo = function(user, repo, fnResult) {
         var results = [];
         var done = 0;
-        // Only use queries that have modifiers set in the config
-        for (var i = 0; i < config.server.karma.modifiers.length; i++) {
-            var m = config.server.karma.modifiers[i].type;
-            if (modifierPromiseMap[m]) {
-                queryToCountScore(m, modifierPromiseMap[m].q(user, repo), function(obj) {
+        getModifiers().forEach(function(m) {
+            if (queryExistsForModifier(m.type)) {
+                getModifierCount(m.type, user, repo, function(result) {
                     done++;
-                    results.push(obj);
-                    if (done === config.server.karma.modifiers.length) {
-                        fnResult(addRank(results));
+                    results.push(result);
+                    if (done == getModifiers().length) {
+                        fnResult(getRankForModifierCount(results));
                     }
                 });
             }
-        }
+        });
     };
 
-    var addRank = function(scoreModifierPairs) {
-        var score = 0;
+    var getRankForModifierCount = function(modifierCounts) {
+        var kPoints = 0;
         var karma = {};
-        for (var i = 0; i < scoreModifierPairs.length; i++) {
-            score += scoreModifierPairs[i].count;
-            karma[scoreModifierPairs[i].type] = scoreModifierPairs[i].count;
-        }
-        karma.total = score;
-        karma.rank = toRank(score);
+        modifierCounts.forEach(function(mPair) {
+            kPoints += mPair.count;
+            karma[mPair.type] = mPair.count;
+        });
+        karma.karmaPoints = kPoints;
+        karma.ninjaRank = toRank(kPoints);
         return karma;
     };
 
-    var toRank = function (score) {
-        var ranks = config.server.karma.ranks;
+    var getModifiers = function() {
+        return config.server.karma.modifiers;
+    };
 
+    var getModifierCount = function(type, user, repo, fnResult) {
+        modifierPromiseMap[type].q(user, repo).count(function(err, count) {
+            fnResult({ type: type, count: count });
+        });
+    };
+
+    var queryExistsForModifier = function(m) {
+        return !! modifierPromiseMap[m];
+    };
+
+    var toRank = function (karmaPoints) {
+        var ranks = config.server.karma.ranks;
+        var last = ranks.length - 1;
+        var first = 0;
+
+        // Boundary cases
+        if (karmaPoints >= ranks[last].end) {
+            return ranks[last];
+        }
+        if (karmaPoints < ranks[first].start) {
+            return ranks[first];
+        }
+        // Otherwise search
         for (var i = 0; i < ranks.length; i++) {
-            if (score >= ranks[i].start
-                && score < ranks[i].end) {
+            if (karmaPoints >= ranks[i].start
+                && karmaPoints < ranks[i].end) {
                 return ranks[i];
             }
         }
-    };
-
-    var queryToCountScore = function(type, query, fnCallback) {
-        query.count(function(err, count) {
-            fnCallback({ type: type, count: count });
-        });
     };
 
     var modifierPromiseMap = {

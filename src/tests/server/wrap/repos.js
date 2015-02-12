@@ -48,7 +48,7 @@ describe('repos:getCollaborators', function() {
             }
         };
 
-        var karmaStub = sinon.stub(karma, 'rankForUserAndRepo', function(id, repo, done) {
+        var karmaStub = sinon.stub(karma, 'karmaForUserAndRepo', function(id, repo, done) {
             assert.equal(req.args.arg.repoId.affix.id, repo);
             done(1);
         });
