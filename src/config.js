@@ -134,11 +134,6 @@ module.exports = {
                 color: '#FCC9A7'
             }, {
                 title: 'Journeyman',
-                start: 89,
-                end: 119,
-                color: '#B3DF93'
-            }, {
-                title: 'Journeyman',
                 start: 120,
                 end: 149,
                 color: '#B3DF93'
