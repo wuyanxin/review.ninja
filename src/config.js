@@ -121,52 +121,52 @@ module.exports = {
                 title: 'Neonate',
                 start: 1,
                 end: 29,
-                colour: '0xF8F7FA'
+                colour: '#7774A3'
             }, {
                 title: 'Initiate',
                 start: 30,
                 end: 59,
-                colour: '0xFCFCA7'
+                colour: '#FCFCA7'
             }, {
                 title: 'Apprentice',
                 start: 60,
                 end: 89,
-                colour: '0xFCC9A7'
+                colour: '#FCC9A7'
             }, {
                 title: 'Journeyman',
                 start: 89,
                 end: 119,
-                colour: '0xB3DF93'
+                colour: '#B3DF93'
             }, {
                 title: 'Journeyman',
                 start: 120,
                 end: 149,
-                colour: '0xB3DF93'
+                colour: '#B3DF93'
             }, {
                 title: 'Disciple',
                 start: 150,
                 end: 179,
-                colour: '0x6E8EA2'
+                colour: '#6E8EA2'
             }, {
                 title: 'Expert',
                 start: 180,
                 end: 209,
-                colour: '0x9366A6'
+                colour: '#9366A6'
             }, {
                 title: 'Veteran',
                 start: 210,
                 end: 239,
-                colour: '0x5B3014'
+                colour: '#5B3014'
             }, {
                 title: 'Master',
                 start: 240,
                 end: 279,
-                colour: '0xD60929'
+                colour: '#D60929'
             }, {
                 title: 'Grandmaster',
                 start: 280,
                 end: 1000000,
-                colour: '0x353131'
+                colour: '#353131'
             }]
         }
     }

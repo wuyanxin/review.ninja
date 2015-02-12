@@ -24,11 +24,11 @@ module.exports = (function () {
 
     var addRank = function(scoreModifierPairs) {
         var score = 0;
+        var karma = {};
         for (var i = 0; i < scoreModifierPairs.length; i++) {
             score += scoreModifierPairs[i].count;
+            karma[scoreModifierPairs[i].type] = scoreModifierPairs[i].count;
         }
-        var karma = {}
-        karma.details = scoreModifierPairs;
         karma.total = score;
         karma.rank = toRank(score);
         return karma;

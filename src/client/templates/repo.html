@@ -140,12 +140,36 @@
               <tr ng-repeat="collaborator in collaborators.value | orderBy:'!ninja'">
                 <td>
                   <img style="width:50px; margin-right: 10px" ng-src="{{ collaborator.avatar_url }}&s=50 " width="50px"  />
-                  <a ng-href="{{ collaborator.html_url }}"><strong>{{ collaborator.karma.rank.title }}</strong> {{ collaborator.login }} </a>
+                  <a ng-href="{{ collaborator.html_url }}"><strong ng-style="getRankColor(collaborator.karma.rank.colour)">{{ collaborator.karma.rank.title }}</strong> {{ collaborator.login }} </a>
                 </td>
                 <td style="text-align: right;">
                   <button class="btn btn-default"
                           ng-click="invite(collaborator)"
                           ng-show="!collaborator.ninja">Invite</button>
+                </td>
+                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px" >
+                <span class="text-success">
+                  <span class="octicon octicon-large octicon-comment-discussion"></span>
+                    <br/> {{ collaborator.karma.issue}}
+                  </span>
+                </td>
+                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+                  <span class="text-success">
+                    <span class="fa-lg icon-ninja-star"></span>
+                    <br/> {{ collaborator.karma.star }}
+                  </span>
+                </td>
+                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+                  <span class="text-success">
+                    <span class="octicon octicon-git-merge"></span>
+                    <br/> {{ collaborator.karma.merge || 0 }}
+                  </span>
+                </td>
+                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+                  <span class="text-success">
+                    <span class="octicon octicon-repo"></span>
+                    <br/> {{ collaborator.karma.repo || 0 }}
+                  </span>
                 </td>
               </tr>
               <tr ng-show="!collaborators.value.length">

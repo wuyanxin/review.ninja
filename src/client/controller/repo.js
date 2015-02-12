@@ -115,5 +115,9 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
             }
             return 'No stars';
         };
+
+        $scope.getRankColor = function(colorString) {
+          return { color: colorString };
+        };
     }
 ]);
