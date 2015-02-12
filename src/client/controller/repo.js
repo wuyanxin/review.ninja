@@ -119,5 +119,9 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         $scope.getRankColor = function(colorString) {
           return { color: colorString };
         };
+
+        $scope.rankBackground = function(colorString) {
+            return { 'background-color': colorString };
+        };
     }
 ]);
