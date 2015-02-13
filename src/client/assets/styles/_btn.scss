@@ -65,6 +65,8 @@
   &.btn-ninja {
     background-color: #fff;
     border: 1px solid $gray-light;
+    height: 50px;
+    width: 50px;
 
     &:hover {
       background-color: $gray-lighter;
