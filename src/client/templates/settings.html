@@ -13,7 +13,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12" style="margin-top: 10px;">
+      <div class="col-md-12" style="margin-top: 10px;" ng-show="repo.value.permissions.admin">
         <p class="settingsheading">Merge threshold</p>
         <div style="margin-left: 15px;">
           <form name="form">
@@ -29,7 +29,7 @@
           </form>
         </div>
       </div>
-      <div class="col-md-12" style="margin-top: 20px;">
+      <div class="col-md-12" style="margin-top: 20px;" ng-show="repo.value.permissions.admin">
         <p class="settingsheading">ReviewNinja content in GitHub</p>
         <div style="margin-left: 15px;">
           <div>
