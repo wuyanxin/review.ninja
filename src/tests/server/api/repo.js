@@ -23,9 +23,9 @@ describe('repo:setComment', function() {
             assert.equal(args.fun, 'one');
             assert.equal(args.arg.id, 'repo_uuid');
             assert.equal(args.token, 'token');
-            done(null, { 
+            done(null, {
                 permissions: {
-                    admin: false 
+                    admin: false
                 }
             });
         });
