@@ -108,25 +108,25 @@ module.exports = function() {
         star: {
             subject: 'Pull request has been starred',
             template: 'src/server/templates/starred.ejs',
-            imageurl: url.baseUrl + '/assets/images/email_star.png'
+            imageurl: url.baseUrl + '/assets/images/email_starr.png'
         },
 
         unstar: {
             subject: 'Pull request has been unstarred',
             template: 'src/server/templates/unstarred.ejs',
-            imageurl: url.baseUrl + '/assets/images/email_star.png'
+            imageurl: url.baseUrl + '/assets/images/email_unstarr.png'
         },
 
         new_issue: {
-            subject: 'A new issue has been raised',
+            subject: 'A new issue has been opened',
             template: 'src/server/templates/new_issue.ejs',
-            imageurl: url.baseUrl + '/assets/images/email_issue.png'
+            imageurl: url.baseUrl + '/assets/images/email_issue_opened.png'
         },
 
         closed_issue: {
             subject: 'All issues have been closed',
             template: 'src/server/templates/issue_closed.ejs',
-            imageurl: url.baseUrl + '/assets/images/email_issue.png'
+            imageurl: url.baseUrl + '/assets/images/email_issue_closed.png'
         }
 
     };

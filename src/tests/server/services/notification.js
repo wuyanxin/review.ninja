@@ -18,7 +18,7 @@ var pullRequest = require('../../../server/services/pullRequest');
 
 describe('notification:', function() {
     it('should render the email content for new_issue', function(done) {
-        var expectedcontent = 'A new issue has been opened by "testuserlogin" on "pullrequestname" for "testuser/testrepo".\n';
+        var expectedcontent = 'A new issue has been <strong>opened</strong> by <i>testuserlogin</i> on <i>pullrequestname</i> for <i>testuser/testrepo</i>.\n';
 
         var filename = 'src/server/templates/new_issue.ejs';
         var template = fs.readFileSync(filename, 'utf-8');
