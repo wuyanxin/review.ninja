@@ -18,6 +18,7 @@ var repo = require('../../../server/api/repo');
 describe('repo:setComment', function() {
     it('should prevent setting the repo wide comments because of insufficent permissions', function(done) {
         var githubStub = sinon.stub(github, 'call', function(args, done) {
+            console.log('requerstagruments: ', args);
             assert.equal(args.obj, 'repos');
             assert.equal(args.fun, 'one');
             assert.equal(args.arg.id, 'repo_uuid');
