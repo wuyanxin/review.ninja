@@ -135,37 +135,55 @@
 
                 <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px" >
                 <span class="text-success">
-                  <span class="octicon octicon-large octicon-comment-discussion"></span>
+                  <span class="octicon octicon-large octicon-comment-discussion"
+                        tooltip="{{ collaborator.stats.createComment | pluralize:'created comment'}}"
+                        tooltip-placement="bottom"
+                        tooltip-append-to-body="true"></span>
                     <br/> {{ collaborator.stats.createComment }}
                   </span>
                 </td>
                 <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px" >
                 <span class="text-warning">
-                  <span class="octicon octicon-large octicon-info"></span>
+                  <span class="octicon octicon-large octicon-info"
+                        tooltip="{{ collaborator.stats.addIssue | pluralize:'added issue'}}"
+                        tooltip-placement="bottom"
+                        tooltip-append-to-body="true"></span>
                     <br/> {{ collaborator.stats.addIssue }}
                   </span>
                 </td>
                 <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px" >
                 <span class="text-success">
-                  <span class="octicon octicon-large octicon-issue-closed"></span>
+                  <span class="octicon octicon-large octicon-issue-closed"
+                        tooltip="{{ collaborator.stats.removeIssue | pluralize:'closed issue'}}"
+                        tooltip-placement="bottom"
+                        tooltip-append-to-body="true"></span>
                     <br/> {{ collaborator.stats.removeIssue }}
                   </span>
                 </td>
                 <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
                   <span class="text-success">
-                    <span class="fa-lg icon-ninja-star"></span>
+                    <span class="fa-lg icon-ninja-star"
+                          tooltip="{{ collaborator.stats.addStar | pluralize:'added ninja star'}}"
+                          tooltip-placement="bottom"
+                          tooltip-append-to-body="true"></span>
                     <br/> {{ collaborator.stats.addStar }}
                   </span>
                 </td>
                 <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
                   <span class="text-warning">
-                    <span class="octicon octicon-large octicon-x"></span>
+                    <span class="octicon octicon-large octicon-x"
+                          tooltip="{{ collaborator.stats.removeStar | pluralize:'removed ninja star'}}"
+                          tooltip-placement="bottom"
+                          tooltip-append-to-body="true"></span>
                     <br/> {{ collaborator.stats.removeStar }}
                   </span>
                 </td>
                 <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
                   <span class="text-success">
-                    <span class="octicon octicon-git-merge"></span>
+                    <span class="octicon octicon-git-merge"
+                          tooltip="{{ collaborator.stats.merge | pluralize:'merged pull request'}}"
+                          tooltip-placement="bottom"
+                          tooltip-append-to-body="true"></span>
                     <br/> {{ collaborator.stats.merge }}
                   </span>
                 </td>
