@@ -1,7 +1,6 @@
+var Action = require('mongoose').model('Action');
 
 module.exports = function(req, res, next) {
-    var Action = require('mongoose').model('Action');
-
     if (req.originalUrl === '/api/star/rmv') {
         Action.create({
             user: req.args.user,

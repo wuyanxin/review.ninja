@@ -10,9 +10,13 @@ global.io = {emit: function() {}};
 
 // models
 var User = require('../../../server/documents/user').User;
+var Action = require('../../../server/documents/action').Action;
 
 // wrap
 var repos = require('../../../server/wrap/repos');
+
+// services
+var stats = require('../../../server/services/stats');
 
 describe('repos:getCollaborators', function() {
     it('should flag all collaborators if they are a user of reviewninja', function(done) {
@@ -29,6 +33,10 @@ describe('repos:getCollaborators', function() {
                 return done(null, collaboratorRegistered);
             }
             return done(null, null);
+        });
+
+        var statsStub = sinon.stub(stats, 'statsForUserAndRepo', function(login, repo, done) {
+            return done();
         });
 
         var req = {
