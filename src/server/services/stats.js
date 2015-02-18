@@ -2,24 +2,6 @@ var Action = require('mongoose').model('Action');
 
 module.exports = (function () {
 
-    var stats = {};
-
-    stats.statsForUserAndRepo = function(user, repo, fnResult) {
-        var s = {};
-        var numStats = Object.keys(statQueries).length;
-
-        // done ?
-        var c = 0;
-        for (sType in statQueries) {
-            addTypeAndCount(sType, s, statQueries[sType].q(user, repo), function() {
-                c++;
-                if (c === numStats) {
-                    fnResult(s);
-                }
-            });
-        }
-    };
-
     var addTypeAndCount = function(type, obj, query, fnDone) {
         query.count(function(err, count) {
             obj[type] = count;
@@ -47,13 +29,13 @@ module.exports = (function () {
             }
         },
         addIssue: {
-          q: function(user, repo) {
-              return Action.where({
-                  user: user,
-                  repo: repo,
-                  type: 'issues:add'
-              });
-          }
+            q: function(user, repo) {
+                return Action.where({
+                    user: user,
+                    repo: repo,
+                    type: 'issues:add'
+                });
+            }
         },
         removeIssue: {
             q: function(user, repo) {
@@ -82,6 +64,24 @@ module.exports = (function () {
                 });
             }
 
+        }
+    };
+
+    var stats = {};
+
+    stats.statsForUserAndRepo = function(user, repo, fnResult) {
+        var s = {};
+        var numStats = Object.keys(statQueries).length;
+
+        // done ?
+        var c = 0;
+        for (var sType in statQueries) {
+            addTypeAndCount(sType, s, statQueries[sType].q(user, repo), function() {
+                c++;
+                if (c === numStats) {
+                    fnResult(s);
+                }
+            });
         }
     };
 
