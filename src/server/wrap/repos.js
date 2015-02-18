@@ -8,7 +8,7 @@ var User = require('mongoose').model('User');
 var parse = require('parse-diff');
 
 // services
-var karma = require('../services/karma');
+var stats = require('../services/stats');
 
 module.exports = {
 
@@ -28,8 +28,8 @@ module.exports = {
     getCollaborators: function(req, collaborators, done) {
         async.each(collaborators, function(collaborator, callback) {
             User.findOne({ uuid: collaborator.id }, function(err, user) {
-                karma.karmaForUserAndRepo(collaborator.login, req.args.arg.repo, function(obj) {
-                    collaborator.karma = obj;
+                stats.statsForUserAndRepo(collaborator.login, req.args.arg.repo, function(obj) {
+                    collaborator.stats = obj;
                     collaborator.ninja = !!user;
                     callback(null);
                 });
