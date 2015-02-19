@@ -16,12 +16,12 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             // Testing libs
-            // TODO: CDN
             'src/bower/should/should.js',
 
             // Angular
             'http://cdn.socket.io/socket.io-1.0.4.js',
             'http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js',
             'http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js',
             'http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0-beta.8/angular.js',
             'http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.min.js',

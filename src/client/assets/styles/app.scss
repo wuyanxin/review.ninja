@@ -96,7 +96,7 @@ $nav-link-padding: 15px 25px;
 $breadcrumb-bg: transparent;
 $breadcrumb-color: $brand-primary;
 $breadcrumb-active-color: $brand-primary;
-$breadcrumb-separator: ' ';
+$breadcrumb-separator: " ";
 
 // label
 $label-default-bg: $brand-info;
@@ -106,7 +106,7 @@ $label-color: $brand-primary;
 $pre-color: #333;
 
 // import bootstrap
-@import '../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss';
+@import "../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap";
 
 // define our own styles
 $code-line-number-color: #aaa;
@@ -114,23 +114,24 @@ $code-line-select-color: #8a6d3b;
 $code-font-size: 12px;
 
 // import our files
-@import 'breadcrumb';
-@import 'browser';
-@import 'btn';
-@import 'code';
-@import 'diff';
-@import 'git';
-@import 'git-merge';
-@import 'icon';
-@import 'list-group';
-@import 'merge';
-@import 'panel';
-@import 'pull-list';
-@import 'settings';
-@import 'table';
-@import 'tabs';
-@import 'trashcan';
-@import 'well';
+@import "breadcrumb";
+@import "browser";
+@import "btn";
+@import "btn-group";
+@import "code";
+@import "diff";
+@import "git";
+@import "git-merge";
+@import "icon";
+@import "list-group";
+@import "merge";
+@import "panel";
+@import "pull-list";
+@import "settings";
+@import "table";
+@import "tabs";
+@import "trashcan";
+@import "well";
 
 
 //
@@ -148,6 +149,10 @@ $code-font-size: 12px;
     min-height: 100vh;
     min-height: calc(100vh - 52px);
     padding: 0 30px 40px;
+
+    img {
+      max-width: 100%;
+    }
   }
 
   > .sidebar {
@@ -174,27 +179,6 @@ $code-font-size: 12px;
   }
 }
 
-.star-dropdown {
-  margin-bottom: 0;
-  max-height: 350px;
-  overflow-y: scroll;
-  padding-bottom: 0;
-
-  > li > a:hover {
-    background-color: transparent !important;
-    cursor: default;
-  }
-
-  .divider {
-    margin-bottom: 0;
-  }
-
-  .star-dropdown-item {
-    border-bottom: 1px solid $gray-light;
-    padding: 5px 0;
-  }
-}
-
 .tooltip-inner {
   max-width: 500px;
 }
@@ -203,12 +187,11 @@ $code-font-size: 12px;
 
 body {
   font-weight: 300;
-}
 
-body.error {
-  background-color: #f9d792;
+  &.error {
+    background-color: #f9d792;
+  }
 }
-
 
 h2 {
   margin-top: 30px;
@@ -264,26 +247,22 @@ h4,
   color: $gray-dark;
 }
 
-img.muted {
-  opacity: 0.5;
-}
-
 .link-external {
   color: $brand-primary !important;
 }
 
-a.disabled {
-  color: $gray-dark;
-  cursor: default;
-  pointer-events: none;
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 // Font Awesome and Octicons
 
-i.fa-times,
-i.fa-plus,
-i.fa-plus-circle,
-i.fa-info,
+.fa-times,
+.fa-plus,
+.fa-plus-circle,
+.fa-info,
 .octicon-trashcan {
   cursor: pointer;
 
@@ -294,7 +273,7 @@ i.fa-info,
   user-select: none;
 }
 
-i.fa-times {
+.fa-times {
   color: $gray;
 
   &:hover {
@@ -341,7 +320,6 @@ textarea {
   user-select: none;
 }
 
-[ng\:cloak],
 [ng-cloak],
 [data-ng-cloak],
 [x-ng-cloak],

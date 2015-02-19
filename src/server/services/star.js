@@ -31,6 +31,7 @@ module.exports = {
                     repo: repo,
                     number: number,
                     sender: sender,
+                    settings: url.reviewSettings(user, repo),
                     url: url.reviewPullRequest(user, repo, number)
                 });
                 keenio.addEvent('star:create', {
@@ -74,6 +75,7 @@ module.exports = {
                         repo: repo,
                         number: number,
                         sender: sender,
+                        settings: url.reviewSettings(user, repo),
                         url: url.reviewPullRequest(user, repo, number)
                     });
                     keenio.addEvent('star:remove', {

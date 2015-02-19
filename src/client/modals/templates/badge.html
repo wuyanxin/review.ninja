@@ -4,7 +4,11 @@
 </div>
 <div class="modal-body">
     <p>Display your badge of honour proudly on GitHub by copy and pasting the following into your README file:</p>
-    <pre>[![ReviewNinja]({{ origin }}/assets/images/wereviewninja-32.png)]({{ origin + '/' + $stateParams.user + '/' + $stateParams.repo }})</pre>
+    <p>
+    <select ng-init="selectedFormat = 1;formatText=formats[1]['link']" ng-options="format.id as format.title for format in formats" ng-model='selectedFormat' ng-change="update()">
+    </select>
+	</p>
+    <pre ng-model="formatText">{{formatText}}</pre>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="ok()">OK</button>

@@ -16,21 +16,22 @@
     <h2>
       Repositories 
       <i class="fa fa-plus-circle plus-icon" ng-click="show=!show; setFocus=true;"></i>
-      <a href="/auth/github?scope=private" target="_self" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') === -1">
-        <span class="mega-octicon octicon-lock pull-right" 
-              tooltip="Enable private repositories" 
-              tooltip-append-to-body="true"
-              style="font-size:26px; padding:4px 2px 0;">
-        </span>
-      </a>
-      <a href="/auth/github?scope=public" target="_self" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') > -1">
-        <span class="mega-octicon octicon-lock text-warning pull-right" 
-              tooltip="Disable private repositories" 
-              tooltip-append-to-body="true"
-              style="font-size:26px; padding:4px 2px 0;">
-        </span>
-      </a>
     </h2>
+
+    <p class="text-right" style="margin:-30px 0 10px 220px;">
+      <small ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') === -1">
+        You are only showing public repos.
+        <a href="/auth/github?scope=private" target="_self" style="text-decoration: underline;">
+          Enable private repos.
+        </a>
+      </small>
+      <small ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') > -1">
+        You are showing public and private repos.
+        <a href="/auth/github?scope=public" target="_self" style="text-decoration: underline;">
+          Disable private repos.
+        </a>
+      </small>
+    </p>
 
     <div class="well-dark well-sm" ng-show="show">
       <form ng-submit="search()" style="margin: 15px;">
@@ -63,7 +64,7 @@
 
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="hasRepos && !repos.length"></i>
 
-    <div ng-show="!hasRepos">
+    <div ng-show="user.loaded && !hasRepos">
       <table>
         <tr>
           <td>

@@ -1,12 +1,18 @@
 .browser {
   margin-top: -1px;
 
+  .disabled {
+    color: $gray-dark;
+    cursor: default;
+    pointer-events: none;
+  }
+
   .panel-body {
     overflow-x: scroll;
     padding: 0;
   }
 
-  table.browse {
+  .browse {
     margin: 0;
     width: 100%;
 

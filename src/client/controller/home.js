@@ -61,6 +61,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                 repo_uuid: repo.id
             }, function(err) {
                 if(!err) {
+                    console.log(repo);
                     repo.ninja = false;
                 }
             });

@@ -1,5 +1,1 @@
-<% include mailheader %>
-
-<a href="<%= url %>"><%= user %>/<%= repo %> #<%= number %></a> has been opened by <%= sender.login %>.
-
-<% include mailfooter %>
+A new pull request has been <strong>opened</strong> by <i><%= sender.login %></i> on <i><%= pullrequestname %></i> for <i><%= user %>/<%= repo %></i>.

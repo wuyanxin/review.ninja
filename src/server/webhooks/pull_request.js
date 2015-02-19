@@ -30,14 +30,6 @@ module.exports = function(req, res) {
             return res.status(404).send('User not found');
         }
 
-        var notification_args = {
-            user: user,
-            repo: repo,
-            number: number,
-            sender: sender,
-            url: url.reviewPullRequest(user, repo, number)
-        };
-
         var actions = {
             opened: function() {
                 status.update({
@@ -54,6 +46,7 @@ module.exports = function(req, res) {
                     repo: repo,
                     number: number,
                     sender: sender,
+                    settings: url.reviewSettings(user, repo),
                     url: url.reviewPullRequest(user, repo, number)
                 });
 
@@ -74,6 +67,7 @@ module.exports = function(req, res) {
                     repo: repo,
                     number: number,
                     sender: sender,
+                    settings: url.reviewSettings(user, repo),
                     url: url.reviewPullRequest(user, repo, number)
                 });
 

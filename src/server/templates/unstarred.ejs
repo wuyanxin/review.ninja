@@ -1,5 +1,1 @@
-<% include mailheader %>
-
-<a href="<%= url %>"><%= user %>/<%= repo %> #<%= number %></a> was unstarred by <%= sender.login %>.
-
-<% include mailfooter %>
+A pull request has been <strong>unstarred</strong> by <i><%= sender.login %></i> on <i><%= pullrequestname %></i> for <i><%= user %>/<%= repo %></i>.

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body style="background-color: #f9f9f9;
+               font-family: Helvetica, Arial, sans-serif;
+                font-weight: 300;
+                text-align:center;">
+    <div style="box-shadow: 0px 0px 10px 0px #ccc;
+                margin: 0 auto;
+                text-align: left;
+                max-width: 600px;
+                background-color: #fff;">
+      <div style="background-color: #d0eaea; padding: 20px 30px;">
+        <img src="<%- baseUrl %>/assets/images/email_logo.png" width="240px" height="38px" />
+      </div>
+      <div style="margin: 20px 20px 60px;">
+        <table>
+          <tr>
+            <td style="vertical-align: top; padding: 10px;">
+              <div style="width: 42px;">
+                <img src="<%- icon%>" height="42px"></span>
+              </div>
+            </td>
+            <td style="vertical-align: top;
+                       padding: 10px; 
+                       color: #349b94;
+                       font-size: 2em;
+                       line-height: 1.2em;">
+              <%- actionText %>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; padding: 10px;"></td>
+            <td style="vertical-align: top; padding: 10px;">
+              <a href="<%- url %>" 
+                 style="background-color: #ef4e14;
+                   border-style: none;
+                   color: white;
+                   font-size: 1.125em;
+                   font-weight: 600;
+                   text-decoration: none;
+                   padding: 14px;">View in ReviewNinja</a>
+            </td>
+          </tr>
+        </table>
+        <img src="<%- baseUrl %>/assets/images/email_ninja.png" width="140px" style="float: right;"/>
+      </div>
+      <div style="background-color: #ecebeb;
+                  color: #777;
+                  font-size: 1em;
+                  font-style: italic;
+                  padding: 10px 30px;
+                  line-height: 1em;">
+        <p style="margin-right: 125px">You received this email because you asked to be notified about changes in ReviewNinja. You can <a style="color: #349b94;" href="<%- settings %>">manage notifications in ReviewNinja</a>.</p>
+      </div>
+    </div>
+  </body>
+</html>

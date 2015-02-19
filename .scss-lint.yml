@@ -19,7 +19,7 @@ linters:
     enabled: true
 
   DuplicateProperty:
-    enabled: true
+    enabled: false
 
   ElsePlacement:
     enabled: true
@@ -67,6 +67,10 @@ linters:
     enabled: true
     convention: hyphenated_lowercase # or 'BEM', or a regex pattern
 
+  NestingDepth:
+    enabled: true
+    max_depth: 4
+
   PlaceholderInExtend:
     enabled: true
 
@@ -112,7 +116,7 @@ linters:
 
   StringQuotes:
     enabled: true
-    style: single_quotes # or double_quotes
+    style: double_quotes # or double_quotes
 
   TrailingSemicolon:
     enabled: true
@@ -128,6 +132,9 @@ linters:
 
   UrlQuotes:
     enabled: true
+
+  VendorPrefixes:
+    enabled: false
 
   ZeroUnit:
     enabled: true

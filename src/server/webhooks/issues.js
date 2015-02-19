@@ -107,6 +107,7 @@ module.exports = function(req, res) {
                                 number: mile.pull,
                                 issue: issue,
                                 sender: sender,
+                                settings: url.reviewSettings(user, repo),
                                 url: url.reviewPullRequest(user, repo, mile.pull)
                             });
                         }
@@ -124,6 +125,7 @@ module.exports = function(req, res) {
                                 number: mile.pull,
                                 issue: issue,
                                 sender: sender,
+                                settings: url.reviewSettings(user, repo),
                                 url: url.reviewPullRequest(user, repo, mile.pull)
                             });
                         }

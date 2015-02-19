@@ -1,7 +1,6 @@
 var express = require('express');
 var ejs = require('ejs');
 var fs = require('fs');
-var crypto = require('crypto');
 var router = express.Router();
 
 // services
@@ -78,7 +77,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                             return res.status(304).send();
                         }
 
-                        var hash = crypto.createHash('md5').update(stars.length + ':' + issues, 'utf8').digest('hex');
+                        var hash = require('crypto').createHash('md5').update(stars.length + ':' + issues, 'utf8').digest('hex');
 
                         if(req.get('If-None-Match') === hash) {
                             return res.status(304).send();
