@@ -145,10 +145,10 @@
                 <td style="width: 50px; margin-right: 10px; vertical-align: middle;">
                   <strong><a ng-href="{{ collaborator.html_url }}"> {{ collaborator.login }} </a></strong></br>
                 </td>
-                <td ng-show="!collaborator.ninja" colspan="6">
+                <td style="vertical-align: middle;" ng-show="!collaborator.ninja" colspan="6">
                   <button class="btn btn-default btn-sm pull-right"
                           ng-click="invite(collaborator)"
-                          ng-show="!collaborator.ninja">Invite</button>
+                          ng-show="!collaborator.ninja">Invite collaborator</button>
                 </td>
 
                 <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px" >
