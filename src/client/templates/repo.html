@@ -109,11 +109,14 @@
             <p class="well text-center" ng-show="type==='closed' && !closed.loading && !matched.length">
               There are no closed pull requests to show.
             </p>
-            <span class="fa-stack center-block" ng-show="author" ng-click="author=null;">
-              <i class="fa fa-circle fa-stack-2x text-info"></i>
-              <i class="fa fa-times fa-stack-1x" style="margin-top:-1px;" tooltip="Clear filters" tooltip-placement="bottom"
-                   tooltip-append-to-body="true"></i>
-            </span>
+            <p ng-show="author">
+              <span class="fa-stack" ng-click="author=null;">
+                <i class="fa fa-circle fa-stack-2x text-info"></i>
+                <i class="fa fa-times fa-stack-1x" style="margin-top:-1px;" tooltip="Clear filters" tooltip-placement="bottom"
+                     tooltip-append-to-body="true"></i>
+              </span>
+              <span>Clear filters</span>
+            </p>
             <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)"></i>
           </tab>
           <tab>
