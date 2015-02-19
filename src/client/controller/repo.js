@@ -16,14 +16,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         $scope.authors = {};
         $scope.author = null;
 
-        // for the collaborators
-        $scope.collaborators = {};
-        $scope.collaboratorOrder = [
-            {text: 'Name', attribute: 'login'},
-            {text: 'Collaborator', attribute: 'ninja'}
-        ];
-        $scope.collaboratorPredicate = $scope.collaboratorOrder[0];
-
         // set the default state
         $scope.type = 'open';
 

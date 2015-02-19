@@ -121,24 +121,8 @@
           </tab>
           <tab>
             <tab-heading><span class="fa fa-users"></span> Team</tab-heading>
-            <div class="well well-sm no-select clearfix">
-              <div class="btn-group pull-right">
-                <a href="" class="btn btn-link dropdown-toggle" ng-class="{active: collaboratorPredicate}" data-toggle="dropdown">
-                  {{ collaboratorPredicate.text }}
-                  <small><i class="fa fa-chevron-down"></i></small>
-                </a>
-                <ul class="dropdown-menu" role="menu" style="margin:-5px 10px 0 0">
-                  <li ng-repeat="order in collaboratorOrder">
-                    <a href="" ng-click="$parent.collaboratorPredicate = order">
-                      <span ng-show="order.attribute !== collaboratorPredicate.attribute">{{ order.text }}</span>
-                      <strong ng-show="order.attribute === collaboratorPredicate.attribute">{{ order.text }}</strong>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
             <table class="table table-hover pull-list">
-              <tr ng-repeat="collaborator in collaborators.value | orderBy:collaboratorPredicate.attribute:reverse">
+              <tr ng-repeat="collaborator in collaborators.value | orderBy:login">
                 <td style="width:50px; padding-right:0;">
                   <img ng-src="{{ collaborator.avatar_url }}&s=50" width="50px" />
                 </td>
