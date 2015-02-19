@@ -146,9 +146,11 @@
                   <strong><a ng-href="{{ collaborator.html_url }}"> {{ collaborator.login }} </a></strong></br>
                 </td>
                 <td style="vertical-align: middle;" ng-show="!collaborator.ninja" colspan="6">
-                  <button class="btn btn-default btn-sm pull-right"
+                  <button class="btn btn-primary pull-right"
                           ng-click="invite(collaborator)"
-                          ng-show="!collaborator.ninja">Invite to ReviewNinja</button>
+                          ng-show="!collaborator.ninja && !collaborator.invitationLoading && !collaborator.invited">Invite to ReviewNinja</button>
+                  <i class="fa fa-2x fa-spinner fa-spin pull-right" ng-show="collaborator.invitationLoading"></i>
+                  <span ng-show="collaborator.invited" class="pull-right">A new invitation to {{ collaborator.login }} was sent.</span>
                 </td>
 
                 <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px" >

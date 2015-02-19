@@ -6,8 +6,8 @@
 // resolve: repo
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC', 'repo', 'socket', 'Pull',
-    function($scope, $stateParams, $modal, $HUB, $RPC, repo, socket, Pull) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '$HUB', '$RPC', 'repo', 'socket', 'Pull',
+    function($scope, $stateParams, $modal, $timeout, $HUB, $RPC, repo, socket, Pull) {
 
         // get the repo
         $scope.repo = repo;
@@ -108,6 +108,11 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
                 repo: $stateParams.repo,
                 invitee: collaborator.login
             });
+            collaborator.invitationLoading = true;
+            $timeout(function() {
+                collaborator.invitationLoading = false;
+                collaborator.invited = true;
+            }, 1000);
         };
 
         //
