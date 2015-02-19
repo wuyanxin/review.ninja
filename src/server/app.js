@@ -34,21 +34,6 @@ app.use(require('cookie-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// custom middleware
-app.use('/api', require('./middleware/param'));
-app.use('/api', require('./middleware/authenticated'));
-app.use('/github/webhook', require('./middleware/param'));
-
-// papertrail middleware
-app.use('/api', require('./middleware/papertrail'));
-app.use('/github/webhook', require('./middleware/papertrail'));
-
-// keen middleware
-app.use('/api/github', require('./middleware/keen'));
-
-// karma middleware
-app.use('/api', require('./middleware/stats'));
-
 async.series([
 
     function(callback) {
@@ -169,6 +154,28 @@ async.series([
             });
         }, callback);
     },
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Load middleware
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    function(callback) {
+        // custom middleware
+        app.use('/api', require('./middleware/param'));
+        app.use('/api', require('./middleware/authenticated'));
+        app.use('/github/webhook', require('./middleware/param'));
+
+        // papertrail middleware
+        app.use('/api', require('./middleware/papertrail'));
+        app.use('/github/webhook', require('./middleware/papertrail'));
+
+        // keen middleware
+        app.use('/api/github', require('./middleware/keen'));
+
+        // karma middleware
+        app.use('/api', require('./middleware/stats'));
+    },
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Bootstrap passport
