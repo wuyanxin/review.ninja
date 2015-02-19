@@ -127,8 +127,9 @@
                 </td>
                 <td style="width:50px; margin-right: 10px">
                   <a ng-href="{{ collaborator.html_url }}"> {{ collaborator.login }} </a></br>
-
-                  <button class="btn btn-default btn-sm"
+                </td>
+                <td ng-show="!collaborator.ninja" colspan="6">
+                  <button class="btn btn-default btn-sm pull-right"
                           ng-click="invite(collaborator)"
                           ng-show="!collaborator.ninja">Invite</button>
                 </td>
@@ -189,7 +190,7 @@
                 </td>
               </tr>
               <tr ng-show="!collaborators.value.length">
-                <td colspan="2">There are no collaborators to show for {{ pull.base.repo.owner.login }} / {{ pull.base.repo.name }}.</td>
+                <td colspan="8">There are no collaborators to show for {{ pull.base.repo.owner.login }} / {{ pull.base.repo.name }}.</td>
               </tr>
             </table>
           </tab>
