@@ -34,6 +34,7 @@ app.use(require('cookie-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
+console.log('load middleware'.bold);
 // custom middleware
 app.use('/api', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
@@ -45,9 +46,6 @@ app.use('/github/webhook', require('./middleware/papertrail'));
 
 // keen middleware
 app.use('/api/github', require('./middleware/keen'));
-
-// karma middleware
-app.use('/api', require('./middleware/stats'));
 
 async.series([
 
@@ -168,6 +166,14 @@ async.series([
                 }
             });
         }, callback);
+    },
+
+    function(callback) {
+        console.log('load karma middleware'.bold);
+
+        // karma middleware
+        app.use('/api', require('./middleware/stats'));
+        callback();
     },
 
     //////////////////////////////////////////////////////////////////////////////////////////////
