@@ -84,7 +84,6 @@
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
                         <li><a href="">{{ getStarText() }}</a></li>
-                        <!-- <li class="divider"></li> -->
                         <li ng-repeat="star in pull.stars | orderBy:'-created_at'">
                           <a href="#">
                             <img ng-src="{{ star.user.value.avatar_url + '&s=56' }}" width="56px" class="pull-left" />
