@@ -45,6 +45,12 @@ module.exports = function() {
         reviewPullRequest: function(user, repo, number) {
             return url.resolve(baseUrl, '/' + user + '/' + repo + '/pull/' + number);
         },
+        reviewRepo: function(user, repo) {
+            return url.resolve(baseUrl, '/' + user + '/' + repo);
+        },
+        pullRequest: function(user, repo) {
+            return url.resolve(baseUrl, '/' + user + '/');
+        },
         reviewSettings: function(user, repo, number) {
             return url.resolve(baseUrl, '/' + user + '/' + repo + '/settings');
         },

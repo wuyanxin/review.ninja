@@ -1,5 +1,14 @@
+// libraries
+var async = require('async');
+
+// models
+var User = require('mongoose').model('User');
+
 // modules
 var parse = require('parse-diff');
+
+// services
+var stats = require('../services/stats');
 
 module.exports = {
 
@@ -14,5 +23,19 @@ module.exports = {
         });
 
         done(null, comp);
+    },
+
+    getCollaborators: function(req, collaborators, done) {
+        async.each(collaborators, function(collaborator, callback) {
+            User.findOne({ uuid: collaborator.id }, function(err, user) {
+                stats.statsForUserAndRepo(collaborator.login, req.args.arg.repo, function(obj) {
+                    collaborator.stats = obj;
+                    collaborator.ninja = !!user;
+                    callback(null);
+                });
+            });
+        }, function() {
+            done(null, collaborators);
+        });
     }
 };

@@ -74,7 +74,11 @@ module.exports = {
                         }
                     }
 
-                    keenio.addEvent('user:addRepo', req.args);
+                    keenio.addEvent('user:addRepo', {
+                        repo: repo.id,
+                        name: repo.name,
+                        user: user.uuid
+                    });
 
                     done(err, {repos: user ? user.repos : null});
                 });

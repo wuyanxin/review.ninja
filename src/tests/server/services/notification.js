@@ -16,7 +16,7 @@ var Settings = require('mongoose').model('Settings');
 var User = require('mongoose').model('User');
 var pullRequest = require('../../../server/services/pullRequest');
 
-describe('notification:', function() {
+describe('notification:sendmail', function() {
     it('should render the email content for new_issue', function(done) {
         var expectedcontent = 'A new issue has been <strong>opened</strong> by <i>testuserlogin</i> on <i>pullrequestname</i> for <i>testuser/testrepo</i>.\n';
 

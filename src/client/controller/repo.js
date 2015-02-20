@@ -6,8 +6,8 @@
 // resolve: repo
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC', 'repo', 'socket', 'Pull',
-    function($scope, $stateParams, $modal, $HUB, $RPC, repo, socket, Pull) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '$HUB', '$RPC', 'repo', 'socket', 'Pull',
+    function($scope, $stateParams, $modal, $timeout, $HUB, $RPC, repo, socket, Pull) {
 
         // get the repo
         $scope.repo = repo;
@@ -34,7 +34,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         $scope.open = $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            state: 'open'
+            state: 'open',
+            per_page: 10
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
@@ -48,7 +49,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
         $scope.closed = $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            state: 'closed'
+            state: 'closed',
+            per_page: 10
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
@@ -56,6 +58,12 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
                     setAuthor(pull);
                 });
             }
+        });
+
+        // get the collaborators
+        $scope.collaborators = $HUB.wrap('repos', 'getCollaborators', {
+            user: $stateParams.user,
+            repo: $stateParams.repo
         });
 
         //
@@ -85,6 +93,13 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
             var modal = $modal.open({
                 templateUrl: '/modals/templates/badge.html',
                 controller: 'BadgeCtrl'
+            });
+        };
+
+        $scope.invite = function(collaborator) {
+            collaborator.invite = $RPC.call('invitation', 'invite', {
+                user: $stateParams.user,
+                repo: $stateParams.repo
             });
         };
 

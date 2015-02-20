@@ -92,7 +92,6 @@ module.exports = function() {
     };
 
     var notificationArgs = {
-
         pull_request_opened: {
             subject:'A new pull request is ready for review',
             template:'src/server/templates/pullReqOpened.ejs',
@@ -128,7 +127,6 @@ module.exports = function() {
             template: 'src/server/templates/issue_closed.ejs',
             imageurl: url.baseUrl + '/assets/images/email_issue_closed.png'
         }
-
     };
 
     return {

@@ -111,7 +111,6 @@ module.exports = {
         passport: [
             __dirname + '/server/passports/*.js'
         ]
-
     }
 
 };
