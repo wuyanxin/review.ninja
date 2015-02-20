@@ -34,7 +34,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         $scope.open = $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            state: 'open'
+            state: 'open',
+            per_page: 10
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
@@ -48,7 +49,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         $scope.closed = $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            state: 'closed'
+            state: 'closed',
+            per_page: 10
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
@@ -95,16 +97,10 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         };
 
         $scope.invite = function(collaborator) {
-            $RPC.call('invitation', 'invite', {
+            collaborator.invite = $RPC.call('invitation', 'invite', {
                 user: $stateParams.user,
-                repo: $stateParams.repo,
-                invitee: collaborator.login
+                repo: $stateParams.repo
             });
-            collaborator.invitationLoading = true;
-            $timeout(function() {
-                collaborator.invitationLoading = false;
-                collaborator.invited = true;
-            }, 1000);
         };
 
         //

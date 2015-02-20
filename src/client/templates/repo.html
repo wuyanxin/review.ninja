@@ -12,6 +12,7 @@
     <div class="row">
       <div class="col-sm-12">
         <tabset>
+
           <tab>
             <tab-heading><span class="octicon octicon-git-pull-request"></span> Pull Requests</tab-heading>
             <div class="well well-sm no-select" style="margin-top:-1px; border:1px solid #ececec;">
@@ -119,84 +120,58 @@
             </p>
             <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)"></i>
           </tab>
+
           <tab>
             <tab-heading><span class="fa fa-users"></span> Team</tab-heading>
-            <table class="table table-hover pull-list">
-              <tr ng-repeat="collaborator in collaborators.value | orderBy:login">
+
+            <table class="table table-hover">
+              <tr ng-repeat="collaborator in collaborators.value | orderBy:['-ninja', 'login']">
                 <td style="width:50px; padding-right:0;">
                   <img ng-src="{{ collaborator.avatar_url }}&s=50" width="50px" />
                 </td>
                 <td style="vertical-align: middle;">
                   <strong><a ng-href="{{ collaborator.html_url }}"> {{ collaborator.login }} </a></strong></br>
                 </td>
-                <td ng-show="!collaborator.ninja" style="vertical-align: middle;" colspan="5">
+                <td ng-show="!collaborator.ninja" style="vertical-align: middle;">
                   <button class="btn btn-primary pull-right"
                           ng-click="invite(collaborator)"
-                          ng-show="!collaborator.ninja && !collaborator.invitationLoading && !collaborator.invited">Invite to ReviewNinja</button>
-                  <i class="fa fa-2x fa-spinner fa-spin pull-right" ng-show="collaborator.invitationLoading"></i>
-                  <span ng-show="collaborator.invited" class="pull-right">Invitation sent.</span>
+                          ng-show="!collaborator.ninja && !collaborator.invite">
+                    Invite to ReviewNinja
+                  </button>
+                  <i class="fa fa-2x fa-spinner fa-spin pull-right" ng-show="collaborator.invite.loading"></i>
+                  <span ng-show="collaborator.invite.value" class="pull-right">Invitation sent</span>
+                  <span ng-show="collaborator.invite.error" class="pull-right">Invitation failed to send</span>
                 </td>
-
-                <!-- <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px" >
-                <span class="text-success">
-                  <span class="octicon octicon-large octicon-comment-discussion"
-                        tooltip="{{ collaborator.stats.createComment | pluralize:'created comment'}}"
-                        tooltip-placement="bottom"
-                        tooltip-append-to-body="true"></span>
-                    <br/> {{ collaborator.stats.createComment }}
-                  </span>
-                </td> -->
-                <td ng-show="collaborator.ninja" class="text-center" style="width:75px; padding-left:10px; padding-right:10px" >
-                <span class="text-warning">
-                  <span class="octicon octicon-large octicon-info"
-                        tooltip="{{ collaborator.stats.addIssue | pluralize:'added issue'}}"
-                        tooltip-placement="bottom"
-                        tooltip-append-to-body="true"></span>
-                    <br/> {{ collaborator.stats.addIssue }}
-                  </span>
-                </td>
-                <!-- <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px" >
-                <span class="text-success">
-                  <span class="octicon octicon-large octicon-issue-closed"
-                        tooltip="{{ collaborator.stats.removeIssue | pluralize:'closed issue'}}"
-                        tooltip-placement="bottom"
-                        tooltip-append-to-body="true"></span>
-                    <br/> {{ collaborator.stats.removeIssue }}
-                  </span>
-                </td> -->
-                <td ng-show="collaborator.ninja" class="text-center" style="width:75px; padding-left:10px; padding-right:10px">
-                  <span class="text-success">
-                    <span class="fa-lg icon-ninja-star"
-                          tooltip="{{ collaborator.stats.addStar | pluralize:'added ninja star'}}"
-                          tooltip-placement="bottom"
-                          tooltip-append-to-body="true"></span>
-                    <br/> {{ collaborator.stats.addStar }}
-                  </span>
-                </td>
-                <!-- <td ng-show="collaborator.ninja" class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
-                  <span class="text-warning">
-                    <span class="octicon octicon-large octicon-x"
-                          tooltip="{{ collaborator.stats.removeStar | pluralize:'removed ninja star'}}"
-                          tooltip-placement="bottom"
-                          tooltip-append-to-body="true"></span>
-                    <br/> {{ collaborator.stats.removeStar }}
-                  </span>
-                </td> -->
-                <td ng-show="collaborator.ninja" class="text-center" style="width:75px; padding-left:10px; padding-right:10px">
-                  <span class="text-success">
+                <td ng-show="collaborator.ninja">
+                  <span class="text-center text-merged pull-right" style="width:50px; padding-left:10px; padding-right:10px">
                     <span class="octicon octicon-git-merge"
                           tooltip="{{ collaborator.stats.merge | pluralize:'merged pull request'}}"
                           tooltip-placement="bottom"
-                          tooltip-append-to-body="true"></span>
+                          tooltip-append-to-body="true">
+                    </span>
                     <br/> {{ collaborator.stats.merge }}
+                  </span>
+                  <span class="text-center text-success pull-right" style="width:50px; padding-left:10px; padding-right:10px">
+                    <span class="octicon octicon-large octicon-issue-opened"
+                        tooltip="{{ collaborator.stats.addIssue | pluralize:'added issue'}}"
+                        tooltip-placement="bottom"
+                        tooltip-append-to-body="true">
+                    </span>
+                    <br/> {{ collaborator.stats.addIssue }}
+                  </span>
+                  <span class="text-center text-primary pull-right" style="width:50px; padding-left:10px; padding-right:10px">
+                    <span class="fa-lg icon-ninja-star"
+                          tooltip="{{ collaborator.stats.addStar | pluralize:'added ninja star'}}"
+                          tooltip-placement="bottom"
+                          tooltip-append-to-body="true">
+                    </span>
+                    <br/> {{ collaborator.stats.addStar }}
                   </span>
                 </td>
               </tr>
-              <tr ng-show="!collaborators.value.length">
-                <td colspan="5">There are no collaborators to show for {{ pull.base.repo.owner.login }} / {{ pull.base.repo.name }}.</td>
-              </tr>
             </table>
           </tab>
+
         </tabset>
       </div>
     </div>
