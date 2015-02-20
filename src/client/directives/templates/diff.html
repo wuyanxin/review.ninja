@@ -1,13 +1,19 @@
 <accordion class="diff">
     <accordion-group is-open="$parent.open">
         <accordion-heading>
-            <strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong><i ng-show="file.ignored" class="ignored"> - ignored file</i>
-            <button class="btn btn-xs btn-default pull-right" 
-                    ng-disabled="!open"
-                    ng-show="!file.image"
-                    ng-click="expanded=!expanded; $event.stopPropagation();">
-                &nbsp;<i class="fa" ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"></i>&nbsp;
-            </button>
+            <strong tooltip="{{ open ? 'Hide' : 'Show'}} file"
+               tooltip-placement="bottom"
+               tooltip-append-to-body="true">
+                <i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong><i ng-show="file.ignored" class="ignored"> - ignored file</i>
+            <span ng-click="expanded=!expanded; $event.stopPropagation();">
+                <i class="fa pull-right"
+                ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"
+                ng-disabled="!open"
+                ng-show="!file.image"
+                tooltip="{{ expanded ? 'Collapse' : 'Expand' }} code"
+                tooltip-placement="bottom"
+                tooltip-append-to-body="true"></i>
+            </span>
             <a ng-show="file.ignored"
                 ng-click="$event.stopPropagation()"
                 href="http://docs.review.ninja/quickstart/#ignored"
