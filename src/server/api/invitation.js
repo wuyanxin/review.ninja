@@ -16,25 +16,26 @@ module.exports = {
         }
         transporter = nodemailer.createTransport(sendmailTransport());
 
-        var template = fs.readFileSync('src/server/templates/invite.ejs', 'utf-8');
-        var args = {
-            filename: template,
-            user: req.args.user,
-            repo: req.args.repo,
-            url: 'url',
-            inviter: req.args.invitee
-        };
+        var template = fs.readFileSync('./src/server/templates/invite.ejs', 'utf-8');
+
         var mailOptions = {
             from: 'ReviewNinja <noreply@review.ninja>',
-            to: req.args.email,
-            subject: 'You are invited to ReviewNinja',
-            html: ejs.render(template, args)
+            to: null,
+            subject: req.user.login + ' invited you to try ReviewNinja!',
+            html: ejs.render(template, {
+                user: req.args.user,
+                repo: req.args.repo,
+                inviter: req.user.login,
+                url: url.reviewRepo(req.args.user, req.args.repo),
+                baseUrl: url.baseUrl
+            })
         };
-        transporter.sendMail(mailOptions, function(err, response) {
-            if (err) {
-                return;
+
+        transporter.sendMail(mailOptions, function(err, res) {
+            if(!err) {
+                transporter.close();
             }
-            transporter.close();
+            done(err, res);
         });
     }
 };
