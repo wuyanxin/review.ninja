@@ -43,8 +43,11 @@
         <ul class="nav navbar-nav navbar-right buttonstopbar" ng-show="user.loaded" style="font-size:12px;" ng-cloak>
           <li><a target="_blank" href="http://docs.review.ninja">DOCUMENTATION</a></li>
           <li><a target="_blank" href="http://www.review.ninja">ABOUT</a></li>
-          <li><p class="navbar-text" style="margin-right: 0px;">{{ user.value.login }}</p></li>
-          <li><a class="action" href="/logout" target="_self"><span class="fa fa-lg fa-sign-out"></span></a></li>
+          <li><p class="navbar-text" style="margin-right: 0px;">Signed in as {{ user.value.login }}</p></li>
+          <li tooltip="Sign out"
+              tooltip-append-to-body="true"
+              tooltip-placement="bottom"><a class="action" href="/logout" target="_self">
+          <span class="fa fa-lg fa-sign-out"></span></a></li>
         </ul>
       </div>
     </div>
