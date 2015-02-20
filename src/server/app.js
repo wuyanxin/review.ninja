@@ -6,7 +6,6 @@ var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
 var sass = require('node-sass');
-var socket = require('./services/socket.js');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration
@@ -34,7 +33,7 @@ app.use(require('cookie-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-console.log('load middleware'.bold);
+
 // custom middleware
 app.use('/api', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
@@ -46,6 +45,9 @@ app.use('/github/webhook', require('./middleware/papertrail'));
 
 // keen middleware
 app.use('/api/github', require('./middleware/keen'));
+
+// karma middleware
+app.use('/api', require('./middleware/stats'));
 
 async.series([
 
@@ -168,14 +170,6 @@ async.series([
         }, callback);
     },
 
-    function(callback) {
-        console.log('load karma middleware'.bold);
-
-        // karma middleware
-        app.use('/api', require('./middleware/stats'));
-        callback();
-    },
-
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Bootstrap passport
     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -291,6 +285,7 @@ app.all('/api/:obj/:fun', function(req, res) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.all('/github/webhook/:id', function(req, res) {
+    var socket = require('./services/socket.js');
     var event = req.headers['x-github-event'];
     try {
         if(!webhooks[event]) {
