@@ -36,18 +36,21 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
             return pull;
         },
 
-        stars: function(pull) {
+        stars: function(pull, avatar) {
             $RPC.call('star', 'all', {
                 sha: pull.head.sha,
                 repo_uuid: pull.base.repo.id
             }, function(err, stars) {
                 if(!err) {
                     pull.stars = stars.value;
-                    pull.stars.forEach(function(star) {
-                        star.user = $HUB.call('user', 'getFrom', {
-                            user: star.name
+
+                    if(avatar) {
+                        pull.stars.forEach(function(star) {
+                            star.user = $HUB.call('user', 'getFrom', {
+                                user: star.name
+                            });
                         });
-                    });
+                    }
                 }
             });
             return pull;

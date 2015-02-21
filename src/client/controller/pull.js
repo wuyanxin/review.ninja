@@ -20,7 +20,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.head = pull.value.head.sha;
 
         // get the pull request
-        $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value);
+        $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value, true);
 
         // set the line selection
         $scope.reference = {selection: {}, issues: null};
@@ -176,7 +176,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         $scope.compComm($scope.base, pull.value.head.sha);
                     }
 
-                    $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value);
+                    $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value, true);
                 }
             });
         };
@@ -268,7 +268,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
             if($scope.pull.number === args.number) {
                 if(args.action === 'starred' || args.action === 'unstarred') {
-                    $scope.pull = Pull.stars($scope.pull);
+                    $scope.pull = Pull.stars($scope.pull, true);
                 }
                 if(args.action === 'closed' || args.action === 'reopened' || args.action === 'synchronize') {
                     $scope.getPullRequest();
