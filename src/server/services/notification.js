@@ -1,23 +1,19 @@
-var nodemailer = require('nodemailer');
-var smtpTransport = require('nodemailer-smtp-transport');
-var sendmailTransport = require('nodemailer-sendmail-transport');
-var fs = require('fs');
+// modules
 var ejs = require('ejs');
+var fs = require('fs');
 var github = require('./github');
-var pullRequest = require('./pullRequest');
-var url = require('./url');
 
-var Settings = require('mongoose').model('Settings');
+// services
+var url = require('./url');
+var mail = require('./mail');
+var pullRequest = require('./pullRequest');
+
+// models
 var User = require('mongoose').model('User');
+var Settings = require('mongoose').model('Settings');
+
 
 module.exports = function() {
-
-    function buildTransporter() {
-        if(config.server.smtp.enabled) {
-            return nodemailer.createTransport(smtpTransport(config.server.smtp));
-        }
-        return nodemailer.createTransport(sendmailTransport());
-    }
 
     function getCollaborators(user, repo, token, done) {
         github.call({
@@ -165,28 +161,21 @@ module.exports = function() {
                                     settings.notifications[eventType[notificationType]] &&
                                     args.sender && args.sender.id !== collaborator.uuid ) {
 
-                                    var transporter = buildTransporter();
+                                    var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
                                     var textTemplate = fs.readFileSync(notificationArgs[notificationType].template, 'utf-8');
+
+                                    // append some more args to
+                                    // args - lets clean this up later
                                     args.pullrequestname = pull.title;
                                     args.actionText = ejs.render(textTemplate, args);
                                     args.icon = notificationArgs[notificationType].imageurl;
                                     args.baseUrl = url.baseUrl;
 
-                                    var emailTemplate = fs.readFileSync('src/server/templates/notification.ejs', 'utf-8');
-
-                                    var mailOptions = {
+                                    mail.send({
                                         from: 'ReviewNinja <noreply@review.ninja>',
                                         to: email.email,
                                         subject: notificationArgs[notificationType].subject,
                                         html: ejs.render(emailTemplate, args)
-                                    };
-
-                                    transporter.sendMail(mailOptions, function(err, response) {
-                                        if (err) {
-                                            return;
-                                        }
-
-                                        transporter.close();
                                     });
                                 }
                             });

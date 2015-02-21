@@ -9,39 +9,48 @@ global.config = require('../../../config');
 var invitation = require('../../../server/api/invitation');
 
 // services
+var mail = require('../../../server/services/mail');
 var github = require('../../../server/services/github');
 
-// libraries
-var nodemailer = require('nodemailer');
 
 describe('invitation:invite', function(done) {
-    //  it('should send an invitation to the collaborator', function(done) {
-    //     var transporter = {
-    //         sendMail: function(mailOptions, done) {
-    //             assert.equal(mailOptions.to, 'email@testmail.com');
-    //             assert.equal(mailOptions.subject, 'You are invited to ReviewNinja');
-    //             assert.equal(mailOptions.html, 'invitee invited you to join <a href="url">user/repo in ReviewNinja.\n');
-    //             done();
-    //         },
-    //         close: sinon.spy()
-    //     };
-    //     var nodemailerStub = sinon.stub(nodemailer, 'createTransport').returns(transporter);
+     it('should send an invitation to the collaborator', function(done) {
 
-    //     var req = {
-    //         args: {
-    //             user: 'user',
-    //             repo: 'repo',
-    //             invitee: 'invitee',
-    //             email: 'email@testmail.com'
-    //         }
-    //     };
-    //     invitation.invite(req, null);
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            assert.equal(args.obj, 'user');
+            assert.equal(args.fun, 'getFrom');
+            assert.equal(args.arg.user, 'invitee');
+            assert.equal(args.token, 'token');
+            done(null, {email: 'email@email.com'});
+        });
 
-    //     assert(nodemailer.createTransport.called, 'transporter not created');
-    //     assert(transporter.close.called, 'mail not send via transporter');
+        var mailStub = sinon.stub(mail, 'send', function(opts, done) {
+            assert.equal(opts.to, 'email@email.com');
+            assert.equal(opts.subject, 'login invited you to try ReviewNinja!');
+            done(null, true);
+        });
 
-    //     nodemailerStub.restore();
+        var req = {
+            args: {
+                user: 'user',
+                repo: 'repo',
+                invitee: 'invitee'
+            },
+            user: {
+                login: 'login',
+                token: 'token'
+            }
+        };
 
-    //     done();
-    // });
+        invitation.invite(req, function(err, res) {
+
+            assert(githubStub.called);
+            assert(mailStub.called);
+
+            githubStub.restore();
+            mailStub.restore();
+
+            done();
+        });
+    });
 });
