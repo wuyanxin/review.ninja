@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row repo">
   <div class="col-md-8 col-md-offset-2">
     <div class="row" style="margin:30px 0;">
       <div class="col-md-12">
@@ -111,12 +111,10 @@
               There are no closed pull requests to show.
             </p>
             <p ng-show="author">
-              <span class="fa-stack" ng-click="author=null;">
-                <i class="fa fa-circle fa-stack-2x text-info"></i>
-                <i class="fa fa-times fa-stack-1x" style="margin-top:-1px;" tooltip="Clear filters" tooltip-placement="bottom"
-                     tooltip-append-to-body="true"></i>
+              <span class="clearbutton" ng-click="author=null;">
+                <span class="fa fa-times"></span>
+                <span>Clear filters</span>
               </span>
-              <span>Clear filters</span>
             </p>
             <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)"></i>
           </tab>
