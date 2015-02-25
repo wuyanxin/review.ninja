@@ -13,11 +13,12 @@ var github = require('../../../server/services/github');
 var milestone = require('../../../server/services/milestone');
 
 describe('milestone:get', function(done) {
-    it('should return milestone if found and exists in github', function(done) {
+    it('should return milestone if found and exists in github and ids match', function(done) {
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.equal(args.repo, 1);
             assert.equal(args.pull, 2);
             done(null, {
+                id: 1,
                 repo: 1,
                 pull: 2,
                 number: 3
@@ -34,11 +35,12 @@ describe('milestone:get', function(done) {
                 number: 3
             });
 
-            done(null, true);
+            done(null, {id: 1, number: 3});
         });
 
         milestone.get('user', 'repo', 1, 2, 'token', function(err, milestone) {
             assert.deepEqual(milestone, {
+                id: 1,
                 repo: 1,
                 pull: 2,
                 number: 3
@@ -51,11 +53,87 @@ describe('milestone:get', function(done) {
         });
     });
 
-    it('should update and return milestone if found but does not exist in github', function(done) {
+    it('should update and return milestone if found and exists in github but ids do not match', function(done) {
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.equal(args.repo, 1);
             assert.equal(args.pull, 2);
             done(null, {
+                id: 1,
+                repo: 1,
+                pull: 2,
+                number: 3
+            });
+        });
+
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+
+            assert.equal(args.obj, 'issues');
+            assert.equal(args.token, 'token');
+
+            if(args.fun === 'getMilestone') {
+                assert.deepEqual(args.arg, {
+                    user: 'user',
+                    repo: 'repo',
+                    number: 3
+                });
+                done(null, {id: 2, number: 3});
+            }
+
+            if(args.fun === 'createMilestone') {
+                assert.deepEqual(args.arg, {
+                    user: 'user',
+                    repo: 'repo',
+                    title: 'ReviewNinja PR #2'
+                });
+                done(null, {id: 3, number: 4});
+            }
+        });
+
+        var milestoneCreateStub = sinon.stub(Milestone, 'findOneAndUpdate', function(query, update, options, done) {
+            assert.deepEqual(query, {
+                pull: 2,
+                repo: 1
+            });
+            assert.deepEqual(update, {
+                id: 3,
+                number: 4
+            });
+            assert.equal(options.upsert, true);
+
+            done(null, {
+                id: 3,
+                repo: 1,
+                pull: 2,
+                number: 4
+            });
+        });
+
+        milestone.get('user', 'repo', 1, 2, 'token', function(err, milestone) {
+            assert.deepEqual(milestone, {
+                id: 3,
+                repo: 1,
+                pull: 2,
+                number: 4
+            });
+
+            assert.equal(githubStub.callCount, 2);
+            sinon.assert.called(milestoneStub);
+            sinon.assert.called(githubStub);
+            sinon.assert.called(milestoneCreateStub);
+
+            milestoneStub.restore();
+            githubStub.restore();
+            milestoneCreateStub.restore();
+            done();
+        });
+    });
+
+    it('should create and return milestone if found but does not exist in github', function(done) {
+        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
+            assert.equal(args.repo, 1);
+            assert.equal(args.pull, 2);
+            done(null, {
+                id: 1,
                 repo: 1,
                 pull: 2,
                 number: 3
@@ -82,7 +160,7 @@ describe('milestone:get', function(done) {
                     repo: 'repo',
                     title: 'ReviewNinja PR #2'
                 });
-                done(null, {number: 3});
+                done(null, {id: 2, number: 3});
             }
         });
 
@@ -91,11 +169,14 @@ describe('milestone:get', function(done) {
                 pull: 2,
                 repo: 1
             });
-
-            assert.equal(update.number, 3);
+            assert.deepEqual(update, {
+                id: 2,
+                number: 3
+            });
             assert.equal(options.upsert, true);
 
             done(null, {
+                id: 2,
                 repo: 1,
                 pull: 2,
                 number: 3
@@ -104,6 +185,7 @@ describe('milestone:get', function(done) {
 
         milestone.get('user', 'repo', 1, 2, 'token', function(err, milestone) {
             assert.deepEqual(milestone, {
+                id: 2,
                 repo: 1,
                 pull: 2,
                 number: 3
@@ -148,7 +230,7 @@ describe('milestone:get', function(done) {
                     repo: 'repo',
                     title: 'ReviewNinja PR #2'
                 });
-                done(null, {number: 3});
+                done(null, {id: 1, number: 3});
             }
         });
 
@@ -157,11 +239,14 @@ describe('milestone:get', function(done) {
                 pull: 2,
                 repo: 1
             });
-
-            assert.equal(update.number, 3);
+            assert.deepEqual(update, {
+                id: 1,
+                number: 3
+            });
             assert.equal(options.upsert, true);
 
             done(null, {
+                id: 1,
                 repo: 1,
                 pull: 2,
                 number: 3
@@ -170,6 +255,7 @@ describe('milestone:get', function(done) {
 
         milestone.get('user', 'repo', 1, 2, 'token', function(err, milestone) {
             assert.deepEqual(milestone, {
+                id: 1,
                 repo: 1,
                 pull: 2,
                 number: 3
@@ -262,11 +348,12 @@ describe('milestone:close', function(done) {
         done();
     });
 
-    it('should close milestone if milestone found', function(done) {
+    it('should close milestone if milestone found and ids match', function(done) {
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.equal(args.repo, 1);
             assert.equal(args.pull, 2);
             done(null, {
+                id: 1,
                 repo: 1,
                 pull: 2,
                 number: 3
@@ -284,6 +371,7 @@ describe('milestone:close', function(done) {
                     number: 3
                 });
                 done(null, {
+                    id: 1,
                     number: 3,
                     title: 'ReviewNinja PR #2'
                 });
@@ -303,7 +391,46 @@ describe('milestone:close', function(done) {
         milestone.close('user', 'repo', 1, 2, 'token');
 
         sinon.assert.called(milestoneStub);
-        sinon.assert.called(githubStub);
+        assert.equal(githubStub.callCount, 2);
+
+        milestoneStub.restore();
+        githubStub.restore();
+        done();
+    });
+
+    it('should silently exit if milestone found but ids do not match', function(done) {
+        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
+            assert.equal(args.repo, 1);
+            assert.equal(args.pull, 2);
+            done(null, {
+                id: 1,
+                repo: 1,
+                pull: 2,
+                number: 3
+            });
+        });
+
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            assert.equal(args.obj, 'issues');
+            assert.equal(args.fun, 'getMilestone');
+            assert.equal(args.token, 'token');
+            assert.deepEqual(args.arg, {
+                user: 'user',
+                repo: 'repo',
+                number: 3
+            });
+
+            done(null, {
+                id: 2,
+                number: 3,
+                title: 'ReviewNinja PR #2'
+            });
+        });
+
+        milestone.close('user', 'repo', 1, 2, 'token');
+
+        sinon.assert.called(milestoneStub);
+        assert.equal(githubStub.callCount, 1);
 
         milestoneStub.restore();
         githubStub.restore();

@@ -66,8 +66,15 @@ module.exports = {
         },
 
         mongodb: {
-            uri: process.env.MONGODB || process.env.MONGOLAB_URI
+            host: process.env.MONGO_HOST,
+            port: process.env.MONGO_PORT || 27017,
+            db: process.env.MONGO_DB,
+            user: process.env.MONGO_USER,
+            password: process.env.MONGO_PASS,
+            collection: 'migrations'
         },
+
+        mongodb_uri: 'mongodb://' + (process.env.MONGO_USER ? process.env.MONGO_USER + ':' + process.env.MONGO_PASS + '@' : '') +  process.env.MONGO_HOST + ':' + (process.env.MONGO_PORT || 27017) + '/' + process.env.MONGO_DB,
 
         keen: {
             pid: process.env.KEENIO_PID,
@@ -93,6 +100,10 @@ module.exports = {
 
         webhooks: [
             __dirname + '/server/webhooks/*.js'
+        ],
+
+        migrations: [
+            __dirname + '/server/migrations/*.js'
         ],
 
         documents: [
