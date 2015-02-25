@@ -8,6 +8,7 @@ var ActionSchema = mongoose.Schema({
 });
 
 ActionSchema.index({
+    uuid: 1,
     user: 1,
     repo: 1,
     type: 1
