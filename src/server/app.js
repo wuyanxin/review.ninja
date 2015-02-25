@@ -133,6 +133,39 @@ async.series([
     },
 
     //////////////////////////////////////////////////////////////////////////////////////////////
+    // Apply migrations
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    function(callback) {
+
+        console.log('apply migrations'.bold);
+
+        var mm = require('mongodb-migrations');
+
+        var migrator = new mm.Migrator(config.server.mongodb, function(level, message) {
+            console.log('ℹ︎ '.bold.yellow + message);
+        });
+
+        async.eachSeries(config.server.migrations, function(p, callback) {
+            glob(p, function(err, file) {
+                if (file && file.length) {
+                    file.forEach(function(f) {
+                        try {
+                            migrator.add(require(f));
+                            console.log('✓ '.bold.green + path.relative(process.cwd(), f));
+                        } catch (ex) {
+                            console.log('✖ '.bold.red + path.relative(process.cwd(), f));
+                            console.log(ex.stack);
+                        }
+                    });
+
+                    migrator.migrate(callback);
+                }
+            });
+        }, callback);
+    },
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
     // Bootstrap mongoose
     //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -142,7 +175,7 @@ async.series([
 
         var mongoose = require('mongoose');
 
-        mongoose.connect(config.server.mongodb.uri, {
+        mongoose.connect(config.server.mongodb_uri, {
             server: {
                 socketOptions: {
                     keepAlive: 1
