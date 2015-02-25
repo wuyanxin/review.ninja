@@ -22,30 +22,14 @@ module.exports = {
                 pull.watched = !settings ? true : pullRequest.isWatched(pull, settings);
             }
 
-            Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, mile) {
-                if(err || !mile) {
-                    return done(null, pull);
+            Milestone.findOne({
+                pull: pull.number,
+                repo: pull.base.repo.id
+            }, function(err, mile) {
+                if(!err) {
+                    pull.milestone = mile;
                 }
-
-                github.call({
-                    obj: 'issues',
-                    fun: 'getMilestone',
-                    arg: {
-                        user: req.args.arg.user,
-                        repo: req.args.arg.repo,
-                        number: mile.number
-                    }
-                }, function(err, githubMile) {
-                    if(!err) {
-                        pull.milestone = mile.id === githubMile.id ? githubMile : null;
-
-                        if(mile.id !== githubMile.id) {
-                            mile.remove();
-                        }
-                    }
-
-                    done(null, pull);
-                });
+                done(null, pull);
             });
         });
     },
@@ -89,9 +73,12 @@ module.exports = {
 
             // set the stars and milestone
             async.each(pulls, function(pull, callback) {
-                Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, milestone) {
+                Milestone.findOne({
+                    pull: pull.number,
+                    repo: pull.base.repo.id
+                }, function(err, mile) {
                     if(!err) {
-                        pull.milestone = milestone;
+                        pull.milestone = mile;
                     }
                     return callback(null);
                 });
