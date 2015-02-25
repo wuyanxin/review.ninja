@@ -28,7 +28,7 @@ module.exports = {
                 token: token
             }, function(err, githubMile) {
                 if(!err && mile.id === githubMile.id) {
-                    return done(err, githubMile);
+                    return done(err, mile);
                 }
 
                 // create milestone if non-existant
@@ -46,12 +46,13 @@ module.exports = {
                         return done(err);
                     }
 
-                    Milestone.create({
-                        id: mile.id,
+                    Milestone.findOneAndUpdate({
                         pull: number,
-                        repo: repo_uuid,
+                        repo: repo_uuid
+                    }, {
+                        id: mile.id,
                         number: mile.number
-                    }, done);
+                    }, {upsert: true}, done);
                 });
             });
         });
