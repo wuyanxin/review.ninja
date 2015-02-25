@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var ActionSchema = mongoose.Schema({
+    uuid: Number,
     user: String,
     repo: String,
     type: String
