@@ -8,8 +8,8 @@ var MilestoneSchema = mongoose.Schema({
 });
 
 MilestoneSchema.index({
-    id: 1,
-    number: 1
+    pull: 1,
+    repo: 1
 }, {
     unique: true
 });

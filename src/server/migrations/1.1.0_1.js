@@ -4,7 +4,7 @@ exports.up = function (done) {
 
     var Milestones = this.db.collection('milestones');
 
-    Milestones.dropIndex({repo: 1, number: 1}, function() {
-        Milestones.ensureIndex({id: 1, number: 1}, {unique: true}, done);
-    });
+    Milestones.dropIndex({repo: 1, number: 1});
+
+    Milestones.ensureIndex({pull: 1, repo: 1}, {unique: true}, done);
 };
