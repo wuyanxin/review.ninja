@@ -35,7 +35,7 @@ describe('repos:getCollaborators', function() {
             return done(null, null);
         });
 
-        var statsStub = sinon.stub(stats, 'statsForUserAndRepo', function(login, repo, done) {
+        var statsStub = sinon.stub(stats, 'statsForUserAndRepo', function(uuid, user, repo, done) {
             return done();
         });
 
