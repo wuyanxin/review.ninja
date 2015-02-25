@@ -60,8 +60,8 @@ describe('issue', function(done) {
 
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.deepEqual(args, {
-                repo: 23588185,
-                number: 1
+                id: 847211,
+                repo: 23588185
             });
             done(null, null);
         });
@@ -95,10 +95,11 @@ describe('issue:opened', function(done) {
 
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.deepEqual(args, {
-                repo: 23588185,
-                number: 3
+                id: 847368,
+                repo: 23588185
             });
             done(null, {
+                id: 847368,
                 pull: 1,
                 repo: 23588185,
                 number: 3
@@ -175,10 +176,11 @@ describe('issue:closed', function(done) {
 
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.deepEqual(args, {
-                repo: 23588185,
-                number: 1
+                id: 847211,
+                repo: 23588185
             });
             done(null, {
+                id: 847211,
                 pull: 2,
                 repo: 23588185,
                 number: 1
@@ -272,10 +274,11 @@ describe('issue:closed', function(done) {
 
         var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
             assert.deepEqual(args, {
-                repo: 23588185,
-                number: 1
+                id: 847211,
+                repo: 23588185
             });
             done(null, {
+                id: 847211,
                 pull: 2,
                 repo: 23588185,
                 number: 1
