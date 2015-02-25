@@ -54,7 +54,7 @@ module.exports = function(req, res) {
     var repo = req.args.repository.name;
     var issue = req.args.issue.id;
     var sender = req.args.sender;
-    var number = req.args.issue.milestone.number;
+    var mile_uuid = req.args.issue.milestone.id;
     var repo_uuid = req.args.repository.id;
 
     User.findOne({ _id: req.params.id }, function(err, ninja) {
@@ -68,8 +68,8 @@ module.exports = function(req, res) {
         }
 
         Milestone.findOne({
-            repo: repo_uuid,
-            number: number
+            id: mile_uuid,
+            repo: repo_uuid
         }, function(err, mile) {
 
             if(err || !mile) {
@@ -117,8 +117,8 @@ module.exports = function(req, res) {
                 closed: function() {
 
                     // send a notification if all issues are closed
-                    getMilestone(user, repo, number, ninja.token, function(err, milestone) {
-                        if(!err && !milestone.open_issues) {
+                    getMilestone(user, repo, mile.number, ninja.token, function(err, githubMile) {
+                        if(!err && !githubMile.open_issues) {
                             notification.sendmail('closed_issue', user, repo, repo_uuid, ninja.token, mile.pull, {
                                 user: user,
                                 repo: repo,

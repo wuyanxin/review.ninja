@@ -22,7 +22,7 @@ module.exports = {
                 Milestone.findOne({
                     pull: args.number,
                     repo: args.repo_uuid
-                }, function(err, milestone) {
+                }, function(err, mile) {
 
                     github.call({
                         obj: 'issues',
@@ -30,12 +30,12 @@ module.exports = {
                         arg: {
                             user: args.user,
                             repo: args.repo,
-                            number: milestone ? milestone.number : null
+                            number: mile ? mile.number : null
                         },
                         token: args.token
-                    }, function(err, milestone) {
+                    }, function(err, githubMile) {
 
-                        var issues = milestone ? milestone.open_issues : 0;
+                        var issues = githubMile && mile.id === githubMile.id ? githubMile.open_issues : 0;
                         var reachedThreshold =  stars.length >= repo.threshold;
 
                         var status = issues ? 'failure' : reachedThreshold ? 'success' : 'pending';

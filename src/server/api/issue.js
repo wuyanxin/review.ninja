@@ -67,7 +67,7 @@ module.exports = {
         body += '|' + req.args.sha + '|' + fileReference + '| #' + req.args.number + ' |' + ninjaReference + '|';
 
         milestone.get(req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user.token,
-            function(err, milestone) {
+            function(err, mile) {
                 if(err) {
                     return done(err);
                 }
@@ -81,7 +81,7 @@ module.exports = {
                         body: body,
                         title: req.args.title,
                         labels: ['review.ninja'],
-                        milestone: milestone.number
+                        milestone: mile.number
                     },
                     token: req.user.token
                 }, done);

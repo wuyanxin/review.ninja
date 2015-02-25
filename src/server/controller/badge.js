@@ -29,7 +29,10 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
         }
     }
 
-    Milestone.findOne({repo: req.params.repoId, pull: req.params.number}, function(err, milestone) {
+    Milestone.findOne({
+        pull: req.params.number,
+        repo: req.params.repoId
+    }, function(err, mile) {
 
         var options = {
             obj: 'repos',
@@ -51,14 +54,14 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                 arg: {
                     user: githubRepo.owner.login,
                     repo: githubRepo.name,
-                    number: milestone ?  milestone.number : null
+                    number: mile ?  mile.number : null
                 }
             };
             addAuth(options);
 
-            github.call(options, function(err, mile) {
+            github.call(options, function(err, githubMile) {
 
-                var issues = mile ? mile.open_issues : 0;
+                var issues = githubMile && mile.id === githubMile.id ? githubMile.open_issues : 0;
 
                 var options = {
                     obj: 'pullRequests',
