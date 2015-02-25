@@ -13,7 +13,7 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
                     repo: pull.base.repo.name,
                     number: pull.milestone.number
                 }, function(err, milestone) {
-                    if(!err) {
+                    if(!err && milestone.id === milestone.value.id) {
                         pull.milestone = milestone.value;
                     }
                 });
