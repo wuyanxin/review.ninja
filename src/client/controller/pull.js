@@ -20,7 +20,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.head = pull.value.head.sha;
 
         // get the pull request
-        $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value, true);
+        $scope.pull = Pull.render(pull.value) && Pull.stars(pull.value, true);
 
         // set the line selection
         $scope.reference = {selection: {}, issues: null};
@@ -78,11 +78,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         // get the open issues
-        $scope.open = $HUB.call('issues', 'repoIssues', {
+        $scope.open = $scope.pull.milestone ? $HUB.wrap('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'open',
-            milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
+            milestone: $scope.pull.milestone.number
         }, function(err, issues) {
             issues.value = issues.value || [];
             if(!err) {
@@ -90,10 +90,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     issue = Issue.parse(issue);
                 });
             }
-        });
+        }) : {value: []};
 
         // get the closed issues
-        $scope.closed = $HUB.call('issues', 'repoIssues', {
+        $scope.closed = $scope.pull.milestone ? $HUB.wrap('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'closed',
@@ -105,7 +105,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     issue = Issue.parse(issue);
                 });
             }
-        });
+        }) : {value: []};
 
         //
         // UI text

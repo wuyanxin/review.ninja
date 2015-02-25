@@ -4,6 +4,7 @@ var parse = require('parse-diff');
 
 // services
 var github = require('../services/github');
+var milestone = require('../services/milestone');
 var pullRequest = require('../services/pullRequest');
 
 // models
@@ -21,11 +22,30 @@ module.exports = {
                 pull.watched = !settings ? true : pullRequest.isWatched(pull, settings);
             }
 
-            Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, milestone) {
-                if(!err) {
-                    pull.milestone = milestone;
+            Milestone.findOne({pull: pull.number, repo: pull.base.repo.id}, function(err, mile) {
+                if(err || !mile) {
+                    return done(null, pull);
                 }
-                done(null, pull);
+
+                github.call({
+                    obj: 'issues',
+                    fun: 'getMilestone',
+                    arg: {
+                        user: req.args.arg.user,
+                        repo: req.args.arg.repo,
+                        number: mile.number
+                    }
+                }, function(err, githubMile) {
+                    if(!err) {
+                        pull.milestone = mile.id === githubMile.id ? githubMile : null;
+
+                        if(mile.id !== githubMile.id) {
+                            mile.remove();
+                        }
+                    }
+
+                    done(null, pull);
+                });
             });
         });
     },

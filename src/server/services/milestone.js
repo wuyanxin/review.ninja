@@ -10,7 +10,7 @@ module.exports = {
         Milestone.findOne({
             pull: number,
             repo: repo_uuid
-        }, function(err, milestone) {
+        }, function(err, mile) {
 
             if(err) {
                 return done(err);
@@ -23,12 +23,12 @@ module.exports = {
                 arg: {
                     user: user,
                     repo: repo,
-                    number: milestone ? milestone.number : null
+                    number: mile ? mile.number : null
                 },
                 token: token
-            }, function(err) {
-                if(!err) {
-                    return done(err, milestone);
+            }, function(err, githubMile) {
+                if(!err && mile.id === githubMile.id) {
+                    return done(err, githubMile);
                 }
 
                 // create milestone if non-existant
@@ -41,18 +41,16 @@ module.exports = {
                         title: config.milestone_prefix + 'ReviewNinja PR #' + number
                     },
                     token: token
-                }, function(err, milestone) {
+                }, function(err, mile) {
                     if(err) {
                         return done(err);
                     }
 
-                    Milestone.findOneAndUpdate({
+                    Milestone.create({
+                        id: mile.id,
                         pull: number,
-                        repo: repo_uuid
-                    }, {
-                        number: milestone.number
-                    }, {
-                        upsert: true
+                        repo: repo_uuid,
+                        number: mile.number
                     }, done);
                 });
             });
@@ -63,27 +61,27 @@ module.exports = {
         Milestone.findOne({
             pull: number,
             repo: repo_uuid
-        }, function(err, milestone) {
-            if(!err && milestone) {
+        }, function(err, mile) {
+            if(!err && mile) {
                 github.call({
                     obj: 'issues',
                     fun: 'getMilestone',
                     arg: {
                         user: user,
                         repo: repo,
-                        number: milestone.number
+                        number: mile.number
                     },
                     token: token
-                }, function(err, milestone) {
-                    if(!err) {
+                }, function(err, githubMile) {
+                    if(!err && mile.id === githubMile.id) {
                         github.call({
                             obj: 'issues',
                             fun: 'updateMilestone',
                             arg: {
                                 user: user,
                                 repo: repo,
-                                number: milestone.number,
-                                title: milestone.title,
+                                number: githubMile.number,
+                                title: githubMile.title,
                                 state: 'closed'
                             },
                             token: token

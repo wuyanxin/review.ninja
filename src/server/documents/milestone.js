@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 
 var MilestoneSchema = mongoose.Schema({
+    id: Number,
     pull: Number,
     repo: Number,
     number: Number
 });
 
 MilestoneSchema.index({
-    repo: 1,
+    id: 1,
     number: 1
 }, {
     unique: true
