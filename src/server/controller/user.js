@@ -12,7 +12,6 @@ var router = express.Router();
 
 router.get('/auth/github',
     function(req, res, next) {
-        req.session.referer = req.headers.referer;
 
         var scope = null;
 
@@ -34,8 +33,6 @@ router.get('/auth/github/callback',
     }),
     function(req, res) {
         papertrail.info('successful login by ' + req.user.login);
-        var next = req.session.next || '/';
-        req.session.next = null;
 
         github.call({
             obj: 'user',
@@ -46,7 +43,8 @@ router.get('/auth/github/callback',
             if(meta && !meta['x-oauth-scopes']) {
                 return res.redirect('/auth/github?scope=public');
             }
-            res.redirect(next);
+            res.redirect(req.session.next || '/');
+            req.session.next = null;
         });
     }
 );
