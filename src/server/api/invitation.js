@@ -19,11 +19,11 @@ module.exports = {
             token: req.user.token
         }, function(err, user) {
             if(err) {
-                return done(true);
+                return done('Invitation failed to send');
             }
 
             if(!user.email) {
-                return done(true);
+                return done('Invitation failed to send, ' + req.args.invitee + ' has no public email address');
             }
 
             mail.send({
@@ -37,7 +37,10 @@ module.exports = {
                     url: url.reviewRepo(req.args.user, req.args.repo),
                     baseUrl: url.baseUrl
                 })
-            }, done);
+            }, function(err, res) {
+                err = err ? 'Invitation failed to send' : null;
+                done(err, res);
+            });
 
         });
     }

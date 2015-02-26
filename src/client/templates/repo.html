@@ -137,7 +137,7 @@
                   </button>
                   <i class="fa fa-2x fa-spinner fa-spin pull-right" ng-show="collaborator.invite.loading"></i>
                   <span ng-show="collaborator.invite.value" class="pull-right">Invitation sent</span>
-                  <span ng-show="collaborator.invite.error" class="pull-right">Invitation failed to send</span>
+                  <span ng-show="collaborator.invite.error" class="pull-right">{{ collaborator.invite.error }}</span>
                 </td>
                 <td ng-show="collaborator.ninja">
                   <span class="text-center text-merged pull-right" style="width:50px; padding-left:10px; padding-right:10px">
