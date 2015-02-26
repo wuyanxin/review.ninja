@@ -2,7 +2,7 @@
 // Pull Factory
 // *****************************************************
 
-module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $stateParams) {
+module.factory('Pull', ['$HUB', '$RPC', '$stateParams', '$rootScope', function($HUB, $RPC, $stateParams, $rootScope) {
 
     return {
 
@@ -42,15 +42,19 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', function($HUB, $RPC, $st
                 repo_uuid: pull.base.repo.id
             }, function(err, stars) {
                 if(!err) {
+                    pull.star = null;
                     pull.stars = stars.value;
 
-                    if(avatar) {
-                        pull.stars.forEach(function(star) {
+                    pull.stars.forEach(function(star) {
+                        if(star.name === $rootScope.user.value.login) {
+                            pull.star = star;
+                        }
+                        if(avatar) {
                             star.user = $HUB.call('user', 'getFrom', {
                                 user: star.name
                             });
-                        });
-                    }
+                        }
+                    });
                 }
             });
             return pull;

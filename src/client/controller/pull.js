@@ -58,12 +58,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
-        // get the star
-        $scope.star = $RPC.call('star', 'get', {
-            sha: pull.value.head.sha,
-            repo_uuid: pull.value.base.repo.id
-        });
-
         // get the pull req comments
         $scope.comments = $HUB.call('issues', 'getComments', {
             user: $stateParams.user,
@@ -145,7 +139,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         $scope.setStar = function() {
 
-            var fn = $scope.star.value ? 'rmv' : 'set';
+            var fn = $scope.pull.star ? 'rmv' : 'set';
 
             $RPC.call('star', fn, {
                 repo: $stateParams.repo,
@@ -153,10 +147,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 sha: $scope.pull.head.sha,
                 number: $scope.pull.number,
                 repo_uuid: $scope.pull.base.repo.id
-            }, function(err, star) {
-                if(!err) {
-                    $scope.star.value = !$scope.star.value ? star.value : null;
-                }
             });
         };
 
