@@ -11,8 +11,9 @@ module.exports = (function () {
 
     var statQueries = {
         addStar: {
-            q: function (user, repo) {
+            q: function (uuid, user, repo) {
                 return Action.where({
+                    uuid: uuid,
                     user: user,
                     repo: repo,
                     type: 'star:add'
@@ -20,8 +21,9 @@ module.exports = (function () {
             }
         },
         removeStar: {
-            q: function (user, repo) {
+            q: function (uuid, user, repo) {
                 return Action.where({
+                    uuid: uuid,
                     user: user,
                     repo: repo,
                     type: 'star:rmv'
@@ -29,8 +31,9 @@ module.exports = (function () {
             }
         },
         addIssue: {
-            q: function(user, repo) {
+            q: function(uuid, user, repo) {
                 return Action.where({
+                    uuid: uuid,
                     user: user,
                     repo: repo,
                     type: 'issues:add'
@@ -38,8 +41,9 @@ module.exports = (function () {
             }
         },
         removeIssue: {
-            q: function(user, repo) {
+            q: function(uuid, user, repo) {
                 return Action.where({
+                    uuid: uuid,
                     user: user,
                     repo: repo,
                     type: 'issues:rmv'
@@ -47,8 +51,9 @@ module.exports = (function () {
             }
         },
         createComment: {
-            q: function(user, repo) {
+            q: function(uuid, user, repo) {
                 return Action.where({
+                    uuid: uuid,
                     user: user,
                     repo: repo,
                     type: 'issues:createComment'
@@ -56,8 +61,9 @@ module.exports = (function () {
             }
         },
         merge: {
-            q: function(user, repo) {
+            q: function(uuid, user, repo) {
                 return Action.where({
+                    uuid: uuid,
                     user: user,
                     repo: repo,
                     type: 'pullRequests:merge'
@@ -69,14 +75,14 @@ module.exports = (function () {
 
     var stats = {};
 
-    stats.statsForUserAndRepo = function(user, repo, fnResult) {
+    stats.statsForUserAndRepo = function(uuid, user, repo, fnResult) {
         var s = {};
         var numStats = Object.keys(statQueries).length;
 
         // done ?
         var c = 0;
         for (var sType in statQueries) {
-            addTypeAndCount(sType, s, statQueries[sType].q(user, repo), function() {
+            addTypeAndCount(sType, s, statQueries[sType].q(uuid, user, repo), function() {
                 c++;
                 if (c === numStats) {
                     fnResult(s);

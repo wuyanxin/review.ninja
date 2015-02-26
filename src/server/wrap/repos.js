@@ -28,7 +28,7 @@ module.exports = {
     getCollaborators: function(req, collaborators, done) {
         async.each(collaborators, function(collaborator, callback) {
             User.findOne({ uuid: collaborator.id }, function(err, user) {
-                stats.statsForUserAndRepo(collaborator.login, req.args.arg.repo, function(obj) {
+                stats.statsForUserAndRepo(collaborator.id, req.args.arg.user, req.args.arg.repo, function(obj) {
                     collaborator.stats = obj;
                     collaborator.ninja = !!user;
                     callback(null);
