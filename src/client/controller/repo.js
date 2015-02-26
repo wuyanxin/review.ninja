@@ -78,8 +78,9 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                     number: args.number
                 }, function(err, pull) {
                     if(!err) {
-                        $scope.open.value.unshift(Pull.milestone(pull.value) && Pull.stars(pull.value));
-                        setAuthor(pull.value);
+                        pull = Pull.milestone(pull.value) && Pull.stars(pull.value) && Pull.commentsCount(pull.value);
+                        setAuthor(pull);
+                        $scope.open.value.unshift(pull);
                     }
                 });
             }
