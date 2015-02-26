@@ -8,7 +8,6 @@ var github = require('../services/github');
 // Default router
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-var url = require('../services/url');
 var router = express.Router();
 
 router.get('/accept', function(req, res) {
@@ -17,7 +16,8 @@ router.get('/accept', function(req, res) {
     }, {
         terms: config.terms
     }, function(err, num, result) {
-        return res.redirect('/');
+        res.redirect(req.session.next || '/');
+        req.session.next = null;
     });
 });
 
@@ -45,13 +45,19 @@ router.all('/*', function(req, res) {
                     },
                     token: user.token
                 }, function(err, renderedHtml) {
+
+                    if(err) {
+                        return res.sendFile('login.html', {root: __dirname + './../../client'});
+                    }
+
+                    req.session.next = req.path;
                     var template = fs.readFileSync('src/server/templates/terms.ejs', 'utf-8');
                     res.send(ejs.render(template, {termsHtml: renderedHtml.body}));
                 });
             });
         });
     } else {
-        req.session.next = url.baseUrl + req.path;
+        req.session.next = req.path;
         res.sendFile('login.html', {root: __dirname + './../../client'});
     }
 });
