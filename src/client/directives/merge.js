@@ -20,15 +20,17 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', '$filter', 
                 success: 'succeeded'
             };
 
-            $HUB.call('gitdata', 'getReference', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                ref: 'heads/' + scope.pull.head.ref
-            }, function(err, ref) {
-                if(!err) {
-                    scope.branch = true;
-                }
-            });
+            if(scope.permissions.push && scope.pull.base.repo.id === scope.pull.head.repo.id) {
+                $HUB.call('gitdata', 'getReference', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    ref: 'heads/' + scope.pull.head.ref
+                }, function(err, ref) {
+                    if(!err) {
+                        scope.branch = true;
+                    }
+                });
+            }
 
             scope.$watch('status', function(status) {
                 var state = status ? status.state : null;
@@ -74,6 +76,7 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', '$filter', 
                 }, function(err, result) {
                     if(!err) {
                         scope.branch = false;
+                        scope.branchRemoved = true;
                     }
                 });
             };

@@ -1,10 +1,10 @@
 <div class="row repo">
   <div class="col-md-8 col-md-offset-2">
-    <div class="row" style="margin:30px 0;">
-      <div class="col-md-12">
-        <ol class="breadcrumb">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb" style="margin:30px 0;">
           <li><a ui-sref="repo.master()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
-          <li class="pull-right settings-icon"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
+          <li class="pull-right settings-icon" ng-show="repo.value.permissions.push"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
           <li class="pull-right" style="margin-top:-2px;"><a href="" ng-click="badge()"><img src="/assets/images/wereviewninja-24.png" /></a></li>
         </ol>
       </div>
@@ -118,7 +118,7 @@
             <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)"></i>
           </tab>
 
-          <tab>
+          <tab ng-show="repo.value.permissions.push">
             <tab-heading><span class="fa fa-users"></span> Team</tab-heading>
 
             <table class="table table-hover">

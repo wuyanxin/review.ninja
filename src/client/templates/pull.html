@@ -100,7 +100,7 @@
                   </div>
                 </div>
                 <div class="col-sm-4 text-right">
-                  <small>{{ getStarText() }} <a ui-sref="repo.settings()"><i class="fa fa-pencil-square-o"></i></a></small>
+                  <small>{{ getStarText() }} <a ui-sref="repo.settings()" ng-show="repo.permissions.push"><i class="fa fa-pencil-square-o"></i></a></small>
                 </div>
               </div>
             </div>
