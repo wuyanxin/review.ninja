@@ -61,6 +61,22 @@
   // Highlighting
   //
 
+  .addition {
+    background-color: #eaffea;
+  }
+
+  .deletion {
+    background-color: #ffecec;
+  }
+
+  .addition:not(:hover) .code {
+    background-color: #eaffea;
+  }
+
+  .deletion:not(:hover) .code {
+    background-color: #ffecec;
+  }
+
   .referenced {
     background-color: #ffc599;
   }
@@ -74,24 +90,6 @@
   }
 
   tr:not(:hover):not(.addition):not(.deletion) .code {
-    background-color: #fff !important;
-  }
-
-  .addition {
-    background-color: #eaffea;
-
-    &:not(:hover).selected .code,
-    &:not(:hover).referenced .code {
-      background-color: #eaffea !important;
-    }
-  }
-
-  .deletion {
-    background-color: #ffecec;
-
-    &:not(:hover).selected .code,
-    &:not(:hover).referenced .code {
-      background-color: #ffecec !important;
-    }
+    background-color: #fff;
   }
 }
