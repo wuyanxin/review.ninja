@@ -4,25 +4,28 @@
             <strong tooltip="{{ open ? 'Hide' : 'Show'}} file"
                tooltip-placement="bottom"
                tooltip-append-to-body="true">
-                <i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong><i ng-show="file.ignored" class="ignored"> - ignored file</i>
-            <span ng-click="expanded=!expanded; $event.stopPropagation();">
-                <i class="fa pull-right"
-                ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"
-                ng-disabled="!open"
-                ng-show="!file.image"
-                tooltip="{{ expanded ? 'Collapse' : 'Expand' }} code"
-                tooltip-placement="bottom"
-                tooltip-append-to-body="true"></i>
-            </span>
+                <i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}
+            </strong>
+            <i ng-show="file.ignored" class="ignored"> - ignored file</i>
             <a ng-show="file.ignored"
                 ng-click="$event.stopPropagation()"
                 href="http://docs.review.ninja/quickstart/#ignored"
                 target="_blank" >
-                <span class="fa-stack">
-                    <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
-                    <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
+                <span class="fa-stack" style="height:1em; margin-top:-1em; font-size:0.75em;">
+                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                    <i class="fa fa-info fa-stack-1x text-primary"></i>
                 </span>
             </a>
+            <span ng-click="expanded=!expanded; $event.stopPropagation();">
+                <i class="fa pull-right"
+                    ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"
+                    ng-disabled="!open"
+                    ng-show="!file.image"
+                    tooltip="{{ expanded ? 'Collapse' : 'Expand' }} code"
+                    tooltip-placement="bottom"
+                    tooltip-append-to-body="true">
+                </i>
+            </span>
         </accordion-heading>
         <div ng-show="file.status==='renamed' && !file.patch.length" style="padding:5px 10px;">
             This file was renamed.
