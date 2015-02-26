@@ -5,15 +5,6 @@ table {
 .table:not(.table-plain) {
   background: $gray-lighter;
 
-  .fa-times, 
-  .fa-plus {
-    color: $gray;
-
-    &:hover {
-      color: $gray-darker;
-    }
-  }
-
   > tbody > tr > td {
     border-bottom: 10px solid #fff;
   }

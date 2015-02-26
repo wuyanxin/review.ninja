@@ -260,6 +260,16 @@ h4,
 // Font Awesome and Octicons
 
 .fa-times,
+.fa-minus,
+.fa-plus {
+  color: $gray;
+
+  &:hover {
+    color: $gray-darker;
+  }
+}
+
+.fa-times,
 .fa-plus,
 .fa-plus-circle,
 .fa-info,
