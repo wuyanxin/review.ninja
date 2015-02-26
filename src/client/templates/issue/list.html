@@ -25,6 +25,13 @@
     </td>
   </tr>
 
+  <tr ng-show="reference.issues">
+    <td colspan="3">
+        Showing {{ reference.issues.length }} of {{ (state==='open' ? open : closed).value.length }} issues.
+        <a href="" ng-click="reference.issues=null" style="text-decoration:underline;">Show all issues.</a>
+    </td>
+  </tr>
+
 </table>
 
 <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="state==='open' ? open.loading : closed.loading"></i>
