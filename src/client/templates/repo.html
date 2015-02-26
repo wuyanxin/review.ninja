@@ -110,12 +110,11 @@
             <p class="well text-center" ng-show="type==='closed' && !closed.loading && !matched.length">
               There are no closed pull requests to show.
             </p>
-            <p ng-show="author">
-              <span class="clearbutton" ng-click="author=null;">
-                <span class="fa fa-times"></span>
-                <span>Clear filters</span>
-              </span>
-            </p>
+
+            <button class="btn btn-link gray" ng-show="author" ng-click="author=null;">
+              <i class="fa fa-times"></i> Clear filters
+            </button>
+
             <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)"></i>
           </tab>
 
