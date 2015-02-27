@@ -48,7 +48,7 @@
                 <br/>
                 <small ng-show="pull.state==='open'">opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
                 <small ng-show="pull.state==='closed'">
-                  {{ pull.merged_at ? 'merged' : 'closed' }} <span moment="pull.merged_at || pull.closed_at"></span>,
+                  {{ pull.merged_at ? 'merged' : 'closed' }} <span moment="pull.merged_at || pull.closed_at"></span>
                 </small>
               </td>
               <td>
@@ -121,13 +121,13 @@
           <tab ng-show="repo.value.permissions.push">
             <tab-heading><span class="fa fa-users"></span> Team</tab-heading>
 
-            <table class="table table-hover">
+            <table class="table">
               <tr ng-repeat="collaborator in collaborators.value | orderBy:['-ninja', 'login']">
                 <td style="width:50px; padding-right:0;">
                   <img ng-src="{{ collaborator.avatar_url }}&s=50" width="50px" />
                 </td>
                 <td style="vertical-align: middle;">
-                  <strong><a ng-href="{{ collaborator.html_url }}"> {{ collaborator.login }} </a></strong></br>
+                  <strong><a ng-href="{{ collaborator.html_url }}" target="_blank">{{ collaborator.login }}</a></strong></br>
                 </td>
                 <td ng-show="!collaborator.ninja" style="vertical-align: middle;">
                   <button class="btn btn-primary pull-right"
@@ -158,11 +158,11 @@
                   </span>
                   <span class="text-center text-primary pull-right" style="width:50px; padding-left:10px; padding-right:10px">
                     <span class="fa-lg icon-ninja-star"
-                          tooltip="{{ collaborator.stats.addStar | pluralize:'added ninja star'}}"
+                          tooltip="{{ (collaborator.stats.addStar - collaborator.stats.removeStar) | pluralize:'added ninja star'}}"
                           tooltip-placement="bottom"
                           tooltip-append-to-body="true">
                     </span>
-                    <br/> {{ collaborator.stats.addStar }}
+                    <br/> {{ collaborator.stats.addStar - collaborator.stats.removeStar }}
                   </span>
                 </td>
               </tr>

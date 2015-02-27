@@ -38,7 +38,7 @@ module.exports = function(req, res, next) {
                 uuid: req.user.id,
                 user: req.args.arg.user,
                 repo: req.args.arg.repo,
-                type: 'issues:rmv'
+                type: 'issues:' + req.args.arg.state
             });
         } else if (req.args.obj === 'pullRequests' && req.args.fun === 'merge') {
             Action.create({

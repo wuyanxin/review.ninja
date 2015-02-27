@@ -40,16 +40,6 @@ module.exports = (function () {
                 });
             }
         },
-        removeIssue: {
-            q: function(uuid, user, repo) {
-                return Action.where({
-                    uuid: uuid,
-                    user: user,
-                    repo: repo,
-                    type: 'issues:rmv'
-                });
-            }
-        },
         createComment: {
             q: function(uuid, user, repo) {
                 return Action.where({
