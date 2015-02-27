@@ -14,10 +14,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         $scope.repo = repo.value;
 
-        // set the shas
         $scope.sha = null;
-        $scope.base = pull.value.base.sha;
-        $scope.head = pull.value.head.sha;
 
         // get the pull request
         $scope.pull = Pull.render(pull.value) && Pull.stars(pull.value, true);
@@ -35,27 +32,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // get the repository settings for threshold
         $scope.reposettings = $RPC.call('repo', 'get', {
             repo_uuid: repo.value.id
-        });
-
-        // get the files (for the diff view)
-        $HUB.wrap('pullRequests', 'getFiles', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            number: $stateParams.number,
-            ref: pull.value.head.sha
-        }, function(err, files) {
-            if(!err) {
-                $RPC.call('ninjaignore', 'get', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    ref: $scope.pull.head.sha,
-                    files: files.value
-                }, function(err, files) {
-                    if(!err) {
-                        $scope.files = File.getFileTypes(files.value);
-                    }
-                });
-            }
         });
 
         // get the pull req comments
@@ -121,6 +97,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         //
 
         $scope.compComm = function(base, head) {
+            head = head || $scope.pull.head.sha;
             if(($scope.base !== base || $scope.head !== head) && base !== head) {
                 $HUB.wrap('repos', 'compareCommits', {
                     user: $stateParams.user,
@@ -163,7 +140,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         $scope.star.value = null;
 
                         // update the comparison
-                        $scope.compComm($scope.base, pull.value.head.sha);
+                        $scope.compComm($scope.base || $scope.pull.base.sha, pull.value.head.sha);
                     }
 
                     $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value, true);

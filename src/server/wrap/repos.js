@@ -6,9 +6,11 @@ var User = require('mongoose').model('User');
 
 // modules
 var parse = require('parse-diff');
+var minimatch = require('minimatch');
 
 // services
 var stats = require('../services/stats');
+var github = require('../services/github');
 
 module.exports = {
 
@@ -22,7 +24,32 @@ module.exports = {
             }
         });
 
-        done(null, comp);
+        github.call({
+            obj: 'repos',
+            fun: 'getContent',
+            arg: {
+                user: req.args.arg.user,
+                repo: req.args.arg.repo,
+                ref: req.args.arg.head,
+                path: '.ninjaignore'
+            },
+            token: req.user.token
+        }, function(err, file) {
+            if(!err) {
+                try {
+                    var ninja = new Buffer(file.content, 'base64').toString('ascii');
+                    ninja.split(/[\r\n]+/).forEach(function(ignore) {
+                        if(ignore) {
+                            comp.files.forEach(function(file) {
+                                file.ignored = file.ignored || minimatch(file.filename, ignore, {dot: true, matchBase: true});
+                            });
+                        }
+                    });
+                } catch(err) {}
+            }
+
+            done(null, comp);
+        });
     },
 
     getCollaborators: function(req, collaborators, done) {

@@ -16,7 +16,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         $scope.issue = Issue.parse(issue.value) && Issue.render(issue.value);
 
         // switch the comparison view
-        $scope.compComm($scope.issue.sha, $scope.head);
+        $scope.compComm($scope.issue.sha);
 
         // set the issue sha
         $scope.$parent.$parent.sha = $scope.issue.sha;

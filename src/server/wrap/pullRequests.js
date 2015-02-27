@@ -34,19 +34,6 @@ module.exports = {
         });
     },
 
-    getFiles: function(req, files, done) {
-        files.forEach(function(file) {
-            try {
-                file.patch = parse(file.patch);
-            }
-            catch(ex) {
-                file.patch = null;
-            }
-        });
-
-        done(null, files);
-    },
-
     getAll: function(req, pulls, done) {
         var repo;
 
