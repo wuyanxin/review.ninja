@@ -82,9 +82,9 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
 
                         var hash = require('crypto').createHash('md5').update(stars.length + ':' + issues, 'utf8').digest('hex');
 
-                        // if(req.get('If-None-Match') === hash) {
-                        //     return res.status(304).send();
-                        // }
+                        if(req.get('If-None-Match') === hash) {
+                            return res.status(304).send();
+                        }
 
                         res.set('Content-Type', 'image/svg+xml');
                         res.set('Cache-Control', 'no-cache');
