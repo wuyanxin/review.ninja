@@ -27,7 +27,6 @@ describe('stats:queries', function() {
             assert.equal(stats.addStar, 3);
             assert.equal(stats.removeStar, 3);
             assert.equal(stats.addIssue, 3);
-            assert.equal(stats.removeIssue, 3);
             assert.equal(stats.createComment, 3);
             assert.equal(stats.merge, 3);
             done();
@@ -106,9 +105,9 @@ describe('stats:queries', function() {
         }, null, function foo() {});
     }));
 
-    it('It should have middleware to capture removing an issue.', sinon.test(function(done) {
+    it('It should have middleware to capture closing an issue.', sinon.test(function(done) {
         this.stub(Action, 'create', function(obj) {
-            assert.equal(obj.type, 'issues:rmv');
+            assert.equal(obj.type, 'issues:closed');
             done();
         });
 
@@ -119,7 +118,8 @@ describe('stats:queries', function() {
                 fun: 'edit',
                 arg: {
                     user: 'batman',
-                    repo: 'batarang'
+                    repo: 'batarang',
+                    state: 'closed'
                 }
             },
             user: {
