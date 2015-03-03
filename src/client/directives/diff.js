@@ -13,10 +13,10 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 baseSha: '=',
                 headSha: '=',
                 selection: '=',
-                refIssues: '='
+                refIssues: '=',
+                repo: '='
             },
             link: function(scope, elem, attrs) {
-
                 scope.open = !scope.file.ignored;
                 scope.expanded = false;
 
@@ -113,7 +113,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 };
 
                 scope.select = function(line, event) {
-                    if(line.head) {
+                    if(line.head && scope.repo.permissions.push) {
                         var shift = scope.selection.start && event.shiftKey && scope.file.filename === scope.selection.path;
                         var start = !shift ? line.head : scope.selection.start;
                         var end = shift ? line.head : null;
