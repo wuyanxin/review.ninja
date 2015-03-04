@@ -13,7 +13,7 @@
                ng-show="issue.ref"
                style="padding-top:10px;">
             </i>
-            <span ng-show="issue.ref"> This issue is linked to {{ issue.ref }}</span>
+            <a ng-show="issue.ref" ng-click="scrollIssueLine()"> This issue is linked to {{ issue.ref }}</a>
         </td>
         <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments || !!comments.value.length]" style="width:50px; padding-left:0;">
             <i class="octicon octicon-comment"></i>
