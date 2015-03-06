@@ -2,8 +2,9 @@ var gulp = require('gulp'),
     nodemon = require('gulp-nodemon'),
     browserSync = require('browser-sync'),
     bsConfig = require('../config').browserSync,
-    reload = browserSync.reload,
     runSequence = require('run-sequence');
+
+var reload = browserSync.reload;
 
 gulp.task('nodemon', function() {
   var called = false;
