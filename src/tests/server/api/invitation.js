@@ -24,11 +24,9 @@ describe('invitation:invite', function(done) {
             done(null, {email: 'email@email.com'});
         });
 
-        var mailStub = sinon.stub(mail, 'send', function(email, login, user, repo, done) {
-            assert.equal(email, 'email@email.com');
-            assert.equal(login, 'login');
-            assert.equal(user, 'user');
-            assert.equal(repo, 'repo');
+        var mailStub = sinon.stub(mail, 'send', function(opts, done) {
+            assert.equal(opts.to, 'email@email.com');
+            assert.equal(opts.subject, 'login invited you to try ReviewNinja!');
             done(null, true);
         });
 
