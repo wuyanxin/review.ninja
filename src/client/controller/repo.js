@@ -105,6 +105,14 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
             });
         };
 
+        $scope.inviteEmail = function() {
+            $RPC.call('invitation', 'inviteEmail', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                email: $scope.invitemail
+            });
+        };
+
         //
         // UI text
         //
