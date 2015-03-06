@@ -6,7 +6,6 @@ var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
 var sass = require('node-sass');
-console.log('ayylmao');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration
