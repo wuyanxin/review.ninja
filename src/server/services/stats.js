@@ -71,13 +71,14 @@ module.exports = (function () {
 
         // done ?
         var c = 0;
+        var checkIfFinished = function() {
+            c++;
+            if (c === numStats) {
+                fnResult(s);
+            }
+        };
         for (var sType in statQueries) {
-            addTypeAndCount(sType, s, statQueries[sType].q(uuid, user, repo), function() {
-                c++;
-                if (c === numStats) {
-                    fnResult(s);
-                }
-            });
+            addTypeAndCount(sType, s, statQueries[sType].q(uuid, user, repo), checkIfFinished);
         }
     };
 

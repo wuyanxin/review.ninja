@@ -36,7 +36,7 @@ module.exports = {
                     }, function(err, githubMile) {
 
                         var issues = githubMile && mile.id === githubMile.id ? githubMile.open_issues : 0;
-                        var reachedThreshold =  stars.length >= repo.threshold;
+                        var reachedThreshold = stars.length >= repo.threshold;
 
                         var status = issues ? 'failure' : reachedThreshold ? 'success' : 'pending';
                         var diff = repo.threshold - stars.length;
