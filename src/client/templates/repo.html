@@ -15,9 +15,13 @@
 
           <tab>
             <tab-heading><span class="octicon octicon-git-pull-request"></span> Pull Requests</tab-heading>
+
             <div class="well well-sm no-select" style="margin-top:-1px; border:1px solid #ececec;">
               <a href="" class="btn btn-link" ng-click="type='open'; author=null;" ng-class="{active: type==='open'}">
                 <span class="octicon octicon-issue-opened"></span> Open
+              </a>
+              <a href="" class="btn btn-link" ng-click="type='pending'; author=null;" ng-class="{active: type==='pending'}">
+                <span class="octicon octicon-clock"></span> Pending
               </a>
               <a href="" class="btn btn-link" ng-click="type='closed'; author=null;" ng-class="{active: type==='closed'}">
                 <span class="octicon octicon-issue-closed"></span> Closed
@@ -37,8 +41,10 @@
                 </ul>
               </div>
             </div>
+
           <table class="table table-hover pull-list" infinite-scroll="type==='open' ? open.getMore() : closed.getMore()" infinite-scroll-disabled="type==='open' ? !(!open.loading && !author) : !(!closed.loading && !author)" ng-show="matched.length" style="margin-bottom:10px;">
-            <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))" ui-sref="repo.pull.issue.master({ number: pull.number })" class="select">
+            <!-- <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))" ui-sref="repo.pull.issue.master({ number: pull.number })" class="select"> -->
+            <tr ng-repeat="pull in (matched = ((type==='open' | type==='pending' ? open.value : closed.value) | deep:'user.login':author)) | filter: (type === 'pending' ? { star: '!null' } : { star: '!!null' })" ui-sref="repo.pull.issue.master({ number: pull.number })" class="select">
               <td class="watched" ng-class="{active: pull.watched}"></td>
               <td style="width:50px; padding-right:0;">
                 <img ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
