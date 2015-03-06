@@ -137,7 +137,22 @@
                   </button>
                   <i class="fa fa-2x fa-spinner fa-spin pull-right" ng-show="collaborator.invite.loading"></i>
                   <span ng-show="collaborator.invite.value" class="pull-right">Invitation sent</span>
-                  <span ng-show="collaborator.invite.error" class="pull-right">{{ collaborator.invite.error }}</span>
+                  <span ng-show="collaborator.invite.error.type === 'failed'" class="pull-right">Oops! Invitation failed to send.</span>
+                  <span ng-show="collaborator.invite.error.type === 'email'" class="pull-right">
+                    <form ng-submit="invite(collaborator, invitemail)">
+                      <div class="input-group">
+                        <div class="form-group has-feedback">
+                          <input type="text" ng-model="invitemail" class="form-control" />
+                        </div>
+                        <span class="input-group-btn">
+                          <button class="btn btn-primary" type="submit" ng-disabled="!invitemail">Invite</button>
+                        </span>
+                      </div>
+                      <span class="help-block" style="margin-top:1px;">
+                        Oops! {{ collaborator.login }} has no public email address available, we can retry with another mail adress
+                      </span>
+                    </form>
+                  </span>
                 </td>
                 <td ng-show="collaborator.ninja">
                   <span class="text-center text-merged pull-right" style="width:50px; padding-left:10px; padding-right:10px">

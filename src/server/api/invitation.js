@@ -19,16 +19,17 @@ module.exports = {
             token: req.user.token
         }, function(err, user) {
             if(err) {
-                return done('Oops! Invitation failed to send.');
+                return done({ type: 'failed' });
             }
 
-            if(!user.email) {
-                return done('Oops! ' + req.args.invitee + ' has no public email address available, sorry we can\'t be of more help right now.');
+            if(!user.email && !req.args.toemail) {
+                return done({ type: 'email' });
             }
 
+            var to = user.email ? user.email : req.args.toemail;
             mail.send({
                 from: 'ReviewNinja <noreply@review.ninja>',
-                to: user.email,
+                to: to,
                 subject: req.user.login + ' invited you to try ReviewNinja!',
                 html: ejs.render(template, {
                     user: req.args.user,
@@ -41,7 +42,6 @@ module.exports = {
                 err = err ? 'Invitation failed to send' : null;
                 done(err, res);
             });
-
         });
     }
 };
