@@ -47,7 +47,7 @@ module.exports = function() {
                     baseUrl: url.baseUrl
                 })
             }, function(err, res) {
-                err = err ? 'Invitation failed to send' : null;
+                err = err ? { type: 'failed' } : null;
                 done(err, res);
             });
         }
