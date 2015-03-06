@@ -22,21 +22,6 @@
               <a href="" class="btn btn-link" ng-click="type='closed'; author=null;" ng-class="{active: type==='closed'}">
                 <span class="octicon octicon-issue-closed"></span> Closed
               </a>
-              <!--
-              <div class="btn-group pull-right">
-                <a href="" class="btn btn-link dropdown-toggle author" ng-class="{active: author}" data-toggle="dropdown">
-                  Author
-                  <small><i class="fa fa-chevron-down"></i></small>
-                </a>
-                <ul class="dropdown-menu" role="menu" ng-show="authors" style="margin:-5px 10px 0 0">
-                  <li ng-repeat="(key, val) in authors" ng-show="val[type]">
-                    <a href="" ng-click="$parent.author = author!==key ? key : null">
-                      <span ng-show="key !== author">{{ key }}</span>
-                      <strong ng-show="key === author">{{ key }}</strong>
-                    </a>
-                  </li>
-                </ul>
-              </div>-->
               <div class="btn-group pull-right">
                 <input type="text" class="form-control" ng-model="search" placeholder="Search">
               </div>
