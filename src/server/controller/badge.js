@@ -54,7 +54,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                 arg: {
                     user: githubRepo.owner.login,
                     repo: githubRepo.name,
-                    number: mile ?  mile.number : null
+                    number: mile ? mile.number : null
                 }
             };
             addAuth(options);

@@ -46,7 +46,7 @@ describe('star:all', function() {
 
 describe('star:get', function() {
     it('should set the correct parameters when calling get', function(done) {
-        var starStub = sinon.stub(Star,'findOne', function(args, done) {
+        var starStub = sinon.stub(Star, 'findOne', function(args, done) {
             assert.deepEqual(args, {sha: 'sha', repo: 'repo', user: 1234});
             done();
         });
@@ -155,7 +155,7 @@ describe('star:set', function() {
                     user: 'user',
                     repo: 'repo',
                     number: 2,
-                    sender: {id:3, login:'login', token:'token'},
+                    sender: {id: 3, login: 'login', token: 'token'},
                     settings: 'https://review.ninja/user/repo/settings',
                     url: url.reviewPullRequest('user', 'repo', 2)
                 });

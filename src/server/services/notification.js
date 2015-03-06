@@ -58,7 +58,7 @@ module.exports = function() {
         github.call({
             obj: 'user',
             fun: 'getEmails',
-            arg : {
+            arg: {
                 headers: {
                     'accept': 'application/vnd.github.v3+json'
                 }
@@ -89,13 +89,13 @@ module.exports = function() {
 
     var notificationArgs = {
         pull_request_opened: {
-            subject:'A new pull request is ready for review',
-            template:'src/server/templates/pullReqOpened.ejs',
+            subject: 'A new pull request is ready for review',
+            template: 'src/server/templates/pullReqOpened.ejs',
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
         pull_request_synchronized: {
-            subject:  'New commits added to pull request',
+            subject: 'New commits added to pull request',
             template: 'src/server/templates/pullReqSync.ejs',
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },

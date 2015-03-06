@@ -3,8 +3,7 @@ before_script:
 - bower install
 - gem install scss-lint
 after_script:
-- grunt mocha_istanbul && grunt coveralls
-- grunt scsslint --force
+- gulp coverage
 - if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'master' ]]; then ./.cf.sh review-ninja-staging; fi
 - if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'release' ]]; then ./.cf.sh review-ninja; fi
 notifications:
