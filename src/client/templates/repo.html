@@ -102,6 +102,18 @@
                     <br/> {{ pull.stars.length }}
                   </span>
                 </td>
+                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+                  <span class="status-icon"
+                        ng-class=" {
+                          'icon-success': pull.status.value.state==='success',
+                          'icon-warning': pull.status.value.state==='pending',
+                          'icon-danger':  pull.status.value.state==='failure' } "
+                        tooltip="{{ pull.status.value.state }}"
+                        tooltip-placement="bottom"
+                        tooltip-append-to-body="true">
+                    {{ pull.status.value.state }}
+                  </span>
+                </td>
               </tr>
             </table>
             <p class="well text-center" ng-show="type==='open' && !open.loading && !matched.length">

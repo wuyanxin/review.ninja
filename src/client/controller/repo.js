@@ -30,6 +30,14 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
             $scope.authors[author].author = author;
         };
 
+        var setStatus = function(pull) {
+            pull.status = $HUB.call('statuses', 'getCombined', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                sha: pull.head.sha
+            });
+        };
+
         // get the open pull requests
         $scope.open = $HUB.wrap('pullRequests', 'getAll', {
             user: $stateParams.user,
@@ -41,6 +49,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setAuthor(pull);
+                    setStatus(pull);
                 });
             }
         });
@@ -56,6 +65,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setAuthor(pull);
+                    setStatus(pull);
                 });
             }
         });
