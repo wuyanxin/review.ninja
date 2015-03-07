@@ -6,15 +6,3 @@
     color: $brand-primary-hover;
   }
 }
-
-.status-icon {
-  .icon-success {
-    background-color: $brand-success;
-  }
-  .icon-pending {
-    background-color: $brand-warning;
-  }
-  .icon-failure {
-    background-color: $brand-danger;
-  }
-}
