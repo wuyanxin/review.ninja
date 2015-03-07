@@ -103,14 +103,19 @@
                   </span>
                 </td>
                 <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
-                  <span class="fa fa-check-circle"
-                        ng-class=" {
+                  <span ng-class="{
+                          'text-success': pull.status.value.state==='success',
+                          'text-warning': pull.status.value.state==='pending',
+                          'text-danger':  pull.status.value.state==='failure' } ">
+                    <span class="fa fa-lg fa-check-circle"
+                        ng-class="{
                           'text-success': pull.status.value.state==='success',
                           'text-warning': pull.status.value.state==='pending',
                           'text-danger':  pull.status.value.state==='failure' } "
                         tooltip="Status: {{ pull.status.value.state }}"
                         tooltip-placement="bottom"
-                        tooltip-append-to-body="true">
+                        tooltip-append-to-body="true"></span>
+                  <br/> {{ pull.status.value.state }}
                   </span>
                 </td>
               </tr>
