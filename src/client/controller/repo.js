@@ -121,7 +121,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
 
         var singleStatusText = function(pull) {
             return pull.status.value.statuses[0].description;
-        }
+        };
 
         var multipleStatusText = function(pull) {
             var successCount = 0;
@@ -131,7 +131,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                 }
             });
             return successCount + ' / ' + pull.status.value.total_count + ' checks OK';
-        }
+        };
 
         $scope.statusTooltip = function(pull) {
             if(pull.status.value) {
@@ -142,7 +142,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                     return multipleStatusText(pull);
                 }
             }
-        }
+        };
 
         $scope.getStarUsers = function(pull) {
             if(pull.stars && pull.stars.length) {
