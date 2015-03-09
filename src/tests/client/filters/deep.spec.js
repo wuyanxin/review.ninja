@@ -1,3 +1,4 @@
+'use strict';
 // deep test
 describe('Deep Filter', function() {
 

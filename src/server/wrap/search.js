@@ -1,3 +1,4 @@
+'use strict';
 // modules
 var async = require('async');
 var github = require('../services/github');

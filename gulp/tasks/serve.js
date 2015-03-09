@@ -1,3 +1,4 @@
+'use strict';
 var gulp = require('gulp'),
     nodemon = require('gulp-nodemon'),
     browserSync = require('browser-sync'),
