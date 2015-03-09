@@ -119,6 +119,31 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         // UI text
         //
 
+        var singleStatusText = function(pull) {
+            return pull.status.value.statuses[0].description;
+        }
+
+        var multipleStatusText = function(pull) {
+            var successCount = 0;
+            pull.status.value.statuses.forEach(function(status) {
+                if(status.state === 'success') {
+                    successCount++;
+                }
+            });
+            return successCount + ' / ' + pull.status.value.total_count + ' checks OK';
+        }
+
+        $scope.statusTooltip = function(pull) {
+            if(pull.status.value) {
+                if(pull.status.value.total_count === 1) {
+                    return singleStatusText(pull);
+                }
+                if(pull.status.value.total_count > 1) {
+                    return multipleStatusText(pull);
+                }
+            }
+        }
+
         $scope.getStarUsers = function(pull) {
             if(pull.stars && pull.stars.length) {
                 return pull.stars.slice(0, 3).map(function(star) {
