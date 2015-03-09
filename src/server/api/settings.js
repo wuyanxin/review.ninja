@@ -1,3 +1,4 @@
+'use strict';
 // models
 var Settings = require('mongoose').model('Settings');
 

@@ -60,7 +60,7 @@
     "x-frame-options": "0.0.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.2.1",
+    "browser-sync": "^2.2.2",
     "browserify": "^9.0.3",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
@@ -72,6 +72,7 @@
     "gulp-istanbul": "^0.6.0",
     "gulp-karma": "0.0.4",
     "gulp-mocha": "^2.0.0",
+    "gulp-nodemon": "^1.0.5",
     "gulp-scss-lint": "^0.1.9",
     "gulp-watch": "^4.1.1",
     "karma": "^0.12.31",

@@ -1,3 +1,4 @@
+'use strict';
 exports.id = '1.1.0';
 
 // modules

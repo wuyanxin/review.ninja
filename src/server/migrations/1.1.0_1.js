@@ -1,3 +1,4 @@
+'use strict';
 exports.id = '1.1.0_1';
 
 exports.up = function (done) {

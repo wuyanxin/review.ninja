@@ -1,3 +1,4 @@
+'use strict';
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
@@ -27,6 +28,8 @@ describe('issue:add', function(done){
                        '|commit|file reference|pull request|   |\r\n' +
                        '|------|--------------|------------|---|\r\n' +
                        '|*commitsha*|[src/tests/server/api/issue.js#L24](https://github.com/reviewninja/review.ninja/blob/*commitsha*/src/tests/server/api/issue.js#L24)| #1 |[![#1](https://review.ninja/assets/images/icon-alt-36.png)](https://review.ninja/reviewninja/review.ninja/pull/1)|';
+            console.log(args.arg.body);
+            console.log(body);
             assert.equal(args.arg.body, body);
             assert.equal(args.arg.labels[0], 'review.ninja');
             done(null, null);

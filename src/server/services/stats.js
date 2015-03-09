@@ -1,3 +1,4 @@
+'use strict';
 var Action = require('mongoose').model('Action');
 
 module.exports = (function () {

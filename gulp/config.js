@@ -1,4 +1,8 @@
 module.exports = {
+  browserSync: {
+    client: 'src/client/*'
+  },
+
   coverage: {
     istanbulSrc: 'src/server/**/*.js',
     mochaSrc: 'src/tests/server/**/*.js'
