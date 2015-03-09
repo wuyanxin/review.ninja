@@ -1,3 +1,4 @@
+'use strict';
 var gulp = require('gulp'),
     nodemon = require('gulp-nodemon'),
     browserSync = require('browser-sync'),
@@ -19,7 +20,7 @@ gulp.task('nodemon', function() {
 gulp.task('browserSync', ['nodemon'], function() {
   browserSync.init({
     files: ['./src/**/*.*'],
-    proxy: "http://localhost:60000",
+    proxy: 'http://localhost:60000',
     port: 4000
   });
 

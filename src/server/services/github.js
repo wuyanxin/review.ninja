@@ -1,3 +1,4 @@
+'use strict';
 var GitHubApi = require('github');
 var papertrail = require('../services/papertrail');
 

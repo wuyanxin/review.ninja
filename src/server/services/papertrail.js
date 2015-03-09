@@ -1,3 +1,4 @@
+'use strict';
 var winston = require('winston');
 var Papertrail = require('winston-papertrail').Papertrail;
 

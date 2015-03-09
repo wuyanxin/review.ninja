@@ -1,3 +1,4 @@
+'use strict';
 var github = require('../services/github');
 var url = require('../services/url');
 var passport = require('passport');

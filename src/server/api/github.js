@@ -1,3 +1,4 @@
+'use strict';
 // module
 var github = require('../services/github');
 var merge = require('merge');

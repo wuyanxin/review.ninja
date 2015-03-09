@@ -1,3 +1,4 @@
+'use strict';
 var module = angular.module('app',
     ['ninja.config',
      'ninja.filters',
