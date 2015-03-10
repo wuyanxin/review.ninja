@@ -108,11 +108,12 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
             });
         };
 
-        $scope.invite = function(collaborator) {
+        $scope.invite = function(collaborator, email) {
             collaborator.invite = $RPC.call('invitation', 'invite', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                invitee: collaborator.login
+                invitee: collaborator.login,
+                email: email
             });
         };
 
