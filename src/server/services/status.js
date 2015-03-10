@@ -1,3 +1,4 @@
+'use strict';
 var url = require('./url');
 var github = require('./github');
 var Star = require('mongoose').model('Star');
@@ -36,7 +37,7 @@ module.exports = {
                     }, function(err, githubMile) {
 
                         var issues = githubMile && mile.id === githubMile.id ? githubMile.open_issues : 0;
-                        var reachedThreshold =  stars.length >= repo.threshold;
+                        var reachedThreshold = stars.length >= repo.threshold;
 
                         var status = issues ? 'failure' : reachedThreshold ? 'success' : 'pending';
                         var diff = repo.threshold - stars.length;

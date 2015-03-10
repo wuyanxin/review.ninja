@@ -1,3 +1,4 @@
+'use strict';
 // libraries
 var async = require('async');
 

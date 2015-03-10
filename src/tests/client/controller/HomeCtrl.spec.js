@@ -1,3 +1,4 @@
+'use strict';
 // home test
 describe('Home Controller', function() {
 
@@ -23,7 +24,7 @@ describe('Home Controller', function() {
         };
         scope.orgs = [
         {
-            login:'login-1'
+            login: 'login-1'
         },
         {
             login: 'login-2'
@@ -112,7 +113,7 @@ describe('Home Controller', function() {
 
         httpBackend.flush();
 
-        scope.add({owner:{login:'login'}, name: 'name', id: '1234'});
+        scope.add({owner: {login: 'login'}, name: 'name', id: '1234'});
 
         httpBackend.expect('POST', '/api/user/addRepo').respond(null);
         httpBackend.flush();
@@ -150,7 +151,7 @@ describe('Home Controller', function() {
         httpBackend.flush();
 
 
-        scope.remove({owner:{login:'login'}, name: 'name', id: '1234'});
+        scope.remove({owner: {login: 'login'}, name: 'name', id: '1234'});
 
         httpBackend.expect('POST', '/api/user/rmvRepo').respond(null);
 
@@ -195,7 +196,7 @@ describe('Home Controller', function() {
 
         var repos = ['repo-1', 'repo-2'];
 
-        httpBackend.expect('POST', '/api/github/wrap','{"obj":"search","fun":"repos","arg":{"q":"repo+in:name+fork:true+user:user"}}').respond({
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"search","fun":"repos","arg":{"q":"repo+in:name+fork:true+user:user"}}').respond({
             data: 'repos'
         });
 

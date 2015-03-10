@@ -1,3 +1,4 @@
+'use strict';
 // pluralize test
 describe('Pluralize Filter', function() {
 

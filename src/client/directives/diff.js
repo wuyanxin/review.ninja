@@ -1,3 +1,4 @@
+'use strict';
 // *****************************************************
 // Diff File Directive
 // *****************************************************
@@ -46,7 +47,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                                             c.push(scope.file.patch[index]);
                                         }
 
-                                        chunks.push({ start:start, end:end, chunk:c });
+                                        chunks.push({ start: start, end: end, chunk: c });
                                         continue;
                                     }
                                     index = index + 1;

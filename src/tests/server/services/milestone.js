@@ -1,3 +1,4 @@
+'use strict';
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');

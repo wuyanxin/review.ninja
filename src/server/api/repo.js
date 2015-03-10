@@ -1,3 +1,4 @@
+'use strict';
 // services
 var github = require('../services/github');
 var keenio = require('../services/keenio');

@@ -1,3 +1,4 @@
+'use strict';
 // services
 var url = require('../services/url');
 var github = require('../services/github');

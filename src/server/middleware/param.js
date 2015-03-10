@@ -1,3 +1,4 @@
+'use strict';
 var merge = require('merge');
 
 module.exports = function(req, res, next) {

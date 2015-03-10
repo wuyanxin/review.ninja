@@ -1,3 +1,4 @@
+'use strict';
 // unit test
 var assert = require('assert');
 var sinon = require('sinon');
@@ -14,8 +15,8 @@ var stats = require('../../../server/services/stats');
 var statsMiddleware = require('../../../server/middleware/stats');
 
 describe('stats:queries', function() {
-    it('Should have stats for each type: Add Star, Remove Star, Add Issue, Remove Issue, Create Comment, Merge.', sinon.test(function(done) {
-        this.stub(Action, 'where', function() {
+    it('Should have stats for each type: Add Star, Remove Star, Add Issue, Remove Issue, Create Comment, Merge.', function(done) {
+        var actionStub = sinon.stub(Action, 'where', function() {
             return {
                 count: function(done) {
                     done(null, 3);
@@ -29,14 +30,16 @@ describe('stats:queries', function() {
             assert.equal(stats.addIssue, 3);
             assert.equal(stats.createComment, 3);
             assert.equal(stats.merge, 3);
-            done();
         });
-    }));
 
-    it('It should have middleware to capture removing a ninja star.', sinon.test(function(done) {
-        this.stub(Action, 'create', function(obj) {
+        actionStub.restore();
+
+        done();
+    });
+
+    it('It should have middleware to capture removing a ninja star.', function(done) {
+        var actionStub = sinon.stub(Action, 'create', function(obj) {
            assert.equal(obj.type, 'star:rmv');
-            done();
         });
 
         statsMiddleware({
@@ -49,12 +52,15 @@ describe('stats:queries', function() {
                 repo: 'batarang'
             }
         }, null, function foo() {});
-    }));
 
-    it('It should have middleware to capture setting a ninja star.', sinon.test(function(done) {
-        this.stub(Action, 'create', function(obj) {
+        actionStub.restore();
+
+        done();
+    });
+
+    it('It should have middleware to capture setting a ninja star.', function(done) {
+        var actionStub = sinon.stub(Action, 'create', function(obj) {
             assert.equal(obj.type, 'star:add');
-            done();
         });
 
         statsMiddleware({
@@ -67,12 +73,15 @@ describe('stats:queries', function() {
                 repo: 'batarang'
             }
         }, null, function foo() {});
-    }));
 
-    it('It should have middleware to capture adding an issue.', sinon.test(function(done) {
-        this.stub(Action, 'create', function(obj) {
+        actionStub.restore();
+
+        done();
+    });
+
+    it('It should have middleware to capture adding an issue.', function(done) {
+        var actionStub = sinon.stub(Action, 'create', function(obj) {
             assert.equal(obj.type, 'issues:add');
-            done();
         });
 
         statsMiddleware({
@@ -85,12 +94,15 @@ describe('stats:queries', function() {
                 repo: 'batarang'
             }
         }, null, function foo() {});
-    }));
 
-    it('It should have middleware to capture adding a repo.', sinon.test(function(done) {
-        this.stub(Action, 'create', function(obj) {
+        actionStub.restore();
+
+        done();
+    });
+
+    it('It should have middleware to capture adding a repo.', function(done) {
+        var actionStub = sinon.stub(Action, 'create', function(obj) {
             assert.equal(obj.type, 'user:addRepo');
-            done();
         });
 
         statsMiddleware({
@@ -103,12 +115,15 @@ describe('stats:queries', function() {
                 repo: 'batarang'
             }
         }, null, function foo() {});
-    }));
 
-    it('It should have middleware to capture closing an issue.', sinon.test(function(done) {
-        this.stub(Action, 'create', function(obj) {
+        actionStub.restore();
+
+        done();
+    });
+
+    it('It should have middleware to capture closing an issue.', function(done) {
+        var actionStub = sinon.stub(Action, 'create', function(obj) {
             assert.equal(obj.type, 'issues:closed');
-            done();
         });
 
         statsMiddleware({
@@ -127,12 +142,15 @@ describe('stats:queries', function() {
             }
 
         }, null, function foo() {});
-    }));
 
-    it('It should have middleware to capture merging a pull request.', sinon.test(function(done) {
-        this.stub(Action, 'create', function(obj) {
+        actionStub.restore();
+
+        done();
+    });
+
+    it('It should have middleware to capture merging a pull request.', function(done) {
+        var actionStub = sinon.stub(Action, 'create', function(obj) {
             assert.equal(obj.type, 'pullRequests:merge');
-            done();
         });
 
         statsMiddleware({
@@ -149,12 +167,15 @@ describe('stats:queries', function() {
                 id: 1234
             }
         }, null, function foo() {});
-    }));
 
-    it('It should have middleware to capture creating a comment.', sinon.test(function(done) {
-        this.stub(Action, 'create', function(obj) {
+        actionStub.restore();
+
+        done();
+    });
+
+    it('It should have middleware to capture creating a comment.', function(done) {
+        var actionStub = sinon.stub(Action, 'create', function(obj) {
             assert.equal(obj.type, 'issues:createComment');
-            done();
         });
 
         statsMiddleware({
@@ -171,5 +192,9 @@ describe('stats:queries', function() {
                 id: 1234
             }
         }, null, function foo() {});
-    }));
+
+        actionStub.restore();
+
+        done();
+    });
 });

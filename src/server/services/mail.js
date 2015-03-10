@@ -1,3 +1,4 @@
+'use strict';
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 var sendmailTransport = require('nodemailer-sendmail-transport');
