@@ -23,11 +23,11 @@ module.exports = {
                 return done({ type: 'failed' });
             }
 
-            if(!user.email && !req.args.toemail) {
+            if(!user.email && !req.args.email) {
                 return done({ type: 'email' });
             }
 
-            var to = user.email ? user.email : req.args.toemail;
+            var to = user.email ? user.email : req.args.email;
             mail.send({
                 from: 'ReviewNinja <noreply@review.ninja>',
                 to: to,
