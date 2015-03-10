@@ -1,3 +1,4 @@
+'use strict';
 // modules
 var async = require('async');
 var parse = require('parse-diff');

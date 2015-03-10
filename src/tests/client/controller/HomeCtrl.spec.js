@@ -1,3 +1,4 @@
+'use strict';
 // home test
 describe('Home Controller', function() {
 
