@@ -36,7 +36,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         // get the pull req comments
-        $scope.comments = $HUB.call('issues', 'getComments', {
+        $scope.comments = $HUB.wrap('issues', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.number
@@ -49,7 +49,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         // get the open issues
-        $scope.open = $scope.pull.milestone ? $HUB.call('issues', 'repoIssues', {
+        $scope.open = $scope.pull.milestone ? $HUB.wrap('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'open',
@@ -64,7 +64,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         }) : {value: []};
 
         // get the closed issues
-        $scope.closed = $scope.pull.milestone ? $HUB.call('issues', 'repoIssues', {
+        $scope.closed = $scope.pull.milestone ? $HUB.wrap('issues', 'repoIssues', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             state: 'closed',

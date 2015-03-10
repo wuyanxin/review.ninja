@@ -7,6 +7,7 @@ var parse = require('parse-diff');
 var github = require('../services/github');
 var milestone = require('../services/milestone');
 var pullRequest = require('../services/pullRequest');
+var userService = require('../services/user');
 
 // models
 var Star = require('mongoose').model('Star');
@@ -30,7 +31,16 @@ module.exports = {
                 if(!err) {
                     pull.milestone = mile;
                 }
-                done(null, pull);
+                if(!pull.user) {
+                    userService.ghost(req.args.token, function(err, ghost) {
+                        if(!err) {
+                            pull.user = ghost;
+                            done(null, pull);
+                        }
+                    });
+                } else {
+                    done(null, pull);
+                }
             });
         });
     },
@@ -68,7 +78,13 @@ module.exports = {
                     if(!err) {
                         pull.milestone = mile;
                     }
-                    return callback(null);
+
+                    userService.ghost(pull.user, req.args.token, function(err, user) {
+                        if(!err) {
+                            pull.user = user;
+                        }
+                        callback(null);
+                    });
                 });
             }, function() {
                 done(null, pulls);
