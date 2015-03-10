@@ -45,6 +45,16 @@
               </td>
               <td>
                 <strong>{{ pull.title }}</strong> #{{ pull.number }}
+                <span class="octicon"
+                  ng-class="{
+                    'text-success octicon-check': pull.status.value.state==='success',
+                    'text-warning octicon-primitive-dot': pull.status.value.state==='pending',
+                    'text-danger octicon-x':  pull.status.value.state==='failure' } "
+                  ng-show="pull.status.value.total_count"
+                  tooltip="{{ statusTooltip(pull) }}"
+                  tooltip-placement="right"
+                  tooltip-append-to-body="true">
+                </span>
                 <br/>
                 <small ng-show="pull.state==='open'">opened <span moment="pull.created_at"></span> by {{ pull.user.login }}</small>
                 <small ng-show="pull.state==='closed'">
