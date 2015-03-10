@@ -96,7 +96,7 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "start": "gulp serve",
+    "start": "node app.js",
     "test": "gulp",
     "postinstall": "node_modules/.bin/bower install --config.interactive=false"
   }
