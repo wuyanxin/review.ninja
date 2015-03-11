@@ -7,8 +7,8 @@
 // resolve: repo
 // *****************************************************
 
-module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '$HUB', '$RPC', 'repo', 'socket', 'Pull',
-    function($scope, $stateParams, $modal, $timeout, $HUB, $RPC, repo, socket, Pull) {
+module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '$HUB', '$RPC', 'repo', 'socket', 'Pull', 'User',
+    function($scope, $stateParams, $modal, $timeout, $HUB, $RPC, repo, socket, Pull, User) {
 
         // get the repo
         $scope.repo = repo;
@@ -25,10 +25,15 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         //
 
         var setAuthor = function(pull) {
-            var author = pull.user.login;
-            $scope.authors[author] = $scope.authors[author] || {};
-            $scope.authors[author][pull.state] = true;
-            $scope.authors[author].author = author;
+            if(!pull.user) {
+                User.ghost(pull.user, function(ghost) {
+                    pull.user = ghost;
+                    var author = pull.user.login;
+                    $scope.authors[author] = $scope.authors[author] || {};
+                    $scope.authors[author][pull.state] = true;
+                    $scope.authors[author].author = author;
+                });
+            }
         };
 
         var setStatus = function(pull) {
