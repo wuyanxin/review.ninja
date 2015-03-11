@@ -58,7 +58,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                                 // insert the chunks
                                 while (index < blob.value.content.length) {
                                     if( chunks[0] && blob.value.content[index].head === chunks[0].start ) {
-                                        chunk = chunks.shift();
+                                        var chunk = chunks.shift();
                                         file = file.concat( chunk.chunk );
                                         index = chunk.end;
                                         continue;
