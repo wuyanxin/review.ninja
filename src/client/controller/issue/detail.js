@@ -40,7 +40,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
 
         $scope.scrollIssueLine = function() {
-            var anchor = $scope.issue.ref.replace(/#/g,'');
+            var anchor = $scope.issue.ref.replace(/#/g, '');
             $location.hash(anchor);
             $anchorScroll();
         };
