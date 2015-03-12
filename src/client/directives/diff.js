@@ -103,9 +103,12 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     return match;
                 };
 
-                scope.generateAnchor = function(file, line) {
-                    if(scope.isReferenced(line)) {
-                        return file.filename + 'L' + line.head;
+                scope.generateAnchor = function(line) {
+                    if(line.head && scope.repo.permissions.push && scope.isReferenced(line)) {
+                        var shift = scope.selection.start && event.shiftKey && scope.file.filename === scope.selection.path;
+                        var start = !shift ? line.head : scope.selection.start;
+                        var end = shift ? line.head : null;
+                        return scope.headSha + '/' + scope.file.filename + 'L' + start + ((end && end !== start) ? '-L' + end : '');
                     }
                     return '';
                 };

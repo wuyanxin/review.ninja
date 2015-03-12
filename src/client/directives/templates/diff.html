@@ -48,8 +48,8 @@
             </table>
             <table class="code">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index"
-                    id="{{ generateAnchor(file, line) }}"
-                    name="{{ generateAnchor(file, line) }}"
+                    id="{{ generateAnchor(line) }}"
+                    name="{{ generateAnchor(line) }}"
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
