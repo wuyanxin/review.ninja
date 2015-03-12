@@ -1,3 +1,4 @@
+'use strict';
 var Keen = require('keen-js');
 
 module.exports = (function(){

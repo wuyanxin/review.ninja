@@ -1,3 +1,4 @@
+'use strict';
 // *****************************************************
 // Repo Controller
 //
@@ -24,10 +25,23 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         //
 
         var setAuthor = function(pull) {
+            if(!pull.user) {
+                pull.user = {
+                    login: 'deleted_user'
+                };
+            }
             var author = pull.user.login;
             $scope.authors[author] = $scope.authors[author] || {};
             $scope.authors[author][pull.state] = true;
             $scope.authors[author].author = author;
+        };
+
+        var setStatus = function(pull) {
+            pull.status = $HUB.call('statuses', 'getCombined', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                sha: pull.head.sha
+            });
         };
 
         // get the open pull requests
@@ -41,6 +55,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setAuthor(pull);
+                    setStatus(pull);
                 });
             }
         });
@@ -56,6 +71,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setAuthor(pull);
+                    setStatus(pull);
                 });
             }
         });
@@ -97,17 +113,43 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
             });
         };
 
-        $scope.invite = function(collaborator) {
+        $scope.invite = function(collaborator, email) {
             collaborator.invite = $RPC.call('invitation', 'invite', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                invitee: collaborator.login
+                invitee: collaborator.login,
+                email: email
             });
         };
 
         //
         // UI text
         //
+
+         var singleStatusText = function(pull) {
+             return pull.status.value.statuses[0].description;
+         };
+
+         var multipleStatusText = function(pull) {
+             var successCount = 0;
+             pull.status.value.statuses.forEach(function(status) {
+                 if(status.state === 'success') {
+                     successCount++;
+                 }
+             });
+             return successCount + ' / ' + pull.status.value.total_count + ' checks OK';
+         };
+
+         $scope.statusTooltip = function(pull) {
+             if(pull.status && pull.status.value) {
+                 if(pull.status.value.total_count === 1) {
+                     return singleStatusText(pull);
+                 }
+                 if(pull.status.value.total_count > 1) {
+                     return multipleStatusText(pull);
+                 }
+             }
+         };
 
         $scope.getStarUsers = function(pull) {
             if(pull.stars && pull.stars.length) {

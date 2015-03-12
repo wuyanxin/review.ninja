@@ -9,6 +9,9 @@ linters:
   ColorKeyword:
     enabled: true
 
+  ColorVariable:
+    enabled: false
+
   Comment:
     enabled: true
 
@@ -49,6 +52,9 @@ linters:
 
   IdWithExtraneousSelector:
     enabled: true
+
+  ImportantRule:
+    enabled: false
 
   Indentation:
     enabled: true

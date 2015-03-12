@@ -1,3 +1,4 @@
+'use strict';
 var keenio = require('../services/keenio');
 
 module.exports = function(req, res, next) {

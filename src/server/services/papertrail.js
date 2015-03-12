@@ -1,3 +1,4 @@
+'use strict';
 var winston = require('winston');
 var Papertrail = require('winston-papertrail').Papertrail;
 
@@ -8,7 +9,7 @@ module.exports = (function(){
           port: config.server.papertrail.port || '',
           colorize: true,
           logFormat: function(level, message) {
-              return '[' + config.server.papertrail.location + ']' + '[' + level +  '] ' + message;
+              return '[' + config.server.papertrail.location + ']' + '[' + level + '] ' + message;
           }
       })
     ] : [];

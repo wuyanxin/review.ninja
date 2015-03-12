@@ -1,3 +1,4 @@
+'use strict';
 // models
 var Star = require('mongoose').model('Star');
 var User = require('mongoose').model('User');

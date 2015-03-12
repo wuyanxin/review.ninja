@@ -1,3 +1,4 @@
+'use strict';
 module.controller('BadgeCtrl', ['$scope', '$modalInstance', '$stateParams', '$window',
     function($scope, $modalInstance, $stateParams, $window) {
         $scope.origin = $window.location.origin;

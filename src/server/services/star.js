@@ -1,3 +1,4 @@
+'use strict';
 var Star = require('mongoose').model('Star');
 
 var url = require('./url');

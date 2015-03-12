@@ -1,3 +1,4 @@
+'use strict';
 // settings test
 describe('Settings Controller', function() {
 
@@ -18,14 +19,14 @@ describe('Settings Controller', function() {
 
         repo = {
             value: {
-                id:1234
+                id: 1234
             }
         };
         createCtrl = function() {
 
-            var ctrl =  $controller('SettingsCtrl', {
+            var ctrl = $controller('SettingsCtrl', {
                 $scope: scope,
-                repo:repo
+                repo: repo
             });
             ctrl.scope = scope;
             return ctrl;
@@ -40,11 +41,11 @@ describe('Settings Controller', function() {
     it('should get settings', function() {
         var ctrl = createCtrl();
 
-        httpBackend.expect('POST','/api/settings/get').respond({
-            settings:'settings'
+        httpBackend.expect('POST', '/api/settings/get').respond({
+            settings: 'settings'
         });
-        httpBackend.expect('POST','/api/repo/get').respond({
-            repo:'repo'
+        httpBackend.expect('POST', '/api/repo/get').respond({
+            repo: 'repo'
         });
 
         httpBackend.flush();
@@ -56,11 +57,11 @@ describe('Settings Controller', function() {
         var ctrl = createCtrl();
 
         httpBackend.expect('POST', '/api/settings/get').respond({
-                settings:'settings',
-                watched:['one', 'two']
+                settings: 'settings',
+                watched: ['one', 'two']
         });
-        httpBackend.expect('POST','/api/repo/get').respond({
-            repo:'repo'
+        httpBackend.expect('POST', '/api/repo/get').respond({
+            repo: 'repo'
         });
 
         httpBackend.flush();
@@ -77,11 +78,11 @@ describe('Settings Controller', function() {
         var ctrl = createCtrl();
 
         httpBackend.expect('POST', '/api/settings/get').respond({
-                settings:'settings',
-                watched:['one', 'two']
+                settings: 'settings',
+                watched: ['one', 'two']
         });
-        httpBackend.expect('POST','/api/repo/get').respond({
-            repo:'repo'
+        httpBackend.expect('POST', '/api/repo/get').respond({
+            repo: 'repo'
         });
 
         httpBackend.flush();
@@ -100,13 +101,13 @@ describe('Settings Controller', function() {
         var ctrl = createCtrl();
 
         httpBackend.expect('POST', '/api/settings/get').respond({
-                settings:'settings',
-                watched:['one', 'two'],
+                settings: 'settings',
+                watched: ['one', 'two'],
                 notifications: ['yo wassup']
 
         });
-        httpBackend.expect('POST','/api/repo/get').respond({
-            repo:'repo'
+        httpBackend.expect('POST', '/api/repo/get').respond({
+            repo: 'repo'
         });
 
         httpBackend.flush();
