@@ -25,6 +25,11 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         //
 
         var setAuthor = function(pull) {
+            if(!pull.user) {
+                pull.user = {
+                    login: 'deleted_user'
+                };
+            }
             var author = pull.user.login;
             $scope.authors[author] = $scope.authors[author] || {};
             $scope.authors[author][pull.state] = true;
