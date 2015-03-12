@@ -93,3 +93,9 @@
     background-color: #fff;
   }
 }
+
+.lineref {
+  &:hover {
+    cursor: pointer;
+  }
+}
