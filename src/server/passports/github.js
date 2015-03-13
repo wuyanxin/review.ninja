@@ -1,5 +1,6 @@
 'use strict';
 var github = require('../services/github');
+var onboard = require('../services/onboard');
 var url = require('../services/url');
 var passport = require('passport');
 var Strategy = require('passport-github').Strategy;
@@ -23,6 +24,13 @@ passport.use(new Strategy({
         }, {
             upsert: true
         }, function(err, num, res) {
+            if (!!res.upserted) {
+                var uuid = onboard.getUser(res);
+                console.log('user id: ', uuid);
+                console.log('profile: ', profile);
+                onboard.addUserAsCollaborator(profile.username, accessToken);
+                console.log('omg it worked')
+            }
             done(null, merge(profile._json, {
                 token: accessToken
             }));

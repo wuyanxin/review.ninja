@@ -17,6 +17,7 @@ router.get('/accept', function(req, res) {
     }, {
         terms: config.terms
     }, function(err, num, result) {
+        console.log('result: ', result);
         res.redirect(req.session.next || '/');
         req.session.next = null;
     });
