@@ -13,28 +13,12 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         // get the repo
         $scope.repo = repo;
 
-        // for the authors
-        $scope.authors = {};
-        $scope.author = null;
-
         // set the default state
         $scope.type = 'open';
 
         //
         // Helper functions
         //
-
-        var setAuthor = function(pull) {
-            if(!pull.user) {
-                pull.user = {
-                    login: 'deleted_user'
-                };
-            }
-            var author = pull.user.login;
-            $scope.authors[author] = $scope.authors[author] || {};
-            $scope.authors[author][pull.state] = true;
-            $scope.authors[author].author = author;
-        };
 
         var setStatus = function(pull) {
             pull.status = $HUB.call('statuses', 'getCombined', {
@@ -54,7 +38,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
             if(!err) {
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
-                    setAuthor(pull);
                     setStatus(pull);
                 });
             }
@@ -70,7 +53,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
             if(!err) {
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
-                    setAuthor(pull);
                     setStatus(pull);
                 });
             }
@@ -95,7 +77,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                 }, function(err, pull) {
                     if(!err) {
                         pull = Pull.milestone(pull.value) && Pull.stars(pull.value) && Pull.commentsCount(pull.value);
-                        setAuthor(pull);
                         $scope.open.value.unshift(pull);
                     }
                 });
