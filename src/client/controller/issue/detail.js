@@ -40,8 +40,11 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
 
         $scope.scrollIssueLine = function() {
-            // Replace anchor symbol '#' and remove 'until line' part.
-            var ref = $scope.issue.ref.replace(/#/g, '').match(/.+?(?=-)/);
+            var ref = $scope.issue.ref.replace(/#/g, '');
+            if(ref.indexOf('-') > -1) {
+                // Replace anchor symbol '#' and remove 'until line' part.
+                ref = ref.replace(/(\-[^-]*$)/, '');
+            }
             var anchor = $scope.issue.sha + '/' + ref;
             $location.hash(anchor);
             $anchorScroll();
