@@ -16,7 +16,7 @@
                     <i class="fa fa-info fa-stack-1x text-primary"></i>
                 </span>
             </a>
-            <span ng-click="expanded=!expanded; $event.stopPropagation();">
+            <span ng-click="expand($event)">
                 <i class="fa pull-right"
                     ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"
                     ng-disabled="!open"
@@ -34,13 +34,13 @@
             <table class="margin">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
                     <td class="select">
-                        <span class="octicon octicon-issue-opened text-warning" 
+                        <span class="octicon octicon-issue-opened text-warning"
                               ng-show="refStarts(line)"
                               ng-click="go(line)">
                         </span>
-                        <span class="octicon octicon-issue-opened" 
+                        <span class="octicon octicon-issue-opened"
                               style="color: #dbcc91;"
-                              ng-click="clear()" 
+                              ng-click="clear()"
                               ng-show="selStarts(line)">
                         </span>
                     </td>
@@ -50,16 +50,17 @@
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index"
                     id="{{ generateAnchor(line) }}"
                     name="{{ generateAnchor(line) }}"
-                    ng-class="{ addition: line.add, 
-                                deletion: line.del, 
-                                chunk: line.chunk, 
+                    ng-class="{ addition: line.add,
+                                deletion: line.del,
+                                chunk: line.chunk,
                                 selected: isSelected(line),
                                 referenced: isReferenced(line) }">
 
-                    <td class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
-                    <td class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
+                    <td class="number" ng-click="select(line, $event)"><pre class="nohighlight">{{ line.base }}</pre></td>
+                    <td class="number" ng-click="select(line, $event)"><pre class="nohighlight">{{ line.head }}</pre></td>
+                    <td><pre class="nohighlight" ng-show="line.add">+</pre><pre class="nohighlight" ng-show="line.del">-</pre></td>
 
-                    <td class="code"><pre>{{ line.content }}</pre></td>
+                    <td class="code"><pre ng-class="getCodeClass(line)">{{ getLineContent(line) }}</pre></td>
 
                 </tr>
             </table>

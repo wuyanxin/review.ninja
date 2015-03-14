@@ -3,8 +3,8 @@
 // Diff File Directive
 // *****************************************************
 
-module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference', '$filter',
-    function($stateParams, $state, $HUB, $RPC, Reference, $filter) {
+module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference', '$filter', '$timeout',
+    function($stateParams, $state, $HUB, $RPC, Reference, $filter, $timeout) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/diff.html',
@@ -21,10 +21,22 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 scope.open = !scope.file.ignored;
                 scope.expanded = false;
 
+                var highlight = function() {
+                    var preTags = document.getElementsByTagName('pre');
+                    if(preTags) {
+                        for(var i = 0; i < preTags.length; i++) {
+                            hljs.highlightBlock(preTags[i]);
+                        }
+                    }
+                };
+
+                scope.$watch('$viewContentLoaded', function() {
+                    highlight();
+                });
+
                 //
                 // Expand the diff
                 //
-
                 scope.$watch('file.patch', function(patch) {
                     if(patch && patch.length && !scope.file.image) {
                         $HUB.wrap('gitdata', 'getBlob', {
@@ -77,9 +89,37 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
 
                 });
 
+                scope.getCodeClass = function(line) {
+                    if(!(line.add || line.del || line.normal)) {
+                        return 'nohighlight';
+                    }
+                    if(scope.file.filename.indexOf('.') > -1) {
+                        var split = scope.file.filename.split('.');
+                        return split[split.length - 1];
+                    }
+                    return '';
+                };
+
+                scope.getLineContent = function(line) {
+                    if(line.content.length > 0) {
+                        if(line.add && line.content.substring(0, 1) === '+') {
+                            return line.content.substring(1);
+                        } else if(line.del && line.content.substring(0, 1) === '-') {
+                            return line.content.substring(1);
+                        }
+                    }
+                    return line.content;
+                };
+
                 //
                 // Actions
                 //
+
+                scope.expand = function($event) {
+                    scope.expanded = !scope.expanded;
+                    $timeout(highlight, 1);
+                    $event.stopPropagation();
+                };
 
                 scope.clear = function() {
                     scope.selection = {};
