@@ -30,7 +30,7 @@ router.get('/accept', function(req, res) {
         uuid: req.user.id
     }, function(err, user) {
         if (!user.terms) {
-            onboard.createRepo(req.user.token, updateTerms);
+            onboard.createRepo(req.user.token, req.user.login, updateTerms);
         }
         else {
             updateTerms();

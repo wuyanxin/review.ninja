@@ -17,16 +17,40 @@ var commitChange = function() {
 var addIssuesToPR = function() {
 
 }
+
+var createFirstFile = function(token, username, cb) {
+  github.call({
+    obj: 'repos',
+    fun: 'createFile',
+    arg: {
+      user: username,
+      repo: 'review-ninja-welcome',
+      path: 'hello.txt',
+      message: 'first',
+      content: new Buffer('hello ninja').toString('base64')
+    },
+    token: token
+  }, function(err, res) {
+    if (err) {
+      console.log("error: ", err);
+    }
+    else {
+      console.log('new file created!');
+      cb();
+    }
+  });
+}
+
 ///////
 
 module.exports = {
 
-  createRepo: function(token, cb) {
+  createRepo: function(token, username, cb) {
     github.call({
       obj: 'repos',
       fun: 'create',
       arg: {
-        name: "test" + Math.random().toString(),
+        name: "review-ninja-welcome",
         description: "test",
       },
       token: token
@@ -35,7 +59,7 @@ module.exports = {
         console.log("error: ", err);
       }
       else {
-        cb();
+        createFirstFile(token, username, cb);
       }
     });
   },
@@ -44,7 +68,7 @@ module.exports = {
 
   },
 
-  addRepoToProfile: function(user) {
+  addRepoToProfile: function() {
 
   }
 }
