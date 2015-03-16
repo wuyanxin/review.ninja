@@ -4,6 +4,7 @@ var fs = require('fs');
 var ejs = require('ejs');
 var request = require('request');
 var github = require('../services/github');
+var onboard = require('../services/onboard');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Default router
@@ -12,14 +13,28 @@ var github = require('../services/github');
 var router = express.Router();
 
 router.get('/accept', function(req, res) {
-    models.User.update({
+    var updateTerms = function() {
+        models.User.update({
+            uuid: req.user.id
+        }, {
+            terms: config.terms
+        }, function(err, num, result) {
+            res.redirect(req.session.next || '/');
+            req.session.next = null;
+        });
+    }
+
+    // to make sure a new repo is only created upon the first time user accepts terms
+    // and not subsequent times user accepts terms
+    models.User.findOne({
         uuid: req.user.id
-    }, {
-        terms: config.terms
-    }, function(err, num, result) {
-        console.log('result: ', result);
-        res.redirect(req.session.next || '/');
-        req.session.next = null;
+    }, function(err, user) {
+        if (!user.terms) {
+            onboard.createRepo(req.user.token, updateTerms);
+        }
+        else {
+            updateTerms();
+        }
     });
 });
 

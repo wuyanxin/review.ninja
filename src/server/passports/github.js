@@ -24,13 +24,6 @@ passport.use(new Strategy({
         }, {
             upsert: true
         }, function(err, num, res) {
-            if (!!res.upserted) {
-                var uuid = onboard.getUser(res);
-                console.log('user id: ', uuid);
-                console.log('profile: ', profile);
-                onboard.addUserAsCollaborator(profile.username, accessToken);
-                console.log('omg it worked')
-            }
             done(null, merge(profile._json, {
                 token: accessToken
             }));
