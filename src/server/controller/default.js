@@ -44,8 +44,8 @@ router.get('/accept', function(req, res) {
 
 ///TESTING ONLY
 router.get('/testbranch', function(req, res) {
-    // onboard.getBranchSha(req.user.login, function(sha) {
-        // onboard.createBranch(req.user.token, req.user.login, sha, function() {
+    onboard.getBranchSha(req.user.login, function(sha) {
+        onboard.createBranch(req.user.token, req.user.login, sha, function() {
             onboard.getFileSha(req.user.login, function(sha) {
                 onboard.updateFile(req.user.token, req.user.login, sha, 'quickedit', function() {
                     onboard.createPullRequest(req.user.token, req.user.login, function() {
@@ -53,8 +53,8 @@ router.get('/testbranch', function(req, res) {
                     });
                 });
             });
-        // });
-    // });
+        });
+    });
 });
 
 router.all('/*', function(req, res) {

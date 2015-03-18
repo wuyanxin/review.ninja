@@ -121,7 +121,7 @@ module.exports = {
   updateFile: function(token, username, sha, branch, done) {
     github.call({
       obj: 'repos',
-      fun: 'createFile',
+      fun: 'updateFile',
       arg: {
         user: username,
         repo: 'review-ninja-welcome',
@@ -153,7 +153,7 @@ module.exports = {
         repo: 'review-ninja-welcome',
         title: 'hallo',
         base: 'master',
-        head: 'quick-edit'
+        head: 'quickedit'
       },
       token: token
     }, function(err, res) {
