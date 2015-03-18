@@ -3,47 +3,26 @@ var github = require('../services/github');
 var crypto = require('crypto');
 
 //////auxillary functions
-var sha;
-
-var getSha = function(token, username, cb) {
-  github.call({
-    obj: 'gitdata',
-    fun: 'getReference',
-    arg: {
-      user: username,
-      repo: 'review-ninja-welcome',
-      ref: 'refs/heads/master'
-    },
-    token: token
-  }, function(err, res) {
-    if (err) {
-      console.log("error: ", err)
-    }
-    else {
-      console.log(res);
-      return res.object.sha;
-    }
-  });
-}
-
-var createBranch = function(token, username, cb) {
+var createBranch = function(token, username, cb, sha) {
   github.call({
     obj: 'gitdata',
     fun: 'createReference',
     arg: {
       user: username,
       repo: 'review-ninja-welcome',
-      ref: 'refs/heads/quick-edit',
-      sha: getSha(token, username)
+      ref: 'refs/heads/quickedit',
+      sha: sha
     },
     token: token
   }, function(err, res) {
     if (err) {
       console.log("error: ", err);
+      console.log(token);
+      console.log(sha);
     }
     else {
       console.log('done creating branch, making file change now...')
-      createFile(token, username, cb, 'quick-edit')
+      createFile(token, username, cb, 'quickedit')
     }
   });
 }
@@ -68,10 +47,11 @@ var createFile = function(token, username, cb, branch) {
     else {
       if (branch === 'master') {
         console.log('done with creating master file, creating quick-edit branch...');
-        // createBranch(token, username, cb);
-        getSha(token, username, cb);
+        // console.log(token);
+        createBranch(token, username, cb, res.commit.tree.sha);
       }
       else {
+        console.log(res);
         console.log('done with making quick-edit file change, making pull request...');
         createPullRequest(token, username, cb);
       }
