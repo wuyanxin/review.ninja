@@ -6,7 +6,7 @@ var glob = require('glob');
 var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
-var sass = require('node-sass');
+var sassMiddleware = require('node-sass-middleware');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration
@@ -115,7 +115,7 @@ async.series([
         console.log('bootstrap static files'.bold);
 
         var publish = function(p, path) {
-            app.use(sass.middleware({
+            app.use(sassMiddleware({
                 src: p,
                 dest: p,
                 outputStyle: 'compressed',

@@ -35,26 +35,3 @@ tasks (such as updating the PR status) when the webhook is activated.
 ### Issue comment
 
 - created: send websocket to clients
-
-## How to test locally
-
-The grunt http task has been configured to allow flexible local testing of these webhooks. These can be triggered by running:
-```
-grunt http:<github-event> --action=<github-action>  --id=<reviewninja-user-id>
-```
-
-Where github event and action is one of:
-
-- pull_request (actions: closed, opened, reopened, synchronize)
-- issues (actions: closed, opened, reopened)
-- issue_comment (actions: created)
-
-An example command to mock a pull_request:closed action:
-```
-grunt http:pull_request --action=closed --id=8767asfdas6786df7d --sender=dfarr --number=43 --user=reviewninja --repo=foo --repo_uuid=23588185
-```
-
-Notes:
-
-- the user id (id) can be retrieved from your mongo instance
-- you can quickly grab the repo_uuid from ``https://api.github.com/repos/:user/:repo``
