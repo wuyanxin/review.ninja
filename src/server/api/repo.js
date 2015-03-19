@@ -1,7 +1,6 @@
 'use strict';
 // services
 var github = require('../services/github');
-var keenio = require('../services/keenio');
 // models
 var Repo = require('mongoose').model('Repo');
 
@@ -36,12 +35,7 @@ module.exports = {
                 repo: req.args.repo_uuid
             }, {
                 comment: req.args.comment
-            }, {}, function(err, obj) {
-                if(!err) {
-                    keenio.addEvent('repo:setComment', req.args);
-                }
-                done(err, obj);
-            });
+            }, {}, done);
         });
     },
 
@@ -62,12 +56,7 @@ module.exports = {
                 repo: req.args.repo_uuid
             }, {
                 threshold: req.args.threshold
-            }, {}, function(err, obj) {
-                if (!err) {
-                    keenio.addEvent('repo:setThreshold', req.args);
-                }
-                done(err, obj);
-            });
+            }, {}, done);
         });
     }
 
