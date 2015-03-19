@@ -16,14 +16,15 @@
           <tab>
             <tab-heading><span class="octicon octicon-git-pull-request"></span> Pull Requests</tab-heading>
             <div class="well well-sm no-select" style="margin-top:-1px; border:1px solid #ececec;">
-              <a href="" class="btn btn-link" ng-click="type='open'; search='';" ng-class="{active: type==='open'}">
+              <a href="" class="btn btn-link" ng-click="type='open'; search=null;" ng-class="{active: type==='open'}">
                 <span class="octicon octicon-issue-opened"></span> Open
               </a>
-              <a href="" class="btn btn-link" ng-click="type='closed'; search='';" ng-class="{active: type==='closed'}">
+              <a href="" class="btn btn-link" ng-click="type='closed'; search=null;" ng-class="{active: type==='closed'}">
                 <span class="octicon octicon-issue-closed"></span> Closed
               </a>
-              <div class="btn-group pull-right">
-                <input type="text" class="form-control" ng-model="search" placeholder="Search">
+              <div class="form-group has-feedback pull-right">
+                <input type="text" class="form-control" ng-model="search" placeholder="Search" focus="setFocus">
+                <i class="fa fa-lg fa-times form-control-feedback" ng-show="search" ng-click="search=null; setFocus=true;" style="top:0px;"></i>
               </div>
             </div>
           <table class="table table-hover pull-list" infinite-scroll="type==='open' ? open.getMore() : closed.getMore()" infinite-scroll-disabled="type==='open' ? !(!open.loading && !search) : !(!closed.loading && !search)" ng-show="matched.length" style="margin-bottom:10px;">
@@ -113,7 +114,7 @@
               There are no closed pull requests to show.
             </p>
 
-            <button class="btn btn-link gray" ng-show="search" ng-click="search='';">
+            <button class="btn btn-link gray" ng-show="search" ng-click="search=null;">
               <i class="fa fa-times"></i> Clear filters
             </button>
 
