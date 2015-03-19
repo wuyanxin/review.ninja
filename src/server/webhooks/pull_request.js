@@ -7,7 +7,6 @@ var Milestone = require('mongoose').model('Milestone');
 var url = require('../services/url');
 var github = require('../services/github');
 var status = require('../services/status');
-var keenio = require('../services/keenio');
 var milestone = require('../services/milestone');
 var pullRequest = require('../services/pullRequest');
 var notification = require('../services/notification');
