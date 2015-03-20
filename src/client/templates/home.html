@@ -1,4 +1,3 @@
-
 <div class="row main" style="margin-top: 50px;">
 
   <div class="col-md-2 col-md-offset-2">
@@ -18,6 +17,7 @@
       <i class="fa fa-plus-circle plus-icon" ng-click="show=!show; setFocus=true;"></i>
     </h2>
     <p class="text-right" style="margin:-30px 0 10px 220px;">
+      &nbsp; <!-- keep to maintain spacing -->
       <small ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') === -1">
         You are only showing public repos.
         <a href="/auth/github?scope=private" target="_self" style="text-decoration: underline;">
@@ -32,66 +32,28 @@
       </small>
     </p>
 
-    <div class="well-dark well-sm" ng-show="show">
-      <form ng-submit="search()" style="margin: 15px;">
-        <div class="input-group">
-          <div class="form-group has-feedback">
-            <input type="text" ng-model="query" focus="setFocus" class="form-control" style="height:33px;" />
-            <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="searching.loading" style="top:0px;"></i>
-            <i class="fa fa-lg fa-times form-control-feedback" ng-show="!searching.loading && query" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
-          </div>
-          <span class="input-group-btn">
-            <button class="btn btn-info" type="submit" ng-disabled="!query">Find Repository</button>
-          </span>
-        </div>
-        <span class="help-block" style="margin-top:1px;">
-          Type <em>username</em> or <em>organization</em> to find a repository
-        </span>
-        <div class="list-group" style="max-height:200px; overflow-y:scroll;" ng-show="results.length">
-          <a href="" 
-             class="list-group-item" 
-             ng-class="{ active: active===repo }" 
-             ng-click="$parent.active=repo; add(repo);"
-             ng-repeat="repo in results | orderBy: 'full_name'">
-            {{ repo.owner.login }} / {{ repo.name }}
-            <span class="octicon octicon-lock text-warning pull-right" ng-show="active!==repo && repo.private" style="padding-top:2px;"></span>
-            <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo" style="padding-top:3px;"></i>
-          </a>
-        </div>
-      </form>
+    <div class="well well-dark" ng-show="show || (loaded && !repos.length)">
+      <div class="form-group has-feedback">
+        <input type="text" ng-model="search" focus="setFocus" class="form-control" style="height:33px;" />
+        <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="allRepos.loading" style="top:0px;"></i>
+        <i class="fa fa-lg fa-times form-control-feedback" ng-show="search && !allRepos.loading" ng-click="search=''; setFocus=true;" style="top:0px;"></i>
+      </div>
+      <div class="list-group" style="max-height:200px; overflow-y:scroll;">
+        <a href="" 
+           class="list-group-item" 
+           ng-class="{ active: active===repo }" 
+           ng-click="$parent.active=repo; add(repo);"
+           ng-hide="contains(repo.id)"
+           ng-repeat="repo in allRepos.value | filter:{'full_name': search} | orderBy: 'full_name'">
+          {{ repo.owner.login }} / {{ repo.name }}
+          <span class="octicon octicon-lock text-warning pull-right" ng-show="active!==repo && repo.private" style="padding-top:2px;"></span>
+          <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo" style="padding-top:3px;"></i>
+        </a>
+        <button class="btn btn-primary btn-block" ng-show="allRepos.hasMore" ng-click="allRepos.getMore()">Load more</button>
+      </div>
     </div>
 
-    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="hasRepos && !repos.length"></i>
-
-    <div ng-show="user.loaded && !hasRepos">
-      <table>
-        <tr>
-          <td>
-            <span class="fa-stack fa-4x">
-              <i class="fa fa-circle fa-stack-2x text-info"></i>
-              <span class="octicon octicon-repo fa-stack-2x text-primary" style="font-size:48px; top:32px;"></span>
-            </span>
-          </td>
-          <td style="vertical-align:top; padding:10px;">
-            <h3 class="text-primary">Add a repository</h3>
-            Choose a repository from your GitHub account or from one of your organizations.
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <span class="fa-stack fa-4x">
-              <i class="fa fa-circle fa-stack-2x text-info"></i>
-              <i class="fa fa-envelope-o fa-stack-1x text-primary" style="font-size:48px;"></i>
-            </span>
-          </td>
-          <td style="vertical-align:top; padding:10px; max-width:325px;">
-            <h3 class="text-primary">Add email notifications</h3>
-            In a repo's settings, choose what you want to be notified about &amp; add branches to watch.
-          </td>
-        </tr>
-      </table>
-    </div>
+    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="!loaded"></i>
 
 		<table class="table table-hover">
       <tr class="select">
