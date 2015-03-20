@@ -66,19 +66,20 @@ describe('Home Controller', function() {
 
         });
 
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
+            data: []
+        });
+
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
                 name: 'repo-1',
                 user: 'me',
-                ninja: true,
-                uuid: 1
+                id: 21620444
             }
         });
 
         httpBackend.flush();
 
-
-        // now toggle the repo
         (scope.repos[0].name).should.be.exactly('repo-1');
     });
 
@@ -101,13 +102,15 @@ describe('Home Controller', function() {
 
         });
 
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
+            data: []
+        });
+
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
-                id: 21620444,
                 name: 'repo-1',
                 user: 'me',
-                ninja: true,
-                uuid: 1
+                id: 21620444
             }
         });
 
@@ -139,12 +142,15 @@ describe('Home Controller', function() {
             'uuid': 1387834
         });
 
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
+            data: []
+        });
+
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
             data: {
                 name: 'repo-1',
                 user: 'me',
-                ninja: true,
-                uuid: 1
+                id: 21620444
             }
         });
 
@@ -157,52 +163,7 @@ describe('Home Controller', function() {
 
         httpBackend.flush();
 
-        (scope.repos[0].name).should.be.exactly('repo-1');
-
-    });
-
-
-    it('should search for repo', function() {
-
-        var ctrl = createCtrl();
-
-        // load the data
-
-        httpBackend.expect('POST', '/api/user/get').respond({
-            '__v': 18,
-            '_id': {
-                '$oid': '53f991fbee5d5ef38f67ce5f'
-            },
-            'repos': [
-                21620444
-            ],
-            'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
-            'uuid': 1387834
-        });
-
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-            data: {
-                name: 'repo-1',
-                user: 'me',
-                ninja: true,
-                uuid: 1
-            }
-        });
-
-
-        httpBackend.flush();
-
-        scope.search();
-
-        var repos = ['repo-1', 'repo-2'];
-
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"search","fun":"repos","arg":{"q":"repo+in:name+fork:true+user:user"}}').respond({
-            data: 'repos'
-        });
-
-        httpBackend.flush();
-
-        (scope.results.length).should.be.exactly(5);
+        scope.repos.length.should.be.exactly(0);
 
     });
 
