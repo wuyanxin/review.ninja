@@ -7,7 +7,6 @@ var Milestone = require('mongoose').model('Milestone');
 var url = require('../services/url');
 var github = require('../services/github');
 var status = require('../services/status');
-var keenio = require('../services/keenio');
 var pullRequest = require('../services/pullRequest');
 var notification = require('../services/notification');
 
@@ -76,16 +75,6 @@ module.exports = function(req, res) {
             if(err || !mile) {
                 return res.send('Milestone not found');
             }
-
-            // log to keenio
-            keenio.addEvent('issues:' + req.args.action, {
-                user: sender.id,
-                repo: repo_uuid,
-                name: sender.login,
-                pull: mile.pull,
-                mile: mile.number,
-                issue: issue
-            });
 
             var actions = {
                 opened: function() {
