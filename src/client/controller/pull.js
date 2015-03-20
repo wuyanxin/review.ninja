@@ -193,14 +193,14 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // Watches
         //
 
-        // $scope.$watch('reference.selection', function(newSelection, oldSelection) {
-        //     if(newSelection.ref && !oldSelection.ref && !$scope.show) {
-        //         $scope.highlight = true;
-        //         $timeout(function() {
-        //             $scope.highlight = false;
-        //         }, 1000);
-        //     }
-        // });
+        $scope.$watch('reference.selection', function(newSelection, oldSelection) {
+            if(newSelection.ref && !oldSelection.ref && !$scope.show) {
+                $scope.highlight = true;
+                $timeout(function() {
+                    $scope.highlight = false;
+                }, 1000);
+            }
+        });
 
         //
         // Modals
