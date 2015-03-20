@@ -94,6 +94,13 @@
     </div>
 
 		<table class="table table-hover">
+      <tr class="select">
+        <td>Click here to learn!</td>
+        <td style="text-align:right;">
+          <i class="fa fa-times ng-scope" ng-click="remove(repo); $event.stopPropagation();" tooltip="Remove" tooltip-placement="bottom" tooltip-append-to-body="true">
+          </i>
+        </td>
+      </tr>
 			<tr ng-repeat="repo in repos | filter:{ninja: true} | orderBy:['adddate', 'full_name']"
           ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })"
           class="select">

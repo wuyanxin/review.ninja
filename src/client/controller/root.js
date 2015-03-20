@@ -27,12 +27,25 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                         });
                     }
                 });
+                $RPC.call('onboard', 'getactions', {
+                    user: $stateParams.user,
+                }, function(err, types) {
+                    if (!err) {
+                        $scope.actionTypes = types;
+                    }
+                });
             }
         });
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
             $state.go('error');
         });
+
+        // $scope.checkSteps = function() {
+        //     $scope.actions = $RPC.call('onboard', 'getactions', {
+        //         user: $stateParams.user,
+        //     });
+        // }
 
         $scope.createWebhook = function() {
             $scope.creating = $RPC.call('webhook', 'create', {

@@ -6,8 +6,8 @@
 // path: /
 // *****************************************************
 
-module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC',
-    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC) {
+module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$modal', '$HUB', '$RPC',
+    function($rootScope, $scope, $state, $stateParams, $modal, $HUB, $RPC) {
 
         $scope.repos = [];
 

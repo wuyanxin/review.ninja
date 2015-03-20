@@ -35,6 +35,7 @@ module.exports = function(req, res, next) {
         });
     } else if (req.originalUrl === '/api/github/call') {
         if (req.args.obj === 'issues' && req.args.fun === 'edit') {
+            console.log(req.args.arg.state);
             Action.create({
                 uuid: req.user.id,
                 user: req.args.arg.user,
@@ -56,6 +57,13 @@ module.exports = function(req, res, next) {
                 user: req.args.arg.user,
                 repo: req.args.arg.repo,
                 type: 'issues:createComment'
+            });
+        } else if (req.args.obj === 'pullRequests' && req.args.fun === 'get') {
+            Action.create({
+                uuid: req.user.id,
+                user: req.args.arg.user,
+                repo: req.args.arg.repo,
+                type: 'pullRequests:get'
             });
         }
     }

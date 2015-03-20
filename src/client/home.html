@@ -42,6 +42,7 @@
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right buttonstopbar" ng-show="user.loaded" style="font-size:12px;" ng-cloak>
           <li><a target="_blank" href="http://www.review.ninja">ABOUT</a></li>
+          <li ng-click="checkSteps()">checklol</li>
           <li><a target="_blank" href="http://docs.review.ninja">DOCUMENTATION</a></li>
           <li ng-show="$config.terms"><a target="_blank" ng-href="{{ $config.terms }}">TERMS</a></li>
           <li class="hidden-xs"><a href="">Signed in as {{ user.value.login }}</a></li>

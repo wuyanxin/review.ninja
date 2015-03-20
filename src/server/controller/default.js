@@ -29,27 +29,22 @@ router.get('/accept', function(req, res) {
     models.User.findOne({
         uuid: req.user.id
     }, function(err, user) {
-        if (!user.terms) {
-            onboard.createRepo(req.user.token, req.user.login, function() {
-                onboard.createFile(req.user.token, req.user.login, 'master', function() {
-                    updateTerms();
-                });
-            });
-        }
-        else {
-            updateTerms();
-        }
+        updateTerms();
     });
 });
 
 ///TESTING ONLY
 router.get('/testbranch', function(req, res) {
-    onboard.getBranchSha(req.user.login, function(sha) {
-        onboard.createBranch(req.user.token, req.user.login, sha, function() {
-            onboard.getFileSha(req.user.login, function(sha) {
-                onboard.updateFile(req.user.token, req.user.login, sha, 'quickedit', function() {
-                    onboard.createPullRequest(req.user.token, req.user.login, function() {
-                        res.redirect('/');
+    onboard.createRepo(req.user.token, req.user.login, function() {
+        onboard.createFile(req.user.token, req.user.login, 'master', function() {
+            onboard.getBranchSha(req.user.login, function(sha) {
+                onboard.createBranch(req.user.token, req.user.login, sha, function() {
+                    onboard.getFileSha(req.user.login, function(sha) {
+                        onboard.updateFile(req.user.token, req.user.login, sha, 'quickedit', function() {
+                            onboard.createPullRequest(req.user.token, req.user.login, function() {
+                                res.redirect('/');
+                            });
+                        });
                     });
                 });
             });
