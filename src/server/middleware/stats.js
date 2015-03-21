@@ -5,59 +5,58 @@ module.exports = function(req, res, next) {
     // models
     var Action = require('mongoose').model('Action');
 
-    if (req.originalUrl === '/api/star/rmv') {
-        Action.create({
-            uuid: req.user.id,
-            user: req.args.user,
-            repo: req.args.repo,
-            type: 'star:rmv'
-        });
-    } else if (req.originalUrl === '/api/star/set') {
-        Action.create({
-            uuid: req.user.id,
-            user: req.args.user,
-            repo: req.args.repo,
-            type: 'star:add'
-        });
-    } else if (req.originalUrl === '/api/issue/add') {
-        Action.create({
-            uuid: req.user.id,
-            user: req.args.user,
-            repo: req.args.repo,
-            type: 'issues:add'
-        });
-    } else if (req.originalUrl === '/api/user/addRepo') {
-        Action.create({
-            uuid: req.user.id,
-            user: req.args.user,
-            repo: req.args.repo,
-            type: 'user:addRepo'
-        });
-    } else if (req.originalUrl === '/api/github/call') {
-        if (req.args.obj === 'issues' && req.args.fun === 'edit') {
+    // put all the reviewninja api methods you want to track here
+    var trackedUrls = ['/api/star/rmv',
+                        '/api/star/set',
+                        '/api/issue/add',
+                        '/api/user/addRepo'];
+
+    // also put them here, along with the type you want them to show up as in db
+    var regularMap = {
+        '/api/star/rmv': 'star:rmv',
+        '/api/star/set': 'star:set',
+        '/api/issue/add': 'issues:add',
+        '/api/user/addRepo': 'user:addRepo'
+    };
+
+    // put all the github api methods you want to track here
+    var trackedGithubMethods = ['issues:edit', 'pullRequests:merge', 'issues:createComment'];
+
+    // checks if the api call is github or not
+    var isGitHub = function(url) {
+        return (url.indexOf('/api/github/') > -1);
+    }
+
+    // adding to db for non-github methods
+    var regularFunc = function() {
+        if (trackedUrls.indexOf(req.originalUrl) > -1) {
             Action.create({
                 uuid: req.user.id,
-                user: req.args.arg.user,
-                repo: req.args.arg.repo,
-                type: 'issues:' + req.args.arg.state
-            });
-        } else if (req.args.obj === 'pullRequests' && req.args.fun === 'merge') {
-            Action.create({
-                uuid: req.user.id,
-                user: req.args.arg.user,
-                repo: req.args.arg.repo,
-                type: 'pullRequests:merge'
-            });
-        }
-    } else if (req.originalUrl === '/api/github/wrap') {
-        if (req.args.obj === 'issues' && req.args.fun === 'createComment') {
-            Action.create({
-                uuid: req.user.id,
-                user: req.args.arg.user,
-                repo: req.args.arg.repo,
-                type: 'issues:createComment'
+                user: req.args.user,
+                repo: req.args.repo,
+                type: regularMap[req.originalUrl]
             });
         }
     }
+
+    // adding to db for github methods
+    var githubFunc = function() {
+        if (trackedGithubMethods.indexOf((req.args.obj + ':' + req.args.fun)) > -1) {
+            Action.create({
+                uuid: req.user.id,
+                uesr: req.args.arg.user,
+                repo: req.args.arg.repo,
+                type: req.args.obj + ':' + req.args.fun
+            });
+        }
+    }
+
+    // choosing between github and regular
+    if (!isGitHub(req.originalUrl)) {
+        regularFunc();
+    } else {
+        githubFunc();
+    }
+
     next();
 };
