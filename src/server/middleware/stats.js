@@ -5,13 +5,7 @@ module.exports = function(req, res, next) {
     // models
     var Action = require('mongoose').model('Action');
 
-    // put all the reviewninja api methods you want to track here
-    var trackedUrls = ['/api/star/rmv',
-                        '/api/star/set',
-                        '/api/issue/add',
-                        '/api/user/addRepo'];
-
-    // also put them here, along with the type you want them to show up as in db
+    // put all the reviewninja api methods you want to track here, along with the type you want them to show up as in db
     var regularMap = {
         '/api/star/rmv': 'star:rmv',
         '/api/star/set': 'star:set',
@@ -29,7 +23,7 @@ module.exports = function(req, res, next) {
 
     // adding to db for non-github methods
     var regularFunc = function() {
-        if (trackedUrls.indexOf(req.originalUrl) > -1) {
+        if (req.originalUrl in regularMap) {
             Action.create({
                 uuid: req.user.id,
                 user: req.args.user,
