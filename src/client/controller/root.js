@@ -31,7 +31,19 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                     user: $stateParams.user,
                 }, function(err, types) {
                     if (!err) {
-                        $scope.actionTypes = types;
+                        $scope.tasks = [
+                            'Add repo',
+                            'Review the code',
+                            'Open and close new issue',
+                            'Give ninja star',
+                            'Merge code'
+                        ];
+
+                        types.forEach(function(val) {
+
+                        });
+                        $scope.actionsTaken = types;
+                        $scope.actionsToTake
                     }
                 });
             }
