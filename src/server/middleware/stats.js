@@ -8,18 +8,18 @@ module.exports = function(req, res, next) {
     // put all the reviewninja api methods you want to track here, along with the type you want them to show up as in db
     var regularMap = {
         '/api/star/rmv': 'star:rmv',
-        '/api/star/set': 'star:set',
+        '/api/star/set': 'star:add',
         '/api/issue/add': 'issues:add',
         '/api/user/addRepo': 'user:addRepo'
     };
 
     // put all the github api methods you want to track here
-    var trackedGithubMethods = ['issues:edit', 'pullRequests:merge', 'issues:createComment'];
+    var trackedGithubMethods = ['issues:closed', 'pullRequests:merge', 'issues:createComment'];
 
     // checks if the api call is github or not
     var isGitHub = function(url) {
         return (url.indexOf('/api/github/') > -1);
-    }
+    };
 
     // adding to db for non-github methods
     var regularFunc = function() {
@@ -31,7 +31,7 @@ module.exports = function(req, res, next) {
                 type: regularMap[req.originalUrl]
             });
         }
-    }
+    };
 
     // adding to db for github methods
     var githubFunc = function() {
@@ -43,7 +43,7 @@ module.exports = function(req, res, next) {
                 type: req.args.obj + ':' + req.args.fun
             });
         }
-    }
+    };
 
     // choosing between github and regular
     if (!isGitHub(req.originalUrl)) {
