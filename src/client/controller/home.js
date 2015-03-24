@@ -11,26 +11,27 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.repos = [];
 
-        $scope.results = [];
-
-        $scope.hasRepos = true;
-
         $RPC.call('user', 'get', {}, function(err, user) {
-            if(!err) {
+            var count = 0;
+            var repos = user ? user.value.repos : [];
 
-                $scope.hasRepos = !!user.value.repos.length;
+            $scope.loaded = count === repos.length;
 
-                user.value.repos.forEach(function(uuid) {
-                    $HUB.call('repos', 'one', {
-                        id: uuid
-                    }, function(err, repo) {
-                        if(!err) {
-                            repo.value.ninja = true;
-                            $scope.repos.push(repo.value);
-                        }
-                    });
+            repos.forEach(function(uuid) {
+                $HUB.call('repos', 'one', {
+                    id: uuid
+                }, function(err, repo) {
+                    $scope.loaded = ++count === repos.length;
+                    if(!err) {
+                        $scope.repos.push(repo.value);
+                    }
                 });
-            }
+            });
+        });
+
+        $scope.allRepos = $HUB.call('repos', 'getAll', {
+            headers: {accept: 'application/vnd.github.moondragon+json'},
+            per_page: 50
         });
 
         //
@@ -44,51 +45,36 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                 repo_uuid: repo.id
             }, function(err) {
                 $scope.active = null;
-                $scope.hasRepos = true;
-                if(!err && $scope.repos.indexOf(repo) < 0) {
-                    repo.ninja = true;
+                if(!err) {
                     repo.adddate = -new Date();
                     $scope.repos.push(repo);
 
-                    $scope.reset();
+                    $scope.search = '';
+                    $scope.show = false;
                 }
             });
         };
 
         $scope.remove = function(repo) {
+            var index = $scope.repos.indexOf(repo);
             $RPC.call('user', 'rmvRepo', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
             }, function(err) {
                 if(!err) {
-                    console.log(repo);
-                    repo.ninja = false;
+                    $scope.repos.splice(index, 1);
                 }
             });
         };
 
-        $scope.search = function() {
-
-            // clear results
-            $scope.results = [];
-
-            // get query
-            var query = $scope.query.split('/');
-            query = (query[1] || '') + '+in:name+fork:true+user:' + query[0];
-
-            $scope.searching = $HUB.wrap('search', 'repos', {
-                q: query
-            }, function(err, repos) {
-                if(!err) {
-                    $scope.results = repos.value;
-                }
+        $scope.contains = function(id) {
+            var contains = false;
+            $scope.repos.forEach(function(repo) {
+                contains = contains || repo.id === id;
             });
-        };
 
-        $scope.reset = function() {
-            $scope.query = null;
-            $scope.results = [];
+            return contains;
         };
     }
 ]);

@@ -6,7 +6,7 @@ var glob = require('glob');
 var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
-var sass = require('node-sass');
+var sassMiddleware = require('node-sass-middleware');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration
@@ -43,9 +43,6 @@ app.use('/github/webhook', require('./middleware/param'));
 // papertrail middleware
 app.use('/api', require('./middleware/papertrail'));
 app.use('/github/webhook', require('./middleware/papertrail'));
-
-// keen middleware
-app.use('/api/github', require('./middleware/keen'));
 
 // karma middleware
 app.use('/api', require('./middleware/stats'));
@@ -115,7 +112,7 @@ async.series([
         console.log('bootstrap static files'.bold);
 
         var publish = function(p, path) {
-            app.use(sass.middleware({
+            app.use(sassMiddleware({
                 src: p,
                 dest: p,
                 outputStyle: 'compressed',

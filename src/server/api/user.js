@@ -3,7 +3,6 @@
 var url = require('../services/url');
 var github = require('../services/github');
 var webhook = require('../services/webhook');
-var keenio = require('../services/keenio');
 
 // models
 var User = require('mongoose').model('User');
@@ -75,12 +74,6 @@ module.exports = {
                         }
                     }
 
-                    keenio.addEvent('user:addRepo', {
-                        repo: repo.id,
-                        name: repo.name,
-                        user: user.uuid
-                    });
-
                     done(err, {repos: user ? user.repos : null});
                 });
             });
@@ -102,8 +95,6 @@ module.exports = {
                     user.repos = repos;
                     user.save();
                 }
-
-                keenio.addEvent('user:rmvRepo', req.args);
 
                 done(err, {repos: user ? user.repos : null});
             });

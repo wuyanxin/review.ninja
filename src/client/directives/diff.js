@@ -103,6 +103,13 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     return match;
                 };
 
+                scope.generateAnchor = function(line) {
+                    if(line.head && scope.repo.permissions.push && scope.isReferenced(line)) {
+                        return scope.headSha + '/' + scope.file.filename + 'L' + line.head;
+                    }
+                    return '';
+                };
+
                 scope.isReferenced = function(line) {
                     var match = false;
                     if(scope.issues) {
