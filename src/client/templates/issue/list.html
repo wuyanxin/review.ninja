@@ -3,7 +3,7 @@
        infinite-scroll-disabled="state==='open' ? open.loading : closed.loading">
 
   <tr class="select" 
-      ng-repeat="issue in (state==='open' ? open : closed).value | filter:{state: state} | in:reference.issues:'number'"
+      ng-repeat="issue in (state==='open' ? open : closed).value | filter:{state: state} | in:reference.issues:'number' | unique: 'id' "
       ui-sref="repo.pull.issue.detail({ issue: issue.number })"
       ng-show="issue.milestone.id===pull.milestone.id">
 
