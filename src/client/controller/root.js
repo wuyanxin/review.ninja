@@ -31,19 +31,21 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                     user: $stateParams.user,
                 }, function(err, types) {
                     if (!err) {
-                        $scope.tasks = [
+                        console.log(types);
+                        $scope.tasks = [];
+                        var actionText = [
                             'Add repo',
                             'Review the code',
-                            'Open and close new issue',
+                            'Open new issue',
+                            'Close issue',
                             'Give ninja star',
                             'Merge code'
                         ];
-
-                        types.forEach(function(val) {
-
-                        });
-                        $scope.actionsTaken = types;
-                        $scope.actionsToTake
+                        for (var i = 0; i < actionText.length; i++) {
+                            console.log(actionText);
+                            $scope.tasks.push({text: actionText[i], done: types[i]});
+                        }
+                        return $scope.tasks;
                     }
                 });
             }
@@ -53,11 +55,33 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
             $state.go('error');
         });
 
-        // $scope.checkSteps = function() {
-        //     $scope.actions = $RPC.call('onboard', 'getactions', {
-        //         user: $stateParams.user,
-        //     });
-        // }
+        $scope.checkSteps = function() {
+            $RPC.call('onboard', 'getactions', {
+                user: $rootScope.user.value,
+            }, function(err, types) {
+                console.log($rootScope.user.value.id);
+                if (!err) {
+                    console.log(types);
+                    $scope.tasks = [];
+                    var actionText = [
+                        'Add repo',
+                        'Review the code',
+                        'Open new issue',
+                        'Close issue',
+                        'Give ninja star',
+                        'Merge code'
+                    ];
+                    for (var i = 0; i < actionText.length; i++) {
+                        console.log(actionText);
+                        $scope.tasks.push({text: actionText[i], done: types[i]});
+                    }
+                }
+            });
+        }
+
+        $scope.displayTasks = function() {
+            console.log($scope.tasks);
+        }
 
         $scope.createWebhook = function() {
             $scope.creating = $RPC.call('webhook', 'create', {
