@@ -8,13 +8,13 @@ module.exports = {
       obj: 'repos',
       fun: 'create',
       arg: {
-        name: "review-ninja-welcome",
-        description: "test"
+        name: 'review-ninja-welcome',
+        description: 'test'
       },
       token: token
     }, function(err, res) {
       if (err) {
-        console.log("error: ", err);
+        console.log('error: ', err);
       }
       else {
         console.log('created repo, creating separate branch now...');
@@ -32,13 +32,13 @@ module.exports = {
         repo: 'review-ninja-welcome',
         path: 'hello.txt',
         message: 'first',
-        content: (branch === 'master' ? new Buffer('hello ninja').toString('base64') : new Buffer('hello ' + username).toString('base64')), 
+        content: (branch === 'master' ? new Buffer('hello ninja').toString('base64') : new Buffer('hello ' + username).toString('base64')),
         branch: branch
       },
       token: token
     }, function(err, res) {
       if (err) {
-        console.log("error: ", err);
+        console.log('error: ', err);
       }
       else {
         if (branch === 'master') {
@@ -64,10 +64,10 @@ module.exports = {
       }
     }, function(err, res) {
       if (err) {
-        console.log("error: ", err);
+        console.log('error: ', err);
       }
       else {
-        console.log("sha get! ", res.object.sha);
+        console.log('sha get! ', res.object.sha);
       }
       done(res.object.sha);
     });
@@ -86,7 +86,7 @@ module.exports = {
       token: token
     }, function(err, res) {
       if (err) {
-        console.log("error: ", err);
+        console.log('error: ', err);
         console.log(token);
         console.log(sha);
       }
@@ -109,10 +109,10 @@ module.exports = {
       }
     }, function(err, res) {
       if (err) {
-        console.log("error: ", err);
+        console.log('error: ', err);
       }
       else {
-        console.log("sha get! ", res.sha);
+        console.log('sha get! ', res.sha);
       }
       done(res.sha);
     });
@@ -127,7 +127,7 @@ module.exports = {
         repo: 'review-ninja-welcome',
         path: 'hello.txt',
         message: 'change',
-        content: (branch === 'master' ? new Buffer('hello ninja').toString('base64') : new Buffer('hello ' + username).toString('base64')), 
+        content: (branch === 'master' ? new Buffer('hello ninja').toString('base64') : new Buffer('hello ' + username).toString('base64')),
         sha: sha,
         branch: branch
       },
@@ -135,7 +135,7 @@ module.exports = {
     }, function(err, res) {
       if (err) {
         console.log(sha);
-        console.log("error: ", err);
+        console.log('error: ', err);
       }
       else {
         console.log('done with making quick-edit file change, making pull request...');
@@ -158,7 +158,7 @@ module.exports = {
       token: token
     }, function(err, res) {
       if (err) {
-        console.log("error: ", err);
+        console.log('error: ', err);
       }
       else {
         console.log('done making pull request, redirecting now...');
