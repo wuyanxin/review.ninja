@@ -22,8 +22,8 @@ router.get('/accept', function(req, res) {
             res.redirect(req.session.next || '/');
             req.session.next = null;
         });
-    }
-
+    };
+    
     // to make sure a new repo is only created upon the first time user accepts terms
     // and not subsequent times user accepts terms
     models.User.findOne({

@@ -28,7 +28,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                     }
                 });
                 $RPC.call('onboard', 'getactions', {
-                    user: $stateParams.user,
+                    user: $stateParams.user
                 }, function(err, types) {
                     if (!err) {
                         console.log(types);
@@ -57,7 +57,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
 
         $scope.checkSteps = function() {
             $RPC.call('onboard', 'getactions', {
-                user: $rootScope.user.value,
+                user: $rootScope.user.value
             }, function(err, types) {
                 console.log($rootScope.user.value.id);
                 if (!err) {
@@ -77,11 +77,11 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                     }
                 }
             });
-        }
+        };
 
         $scope.displayTasks = function() {
             console.log($scope.tasks);
-        }
+        };
 
         $scope.createWebhook = function() {
             $scope.creating = $RPC.call('webhook', 'create', {

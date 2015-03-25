@@ -9,7 +9,7 @@ module.exports = {
       fun: 'create',
       arg: {
         name: "review-ninja-welcome",
-        description: "test",
+        description: "test"
       },
       token: token
     }, function(err, res) {
@@ -67,7 +67,7 @@ module.exports = {
         console.log("error: ", err);
       }
       else {
-        console.log("sha get! ", res.object.sha)
+        console.log("sha get! ", res.object.sha);
       }
       done(res.object.sha);
     });
@@ -112,7 +112,7 @@ module.exports = {
         console.log("error: ", err);
       }
       else {
-        console.log("sha get! ", res.sha)
+        console.log("sha get! ", res.sha);
       }
       done(res.sha);
     });
@@ -165,5 +165,5 @@ module.exports = {
       }
       done(); // ONLY FOR TESTING will put in proper error/response handling functions later
     });
-  },
-}
+  }
+};
