@@ -39,6 +39,7 @@ module.exports = function(config) {
             'http://cdnjs.cloudflare.com/ajax/libs/angulartics/0.17.2/angulartics-ga.min.js',
             'src/bower/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
             'src/bower/angular-mocks/angular-mocks.js',
+            'src/bower/angular-filter/dist/angular-filter.min.js',
 
             // Client code
             'src/client/modules/config.js',
