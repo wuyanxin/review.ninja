@@ -8,7 +8,8 @@ var module = angular.module('app',
      'infinite-scroll',
      'ngSanitize',
      'angulartics',
-     'angulartics.google.analytics']);
+     'angulartics.google.analytics',
+        'angular.filter']);
 
 var filters = angular.module('ninja.filters', []);
 
