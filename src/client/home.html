@@ -62,10 +62,11 @@
   <div class="container-fluid" ng-cloak>
     <div class="row">
       <div ng-show="onboard.tasksLoaded && !onboard.dismiss" class="col-md-12 alert alert-info" style="margin:0;">
-        <ul style="list-style-type:none;display:inline;" class="onboard">
-          <li ng-repeat="task in onboard.tasks" style="margin-right: 7%;display:inline;width:15%">
-            <span ng-show="task.done" class="octicon octicon-check"></span> {{task.text}}</li>
-          <li ng-click="dismissOnboard()" style="float:right"><i class="fa fa-times"></i></li>
+        <ul class="onboard">
+          <li ng-repeat="task in onboard.tasks">
+            <span ng-show="task.done" class="octicon octicon-check"></span> {{task.text}}
+          </li>
+          <i ng-click="dismissOnboard()" class="fa fa-times"></i></li>
       </div>
     </div>
     <div class="row" ng-show="hook.loaded && !hook.error && !hook.value">

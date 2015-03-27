@@ -40,7 +40,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                                 {text: 'Close issue', type: 'issues:closed'},
                                 {text: 'Give ninja star', type: 'star:add'},
                                 {text: 'Merge code', type: 'pullRequests:merge'}
-                            ], 
+                            ],
                             dismiss: false};
                         $scope.onboard.tasks.forEach(function(t) {
                             t.done = actions.value[t.type];
