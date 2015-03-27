@@ -2,17 +2,23 @@
 var Action = require('mongoose').model('Action');
 module.exports = {
   getactions: function(req, done) {
-    Action.find({uuid: req.user.id}, function(err, res) {
-      var types = ['user:addRepo', 'pullRequests:get', 'issues:add', 'issues:closed', 'star:add', 'pullRequests:merge'];
-      var bools = [false, false, false, false, false, false];
-      var filtered = res.filter(function(x) { return (typeof x.type !== undefined && types.indexOf(x.type) > -1); });
-      res.forEach(function(x) {
-        if (typeof x.type !== undefined && types.indexOf(x.type) > -1) {
-          bools[types.indexOf(x.type)] = true;
-        }
+    Action.find({uuid: req.user.id}).distinct('type', function(err, actions) {
+      if (err) {
+        return done(err);
+      }
+      console.log(actions);
+      var res = {};
+      actions.forEach(function(a) {
+        res[a] = true;
       });
-      console.log({types: bools});
-      done(err, {types: bools});
+      console.log(res);
+      done(null, res);
+//      return res;
     });
+  },
+
+  dismiss: function(req, done) {
+      console.log('dismissed');
+      done();
   }
 };

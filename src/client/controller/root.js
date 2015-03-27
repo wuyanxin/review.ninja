@@ -8,10 +8,11 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
 
         $rootScope.user = $HUB.call('user', 'get', {});
 
+        $scope.onboard = {};
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
             if(!($stateParams.user && $stateParams.repo)) {
-                $scope.hook = {};
+                $scope.onboard = {};
                 return;
             }
 
@@ -29,23 +30,22 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                 });
                 $RPC.call('onboard', 'getactions', {
                     user: $stateParams.user
-                }, function(err, types) {
-                    if (!err) {
-                        console.log(types);
-                        $scope.tasks = [];
-                        var actionText = [
-                            'Add repo',
-                            'Review the code',
-                            'Open new issue',
-                            'Close issue',
-                            'Give ninja star',
-                            'Merge code'
-                        ];
-                        for (var i = 0; i < actionText.length; i++) {
-                            console.log(actionText);
-                            $scope.tasks.push({text: actionText[i], done: types[i]});
-                        }
-                        return $scope.tasks;
+                }, function(err, actions) {
+                    if (!err && !(actions.value['onboard:dismiss'])) {
+                        $scope.onboard = {
+                            tasks: [
+                                {text: 'Add repo', type: 'user:addRepo'},
+                                {text: 'Review the code', type: 'pullRequests:get'},
+                                {text: 'Open new issue', type: 'issues:add'},
+                                {text: 'Close issue', type: 'issues:closed'},
+                                {text: 'Give ninja star', type: 'star:add'},
+                                {text: 'Merge code', type: 'pullRequests:merge'}
+                            ], 
+                            dismiss: false};
+                        $scope.onboard.tasks.forEach(function(t) {
+                            t.done = actions.value[t.type];
+                        });
+                        $scope.onboard.tasksLoaded = true;
                     }
                 });
             }
@@ -55,32 +55,19 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
             $state.go('error');
         });
 
-        $scope.checkSteps = function() {
-            $RPC.call('onboard', 'getactions', {
-                user: $rootScope.user.value
-            }, function(err, types) {
-                console.log($rootScope.user.value.id);
+        $scope.dismissOnboard = function() {
+            // api call to dismiss onboarding forever
+            $RPC.call('onboard', 'dismiss', {
+                user: $stateParams.user
+            }, function(err, res) {
                 if (!err) {
-                    console.log(types);
-                    $scope.tasks = [];
-                    var actionText = [
-                        'Add repo',
-                        'Review the code',
-                        'Open new issue',
-                        'Close issue',
-                        'Give ninja star',
-                        'Merge code'
-                    ];
-                    for (var i = 0; i < actionText.length; i++) {
-                        console.log(actionText);
-                        $scope.tasks.push({text: actionText[i], done: types[i]});
-                    }
+                    $scope.onboard.dismiss = true;
                 }
             });
         };
 
         $scope.displayTasks = function() {
-            console.log($scope.tasks);
+            console.log($scope.onboard.tasks);
         };
 
         $scope.createWebhook = function() {

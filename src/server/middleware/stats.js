@@ -10,7 +10,8 @@ module.exports = function(req, res, next) {
         '/api/star/rmv': 'star:rmv',
         '/api/star/set': 'star:add',
         '/api/issue/add': 'issues:add',
-        '/api/user/addRepo': 'user:addRepo'
+        '/api/user/addRepo': 'user:addRepo',
+        '/api/onboard/dismiss': 'onboard:dismiss'
     };
 
     // put all the github api methods you want to track here
