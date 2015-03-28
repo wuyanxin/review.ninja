@@ -61,8 +61,8 @@
   <!-- the webhook notification -->
   <div class="container-fluid" ng-cloak>
     <div class="row">
-      <div ng-show="onboard.tasksLoaded && !onboard.dismiss" class="col-md-12 alert alert-info" style="margin:0;">
-        <ul class="onboard">
+      <div ng-show="onboard.tasksLoaded && !onboard.dismiss" class="col-md-12 alert onboard" style="margin:0;">
+        <ul class="onboard-list">
           <li ng-repeat="task in onboard.tasks">
             <span ng-show="task.done" class="octicon octicon-check"></span> {{task.text}}
           </li>

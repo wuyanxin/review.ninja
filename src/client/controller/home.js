@@ -11,6 +11,49 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.repos = [];
 
+        $scope.onboardingChecks = {loaded: false};
+
+        $scope.creating = false;
+
+        $RPC.call('onboard', 'getactions', {}, function(err, tasks) {
+            if (!err) {
+                $scope.onboardingChecks.dismiss = !!tasks.value['onboard:dismiss'];
+                $scope.onboardingChecks.loaded = !!tasks.value['user:addRepo'];
+            }
+            else {
+                console.log(err);
+            }
+        });
+
+        $scope.createOnboardingRepo = function() {
+            if (!$scope.creating) {
+                $scope.creating = true;
+                $scope.onboardingChecks.loading = true;
+                $RPC.call('onboard', 'createrepo', {}, function(err, res) {
+                    if (!err) {
+                        $scope.onboardingChecks.loading = false;
+                        $scope.onboardingChecks.loaded = true;
+                        // todo: actually add the repo to user's list
+                        // in order to actually be able to add it
+                        $RPC.call('user', 'addRepo', {
+                            user: res.value.owner.login,
+                            repo: res.value.owner.id,
+                            repo_uuid: res.value.id
+                        }, function(err) {
+                            $scope.active = null;
+                            if(!err) {
+                                repo.adddate = -new Date();
+                                $scope.repos.push(repo);
+
+                                $scope.search = '';
+                                $scope.show = false;
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
         $RPC.call('user', 'get', {}, function(err, user) {
             var count = 0;
             var repos = user ? user.value.repos : [];

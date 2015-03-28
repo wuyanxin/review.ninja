@@ -9,6 +9,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
         $rootScope.user = $HUB.call('user', 'get', {});
 
         $scope.onboard = {};
+
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
             if(!($stateParams.user && $stateParams.repo)) {

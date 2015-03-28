@@ -23,6 +23,26 @@ module.exports = {
     });
   },
 
+  getRepo: function(token, username, done) {
+    github.call({
+      obj: 'repos',
+      fun: 'create',
+      arg: {
+        user: username,
+        repo: 'review-ninja-welcome'
+      },
+      token: token
+    }, function(err, res) {
+      if (err) {
+        console.log('error: ', err);
+      }
+      else {
+        console.log('repo get');
+      }
+      done(res);
+    })
+  },
+
   createFile: function(token, username, branch, done) {
     github.call({
       obj: 'repos',

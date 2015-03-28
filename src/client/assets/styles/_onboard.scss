@@ -1,4 +1,9 @@
 .onboard {
+	background-color: #3e9a94;
+	color: white;
+}
+
+.onboard-list {
   list-style-type:none;
 
   li {
@@ -10,4 +15,31 @@
   i {
   	float:right;
   }
+}
+
+.onboard-button {
+	padding: 2%;
+	background-color: #3e9a94; 
+	color: white;
+	font-weight: 300;
+	margin-left: 2%;
+}
+
+.octicon-fade {
+	opacity: 0.3;
+}
+
+.welcome {
+	background-color: #d1eaea;
+}
+
+.welcome-header {
+	color: #3e9a94; 
+	font-weight: bold;
+}
+
+.welcome-add {
+	color: #3e9a94;
+	text-decoration: underline;
+	cursor: pointer;
 }

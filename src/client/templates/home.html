@@ -32,6 +32,11 @@
       </small>
     </p>
 
+    <div class="well welcome" ng-show="loaded && !onboardingChecks.loaded && !onboardingChecks.dismiss">
+      <p class="welcome-header">Welcome! We're glad you are here.</p>
+      <p>To get started, <a class="welcome-add">add one of your own repositories</a>. Or explore ReviewNinja by adding the ReviewNinja Example repository to your GitHub repository list.</p>
+    </div>
+
     <div class="well well-dark" ng-show="show || (loaded && !repos.length)">
       <div class="form-group has-feedback">
         <input type="text" ng-model="search" focus="setFocus" class="form-control" style="height:33px;" />
@@ -56,8 +61,12 @@
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="!loaded"></i>
 
 		<table class="table table-hover">
-      <tr class="select">
-        <td>Click here to learn!</td>
+      <tr class="select" ng-show="loaded && !onboardingChecks.loaded && !onboardingChecks.dismiss">
+        <td ng-click="createOnboardingRepo()">
+          <span class="octicon octicon-repo octicon-fade"></span>
+          <span class="onboard-button" ng-show="!onboardingChecks.loading">Add ReviewNinja Example Repository<span>
+          <i class="fa fa-spinner fa-spin" ng-show="onboardingChecks.loading"></i>
+        </td>
         <td style="text-align:right;">
           <i class="fa fa-times ng-scope" ng-click="remove(repo); $event.stopPropagation();" tooltip="Remove" tooltip-placement="bottom" tooltip-append-to-body="true">
           </i>
