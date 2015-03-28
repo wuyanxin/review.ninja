@@ -48,7 +48,7 @@
           }"
           ng-show="permissions.push || pull.merged"
           ng-disabled="!pull.mergeable"
-          ng-click="merge()">
+          ng-click="merge();getOnboardingTasks();">
 
     <span ng-show="!pull.merged">
       <span class="octicon octicon-git-merge"></span> {{ status.state==='failure' ? 'Merge with caution!' : 'Merge pull request'}}

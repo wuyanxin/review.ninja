@@ -29,28 +29,33 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                         });
                     }
                 });
-                $RPC.call('onboard', 'getactions', {
-                    user: $stateParams.user
-                }, function(err, actions) {
-                    if (!err && !(actions.value['onboard:dismiss'])) {
-                        $scope.onboard = {
-                            tasks: [
-                                {text: 'Add repo', type: 'user:addRepo'},
-                                {text: 'Review the code', type: 'pullRequests:get'},
-                                {text: 'Open new issue', type: 'issues:add'},
-                                {text: 'Close issue', type: 'issues:closed'},
-                                {text: 'Give ninja star', type: 'star:add'},
-                                {text: 'Merge code', type: 'pullRequests:merge'}
-                            ],
-                            dismiss: false};
-                        $scope.onboard.tasks.forEach(function(t) {
-                            t.done = actions.value[t.type];
-                        });
-                        $scope.onboard.tasksLoaded = true;
-                    }
-                });
+                $scope.getOnboardingTasks();
             }
         });
+
+        $scope.getOnboardingTasks = function() {
+            $RPC.call('onboard', 'getactions', {
+                user: $stateParams.user
+            }, function(err, actions) {
+                console.log('ayyylmao');
+                if (!err && !(actions.value['onboard:dismiss'])) {
+                    $scope.onboard = {
+                        tasks: [
+                            {text: 'Add repo', type: 'user:addRepo'},
+                            {text: 'Review the code', type: 'pullRequests:get'},
+                            {text: 'Open new issue', type: 'issues:add'},
+                            {text: 'Close issue', type: 'issues:closed'},
+                            {text: 'Give ninja star', type: 'star:add'},
+                            {text: 'Merge code', type: 'pullRequests:merge'}
+                        ],
+                        dismiss: false};
+                    $scope.onboard.tasks.forEach(function(t) {
+                        t.done = actions.value[t.type];
+                    });
+                    $scope.onboard.tasksLoaded = true;
+                }
+            });
+        };
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
             $state.go('error');
