@@ -19,6 +19,9 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             if (!err) {
                 $scope.onboardingChecks.dismiss = !!tasks.value['onboard:dismiss'];
                 $scope.onboardingChecks.loaded = !!tasks.value['user:addRepo'];
+                if (!!tasks.value['user:addRepo'] && !tasks.value['onboard:dismiss']) {
+                    $scope.show = false;
+                }
             }
             else {
                 console.log(err);

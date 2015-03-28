@@ -37,7 +37,7 @@
       <p>To get started, <a class="welcome-add">add one of your own repositories</a>. Or explore ReviewNinja by adding the ReviewNinja Example repository to your GitHub repository list.</p>
     </div>
 
-    <div class="well well-dark" ng-show="show || (loaded && !repos.length)">
+    <div class="well well-dark" ng-show="show || (loaded && !repos.length && onboardingChecks.loaded)">
       <div class="form-group has-feedback">
         <input type="text" ng-model="search" focus="setFocus" class="form-control" style="height:33px;" />
         <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="allRepos.loading" style="top:0px;"></i>
