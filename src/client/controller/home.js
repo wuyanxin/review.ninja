@@ -33,22 +33,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                     if (!err) {
                         $scope.onboardingChecks.loading = false;
                         $scope.onboardingChecks.loaded = true;
-                        // todo: actually add the repo to user's list
-                        // in order to actually be able to add it
-                        $RPC.call('user', 'addRepo', {
-                            user: res.value.owner.login,
-                            repo: res.value.owner.id,
-                            repo_uuid: res.value.id
-                        }, function(err) {
-                            $scope.active = null;
-                            if(!err) {
-                                repo.adddate = -new Date();
-                                $scope.repos.push(repo);
-
-                                $scope.search = '';
-                                $scope.show = false;
-                            }
-                        });
+                        $scope.add(res.value);
                     }
                 });
             }

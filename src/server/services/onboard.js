@@ -26,7 +26,7 @@ module.exports = {
   getRepo: function(token, username, done) {
     github.call({
       obj: 'repos',
-      fun: 'create',
+      fun: 'get',
       arg: {
         user: username,
         repo: 'review-ninja-welcome'
