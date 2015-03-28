@@ -1,45 +1,45 @@
 .onboard {
-	background-color: #3e9a94;
-	color: white;
+  background-color: #3e9a94;
+  color: #fff;
 }
 
 .onboard-list {
-  list-style-type:none;
+  list-style-type: none;
 
   li {
+    display: inline;
     margin-right: 7%;
-    display:inline;
-    width:15%
+    width: 15%;
   }
 
   i {
-  	float:right;
+    float: right;
   }
 }
 
 .onboard-button {
-	padding: 2%;
-	background-color: #3e9a94; 
-	color: white;
-	font-weight: 300;
-	margin-left: 2%;
+  background-color: #3e9a94; 
+  color: #fff;
+  font-weight: 300;
+  margin-left: 2%;
+  padding: 2%;
 }
 
 .octicon-fade {
-	opacity: 0.3;
+  opacity: 0.3;
 }
 
 .welcome {
-	background-color: #d1eaea;
+  background-color: #d1eaea;
 }
 
 .welcome-header {
-	color: #3e9a94; 
-	font-weight: bold;
+  color: #3e9a94; 
+  font-weight: bold;
 }
 
 .welcome-add {
-	color: #3e9a94;
-	text-decoration: underline;
-	cursor: pointer;
+  color: #3e9a94;
+  cursor: pointer;
+  text-decoration: underline;
 }

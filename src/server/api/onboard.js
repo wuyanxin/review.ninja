@@ -20,8 +20,7 @@ module.exports = {
   },
 
   dismiss: function(req, done) {
-      console.log('dismissed');
-      done();
+      done(null, {'dismissed': true});
   },
 
   createrepo: function(req, done) {
@@ -42,10 +41,5 @@ module.exports = {
             });
         });
     });
-  },
-
-  test: function(req, done) {
-    console.log(req.user);
-    console.log(req.user.token);
   }
 };

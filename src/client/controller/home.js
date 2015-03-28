@@ -17,9 +17,9 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $RPC.call('onboard', 'getactions', {}, function(err, tasks) {
             if (!err) {
-                $scope.onboardingChecks.dismiss = !!tasks.value['onboard:dismiss'];
-                $scope.onboardingChecks.loaded = !!tasks.value['user:addRepo'];
-                if (!!tasks.value['user:addRepo'] && !tasks.value['onboard:dismiss']) {
+                $scope.onboardingChecks.dismiss = (typeof tasks.value['onboard:dismiss'] === 'undefined') ? false : tasks.value['onboard:dismiss'];
+                $scope.onboardingChecks.loaded = (typeof tasks.value['user:addRepo'] === 'undefined') ? false : tasks.value['user:addRepo'];
+                if ($scope.onboardingChecks.loaded && !$scope.onboardingChecks.dismiss) {
                     $scope.show = false;
                 }
             }
@@ -40,7 +40,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                     }
                 });
             }
-        }
+        };
 
         $RPC.call('user', 'get', {}, function(err, user) {
             var count = 0;

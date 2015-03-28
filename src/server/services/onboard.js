@@ -23,26 +23,6 @@ module.exports = {
     });
   },
 
-  getRepo: function(token, username, done) {
-    github.call({
-      obj: 'repos',
-      fun: 'get',
-      arg: {
-        user: username,
-        repo: 'review-ninja-welcome'
-      },
-      token: token
-    }, function(err, res) {
-      if (err) {
-        console.log('error: ', err);
-      }
-      else {
-        console.log('repo get');
-      }
-      done(res);
-    })
-  },
-
   createFile: function(token, username, branch, done) {
     github.call({
       obj: 'repos',
@@ -184,6 +164,26 @@ module.exports = {
         console.log('done making pull request, redirecting now...');
       }
       done(); // ONLY FOR TESTING will put in proper error/response handling functions later
+    });
+  },
+
+  getRepo: function(token, username, done) {
+    github.call({
+      obj: 'repos',
+      fun: 'get',
+      arg: {
+        user: username,
+        repo: 'review-ninja-welcome'
+      },
+      token: token
+    }, function(err, res) {
+      if (err) {
+        console.log('error: ', err);
+      }
+      else {
+        console.log('repo get');
+      }
+      done(res);
     });
   }
 };
