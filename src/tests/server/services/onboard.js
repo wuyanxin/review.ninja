@@ -44,42 +44,42 @@ beforeEach(function() {
 
 describe('onboard:createrepo', function() {
     it('should create new repo for user', function(done) {
-        assert.equals(2, 2);
+        assert.equal(2, 2);
         done();
     });
 
     it('should create test file for user', function(done) {
-        assert.equals(2, 2);
+        assert.equal(2, 2);
         done();
     });
 
     it('should get sha of the master branch', function(done) {
-        assert.equals(2, 2);
+        assert.equal(2, 2);
         done();
     });
 
     it('should create branch off master', function(done) {
-        assert.equals(2, 2);
+        assert.equal(2, 2);
         done();
     });
 
     it('should get sha of the file to edit', function(done) {
-        assert.equals(2, 2);
+        assert.equal(2, 2);
         done();
     });
 
     it('should update file on the branch', function(done) {
-        assert.equals(2, 2);
+        assert.equal(2, 2);
         done();
     });
 
     it('should create pull request', function(done) {
-        assert.equals(2, 2);
+        assert.equal(2, 2);
         done();
     });
 
     it('should respond with repo information', function(done) {
-        assert.equals(2, 2);
+        assert.equal(2, 2);
         done();
     });
 });
