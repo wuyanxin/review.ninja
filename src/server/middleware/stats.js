@@ -14,8 +14,8 @@ module.exports = function(req, res, next) {
     };
 
     var githubMap = {
-        'issues:closed': 'issues:closed', 
-        'pullRequests:merge': 'pullRequests:merge', 
+        'issues:closed': 'issues:closed',
+        'pullRequests:merge': 'pullRequests:merge',
         'issues:createComment': 'issues:createComment',
         'pullRequests:get': 'pullRequests:get'
     };
@@ -29,13 +29,16 @@ module.exports = function(req, res, next) {
     var args = isGitHub(req.originalUrl) ? req.args.arg : req.args;
     var type = isGitHub(req.originalUrl) ? githubMap[req.args.obj + ':' + req.args.fun] : map[req.originalUrl];
 
-    if (type) {
+    if(type) {
         Action.create({
             uuid: req.user.id,
             user: args.user,
             repo: args.repo,
             type: type
         });
+
+        // trigger webhook
+        io.emit('action:' + req.user.id, {});
     }
 
     next();
