@@ -1,4 +1,5 @@
 'use strict';
+
 // *****************************************************
 // Issue Detail Controller
 //
@@ -38,17 +39,6 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
         // actions
         //
-
-        $scope.scrollIssueLine = function() {
-            var ref = $scope.issue.ref.replace(/#/g, '');
-            if(ref.indexOf('-') > -1) {
-                // Replace anchor symbol '#' and remove 'until line' part.
-                ref = ref.replace(/(\-[^-]*$)/, '');
-            }
-            var anchor = $scope.issue.sha + '/' + ref;
-            $location.hash(anchor);
-            $anchorScroll();
-        };
 
         $scope.setState = function() {
             $scope.addComment();

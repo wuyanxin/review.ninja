@@ -14,8 +14,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 baseSha: '=',
                 headSha: '=',
                 selection: '=',
-                refIssues: '=',
-                repo: '='
+                refIssues: '='
             },
             link: function(scope, elem, attrs) {
                 scope.open = !scope.file.ignored;
@@ -97,31 +96,28 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.starts(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue.key);
+                            match = match || Reference.starts(scope.baseSha, scope.file.filename, line.base, issue) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue);
                         });
                     }
                     return match;
                 };
 
-                scope.generateAnchor = function(line) {
-                    if(line.head && scope.repo.permissions.push && scope.isReferenced(line)) {
-                        return scope.headSha + '/' + scope.file.filename + 'L' + line.head;
-                    }
-                    return '';
+                scope.anchor = function(sha, path, line) {
+                    return Reference.anchor(sha, path, line);
                 };
 
                 scope.isReferenced = function(line) {
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.includes(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.includes(scope.headSha, scope.file.filename, line.head, issue.key);
+                            match = match || Reference.includes(scope.baseSha, scope.file.filename, line.base, issue) || Reference.includes(scope.headSha, scope.file.filename, line.head, issue);
                         });
                     }
                     return match;
                 };
 
                 scope.select = function(line, event) {
-                    if(line.head && scope.repo.permissions.push) {
+                    if(line.head) {
                         var shift = scope.selection.start && event.shiftKey && scope.file.filename === scope.selection.path;
                         var start = !shift ? line.head : scope.selection.start;
                         var end = shift ? line.head : null;
@@ -133,7 +129,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     var issues = [];
 
                     scope.issues.forEach(function(issue) {
-                        if(Reference.starts(scope.baseSha, scope.file.filename, line.base, issue.key) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue.key)) {
+                        if(Reference.starts(scope.baseSha, scope.file.filename, line.base, issue) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue)) {
                             issues.push(issue.number);
                         }
                     });

@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="panel-body" ng-show="show || reference.selection.ref" ng-class="{highlight: highlight}">
+    <div class="panel-body" ng-show="repo.permissions.push && (show || reference.selection.ref)" ng-class="{highlight: highlight}">
         <table style="width:100%;">
           <tr>
             <td style="width:48px; vertical-align:top; padding-right:10px;">
