@@ -15,10 +15,12 @@ module.exports = function(req, res, next) {
     };
 
     var githubMap = {
-        'issues:closed': 'issues:closed',
         'pullRequests:merge': 'pullRequests:merge',
         'issues:createComment': 'issues:createComment',
-        'pullRequests:get': 'pullRequests:get'
+        'pullRequests:get': 'pullRequests:get',
+        'issues:edit': (function(args) {
+            return req.args.arg ? 'issues:' + req.args.arg.state : 'issues:edit';
+        })()
     };
 
     // checks if the api call is github or not
@@ -39,6 +41,7 @@ module.exports = function(req, res, next) {
         });
 
         // trigger webhook
+        console.log('action: ' + req.user.id);
         io.emit('action:' + req.user.id, {});
     }
 

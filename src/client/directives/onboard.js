@@ -18,19 +18,24 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', 'socket',
                     {key: 'pullRequests:merge', text: 'Merge code'}
                 ];
 
-                $RPC.call('onboard', 'getactions', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo
-                }, function(err, actions) {
-                    if(!err) {
-                        scope.actions.forEach(function(action) {
-                            action.val = actions.value[action.key];
-                        });
-                    }
-                });
+                var getActions = function() {
+                    $RPC.call('onboard', 'getactions', {
+                        user: $stateParams.user,
+                        repo: $stateParams.repo
+                    }, function(err, actions) {
+                        if(!err) {
+                            scope.actions.forEach(function(action) {
+                                action.val = actions.value[action.key];
+                            });
+                        }
+                    });
+                };
+                getActions();
 
-                socket.on('action:' + $rootScope.user.id, function() {
-                    
+                $rootScope.promise.then(function(user) {
+                    socket.on('action:' + user.value.id, function() { 
+                        getActions();
+                    });
                 });
             }
         };

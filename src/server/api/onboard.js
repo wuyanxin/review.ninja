@@ -8,12 +8,10 @@ module.exports = {
       if (err) {
         return done(err);
       }
-      console.log(actions);
       var res = {};
       actions.forEach(function(a) {
         res[a] = true;
       });
-      console.log(res);
       done(null, res);
 //      return res;
     });
