@@ -3,10 +3,14 @@
 // Root Controller
 // *****************************************************
 
-module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state', '$HUB', '$RPC',
-    function($rootScope, $scope, $stateParams, $state, $HUB, $RPC) {
+module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state', '$HUB', '$RPC', '$HUBService',
+    function($rootScope, $scope, $stateParams, $state, $HUB, $RPC, $HUBService) {
 
-        $rootScope.user = $HUB.call('user', 'get', {});
+        $rootScope.promise = $HUBService.call('user', 'get', {});
+
+        $rootScope.promise.then(function(user) {
+            $rootScope.user = user;
+        });
 
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
