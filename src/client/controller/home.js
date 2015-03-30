@@ -15,33 +15,6 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.creating = false;
 
-        $RPC.call('onboard', 'getactions', {}, function(err, tasks) {
-            if (!err) {
-                $scope.onboardingChecks.dismiss = (typeof tasks.value['onboard:dismiss'] === 'undefined') ? false : tasks.value['onboard:dismiss'];
-                $scope.onboardingChecks.loaded = (typeof tasks.value['user:addRepo'] === 'undefined') ? false : tasks.value['user:addRepo'];
-                if ($scope.onboardingChecks.loaded && !$scope.onboardingChecks.dismiss) {
-                    $scope.show = false;
-                }
-            }
-            else {
-                console.log(err);
-            }
-        });
-
-        $scope.createOnboardingRepo = function() {
-            if (!$scope.creating) {
-                $scope.creating = true;
-                $scope.onboardingChecks.loading = true;
-                $RPC.call('onboard', 'createrepo', {}, function(err, res) {
-                    if (!err) {
-                        $scope.onboardingChecks.loading = false;
-                        $scope.onboardingChecks.loaded = true;
-                        $scope.add(res.value);
-                    }
-                });
-            }
-        };
-
         $RPC.call('user', 'get', {}, function(err, user) {
             var count = 0;
             var repos = user ? user.value.repos : [];
@@ -63,6 +36,19 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         $scope.allRepos = $HUB.call('repos', 'getAll', {
             headers: {accept: 'application/vnd.github.moondragon+json'},
             per_page: 50
+        });
+
+        $RPC.call('onboard', 'getactions', {}, function(err, tasks) {
+            if (!err) {
+                $scope.onboardingChecks.dismiss = (typeof tasks.value['onboard:dismiss'] === 'undefined') ? false : tasks.value['onboard:dismiss'];
+                $scope.onboardingChecks.loaded = (typeof tasks.value['user:addRepo'] === 'undefined') ? false : tasks.value['user:addRepo'];
+                if ($scope.onboardingChecks.loaded && !$scope.onboardingChecks.dismiss) {
+                    $scope.show = false;
+                }
+            }
+            else {
+                console.log(err);
+            }
         });
 
         //
@@ -106,6 +92,20 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             });
 
             return contains;
+        };
+
+        $scope.createOnboardingRepo = function() {
+            $scope.onboardingChecks.loading = true;
+            if (!$scope.creating) {
+                $scope.creating = true;
+                $RPC.call('onboard', 'createrepo', {}, function(err, res) {
+                    if (!err) {
+                        // $scope.onboardingChecks.loading = false;
+                        $scope.onboardingChecks.loaded = true;
+                        $scope.add(res.value);
+                    }
+                });
+            }
         };
     }
 ]);

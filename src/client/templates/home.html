@@ -65,7 +65,8 @@
         <td ng-click="createOnboardingRepo()">
           <span class="octicon octicon-repo octicon-fade"></span>
           <span class="onboard-button" ng-show="!onboardingChecks.loading">Add ReviewNinja Example Repository<span>
-          <i class="fa fa-spinner fa-spin" ng-show="onboardingChecks.loading"></i>
+          <i class="fa fa-lg fa-spinner fa-spin pull-left" ng-show="onboardingChecks.loading" style="padding-top:3px;"></i>
+          <span ng-show="onboardingChecks.loading">creating welcome repo...</span>
         </td>
         <td style="text-align:right;">
           <i class="fa fa-times ng-scope" ng-click="remove(repo); $event.stopPropagation();" tooltip="Remove" tooltip-placement="bottom" tooltip-append-to-body="true">
