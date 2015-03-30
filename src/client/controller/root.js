@@ -3,10 +3,14 @@
 // Root Controller
 // *****************************************************
 
-module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state', '$HUB', '$RPC',
-    function($rootScope, $scope, $stateParams, $state, $HUB, $RPC) {
+module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state', '$HUB', '$RPC', '$HUBService',
+    function($rootScope, $scope, $stateParams, $state, $HUB, $RPC, $HUBService) {
 
-        $rootScope.user = $HUB.call('user', 'get', {});
+        $rootScope.promise = $HUBService.call('user', 'get', {});
+
+        $rootScope.promise.then(function(user) {
+            $rootScope.user = user;
+        });
 
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
@@ -27,31 +31,12 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                         });
                     }
                 });
-                $scope.getOnboardingTasks();
             }
         });
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
             $state.go('error');
         });
-
-        $scope.getOnboardingTasks = function() {
-            $scope.actions = $RPC.call('onboard', 'getactions', {
-                user: $stateParams.user,
-                repo: $stateParams.repo
-            });
-        };
-
-        $scope.dismissOnboard = function() {
-            // api call to dismiss onboarding forever
-            $RPC.call('onboard', 'dismiss', {
-                user: $stateParams.user
-            }, function(err, res) {
-                if (!err) {
-                    $scope.onboard.dismiss = true;
-                }
-            });
-        };
 
         $scope.createWebhook = function() {
             $scope.creating = $RPC.call('webhook', 'create', {
@@ -65,9 +50,5 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                 }
             });
         };
-
-        socket.on('action:' + $rootScope.user.id, function() {
-            $scope.getOnboardingTasks();
-        });
     }
 ]);

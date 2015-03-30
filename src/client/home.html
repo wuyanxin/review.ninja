@@ -60,15 +60,6 @@
 
   <!-- the webhook notification -->
   <div class="container-fluid" ng-cloak>
-    <div class="row">
-      <div ng-show="onboard.tasksLoaded && !onboard.dismiss" class="col-md-12 alert onboard" style="margin:0;">
-        <ul class="onboard-list">
-          <li ng-repeat="task in onboard.tasks">
-            <span ng-show="task.done" class="octicon octicon-check"></span> {{task.text}}
-          </li>
-          <i ng-click="dismissOnboard()" class="fa fa-times"></i></li>
-      </div>
-    </div>
     <div class="row" ng-show="hook.loaded && !hook.error && !hook.value">
       <div class="col-md-12 alert alert-warning" style="margin:0;">
         <strong>Warning!</strong> A webhook is missing for this repository. 
@@ -140,6 +131,7 @@
   <script src="/directives/graph.js"></script>
   <script src="/directives/merge.js"></script>
   <script src="/directives/moment.js"></script>
+  <script src="/directives/onboard.js"></script>
 
   <!-- MODALS -->
   <script src="/modals/badge.js"></script>

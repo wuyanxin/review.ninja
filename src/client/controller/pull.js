@@ -28,10 +28,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             user: $stateParams.user,
             repo: $stateParams.repo,
             sha: $scope.pull.head.sha
-        }, function(err) {
-            if (!err) {
-                $scope.getOnboardingTasks();
-            }
         });
 
         // get the repository settings for threshold
@@ -130,11 +126,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 sha: $scope.pull.head.sha,
                 number: $scope.pull.number,
                 repo_uuid: $scope.pull.base.repo.id
-            }, function(err) {
-                if (!err) {
-                    $scope.getOnboardingTasks();
-                }
-            });;
+            });
         };
 
         $scope.getPullRequest = function() {
@@ -169,7 +161,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     reference: $scope.reference.selection.ref
                 }, function(err, issue) {
                     if(!err) {
-                        $scope.getOnboardingTasks();
                         $state.go('repo.pull.issue.detail', {issue: issue.value.number}).then(function() {
                             $scope.show = null;
                             $scope.title = null;
