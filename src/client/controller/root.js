@@ -8,8 +8,6 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
 
         $rootScope.user = $HUB.call('user', 'get', {});
 
-        $scope.onboard = {};
-
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
             if(!($stateParams.user && $stateParams.repo)) {
@@ -33,33 +31,16 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
             }
         });
 
-        $scope.getOnboardingTasks = function() {
-            $RPC.call('onboard', 'getactions', {
-                user: $stateParams.user
-            }, function(err, actions) {
-                console.log('ayyylmao');
-                if (!err && !(actions.value['onboard:dismiss'])) {
-                    $scope.onboard = {
-                        tasks: [
-                            {text: 'Add repo', type: 'user:addRepo'},
-                            {text: 'Review the code', type: 'pullRequests:get'},
-                            {text: 'Open new issue', type: 'issues:add'},
-                            {text: 'Close issue', type: 'issues:closed'},
-                            {text: 'Give ninja star', type: 'star:add'},
-                            {text: 'Merge code', type: 'pullRequests:merge'}
-                        ],
-                        dismiss: false};
-                    $scope.onboard.tasks.forEach(function(t) {
-                        t.done = actions.value[t.type];
-                    });
-                    $scope.onboard.tasksLoaded = true;
-                }
-            });
-        };
-
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
             $state.go('error');
         });
+
+        $scope.getOnboardingTasks = function() {
+            $scope.actions = $RPC.call('onboard', 'getactions', {
+                user: $stateParams.user,
+                repo: $stateParams.repo
+            });
+        };
 
         $scope.dismissOnboard = function() {
             // api call to dismiss onboarding forever
@@ -70,10 +51,6 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                     $scope.onboard.dismiss = true;
                 }
             });
-        };
-
-        $scope.displayTasks = function() {
-            console.log($scope.onboard.tasks);
         };
 
         $scope.createWebhook = function() {
@@ -88,5 +65,9 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                 }
             });
         };
+
+        socket.on('action:' + $rootScope.user.id, function() {
+            $scope.getOnboardingTasks();
+        });
     }
 ]);

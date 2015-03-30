@@ -4,7 +4,7 @@ var onboard = require('../services/onboard');
 
 module.exports = {
   getactions: function(req, done) {
-    Action.find({uuid: req.user.id}).distinct('type', function(err, actions) {
+    Action.find({uuid: req.user.id, user: req.args.user, repo: req.args.repo}).distinct('type', function(err, actions) {
       if (err) {
         return done(err);
       }
@@ -17,10 +17,6 @@ module.exports = {
       done(null, res);
 //      return res;
     });
-  },
-
-  dismiss: function(req, done) {
-      done(null, {'dismissed': true});
   },
 
   createrepo: function(req, done) {
