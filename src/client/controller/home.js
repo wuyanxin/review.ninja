@@ -88,7 +88,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         };
 
         $scope.createOnboardingRepo = function() {
-            $RPC.call('onboard', 'createrepo', {}, function(err, res) {
+            $scope.repoLoading = $RPC.call('onboard', 'createrepo', {}, function(err, res) {
                 if (!err) {
                     $scope.add(res.value);
                     $scope.dismiss('welcome');
