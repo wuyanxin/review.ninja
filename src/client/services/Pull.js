@@ -47,9 +47,11 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', '$rootScope', function($
                     pull.stars = stars.value;
 
                     pull.stars.forEach(function(star) {
-                        if(star.name === $rootScope.user.value.login) {
-                            pull.star = star;
-                        }
+                        $rootScope.promise.then(function(user) {
+                            if(star.name === user.value.login) {
+                                pull.star = star;
+                            }
+                        });
                         if(avatar) {
                             star.user = $HUB.call('user', 'getFrom', {
                                 user: star.name
