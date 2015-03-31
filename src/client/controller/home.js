@@ -40,10 +40,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         $scope.dismiss = function(todismiss) {
             $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, history) {
                 if(!err) {
-                    for (var key in history.value) {
-                        $rootScope.user.value.history[key] = history.value[key];
-                    }
-                    console.log($rootScope.user);
+                    $rootScope.user.value.history[todismiss] = true;
                 }
             });
         };

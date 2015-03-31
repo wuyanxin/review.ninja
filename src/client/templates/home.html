@@ -32,7 +32,7 @@
       </small>
     </p>
 
-    <div class="well well-dark" ng-show="show || (loaded && !repos.length && onboardingChecks.loaded)">
+    <div class="well well-dark" ng-show="show || (loaded && !repos.length && user.value.history.welcome)">
       <div class="form-group has-feedback">
         <input type="text" ng-model="search" focus="setFocus" class="form-control" style="height:33px;" />
         <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="allRepos.loading" style="top:0px;"></i>
@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="well welcome alert" ng-show="user && !user.value.history['welcome']" ng-hide="repoLoading && repoLoading.loaded">
+    <div class="well welcome alert" ng-show="user && !user.value.history['welcome']">
       <button type="button" class="close" style="top:-20px;" data-dismiss="alert" ng-click="dismiss('welcome')">&times</button>
       <p class="welcome-header">Welcome! We're glad you are here.</p>
       <p>To get started, <a class="welcome-add" ng-click="show=!show; setFocus=true;">add one of your own repositories</a>. Or explore ReviewNinja by adding the ReviewNinja Example repository to your GitHub repository list.</p>
@@ -65,17 +65,18 @@
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="!loaded"></i>
 
 		<table class="table table-hover">
-      <tr class="alert select" ng-show="user && !user.value.history['welcome']" ng-hide="repoLoading && repoLoading.loaded">
+
+      <tr ng-show="user && !user.value.history['welcome']">
         <td ng-click="createOnboardingRepo()">
           <span class="octicon octicon-repo octicon-fade"></span>
           &nbsp;{{ user.value.login }} / review-ninja-welcome
           <span ng-show="onboardingChecks.loading">creating welcome repo...</span>
         </td>
-        <!-- <td style="text-align:right;">
-          <i class="fa fa-times ng-scope" ng-click="remove(repo); $event.stopPropagation();" tooltip="Remove" tooltip-placement="bottom" tooltip-append-to-body="true">
-          </i>
-        </td> -->
+        <td style="text-align:right;">
+          <i class="fa fa-times ng-scope"></i>
+        </td>
       </tr>
+
 			<tr ng-repeat="repo in repos | orderBy:['adddate', 'full_name']"
           ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })"
           class="select">
@@ -94,6 +95,7 @@
           </i>
         </td>
 			</tr>
+
 		</table>
 	</div>
 
