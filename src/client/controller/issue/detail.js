@@ -8,8 +8,8 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$anchorScroll', '$HUB', '$RPC', 'Issue', 'Comment', 'repo', 'issue', 'socket',
-    function($rootScope, $scope, $state, $stateParams, $location, $anchorScroll, $HUB, $RPC, Issue, Comment, repo, issue, socket) {
+module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$HUB', '$RPC', 'Issue', 'Comment', 'Reference', 'repo', 'issue', 'socket',
+    function($rootScope, $scope, $state, $stateParams, $location, $HUB, $RPC, Issue, Comment, Reference, repo, issue, socket) {
 
         // get the repo
         $scope.repo = repo.value;
@@ -39,6 +39,24 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
         // actions
         //
+
+        $('a.lineref').click(function(e) {
+            e.preventDefault();
+
+            $location.hash('');
+            var link = $(this);
+            var anchor = $(this).attr('ng-href');
+            var dest = $(anchor.replace( /(:|\.|\[|\]|,)/g, '\\$1'));
+            if(dest && dest.offset()) {
+                $location.hash(anchor);
+                console.log('offset: ', $(this).offset());
+                $('html,body').animate({ scrollTop: dest.offset().top }, 300);
+            }
+        });
+
+        $scope.anchor = function() {
+            return Reference.anchor($scope.issue.sha, $scope.issue.path, $scope.issue.start);
+        };
 
         $scope.setState = function() {
             $scope.addComment();

@@ -9,11 +9,13 @@
                 <a class="link-external" target="_blank"  ng-href="{{ issue.html_url }}">#{{ issue.number }}</a>
             </h4>
             <p style="padding-top:15px">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span></p>
-            <i class="fa fa-lg fa-link text-warning"
-               ng-show="issue.ref"
-               style="padding-top:10px;">
-            </i>
-            <span> This issue is linked to {{ issue.ref }}</span>
+            <a href="#" ng-href="#{{ anchor() }}" ng-show="issue.ref"  class="lineref">
+                <i class="fa fa-lg fa-link text-warning"
+                   ng-show="issue.ref"
+                   style="padding-top:10px;">
+                </i>
+                <span> This issue is linked to {{ issue.ref }}</span>
+            </a>
         </td>
         <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments || !!comments.value.length]" style="width:50px; padding-left:0;">
             <i class="octicon octicon-comment"></i>
