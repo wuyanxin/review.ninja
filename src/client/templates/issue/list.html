@@ -4,7 +4,7 @@
 
   <tr class="select" 
       ng-repeat="issue in (state==='open' ? open : closed).value | filter:{state: state} | in:reference.issues:'number' | unique: 'id' "
-      ui-sref="repo.pull.issue.detail({ issue: issue.number })"
+      ui-sref="repo.pull.issue.detail({ issue: issue.number, scroll: true })"
       ng-show="issue.milestone.id===pull.milestone.id">
 
     <td style="width:40px; padding-right:0;">
