@@ -1,4 +1,4 @@
-<div ng-show="!!user.history['onboardingTaskbar']" class="alert alert-info alert-dismissable" style="margin:0;">
+<div ng-show="!user.history['onboardingTaskbar']" class="alert alert-info alert-dismissable" style="margin:0;">
 	<ul class="onboard-list">
 	  <li ng-repeat="action in actions">
 	    <span ng-show="action.val" class="octicon octicon-check"></span> {{ action.text }}
