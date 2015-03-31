@@ -11,11 +11,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.repos = [];
 
-        $scope.onboardingChecks = {loaded: false};
-
-        $scope.creating = false;
-
-        $RPC.call('user', 'get', {}, function(err, user) {
+        $rootScope.promise.then(function(user) {
             var count = 0;
             var repos = user ? user.value.repos : [];
 
@@ -38,22 +34,19 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             per_page: 50
         });
 
-        $RPC.call('onboard', 'getactions', {}, function(err, tasks) {
-            if (!err) {
-                $scope.onboardingChecks.dismiss = (typeof tasks.value['onboard:dismiss'] === 'undefined') ? false : tasks.value['onboard:dismiss'];
-                $scope.onboardingChecks.loaded = (typeof tasks.value['user:addRepo'] === 'undefined') ? false : tasks.value['user:addRepo'];
-                if ($scope.onboardingChecks.loaded && !$scope.onboardingChecks.dismiss) {
-                    $scope.show = false;
-                }
-            }
-            else {
-                console.log(err);
-            }
-        });
-
         //
         // Actions
         //
+        $scope.dismiss = function(todismiss) {
+            $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, history) {
+                if(!err) {
+                    for (var key in history.value) {
+                        $rootScope.user.value.history[key] = history.value[key];
+                    }
+                    console.log($rootScope.user);
+                }
+            });
+        };
 
         $scope.add = function(repo) {
             $RPC.call('user', 'addRepo', {
@@ -95,17 +88,12 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         };
 
         $scope.createOnboardingRepo = function() {
-            $scope.onboardingChecks.loading = true;
-            if (!$scope.creating) {
-                $scope.creating = true;
-                $RPC.call('onboard', 'createrepo', {}, function(err, res) {
-                    if (!err) {
-                        // $scope.onboardingChecks.loading = false;
-                        $scope.onboardingChecks.loaded = true;
-                        $scope.add(res.value);
-                    }
-                });
-            }
+            $RPC.call('onboard', 'createrepo', {}, function(err, res) {
+                if (!err) {
+                    $scope.add(res.value);
+                    $scope.dismiss('welcome');
+                }
+            });
         };
     }
 ]);

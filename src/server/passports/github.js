@@ -1,6 +1,5 @@
 'use strict';
 var github = require('../services/github');
-var onboard = require('../services/onboard');
 var url = require('../services/url');
 var passport = require('passport');
 var Strategy = require('passport-github').Strategy;

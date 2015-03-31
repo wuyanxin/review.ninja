@@ -32,25 +32,6 @@ router.get('/accept', function(req, res) {
     });
 });
 
-///TESTING ONLY
-router.get('/testbranch', function(req, res) {
-    onboard.createRepo(req.user.token, req.user.login, function() {
-        onboard.createFile(req.user.token, req.user.login, 'master', function() {
-            onboard.getBranchSha(req.user.login, function(sha) {
-                onboard.createBranch(req.user.token, req.user.login, sha, function() {
-                    onboard.getFileSha(req.user.login, function(sha) {
-                        onboard.updateFile(req.user.token, req.user.login, sha, 'quickedit', function() {
-                            onboard.createPullRequest(req.user.token, req.user.login, function() {
-                                res.redirect('/');
-                            });
-                        });
-                    });
-                });
-            });
-        });
-    });
-});
-
 router.all('/*', function(req, res) {
     if (req.isAuthenticated()) {
         models.User.findOne({

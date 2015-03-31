@@ -18,6 +18,14 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', 'socket',
                     {key: 'pullRequests:merge', text: 'Merge code'}
                 ];
 
+                scope.dismiss = function(todismiss) {
+                    $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, res) {
+                        if(!err) {
+                            console.log(res);
+                        }
+                    });
+                };
+
                 var getActions = function() {
                     $RPC.call('onboard', 'getactions', {
                         user: $stateParams.user,
