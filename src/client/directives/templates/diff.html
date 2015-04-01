@@ -48,16 +48,14 @@
             </table>
             <table class="code">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index"
-                    id="{{ generateAnchor(line) }}"
-                    name="{{ generateAnchor(line) }}"
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
                                 selected: isSelected(line),
                                 referenced: isReferenced(line) }">
 
-                    <td class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
-                    <td class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
+                    <td id="{{ anchor(baseSha, file.filename, line.base) }}" class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
+                    <td id="{{ anchor(headSha, file.filename, line.head) }}" class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
 
                     <td class="code"><pre>{{ line.content }}</pre></td>
 

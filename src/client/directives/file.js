@@ -37,7 +37,7 @@ module.directive('file', ['$state', '$filter', '$stateParams', 'Reference', func
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.starts(scope.headSha, scope.path, line.base, issue.key);
+                            match = match || Reference.starts(scope.headSha, scope.path, line.base, issue);
                         });
                     }
                     return match;
@@ -47,7 +47,7 @@ module.directive('file', ['$state', '$filter', '$stateParams', 'Reference', func
                     var match = false;
                     if(scope.issues) {
                         $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.includes(scope.headSha, scope.path, line.base, issue.key);
+                            match = match || Reference.includes(scope.headSha, scope.path, line.base, issue);
                         });
                     }
                     return match;
@@ -66,7 +66,7 @@ module.directive('file', ['$state', '$filter', '$stateParams', 'Reference', func
                     var issues = [];
 
                     scope.issues.forEach(function(issue) {
-                        if(Reference.starts(scope.headSha, scope.path, line.base, issue.key)) {
+                        if(Reference.starts(scope.headSha, scope.path, line.base, issue)) {
                             issues.push(issue.number);
                         }
                     });

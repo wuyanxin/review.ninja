@@ -49,7 +49,10 @@
           <span class="octicon octicon-lock text-warning pull-right" ng-show="active!==repo && repo.private" style="padding-top:2px;"></span>
           <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo" style="padding-top:3px;"></i>
         </a>
-        <button class="btn btn-primary btn-block" ng-show="allRepos.hasMore" ng-click="allRepos.getMore()">Load more</button>
+      </div>
+      <div ng-show="allRepos.hasMore">
+        <strong class="text-primary" style="padding:0 10px;">Not finding your repo?</strong> 
+        <button class="btn btn-xs btn-primary" ng-click="allRepos.getMore()">Load more</button>
       </div>
     </div>
 
