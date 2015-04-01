@@ -14,6 +14,8 @@ module.exports = {
             githubUser.repos = user.repos || [];
             githubUser.history = user.history || {};
 
+            console.log(user.history);
+
             done(err, githubUser);
         });
     }

@@ -39,7 +39,6 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                                     action.val = actions.value[action.key];
                                     scope.completed += 1;
                                     if (scope.completed === 6) {
-                                        scope.dismiss('onboardingTaskbar');
                                         scope.fadeOutTasks();
                                     }
                                 }
@@ -62,7 +61,7 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     console.log('fadein started');
                     $timeout(function() {
                         scope.killClass = true;
-                        scope.dismiss('onboardingTaskbar');
+                        scope.dismiss('taskbar');
                     }, 50);
                 };
 
