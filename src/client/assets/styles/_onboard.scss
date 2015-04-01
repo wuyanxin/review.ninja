@@ -3,6 +3,18 @@
   color: #fff;
 }
 
+.fadeout {
+  -webkit-transition: opacity 1s; 
+  transition: opacity 1s;
+  opacity: 0;
+}
+
+.fadein {
+  -webkit-transition: opacity 1s; 
+  transition: opacity 1s;
+  opacity: 1;
+}
+
 .onboard-list {
   list-style-type: none;
 
@@ -23,6 +35,14 @@
   font-weight: 300;
   margin-left: 2%;
   padding: 2%;
+}
+
+.onboard-complete {
+  font-weight: 700;
+}
+
+.hiddendefault {
+  opacity: 0;
 }
 
 .octicon-fade {

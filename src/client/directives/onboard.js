@@ -3,8 +3,8 @@
 // Graph Directive
 // *****************************************************
 
-module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', 'socket',
-    function($rootScope, $stateParams, $RPC, socket) {
+module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', 'socket',
+    function($rootScope, $stateParams, $RPC, $timeout, socket) {
         return {
             restrict: 'E',
             templateUrl: '/directives/templates/onboard.html',
@@ -17,6 +17,8 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', 'socket',
                     {key: 'star:add', text: 'Star pull request'},
                     {key: 'pullRequests:merge', text: 'Merge code'}
                 ];
+
+                scope.completed = scope.actions.filter(function(a) { return a.val === true; }).length;
 
                 scope.dismiss = function(todismiss) {
                     $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, res) {
@@ -33,11 +35,37 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', 'socket',
                     }, function(err, actions) {
                         if(!err) {
                             scope.actions.forEach(function(action) {
-                                action.val = actions.value[action.key];
+                                if (action.val !== actions.value[action.key]) {
+                                    action.val = actions.value[action.key];
+                                    scope.completed += 1;
+                                    if (scope.completed === 6) {
+                                        scope.dismiss('onboardingTaskbar');
+                                        scope.fadeOutTasks();
+                                    }
+                                }
                             });
                         }
                     });
                 };
+
+                scope.fadeOutTasks = function() {
+                    scope.startFadeout = true;
+                    $timeout(function() {
+                        scope.tasksHidden = true;
+                        scope.fadeInMessage();
+                    }, 1000);
+                };
+
+                scope.fadeInMessage = function() {
+                    scope.messageShow = true;
+                    scope.startFadein = true;
+                    console.log('fadein started');
+                    $timeout(function() {
+                        scope.killClass = true;
+                        scope.dismiss('onboardingTaskbar');
+                    }, 50);
+                };
+
                 getActions();
 
                 $rootScope.promise.then(function(user) {
