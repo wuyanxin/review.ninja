@@ -131,7 +131,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             // Pull request issue state
             //
             .state('repo.pull.issue.detail', {
-                url: '/:issue?scroll',
+                url: '/:issue',
                 templateUrl: '/templates/issue/detail.html',
                 controller: 'IssueDetailCtrl',
                 resolve: {
