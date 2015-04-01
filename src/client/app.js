@@ -173,6 +173,13 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
 
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+            if(toState.name === 'repo.pull.issue.detail') {
+                // Here I want to scroll, but I'd have to call the function of the directive (which I could add to the directive's scope);
+                console.log('Here I want to scroll, but I\'d have to call the function of the directive (which I could add to the directive\'s scope');
+            }
+        });
+
         $config.get(function(data, status) {
             $rootScope.$config = data;
             if(data.gacode) {
