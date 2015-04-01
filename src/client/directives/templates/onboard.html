@@ -1,10 +1,10 @@
-<div ng-show="!user.history['taskbar']" class="alert alert-info alert-dismissable" style="margin:0;">
-	<ul class="onboard-list" ng-hide="tasksHidden" ng-class="{fadeout: startFadeout}">
+<div ng-show="user && !user.value.history['taskbar']" class="alert alert-info alert-dismissable" style="margin:0;">
+	<ul class="onboard-list" ng-show="!completed">
 	  <li style="margin-right:3%;font-weight:700;">Getting started to-do's:</li>
 	  <li ng-repeat="action in actions">
-	    <span ng-show="action.val" class="octicon octicon-check"></span> <span>{{ action.text }}</span>
+	    <span class="octicon octicon-check"></span> <span>{{ action.text }}</span>
 	  </li>
 	</ul>
-	<div ng-class="{fadein: startFadein, hiddendefault: !killClass}"class="onboard-complete" ng-show="messageShow">Hey, you’re done, nice job! <span style="font-weight:300;">You’ve covered all the ReviewNinja basics, and we hope you enjoy using the tool! If you haven’t added a repo of your own yet, now’s a good time.</span> &rarr; <span style="cursor:pointer;text-decoration:underline">Add repo.</div>
+	<div class="onboard-complete" ng-show="completed">Hey, you’re done, nice job! <span style="font-weight:300;">You’ve covered all the ReviewNinja basics, and we hope you enjoy using the tool! If you haven’t added a repo of your own yet, now’s a good time.</span> &rarr; <span style="cursor:pointer;text-decoration:underline">Add repo.</div>
 	<button type="button" class="close" style="top:-20px;" data-dismiss="alert" ng-click="dismiss('taskbar')">&times</button>
 </div>

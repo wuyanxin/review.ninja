@@ -18,52 +18,41 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     {key: 'pullRequests:merge', text: 'Merge code'}
                 ];
 
-                scope.completed = scope.actions.filter(function(a) { return a.val === true; }).length;
-
-                scope.dismiss = function(todismiss) {
-                    $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, res) {
-                        if(!err) {
-                            console.log(res);
-                        }
-                    });
-                };
-
                 var getActions = function() {
                     $RPC.call('onboard', 'getactions', {
                         user: $stateParams.user,
                         repo: $stateParams.repo
                     }, function(err, actions) {
                         if(!err) {
+                            var completed = 0;
                             scope.actions.forEach(function(action) {
-                                if (action.val !== actions.value[action.key]) {
-                                    action.val = actions.value[action.key];
-                                    scope.completed += 1;
-                                    if (scope.completed === 6) {
-                                        scope.fadeOutTasks();
-                                    }
+                                action.val = actions.value[action.key];
+                                if (actions.value[action.key]) {
+                                    completed = completed + 1;
                                 }
                             });
+                            scope.completed = (scope.actions.length === completed);
                         }
                     });
                 };
 
-                scope.fadeOutTasks = function() {
-                    scope.startFadeout = true;
-                    $timeout(function() {
-                        scope.tasksHidden = true;
-                        scope.fadeInMessage();
-                    }, 1000);
-                };
+                // scope.fadeOutTasks = function() {
+                //     scope.startFadeout = true;
+                //     $timeout(function() {
+                //         scope.tasksHidden = true;
+                //         scope.fadeInMessage();
+                //     }, 1000);
+                // };
 
-                scope.fadeInMessage = function() {
-                    scope.messageShow = true;
-                    scope.startFadein = true;
-                    console.log('fadein started');
-                    $timeout(function() {
-                        scope.killClass = true;
-                        scope.dismiss('taskbar');
-                    }, 50);
-                };
+                // scope.fadeInMessage = function() {
+                //     scope.messageShow = true;
+                //     scope.startFadein = true;
+                //     console.log('fadein started');
+                //     $timeout(function() {
+                //         scope.killHiddenDefault = true;
+                //         $rootScope.dismiss('taskbar');
+                //     }, 50);
+                // };
 
                 getActions();
 

@@ -3,8 +3,14 @@
   color: #fff;
 }
 
-.checkmarkVisible {
-  opacity: 1;
+.taskDone {
+  opacity: 0.5;
+}
+
+.fadeToHalf {
+  -webkit-transition: opacity 1s; 
+  transition: opacity 1s;
+  opacity: 0.5;
 }
 
 .fadeout {

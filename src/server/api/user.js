@@ -93,6 +93,7 @@ module.exports = {
                 user.history = user.history || {};
                 user.history[req.args.dismiss] = true;
                 user.save();
+                console.log(user.history);
             }
             done(err, {history: user ? user.history : null});
         });

@@ -37,13 +37,6 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         //
         // Actions
         //
-        $scope.dismiss = function(todismiss) {
-            $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, history) {
-                if(!err) {
-                    $rootScope.user.value.history[todismiss] = true;
-                }
-            });
-        };
 
         $scope.add = function(repo) {
             $RPC.call('user', 'addRepo', {
@@ -88,7 +81,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             $scope.repoLoading = $RPC.call('onboard', 'createrepo', {}, function(err, res) {
                 if (!err) {
                     $scope.add(res.value);
-                    $scope.dismiss('welcome');
+                    $rootScope.dismiss('welcome');
                 }
             });
         };
