@@ -39,6 +39,10 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
         // actions
         //
+        $scope.anchor = function() {
+            return Reference.anchor($scope.issue.sha, $scope.issue.path, $scope.issue.start);
+        };
+
         $scope.setState = function() {
             $scope.addComment();
 
