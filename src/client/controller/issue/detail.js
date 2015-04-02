@@ -8,8 +8,8 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$anchorScroll', '$HUB', '$RPC', 'Issue', 'Comment', 'repo', 'issue', 'socket',
-    function($rootScope, $scope, $state, $stateParams, $location, $anchorScroll, $HUB, $RPC, Issue, Comment, repo, issue, socket) {
+module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'Comment', 'Reference', 'repo', 'issue', 'socket',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, Comment, Reference, repo, issue, socket) {
 
         // get the repo
         $scope.repo = repo.value;
@@ -39,6 +39,9 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
         // actions
         //
+        $scope.anchor = function() {
+            return Reference.anchor($scope.issue.sha, $scope.issue.path, $scope.issue.start);
+        };
 
         $scope.setState = function() {
             $scope.addComment();
