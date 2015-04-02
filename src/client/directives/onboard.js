@@ -32,6 +32,14 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                                 }
                             });
                             scope.completed = (scope.actions.length === completed);
+                            if (scope.completed) {
+                                // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){ 
+                                //     $rootScope.dismiss('taskbar');
+                                // });
+                                $rootScope.$on('$locationChangeStart', function(){ 
+                                    $rootScope.dismiss('taskbar');
+                                });
+                            }
                         }
                     });
                 };
