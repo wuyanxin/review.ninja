@@ -18,6 +18,21 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     {key: 'pullRequests:merge', text: 'Merge code', elementclass: 'mergepull', transition: 'scale'}
                 ];
 
+                var fadeOutTask = function(action) {
+                    $timeout(function() {
+                        action.startFade = true;
+                    }, 1000);
+                };
+
+                var fadeOutTaskbar = function() {
+                    $timeout(function() {
+                        scope.destroyTasks = true;
+                    }, 500);
+                    $timeout(function() {
+                        scope.fadeInMessage = true;
+                    }, 600);
+                };
+
                 var getActions = function() {
                     $RPC.call('onboard', 'getactions', {
                         user: $stateParams.user,
@@ -29,26 +44,18 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                                 action.val = actions.value[action.key];
                                 if(action.val) {
                                     completed = completed + 1;
+                                    fadeOutTask(action);
                                 }
                             });
                             scope.completed = (scope.actions.length === completed);
                             if (scope.completed) {
-                                $rootScope.$on('$locationChangeStart', function(){ 
+                                $rootScope.$on('$locationChangeStart', function(){
                                     $rootScope.dismiss('taskbar');
                                 });
                                 fadeOutTaskbar();
                             }
                         }
                     });
-                };
-
-                var fadeOutTaskbar = function() {
-                    $timeout(function() {
-                        scope.destroyTasks = true;
-                    }, 500);
-                    $timeout(function() { 
-                        scope.fadeInMessage = true;
-                    }, 600);
                 };
 
                 scope.addClass = function(name, transition) {
@@ -64,28 +71,10 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     }
                 };
 
-                // scope.fadeOutTasks = function() {
-                //     scope.startFadeout = true;
-                //     $timeout(function() {
-                //         scope.tasksHidden = true;
-                //         scope.fadeInMessage();
-                //     }, 1000);
-                // };
-
-                // scope.fadeInMessage = function() {
-                //     scope.messageShow = true;
-                //     scope.startFadein = true;
-                //     console.log('fadein started');
-                //     $timeout(function() {
-                //         scope.killHiddenDefault = true;
-                //         $rootScope.dismiss('taskbar');
-                //     }, 50);
-                // };
-
                 getActions();
 
                 $rootScope.promise.then(function(user) {
-                    socket.on('action:' + user.value.id, function() { 
+                    socket.on('action:' + user.value.id, function() {
                         getActions();
                     });
                 });

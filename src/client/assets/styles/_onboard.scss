@@ -3,28 +3,37 @@
   color: #fff;
 }
 
-.taskDone {
-  opacity: 0.5;
-}
-
-.fadeToHalf {
-  -webkit-transition: opacity 1s; 
-  transition: opacity 1s;
-  opacity: 0.5;
-}
-
 .onboard-list {
   list-style-type: none;
 
   li {
     display: inline;
     margin-right: 7%;
-    width: 15%;
+    -webkit-transition: opacity 1s; 
+    transition: opacity 1s;
+    width: 11%;
+
+    .fadetohalf {
+      opacity: 0.5;
+    }
+
+    .octicon-check {
+      -webkit-transition: opacity 1s; 
+      transition: opacity 1s;
+
+      &.complete {
+        opacity: 1;
+      }
+
+      &.incomplete {
+        opacity: 0;
+      }
+    }
   }
 
   li:hover {
-    font-weight: 700;
     cursor: pointer;
+    font-weight: 700;
   }
 
   i {
@@ -68,9 +77,13 @@
 }
 
 // transitions for elements on the page
-.pullrequest, .addissue, .closeissue, .addstar, .mergepull {
-  -webkit-transition:-webkit-transform 1s;
-  transition:transform 1s;
+.pullrequest, 
+.addissue, 
+.closeissue, 
+.addstar, 
+.mergepull {
+  -webkit-transition: -webkit-transform 1s;
+  transition: transform 1s;
 }
 
 .rotate {
@@ -79,30 +92,30 @@
 }
 
 .scale {
-  -webkit-transform: scale(1.5,1.5);
-  transform: scale(1.5,1.5);
+  -webkit-transform: scale(1.5, 1.5);
+  transform: scale(1.5, 1.5);
 }
 
 .rotate-scale {
-  -webkit-transform: rotate(360deg) scale(1.5,1.5);
-  transform: rotate(360deg) scale(1.5,1.5);
+  -webkit-transform: rotate(360deg) scale(1.5, 1.5);
+  transform: rotate(360deg) scale(1.5, 1.5);
 }
 
 .scale-translate {
-   -webkit-transform: scale(1.5,1.5) translateX(-20px);
-  transform: scale(1.5,1.5) translateX(-20px);
+  -webkit-transform: scale(1.5, 1.5) translateX(-20px);
+  transform: scale(1.5, 1.5) translateX(-20px);
 }
 
 .rotate-scale-translate {
-   -webkit-transform: rotate(360deg) scale(1.5,1.5) translateX(-20px);;
-  transform: rotate(360deg) scale(1.5,1.5) translateX(-20px);
+  -webkit-transform: rotate(360deg) scale(1.5, 1.5) translateX(-20px);
+  transform: rotate(360deg) scale(1.5, 1.5) translateX(-20px);
 }
 
 // for fading out the entire taskbar
 .fadeout {
+  opacity: 0;
   -webkit-transition: opacity 0.5s; 
   transition: opacity 0.5s;
-  opacity: 0;
 }
 
 .default {
