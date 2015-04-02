@@ -13,18 +13,6 @@
   opacity: 0.5;
 }
 
-.fadeout {
-  -webkit-transition: opacity 1s; 
-  transition: opacity 1s;
-  opacity: 0;
-}
-
-.fadein {
-  -webkit-transition: opacity 1s; 
-  transition: opacity 1s;
-  opacity: 1;
-}
-
 .onboard-list {
   list-style-type: none;
 
@@ -79,8 +67,7 @@
   text-decoration: underline;
 }
 
-// transitions for elements
-
+// transitions for elements on the page
 .pullrequest, .addissue, .closeissue, .addstar, .mergepull {
   -webkit-transition:-webkit-transform 1s;
   transition:transform 1s;
@@ -109,4 +96,21 @@
 .rotate-scale-translate {
    -webkit-transform: rotate(360deg) scale(1.5,1.5) translateX(-20px);;
   transform: rotate(360deg) scale(1.5,1.5) translateX(-20px);
+}
+
+// for fading out the entire taskbar
+.fadeout {
+  -webkit-transition: opacity 0.5s; 
+  transition: opacity 0.5s;
+  opacity: 0;
+}
+
+.default {
+  opacity: 0;
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
+}
+
+.fadein {
+  opacity: 1;
 }

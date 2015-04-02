@@ -36,9 +36,19 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                                 $rootScope.$on('$locationChangeStart', function(){ 
                                     $rootScope.dismiss('taskbar');
                                 });
+                                fadeOutTaskbar();
                             }
                         }
                     });
+                };
+
+                var fadeOutTaskbar = function() {
+                    $timeout(function() {
+                        scope.destroyTasks = true;
+                    }, 500);
+                    $timeout(function() { 
+                        scope.fadeInMessage = true;
+                    }, 600);
                 };
 
                 scope.addClass = function(name, transition) {
