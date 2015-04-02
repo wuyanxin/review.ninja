@@ -90,10 +90,15 @@ module.exports = {
     dismiss: function(req, done) {
         User.findOne({ uuid: req.user.id }, function(err, user) {
             if(user) {
-                user.history = user.history || {};
-                user.history[req.args.dismiss] = true;
+                var history = {};
+                for(var h in user.history) {
+                    history[h] = user.history[h];
+                }
+
+                history[req.args.dismiss] = true;
+                user.history = history;
+
                 user.save();
-                console.log(user.history);
             }
             done(err, {history: user ? user.history : null});
         });

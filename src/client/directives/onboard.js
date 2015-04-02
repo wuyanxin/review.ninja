@@ -27,7 +27,7 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                             var completed = 0;
                             scope.actions.forEach(function(action) {
                                 action.val = actions.value[action.key];
-                                if (actions.value[action.key]) {
+                                if(action.val) {
                                     completed = completed + 1;
                                 }
                             });
