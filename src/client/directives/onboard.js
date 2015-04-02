@@ -11,11 +11,11 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
             link: function(scope, elem, attrs) {
                 scope.actions = [
                     {key: 'user:addRepo', text: 'Add repo'},
-                    {key: 'pullRequests:get', text: 'View pull request'},
-                    {key: 'issues:add', text: 'Create issue'},
-                    {key: 'issues:closed', text: 'Close issue'},
-                    {key: 'star:add', text: 'Star pull request'},
-                    {key: 'pullRequests:merge', text: 'Merge code'}
+                    {key: 'pullRequests:get', text: 'View pull request', elementclass: 'pullrequest', transition: 'scale'},
+                    {key: 'issues:add', text: 'Create issue', elementclass: 'addissue', transition: 'rotate-scale'},
+                    {key: 'issues:closed', text: 'Close issue', elementclass: 'closeissue', transition: 'scale-translate'},
+                    {key: 'star:add', text: 'Star pull request', elementclass: 'addstar', transition: 'rotate-scale-translate'},
+                    {key: 'pullRequests:merge', text: 'Merge code', elementclass: 'mergepull', transition: 'scale'}
                 ];
 
                 var getActions = function() {
@@ -33,15 +33,25 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                             });
                             scope.completed = (scope.actions.length === completed);
                             if (scope.completed) {
-                                // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){ 
-                                //     $rootScope.dismiss('taskbar');
-                                // });
                                 $rootScope.$on('$locationChangeStart', function(){ 
                                     $rootScope.dismiss('taskbar');
                                 });
                             }
                         }
                     });
+                };
+
+                scope.addClass = function(name, transition) {
+                    for (var i = 0; i < document.getElementsByClassName(name).length; i++) {
+                        document.getElementsByClassName(name)[i].className += (' ' + transition);
+                    }
+                };
+
+                scope.removeClass = function(name, transition) {
+                    for (var i = 0; i < document.getElementsByClassName(name).length; i++) {
+                        document.getElementsByClassName(name)[i].className = document.getElementsByClassName(name)[i].className.replace(' ' + transition, '');
+                        console.log(document.getElementsByClassName(name)[i].className);
+                    }
                 };
 
                 // scope.fadeOutTasks = function() {

@@ -34,6 +34,11 @@
     width: 15%;
   }
 
+  li:hover {
+    font-weight: 700;
+    cursor: pointer;
+  }
+
   i {
     float: right;
   }
@@ -72,4 +77,36 @@
   color: #3e9a94;
   cursor: pointer;
   text-decoration: underline;
+}
+
+// transitions for elements
+
+.pullrequest, .addissue, .closeissue, .addstar, .mergepull {
+  -webkit-transition:-webkit-transform 1s;
+  transition:transform 1s;
+}
+
+.rotate {
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+
+.scale {
+  -webkit-transform: scale(1.5,1.5);
+  transform: scale(1.5,1.5);
+}
+
+.rotate-scale {
+  -webkit-transform: rotate(360deg) scale(1.5,1.5);
+  transform: rotate(360deg) scale(1.5,1.5);
+}
+
+.scale-translate {
+   -webkit-transform: scale(1.5,1.5) translateX(-20px);
+  transform: scale(1.5,1.5) translateX(-20px);
+}
+
+.rotate-scale-translate {
+   -webkit-transform: rotate(360deg) scale(1.5,1.5) translateX(-20px);;
+  transform: rotate(360deg) scale(1.5,1.5) translateX(-20px);
 }
