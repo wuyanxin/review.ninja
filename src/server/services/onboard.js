@@ -151,7 +151,7 @@ module.exports = {
       arg: {
         user: username,
         repo: 'review-ninja-welcome',
-        title: 'hallo',
+        title: 'Review this to get started',
         base: 'master',
         head: 'quickedit'
       },
