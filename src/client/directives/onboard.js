@@ -12,7 +12,7 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                 scope.actions = [
                     {key: 'user:addRepo', text: 'Add repo'},
                     {key: 'pullRequests:get', text: 'View pull request', elementclass: 'ob-pull', transition: 'scale'},
-                    {key: 'issues:add', text: 'Create issue', elementclass: 'ob-create', transition: 'scale'},
+                    {key: 'issues:add', text: 'Create issue', elementclass: 'ob-create', transition: 'rotate'},
                     {key: 'issues:closed', text: 'Close issue', elementclass: 'ob-close', transition: 'scale'},
                     {key: 'star:add', text: 'Star pull request', elementclass: 'ob-star', transition: 'rotate'},
                     {key: 'pullRequests:merge', text: 'Merge code', elementclass: 'ob-merge', transition: 'scale'}
