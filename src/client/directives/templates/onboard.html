@@ -1,20 +1,24 @@
 <div class="onboard alert alert-info alert-dismissable" 
      style="margin:0;" 
-     ng-class="{completed: completed}" 
      ng-show="!user.value.history.taskbar">
 
-  <ul class="onboard-list" ng-show="!completed">
+  <ul class="onboard-list" ng-class="{complete: complete}">
     <li><strong>Getting started to-do's:</strong></li>
     <li ng-repeat="action in actions" ng-class="{complete: action.val}">
       <span class="octicon octicon-check"></span> 
-      <span class="text" ng-mouseover="addClass(action.elementclass, action.transition)" ng-mouseleave="removeClass(action.elementclass, action.transition)">
+      <span class="text" 
+            ng-mouseover="addClass(action.elementclass, action.transition)" 
+            ng-mouseleave="removeClass(action.elementclass, action.transition)">
         {{ action.text }}
       </span>
     </li>
   </ul>
 
-  <div class="onboard-complete" ng-show="completed">
-    Hey, you’re done, nice job! <strong>You’ve covered all the ReviewNinja basics, and we hope you enjoy using the tool! If you haven’t added a repo of your own yet, now’s a good time.</strong> &rarr; <a ui-sref="home">Add repo.</a>
+  <div class="onboard-complete" ng-class="{complete: complete}">
+    <strong>Hey, you’re done, nice job!</strong> 
+    You’ve covered all the ReviewNinja basics, and we hope you enjoy using the tool! 
+    If you haven’t added a repo of your own yet, now’s a good time! 
+    <a ui-sref="home">Add repo</a>.
   </div>
 
   <button type="button" class="close" style="top:-20px;" data-dismiss="alert" ng-click="dismiss('taskbar')">&times</button>

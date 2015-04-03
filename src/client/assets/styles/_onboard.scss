@@ -2,6 +2,14 @@
   list-style-type: none;
   padding: 0;
 
+  -webkit-transition: opacity 0.5s; 
+  transition: opacity 0.5s;
+
+  &.complete {
+    height: 0;
+    opacity: 0;
+  }
+
   li {
     display: inline;
     padding: 0 10px;
@@ -27,42 +35,39 @@
   }
 
   li:hover {
+    color: $text-color;
     cursor: pointer;
-    font-weight: 700;
+
+    .text {
+      opacity: 1;
+    }
+  }
+}
+
+.onboard-complete {
+  height: 0;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s 0.5s; 
+  transition: opacity 0.5s 0.5s;
+
+  &.complete {
+    height: auto;
+    opacity: 1;
   }
 }
 
 // transitions for elements on the page
-.pullrequest, 
-.addissue, 
-.closeissue, 
-.addstar, 
-.mergepull {
+.ob {
   -webkit-transition: -webkit-transform 1s;
   transition: transform 1s;
+}
+
+.scale {
+  -webkit-transform: scale(1.15, 1.15);
+  transform: scale(1.15, 1.15);
 }
 
 .rotate {
   -webkit-transform: rotate(360deg);
   transform: rotate(360deg);
-}
-
-.scale {
-  -webkit-transform: scale(1.5, 1.5);
-  transform: scale(1.5, 1.5);
-}
-
-.rotate-scale {
-  -webkit-transform: rotate(360deg) scale(1.5, 1.5);
-  transform: rotate(360deg) scale(1.5, 1.5);
-}
-
-.scale-translate {
-  -webkit-transform: scale(1.5, 1.5) translateX(-20px);
-  transform: scale(1.5, 1.5) translateX(-20px);
-}
-
-.rotate-scale-translate {
-  -webkit-transform: rotate(360deg) scale(1.5, 1.5) translateX(-20px);
-  transform: rotate(360deg) scale(1.5, 1.5) translateX(-20px);
 }

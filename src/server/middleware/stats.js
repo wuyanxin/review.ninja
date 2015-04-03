@@ -41,7 +41,6 @@ module.exports = function(req, res, next) {
         });
 
         // trigger webhook
-        console.log('action: ' + req.user.id);
         io.emit('action:' + req.user.id, {});
     }
 

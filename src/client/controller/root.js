@@ -15,6 +15,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
             if(!($stateParams.user && $stateParams.repo)) {
+                $scope.hook = {};
                 $scope.onboard = {};
                 return;
             }

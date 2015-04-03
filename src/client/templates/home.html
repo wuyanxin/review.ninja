@@ -58,8 +58,8 @@
 
     <div class="well alert" ng-show="user && !user.value.history.welcome">
       <button type="button" class="close" style="top:-20px;" data-dismiss="alert" ng-click="dismiss('welcome')">&times</button>
-      <p>Hey {{ user.value.login }}, welcome to ReviewNinja, we're glad you're here!</p>
-      <p>To get started, <a href="" ng-click="show=!show; setFocus=true;">add one of your own repositories</a>, or let us show you around by adding a welcome repository to your GitHub account. </p>
+      <p><strong>Hey {{ user.value.login }}, welcome to ReviewNinja, we're glad you're here!</strong></p>
+      <p>To get started, <a href="" ng-click="show=!show; setFocus=true;">add one of your own repositories</a>, or let us show you around by adding a welcome repository to your GitHub account.</p>
       <br>
       <button class="btn btn-primary" ng-click="createOnboardingRepo()" ng-disabled="repoLoading.loading">Sure, add ReviewNinja welcome repo</button>
       <button class="btn btn-link" ng-show="repoLoading.loading">
