@@ -1,32 +1,27 @@
-.onboard {
-  background-color: #3e9a94;
-  color: #fff;
-}
-
 .onboard-list {
   list-style-type: none;
+  padding: 0;
 
   li {
     display: inline;
-    margin-right: 7%;
+    padding: 0 10px;
+
     -webkit-transition: opacity 1s; 
     transition: opacity 1s;
-    width: 11%;
-
-    .fadetohalf {
-      opacity: 0.5;
-    }
 
     .octicon-check {
+      opacity: 0;
       -webkit-transition: opacity 1s; 
       transition: opacity 1s;
+    }
 
-      &.complete {
+    &.complete {
+      .octicon-check {
         opacity: 1;
       }
 
-      &.incomplete {
-        opacity: 0;
+      .text {
+        opacity: 0.5;
       }
     }
   }
@@ -35,45 +30,6 @@
     cursor: pointer;
     font-weight: 700;
   }
-
-  i {
-    float: right;
-  }
-}
-
-.onboard-button {
-  background-color: #3e9a94; 
-  color: #fff;
-  font-weight: 300;
-  margin-left: 2%;
-  padding: 2%;
-}
-
-.onboard-complete {
-  font-weight: 700;
-}
-
-.hiddendefault {
-  opacity: 0;
-}
-
-.octicon-fade {
-  opacity: 0.3;
-}
-
-.welcome {
-  background-color: #d1eaea;
-}
-
-.welcome-header {
-  color: #3e9a94; 
-  font-weight: bold;
-}
-
-.welcome-add {
-  color: #3e9a94;
-  cursor: pointer;
-  text-decoration: underline;
 }
 
 // transitions for elements on the page
@@ -109,21 +65,4 @@
 .rotate-scale-translate {
   -webkit-transform: rotate(360deg) scale(1.5, 1.5) translateX(-20px);
   transform: rotate(360deg) scale(1.5, 1.5) translateX(-20px);
-}
-
-// for fading out the entire taskbar
-.fadeout {
-  opacity: 0;
-  -webkit-transition: opacity 0.5s; 
-  transition: opacity 0.5s;
-}
-
-.default {
-  opacity: 0;
-  -webkit-transition: 0.5s ease;
-  transition: 0.5s ease;
-}
-
-.fadein {
-  opacity: 1;
 }

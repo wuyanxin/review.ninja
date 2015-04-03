@@ -17,6 +17,8 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
             $scope.loaded = count === repos.length;
 
+            $scope.show = $scope.loaded && user.value.history.welcome;
+
             repos.forEach(function(uuid) {
                 $HUB.call('repos', 'one', {
                     id: uuid
@@ -78,9 +80,9 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         };
 
         $scope.createOnboardingRepo = function() {
-            $scope.repoLoading = $RPC.call('onboard', 'createrepo', {}, function(err, res) {
+            $scope.repoLoading = $RPC.call('onboard', 'createrepo', {}, function(err, repo) {
                 if (!err) {
-                    $scope.add(res.value);
+                    $scope.add(repo.value);
                     $rootScope.dismiss('welcome');
                 }
             });

@@ -18,21 +18,6 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     {key: 'pullRequests:merge', text: 'Merge code', elementclass: 'mergepull', transition: 'scale'}
                 ];
 
-                var fadeOutTask = function(action) {
-                    $timeout(function() {
-                        action.startFade = true;
-                    }, 1000);
-                };
-
-                var fadeOutTaskbar = function() {
-                    $timeout(function() {
-                        scope.destroyTasks = true;
-                    }, 500);
-                    $timeout(function() {
-                        scope.fadeInMessage = true;
-                    }, 600);
-                };
-
                 var getActions = function() {
                     $RPC.call('onboard', 'getactions', {
                         user: $stateParams.user,
@@ -44,28 +29,24 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                                 action.val = actions.value[action.key];
                                 if(action.val) {
                                     completed = completed + 1;
-                                    fadeOutTask(action);
                                 }
                             });
                             scope.completed = (scope.actions.length === completed);
-                            if (scope.completed) {
-                                $rootScope.$on('$locationChangeStart', function(){
-                                    $rootScope.dismiss('taskbar');
-                                });
-                                fadeOutTaskbar();
+                            if(scope.completed) {
+                                $rootScope.dismiss('taskbar');
                             }
                         }
                     });
                 };
 
                 scope.addClass = function(name, transition) {
-                    for (var i = 0; i < document.getElementsByClassName(name).length; i++) {
+                    for(var i = 0; i < document.getElementsByClassName(name).length; i++) {
                         document.getElementsByClassName(name)[i].className += (' ' + transition);
                     }
                 };
 
                 scope.removeClass = function(name, transition) {
-                    for (var i = 0; i < document.getElementsByClassName(name).length; i++) {
+                    for(var i = 0; i < document.getElementsByClassName(name).length; i++) {
                         document.getElementsByClassName(name)[i].className = document.getElementsByClassName(name)[i].className.replace(' ' + transition, '');
                         console.log(document.getElementsByClassName(name)[i].className);
                     }
