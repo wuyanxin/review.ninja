@@ -20,6 +20,8 @@ module.exports = {
             version: process.env.GITHUB_VERSION || '3.0.0',
             port: process.env.GITHUB_PROTOCOL === 'http' ? 80 : 443,
 
+            enterprise: process.env.GITHUB_ENTERPRISE || !!process.env.GITHUB_HOST,
+
             // required
             client: process.env.GITHUB_CLIENT,
             secret: process.env.GITHUB_SECRET,
