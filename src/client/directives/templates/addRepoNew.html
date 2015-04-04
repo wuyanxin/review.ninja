@@ -1,0 +1,23 @@
+<div class="well well-dark">
+  <div class="form-group has-feedback">
+    <input type="text" ng-model="search" focus="setFocus" class="form-control" style="height:33px;" />
+    <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="allRepos.loading" style="top:0px;"></i>
+    <i class="fa fa-lg fa-times form-control-feedback" ng-show="search && !allRepos.loading" ng-click="search=''; setFocus=true;" style="top:0px;"></i>
+  </div>
+  <div class="list-group" style="max-height:200px; overflow-y:scroll;">
+    <a href="" 
+       class="list-group-item" 
+       ng-class="{ active: active===repo }" 
+       ng-click="$parent.active=repo; add(repo);"
+       ng-hide="contains(repo.id)"
+       ng-repeat="repo in allRepos.value | filter:{'full_name': search} | orderBy: 'full_name'">
+      {{ repo.owner.login }} / {{ repo.name }}
+      <span class="octicon octicon-lock text-warning pull-right" ng-show="active!==repo && repo.private" style="padding-top:2px;"></span>
+      <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo" style="padding-top:3px;"></i>
+    </a>
+  </div>
+  <div ng-show="allRepos.hasMore">
+    <strong class="text-primary" style="padding:0 10px;">Not finding your repo?</strong> 
+    <button class="btn btn-xs btn-primary" ng-click="allRepos.getMore()">Load more</button>
+  </div>
+</div>
