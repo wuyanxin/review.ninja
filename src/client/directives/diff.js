@@ -85,11 +85,11 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 };
 
                 scope.selStarts = function(line) {
-                    return Reference.starts(scope.headSha, scope.file.filename, line.head, scope.selection.ref);
+                    return Reference.starts(scope.headSha, scope.file.filename, line.head, scope.selection);
                 };
 
                 scope.isSelected = function(line) {
-                    return Reference.includes(scope.headSha, scope.file.filename, line.head, scope.selection.ref);
+                    return Reference.includes(scope.headSha, scope.file.filename, line.head, scope.selection);
                 };
 
                 scope.refStarts = function(line) {
