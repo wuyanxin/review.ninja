@@ -8,26 +8,60 @@ module.exports = {
       if (err) {
         return done(err);
       }
+
       var res = {};
       actions.forEach(function(a) {
         res[a] = true;
       });
+
       done(null, res);
-//      return res;
     });
   },
 
   createrepo: function(req, done) {
-    onboard.createRepo(req.user.token, req.user.login, function() {
-        onboard.createFile(req.user.token, req.user.login, 'master', function() {
-            onboard.getBranchSha(req.user.login, function(sha) {
-                onboard.createBranch(req.user.token, req.user.login, sha, function() {
-                    onboard.getFileSha(req.user.login, function(sha) {
-                        onboard.updateFile(req.user.token, req.user.login, sha, 'quickedit', function() {
-                            onboard.createPullRequest(req.user.token, req.user.login, function() {
-                                onboard.getRepo(req.user.token, req.user.login, function(res) {
-                                    done(null, res);
-                                });
+    onboard.createRepo(req.user.token, req.user.login, function(err, repo) {
+
+        if(err) {
+            return done(err);
+        }
+
+        onboard.createFile(req.user.token, req.user.login, function(err, file) {
+
+            if(err) {
+                return done(err);
+            }
+
+            onboard.getBranch(req.user.login, function(err, branch) {
+
+                if(err) {
+                    return done(err);
+                }
+
+                onboard.createBranch(req.user.token, req.user.login, branch.object.sha, function(err, branch) {
+
+                    if(err) {
+                        return done(err);
+                    }
+
+                    onboard.getFile(req.user.login, function(err, file) {
+
+                        if(err) {
+                            return done(err);
+                        }
+
+                        onboard.updateFile(req.user.token, req.user.login, file.sha, function(err, file) {
+
+                            if(err) {
+                                return done(err);
+                            }
+
+                            onboard.createPullRequest(req.user.token, req.user.login, function(err, pull) {
+
+                                if(err) {
+                                    return done(err);
+                                }
+
+                                onboard.getRepo(req.user.token, req.user.login, done);
                             });
                         });
                     });
