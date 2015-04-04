@@ -1,0 +1,73 @@
+.onboard-list {
+  list-style-type: none;
+  padding: 0;
+
+  -webkit-transition: opacity 0.5s; 
+  transition: opacity 0.5s;
+
+  &.complete {
+    height: 0;
+    opacity: 0;
+  }
+
+  li {
+    display: inline;
+    padding: 0 10px;
+
+    -webkit-transition: opacity 1s; 
+    transition: opacity 1s;
+
+    .octicon-check {
+      opacity: 0;
+      -webkit-transition: opacity 1s; 
+      transition: opacity 1s;
+    }
+
+    &.complete {
+      .octicon-check {
+        opacity: 0.5;
+      }
+
+      .text {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  li:hover {
+    color: $text-color;
+    cursor: pointer;
+
+    .text {
+      opacity: 1;
+    }
+  }
+}
+
+.onboard-complete {
+  height: 0;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s 0.5s; 
+  transition: opacity 0.5s 0.5s;
+
+  &.complete {
+    height: auto;
+    opacity: 1;
+  }
+}
+
+// transitions for elements on the page
+.ob {
+  -webkit-transition: -webkit-transform 1s;
+  transition: transform 1s;
+}
+
+.scale {
+  -webkit-transform: scale(1.15, 1.15);
+  transform: scale(1.15, 1.15);
+}
+
+.rotate {
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+}

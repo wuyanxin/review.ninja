@@ -6,50 +6,42 @@ module.exports = function(req, res, next) {
     var Action = require('mongoose').model('Action');
 
     // put all the reviewninja api methods you want to track here, along with the type you want them to show up as in db
-    var regularMap = {
+    var map = {
         '/api/star/rmv': 'star:rmv',
         '/api/star/set': 'star:add',
         '/api/issue/add': 'issues:add',
-        '/api/user/addRepo': 'user:addRepo'
+        '/api/user/addRepo': 'user:addRepo',
+        '/api/onboard/dismiss': 'onboard:dismiss'
     };
 
-    // put all the github api methods you want to track here
-    var trackedGithubMethods = ['issues:closed', 'pullRequests:merge', 'issues:createComment'];
+    var githubMap = {
+        'pullRequests:merge': 'pullRequests:merge',
+        'issues:createComment': 'issues:createComment',
+        'pullRequests:get': 'pullRequests:get',
+        'issues:edit': (function(args) {
+            return req.args.arg ? 'issues:' + req.args.arg.state : 'issues:edit';
+        })()
+    };
 
     // checks if the api call is github or not
     var isGitHub = function(url) {
         return (url.indexOf('/api/github/') > -1);
     };
 
-    // adding to db for non-github methods
-    var regularFunc = function() {
-        if (req.originalUrl in regularMap) {
-            Action.create({
-                uuid: req.user.id,
-                user: req.args.user,
-                repo: req.args.repo,
-                type: regularMap[req.originalUrl]
-            });
-        }
-    };
-
-    // adding to db for github methods
-    var githubFunc = function() {
-        if (trackedGithubMethods.indexOf((req.args.obj + ':' + req.args.fun)) > -1) {
-            Action.create({
-                uuid: req.user.id,
-                uesr: req.args.arg.user,
-                repo: req.args.arg.repo,
-                type: req.args.obj + ':' + req.args.fun
-            });
-        }
-    };
-
     // choosing between github and regular
-    if (!isGitHub(req.originalUrl)) {
-        regularFunc();
-    } else {
-        githubFunc();
+    var args = isGitHub(req.originalUrl) ? req.args.arg : req.args;
+    var type = isGitHub(req.originalUrl) ? githubMap[req.args.obj + ':' + req.args.fun] : map[req.originalUrl];
+
+    if(type) {
+        Action.create({
+            uuid: req.user.id,
+            user: args.user,
+            repo: args.repo,
+            type: type
+        });
+
+        // trigger webhook
+        io.emit('action:' + req.user.id, {});
     }
 
     next();

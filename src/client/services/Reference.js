@@ -1,11 +1,10 @@
 'use strict';
+
 // *****************************************************
 // Reference Factory
 // *****************************************************
 
 module.factory('Reference', ['$stateParams', function($stateParams) {
-
-    var regex = /([0-9a-f]{40})\/([^#]+)#L([0-9]+)-?L?([0-9]+)?/;
 
     var reference = function(sha, path, start, end) {
         return sha + '/' + path + '#L' + start + ((end && end !== start) ? '-L' + end : '');
@@ -33,31 +32,16 @@ module.factory('Reference', ['$stateParams', function($stateParams) {
             };
         },
 
-        starts: function(sha, path, number, ref) {
-            var _sha, _path, start;
-            var match = regex.exec(ref);
-
-            if(match) {
-                _sha = match[1];
-                _path = match[2];
-                start = parseInt(match[3], 10);
-            }
-
-            return _sha === sha && _path === path && start === number;
+        starts: function(sha, path, line, ref) {
+            return ref && sha === ref.sha && path === ref.path && line === ref.start;
         },
 
-        includes: function(sha, path, number, ref) {
-            var _sha, _path, start, end;
-            var match = regex.exec(ref);
+        includes: function(sha, path, line, ref) {
+            return ref && sha === ref.sha && path === ref.path && (line === ref.start || between(line, ref.start, ref.end));
+        },
 
-            if(match) {
-                _sha = match[1];
-                _path = match[2];
-                start = parseInt(match[3], 10);
-                end = parseInt(match[4], 10);
-            }
-
-            return _sha === sha && _path === path && (start === number || between(number, start, end));
+        anchor: function(sha, path, line) {
+            return sha + ':' + path + ':' + line;
         }
     };
 }]);

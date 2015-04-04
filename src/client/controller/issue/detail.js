@@ -1,4 +1,5 @@
 'use strict';
+
 // *****************************************************
 // Issue Detail Controller
 //
@@ -7,8 +8,8 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$anchorScroll', '$HUB', '$RPC', 'Issue', 'Comment', 'repo', 'issue', 'socket',
-    function($rootScope, $scope, $state, $stateParams, $location, $anchorScroll, $HUB, $RPC, Issue, Comment, repo, issue, socket) {
+module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'Comment', 'Reference', 'repo', 'issue', 'socket',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, Comment, Reference, repo, issue, socket) {
 
         // get the repo
         $scope.repo = repo.value;
@@ -38,16 +39,8 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         //
         // actions
         //
-
-        $scope.scrollIssueLine = function() {
-            var ref = $scope.issue.ref.replace(/#/g, '');
-            if(ref.indexOf('-') > -1) {
-                // Replace anchor symbol '#' and remove 'until line' part.
-                ref = ref.replace(/(\-[^-]*$)/, '');
-            }
-            var anchor = $scope.issue.sha + '/' + ref;
-            $location.hash(anchor);
-            $anchorScroll();
+        $scope.anchor = function() {
+            return Reference.anchor($scope.issue.sha, $scope.issue.path, $scope.issue.start);
         };
 
         $scope.setState = function() {

@@ -3,15 +3,20 @@
 // Root Controller
 // *****************************************************
 
-module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state', '$HUB', '$RPC',
-    function($rootScope, $scope, $stateParams, $state, $HUB, $RPC) {
+module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state', '$HUB', '$RPC', '$HUBService',
+    function($rootScope, $scope, $stateParams, $state, $HUB, $RPC, $HUBService) {
 
-        $rootScope.user = $HUB.call('user', 'get', {});
+        $rootScope.promise = $HUBService.wrap('user', 'get', {});
+
+        $rootScope.promise.then(function(user) {
+            $rootScope.user = user;
+        });
 
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, error) {
 
             if(!($stateParams.user && $stateParams.repo)) {
                 $scope.hook = {};
+                $scope.onboard = {};
                 return;
             }
 
@@ -43,6 +48,14 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                 if(!err) {
                     $scope.hook = hook;
                     $scope.created = true;
+                }
+            });
+        };
+
+        $rootScope.dismiss = function(todismiss) {
+            $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, res) {
+                if(!err) {
+                    $rootScope.user.value.history[todismiss] = true;
                 }
             });
         };

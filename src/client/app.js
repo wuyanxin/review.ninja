@@ -8,7 +8,8 @@ var module = angular.module('app',
      'infinite-scroll',
      'ngSanitize',
      'angulartics',
-     'angulartics.google.analytics']);
+     'angulartics.google.analytics',
+        'angular.filter']);
 
 var filters = angular.module('ninja.filters', []);
 
@@ -44,7 +45,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             .state('repo', {
                 abstract: true,
                 url: '/:user/:repo',
-                template: '<section ui-view></section>',
+                templateUrl: '/templates/base.html',
                 resolve: {
                     repo: ['$rootScope', '$stateParams', '$HUBService',
                         function($rootScope, $stateParams, $HUBService) {

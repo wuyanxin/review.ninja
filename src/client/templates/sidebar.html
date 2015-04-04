@@ -2,7 +2,7 @@
 
     <div class="panel-heading">
       <span class="lead">Issues</span>
-      <span class="fa-stack plus-icon" style="margin-top:-5px;"
+      <span class="fa-stack plus-icon ob ob-create" style="margin-top:-5px;"
             ng-click="$parent.show=true; setFocus=true;"
             ng-show="repo.permissions.push">
         <i class="fa fa-circle fa-stack-2x"></i>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="panel-body" ng-show="show || reference.selection.ref" ng-class="{highlight: highlight}">
+    <div class="panel-body" ng-show="repo.permissions.push && (show || reference.selection.ref)" ng-class="{highlight: highlight}">
         <table style="width:100%;">
           <tr>
             <td style="width:48px; vertical-align:top; padding-right:10px;">

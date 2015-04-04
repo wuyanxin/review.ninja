@@ -114,6 +114,7 @@ $code-line-select-color: #8a6d3b;
 $code-font-size: 12px;
 
 // import our files
+@import "animations";
 @import "breadcrumb";
 @import "browser";
 @import "btn";
@@ -125,6 +126,7 @@ $code-font-size: 12px;
 @import "icon";
 @import "list-group";
 @import "merge";
+@import "onboard";
 @import "panel";
 @import "pull-list";
 @import "settings";
