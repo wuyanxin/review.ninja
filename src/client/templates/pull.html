@@ -70,7 +70,7 @@
                             tooltip="{{ pull.star ? 'Remove' : 'Add' }} ninja star"
                             tooltip-placement="bottom"
                             tooltip-append-to-body="true">
-                        <span class="fa-lg icon-ninja-star text-primary" ng-class="{muted: !pull.star}"></span>
+                        <span class="fa-lg icon-ninja-star text-primary ob ob-star" ng-class="{muted: !pull.star}"></span>
                     </button>
                     <div class="btn-group btn-group-lg">
                       <button type="button"
@@ -228,7 +228,7 @@
   </div>
 
   <div class="col-sm-3 hidden-xs sidebar">
-    <div ui-scrollfix="{{ hook.value ? '+52' : '+104' }}">
+    <div ui-scrollfix="{{ (!hook.value && !user.value.history.taskbar) ? '+156' : (!hook.value || !user.value.history.taskbar) ? '+104' : '+52' }}">
       <section ui-view></section>
     </div>
   </div>

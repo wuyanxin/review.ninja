@@ -10,14 +10,17 @@ module.exports = function(req, res, next) {
         '/api/star/rmv': 'star:rmv',
         '/api/star/set': 'star:add',
         '/api/issue/add': 'issues:add',
-        '/api/user/addRepo': 'user:addRepo'
+        '/api/user/addRepo': 'user:addRepo',
+        '/api/onboard/dismiss': 'onboard:dismiss'
     };
 
     var githubMap = {
-        'issues:closed': 'issues:closed',
         'pullRequests:merge': 'pullRequests:merge',
         'issues:createComment': 'issues:createComment',
-        'pullRequests:get': 'pullRequests:get'
+        'pullRequests:get': 'pullRequests:get',
+        'issues:edit': (function(args) {
+            return req.args.arg ? 'issues:' + req.args.arg.state : 'issues:edit';
+        })()
     };
 
     // checks if the api call is github or not

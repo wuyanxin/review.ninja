@@ -6,16 +6,18 @@
 // path: /
 // *****************************************************
 
-module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC',
-    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC) {
+module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$modal', '$HUB', '$RPC',
+    function($rootScope, $scope, $state, $stateParams, $modal, $HUB, $RPC) {
 
         $scope.repos = [];
 
-        $RPC.call('user', 'get', {}, function(err, user) {
+        $rootScope.promise.then(function(user) {
             var count = 0;
             var repos = user ? user.value.repos : [];
 
             $scope.loaded = count === repos.length;
+
+            $scope.show = $scope.loaded && user.value.history.welcome;
 
             repos.forEach(function(uuid) {
                 $HUB.call('repos', 'one', {
@@ -75,6 +77,15 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             });
 
             return contains;
+        };
+
+        $scope.createOnboardingRepo = function() {
+            $scope.repoLoading = $RPC.call('onboard', 'createrepo', {}, function(err, repo) {
+                if (!err) {
+                    $scope.add(repo.value);
+                    $rootScope.dismiss('welcome');
+                }
+            });
         };
     }
 ]);

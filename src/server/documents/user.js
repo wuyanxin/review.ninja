@@ -4,7 +4,8 @@ var UserSchema = mongoose.Schema({
     uuid: Number,
     repos: Array,
     token: String,
-    terms: String
+    terms: String,
+    history: Object
 });
 
 var User = mongoose.model('User', UserSchema);

@@ -6,7 +6,7 @@
 module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state', '$HUB', '$RPC', '$HUBService',
     function($rootScope, $scope, $stateParams, $state, $HUB, $RPC, $HUBService) {
 
-        $rootScope.promise = $HUBService.call('user', 'get', {});
+        $rootScope.promise = $HUBService.wrap('user', 'get', {});
 
         $rootScope.promise.then(function(user) {
             $rootScope.user = user;
@@ -16,6 +16,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
 
             if(!($stateParams.user && $stateParams.repo)) {
                 $scope.hook = {};
+                $scope.onboard = {};
                 return;
             }
 
@@ -47,6 +48,14 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                 if(!err) {
                     $scope.hook = hook;
                     $scope.created = true;
+                }
+            });
+        };
+
+        $rootScope.dismiss = function(todismiss) {
+            $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, res) {
+                if(!err) {
+                    $rootScope.user.value.history[todismiss] = true;
                 }
             });
         };
