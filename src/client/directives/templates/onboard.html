@@ -2,7 +2,7 @@
      style="margin:0;" 
      ng-show="!user.value.history.taskbar">
 
-  <ul class="onboard-list" ng-class="{complete: complete}">
+  <ul class="onboard-list" ng-class="{complete: complete}" ng-show="!complete">
     <li><strong>Getting started to-do's:</strong></li>
     <li ng-repeat="action in actions" ng-class="{complete: action.val}">
       <span class="octicon octicon-check"></span> 
