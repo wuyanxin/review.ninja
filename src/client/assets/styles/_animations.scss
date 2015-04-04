@@ -40,7 +40,7 @@
   }
 
   100% {
-    -webkit-transform: translateY(0px);
+    -webkit-transform: translateY(0);
   }
 }
 
@@ -86,18 +86,17 @@
   }
 
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 }
 
 .wobble-vertical {
-  -webkit-animation-name: wobble;
   -webkit-animation-duration: 0.75s;
-  -webkit-animation-timing: ease-out;
-  -webkit-animation-iteration-count: 1;
-
-  animation-name: wobble;
   animation-duration: 0.75s;
-  animation-timing: ease-out;
+  -webkit-animation-iteration-count: 1;
   animation-iteration-count: 1;
+  -webkit-animation-name: wobble;
+  animation-name: wobble;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
 }
