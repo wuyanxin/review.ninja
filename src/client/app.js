@@ -34,7 +34,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             // Home state
             //
             .state('home', {
-                url: '/',
+                url: '/?addrepo',
                 templateUrl: '/templates/home.html',
                 controller: 'HomeCtrl'
             })
