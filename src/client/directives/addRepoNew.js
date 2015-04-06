@@ -37,7 +37,7 @@ module.directive('addRepoNew', ['$stateParams', '$HUB', '$RPC',
                             scope.show = false;
                         }
                     }});
-                }
+                };
 
                 scope.contains = function(id) {
                     var contains = false;

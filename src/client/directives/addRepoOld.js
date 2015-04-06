@@ -33,7 +33,7 @@ module.directive('addRepoOld', ['$stateParams', '$HUB', '$RPC',
                             scope.reset();
                         }
                     }});
-                }
+                };
 
                 scope.search = function() {
 
