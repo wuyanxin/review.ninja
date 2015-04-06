@@ -17,7 +17,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
             $scope.loaded = count === repos.length;
 
-            $scope.show = $scope.loaded && user.value.history.welcome;
+            $scope.show = $stateParams.addrepo || ($scope.loaded && user.value.history.welcome);
 
             repos.forEach(function(uuid) {
                 $HUB.call('repos', 'one', {
@@ -35,6 +35,15 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         // Actions
         //
 
+        $scope.add = function(repo, done) {
+            console.log(repo);
+            $RPC.call('user', 'addRepo', {
+                user: repo.owner.login,
+                repo: repo.name,
+                repo_uuid: repo.id
+            }, done);
+        };
+
         $scope.remove = function(repo) {
             var index = $scope.repos.indexOf(repo);
             $RPC.call('user', 'rmvRepo', {
@@ -51,7 +60,13 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         $scope.createOnboardingRepo = function() {
             $scope.repoLoading = $RPC.call('onboard', 'createrepo', {}, function(err, repo) {
                 if (!err) {
-                    $scope.add(repo.value);
+                    $scope.add(repo.value, function(err) {
+                        if (!err) {
+                            var repoToAdd = repo.value;
+                            repoToAdd.adddate = -new Date();
+                            $scope.repos.push(repoToAdd);
+                        }
+                    });
                     $rootScope.dismiss('welcome');
                 }
             });

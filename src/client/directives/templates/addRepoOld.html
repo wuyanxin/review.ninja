@@ -17,7 +17,7 @@
       <a href="" 
          class="list-group-item" 
          ng-class="{ active: active===repo }" 
-         ng-click="$parent.active=repo; add(repo);"
+         ng-click="$parent.active=repo; addRepo(repo);"
          ng-repeat="repo in results | orderBy: 'full_name'">
         {{ repo.owner.login }} / {{ repo.name }}
         <span class="octicon octicon-lock text-warning pull-right" ng-show="active!==repo && repo.private" style="padding-top:2px;"></span>
