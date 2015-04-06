@@ -80,7 +80,7 @@
 
                     <div class="pull-right">
                         <i class="fa fa-lg fa-spinner fa-spin" ng-show="set.loading || commenting.loading" style="margin-right:10px;"></i>
-                        <button type="button" class="btn btn-info ob ob-close" ng-click="setState()" ng-disabled="set.loading" ng-show="repo.permissions.push">
+                        <button type="button" ng-class="{'ob-close': (statustext().indexOf('Reopen') < 0)}" class="btn btn-info ob" ng-click="setState()" ng-disabled="set.loading" ng-show="repo.permissions.push">
                             {{ statustext() }}
                         </button>
                         <button type="submit" class="btn btn-primary"  ng-disabled="!comment">Comment</button>
