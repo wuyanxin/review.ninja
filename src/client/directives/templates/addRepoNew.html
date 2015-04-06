@@ -8,7 +8,7 @@
     <a href="" 
        class="list-group-item" 
        ng-class="{ active: active===repo }" 
-       ng-click="$parent.active=repo; add(repo);"
+       ng-click="$parent.active=repo; addRepo(repo);"
        ng-hide="contains(repo.id)"
        ng-repeat="repo in allRepos.value | filter:{'full_name': search} | orderBy: 'full_name'">
       {{ repo.owner.login }} / {{ repo.name }}

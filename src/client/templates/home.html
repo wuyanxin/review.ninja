@@ -34,13 +34,15 @@
 
     <add-repo-new repos="repos" 
                   show="show"
-                  set-focus="setFocus"2
+                  set-focus="setFocus"
+                  add="add(repo, done)"
                   ng-show="!$config.enterprise && show">
     </add-repo-new>
 
     <add-repo-old repos="repos" 
                   show="show"
                   set-focus="setFocus"
+                  add="add(repo, done)"
                   ng-show="$config.enterprise && show">
     </add-repo-old>
 
@@ -49,9 +51,9 @@
       <p><strong>Hey {{ user.value.login }}, welcome to ReviewNinja, we're glad you're here!</strong></p>
       <p>To get started, <a href="" ng-click="show=!show; setFocus=true;" style="text-decoration:underline">add one of your own repositories</a>, or let us show you around by adding a welcome repository to your GitHub account.</p>
       <br>
-      <button class="btn btn-primary" ng-click="createOnboardingRepo()" ng-disabled="repoLoading.loading">Sure, add ReviewNinja welcome repo</button>
-      <button class="btn btn-link" ng-show="repoLoading.loading">
-        <i class="fa fa-2x fa-spinner fa-spin"></i>
+      <button class="btn btn-primary welcome-button" ng-click="createOnboardingRepo()" ng-disabled="repoLoading.loading">
+        <span ng-hide="repoLoading.loading">Sure, add ReviewNinja welcome repo</span>
+        <i class="fa fa-2x fa-spinner fa-spin" ng-show="repoLoading.loading"></i>
       </button>
     </div>
 
