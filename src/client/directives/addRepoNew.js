@@ -27,7 +27,7 @@ module.directive('addRepoNew', ['$stateParams', '$HUB', '$RPC',
                 //
 
                 scope.addRepo = function(repo) {
-                    scope.add(repo, function(err) {
+                    scope.add({repo: repo, done: function(err) {
                         scope.active = null;
                         if(!err) {
                             repo.adddate = -new Date();
@@ -36,8 +36,8 @@ module.directive('addRepoNew', ['$stateParams', '$HUB', '$RPC',
                             scope.search = '';
                             scope.show = false;
                         }
-                    });
-                };
+                    }});
+                }
 
                 scope.contains = function(id) {
                     var contains = false;

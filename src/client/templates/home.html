@@ -34,13 +34,15 @@
 
     <add-repo-new repos="repos" 
                   show="show"
-                  set-focus="setFocus"2
+                  set-focus="setFocus"
+                  add="add(repo, done)"
                   ng-show="!$config.enterprise && show">
     </add-repo-new>
 
     <add-repo-old repos="repos" 
                   show="show"
                   set-focus="setFocus"
+                  add="add(repo, done)"
                   ng-show="$config.enterprise && show">
     </add-repo-old>
 

@@ -17,7 +17,13 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
             $scope.loaded = count === repos.length;
 
-            $scope.show = $scope.loaded && user.value.history.welcome;
+            console.log($stateParams);
+            if ($stateParams.show) {
+                $scope.show = $stateParams.show;
+            }
+            else {
+                $scope.show = $scope.loaded && user.value.history.welcome;
+            }
 
             repos.forEach(function(uuid) {
                 $HUB.call('repos', 'one', {
@@ -36,6 +42,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         //
 
         $scope.add = function(repo, done) {
+            console.log(repo);
             $RPC.call('user', 'addRepo', {
                 user: repo.owner.login,
                 repo: repo.name,

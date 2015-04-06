@@ -10,7 +10,7 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
             templateUrl: '/directives/templates/onboard.html',
             link: function(scope, elem, attrs) {
                 scope.actions = [
-                    {key: 'user:addRepo', text: 'Add repo'},
+                    {key: 'user:addRepo', text: 'Add repo', link: 'home({show: true})'},
                     {key: 'pullRequests:get', text: 'View pull request', elementclass: 'ob-pull', transition: 'wobble-vertical'},
                     {key: 'issues:add', text: 'Open issue', elementclass: 'ob-create', transition: 'wobble-vertical'},
                     {key: 'issues:closed', text: 'Close issue', elementclass: 'ob-close', transition: 'wobble-vertical'},
