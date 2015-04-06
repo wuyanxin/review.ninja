@@ -12,7 +12,8 @@ module.directive('addRepoOld', ['$stateParams', '$HUB', '$RPC',
             scope: {
                 repos: '=',
                 show: '=',
-                setFocus: '='
+                setFocus: '=',
+                add: '&'
             },
             link: function(scope, elem, attrs) {
 
@@ -22,12 +23,8 @@ module.directive('addRepoOld', ['$stateParams', '$HUB', '$RPC',
                 // Actions
                 //
 
-                scope.add = function(repo) {
-                    $RPC.call('user', 'addRepo', {
-                        user: repo.owner.login,
-                        repo: repo.name,
-                        repo_uuid: repo.id
-                    }, function(err) {
+                scope.addRepo = function(repo) {
+                    scope.add(repo, function(err) {
                         scope.active = null;
                         if(!err) {
                             repo.adddate = -new Date();
@@ -36,7 +33,7 @@ module.directive('addRepoOld', ['$stateParams', '$HUB', '$RPC',
                             scope.reset();
                         }
                     });
-                };
+                }
 
                 scope.search = function() {
 
