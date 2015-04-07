@@ -15,7 +15,7 @@ gulp.task('coverage', function(cb) {
 });
 
 gulp.task('istanbul', function(cb) {
-  return gulp.src(config.istanbulSrc)
+  gulp.src(config.istanbulSrc)
     .pipe(istanbul())
     .pipe(istanbul.hookRequire())
     .on('finish', function() {
