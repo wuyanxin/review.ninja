@@ -4,14 +4,15 @@ var gulp = require('gulp'),
     coveralls = require('gulp-coveralls'),
     istanbul = require('gulp-istanbul'),
     config = require('../config').coverage,
-    runSequence = require('run-sequence');
+    runSequence = require('run-sequence'),
+    merger = require('lcov-result-merger');
 
 var istanbulOptions = {
-  dir: './output/coverage'
+  dir: './output/coverage/server'
 };
 
 gulp.task('coverage', function(cb) {
-  runSequence('istanbul', 'coveralls', cb);
+  runSequence('istanbul', 'karma', 'merge-all', cb);
 });
 
 gulp.task('istanbul', function(cb) {
@@ -26,7 +27,13 @@ gulp.task('istanbul', function(cb) {
     });
 });
 
+gulp.task('merge-all', function() {
+  return gulp.src('./outputs/coverage/**/**/lcov.info')
+    .pipe(merger())
+    .pipe(gulp.src('./output/coverage/all/'));
+});
+
 gulp.task('coveralls', function() {
-  return gulp.src('./output/coverage/lcov.info')
+  return gulp.src('./output/coverage/server/lcov.info')
     .pipe(coveralls());
 });
