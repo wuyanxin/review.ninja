@@ -12,7 +12,7 @@ var istanbulOptions = {
 };
 
 gulp.task('coverage', function(cb) {
-  runSequence('istanbul', 'karma', 'merge-all', cb);
+  runSequence('istanbul', 'karma', 'merge-all', 'coveralls', cb);
 });
 
 gulp.task('istanbul', function(cb) {
@@ -28,12 +28,12 @@ gulp.task('istanbul', function(cb) {
 });
 
 gulp.task('merge-all', function() {
-  return gulp.src('./outputs/coverage/**/**/lcov.info')
+  return gulp.src('./output/coverage/*/lcov.info')
     .pipe(merger())
-    .pipe(gulp.src('./output/coverage/all/'));
+    .pipe(gulp.dest('./output/coverage/all/'));
 });
 
 gulp.task('coveralls', function() {
-  return gulp.src('./output/coverage/server/lcov.info')
+  return gulp.src('./output/coverage/all/lcov.info')
     .pipe(coveralls());
 });
