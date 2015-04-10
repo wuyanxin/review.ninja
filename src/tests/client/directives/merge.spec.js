@@ -8,7 +8,7 @@ describe('Merge Directive', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $directive) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -24,10 +24,7 @@ describe('Merge Directive', function() {
         };
         createDirective = function() {
 
-            var directive = $directive('mergeButton', {
-                $scope: scope,
-                repo: repo
-            });
+            var directive = $injector.get('mergeButton');
             directive.scope = scope;
             return directive;
         };

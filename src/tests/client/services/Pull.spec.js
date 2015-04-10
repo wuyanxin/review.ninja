@@ -8,7 +8,7 @@ describe('Pull Factory', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $factory) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -24,11 +24,7 @@ describe('Pull Factory', function() {
         };
         createFactory = function() {
 
-            var factory = $factory('Pull', {
-                $scope: scope,
-                repo: repo
-            });
-            factory.scope = scope;
+            var factory = $injector.get('Pull');
             return factory;
         };
     }));

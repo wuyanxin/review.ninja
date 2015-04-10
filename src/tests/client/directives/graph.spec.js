@@ -8,7 +8,7 @@ describe('Graph Directive', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $directive) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -23,12 +23,7 @@ describe('Graph Directive', function() {
             }
         };
         createDirective = function() {
-
-            var directive = $directive('graph', {
-                $scope: scope,
-                repo: repo
-            });
-            directive.scope = scope;
+            var directive = $injector.get('graph');
             return directive;
         };
     }));

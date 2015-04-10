@@ -8,7 +8,7 @@ describe('Diff File Directive', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $directive) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -24,10 +24,7 @@ describe('Diff File Directive', function() {
         };
         createDirective = function() {
 
-            var directive = $directive('diff', {
-                $scope: scope,
-                repo: repo
-            });
+            var directive = $injector.get('diff');
             directive.scope = scope;
             return directive;
         };

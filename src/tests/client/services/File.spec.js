@@ -8,7 +8,7 @@ describe('File Factory', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $factory) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -24,11 +24,7 @@ describe('File Factory', function() {
         };
         createFactory = function() {
 
-            var factory = $factory('File', {
-                $scope: scope,
-                repo: repo
-            });
-            factory.scope = scope;
+            var factory = $injector.get('File');
             return factory;
         };
     }));

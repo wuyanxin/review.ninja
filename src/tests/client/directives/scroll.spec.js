@@ -8,7 +8,7 @@ describe('Scroll Directive', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $directive) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -24,10 +24,7 @@ describe('Scroll Directive', function() {
         };
         createDirective = function() {
 
-            var directive = $directive('scroll', {
-                $scope: scope,
-                repo: repo
-            });
+            var directive = $injector.get('scroll');
             directive.scope = scope;
             return directive;
         };

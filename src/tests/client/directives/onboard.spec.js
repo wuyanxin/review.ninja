@@ -8,7 +8,7 @@ describe('Onboard Directive', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $directive) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -26,10 +26,7 @@ describe('Onboard Directive', function() {
         };
         createDirective = function() {
 
-            var directive = $directive('onboard', {
-                $scope: scope,
-                repo: repo
-            });
+            var directive = $injector.get('onboard');
             directive.scope = scope;
             return directive;
         };

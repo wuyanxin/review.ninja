@@ -8,7 +8,7 @@ describe('Add Repo (new) Directive', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $directive) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -23,12 +23,7 @@ describe('Add Repo (new) Directive', function() {
             }
         };
         createDirective = function() {
-
-            var directive = $directive('addRepoNew', {
-                $scope: scope,
-                repo: repo
-            });
-            directive.scope = scope;
+            var directive = $injector.get('addRepoNew');
             return directive;
         };
     }));

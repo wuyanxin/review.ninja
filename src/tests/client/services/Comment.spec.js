@@ -8,7 +8,7 @@ describe('Comment Factory', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $factory) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -24,11 +24,7 @@ describe('Comment Factory', function() {
         };
         createFactory = function() {
 
-            var factory = $factory('Comment', {
-                $scope: scope,
-                repo: repo
-            });
-            factory.scope = scope;
+            var factory = $injector.get('Comment');
             return factory;
         };
     }));
