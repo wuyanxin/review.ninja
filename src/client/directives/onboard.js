@@ -1,6 +1,6 @@
 'use strict';
 // *****************************************************
-// Graph Directive
+// Onboard Directive
 // *****************************************************
 
 module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', 'socket',

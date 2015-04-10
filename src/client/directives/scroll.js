@@ -1,6 +1,6 @@
 'use strict';
 // *****************************************************
-// Graph Directive
+// Scroll Directive
 // *****************************************************
 
 module.directive('scroll', ['$location',
