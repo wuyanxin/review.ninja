@@ -38,6 +38,13 @@ describe('Issue Detail Controller', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // get comments on issue
+    // get anchor?
+    // set state of issue to close
+    // add a comment to issue
+    // get proper status text of issue depending on if there is comment
+    // web socket functions 
+
     it('should do thing', function() {
         var ctrl = createCtrl();
 

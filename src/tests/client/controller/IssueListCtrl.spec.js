@@ -38,6 +38,8 @@ describe('Issue List Controller', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // set issue sha
+
     it('should do thing', function() {
         var ctrl = createCtrl();
 

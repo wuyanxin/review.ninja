@@ -33,6 +33,30 @@ describe('Diff File Directive', function() {
         };
     }));
 
+    // should expand diff successfully
+
+    // should find chunks of file
+
+    // should insert chunks successfully
+
+    // should set file
+
+    // should clear selection
+
+    // should determine where selection starts
+
+    // should determine reference is selected
+
+    // should determine where reference starts again
+
+    // should return reference anchor
+
+    // should determine if line is referenced
+
+    // should do thing upon selection of line
+
+    // should go to line
+
     afterEach(function() {
         httpBackend.verifyNoOutstandingExpectation();
         httpBackend.verifyNoOutstandingRequest();

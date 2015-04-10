@@ -33,6 +33,11 @@ describe('File Browser Directive', function() {
         };
     }));
 
+    // should watch git data
+    // should successfully pop from stack
+    // should push onto stack
+    // should 
+
     afterEach(function() {
         httpBackend.verifyNoOutstandingExpectation();
         httpBackend.verifyNoOutstandingRequest();

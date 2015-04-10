@@ -17,6 +17,8 @@ describe('Onboard Directive', function() {
         });
         scope = $rootScope.$new();
 
+        // create user promise
+
         repo = {
             value: {
                 id: 1234
@@ -37,6 +39,11 @@ describe('Onboard Directive', function() {
         httpBackend.verifyNoOutstandingExpectation();
         httpBackend.verifyNoOutstandingRequest();
     });
+
+    // should get a user’s completed actions for onboarding
+    // should add transition class to element
+    // should remove transition class from element
+    // socket -> get user’s actions upon getting action value from server
 
     it('should do thing', function() {
         var directive = createDirective();

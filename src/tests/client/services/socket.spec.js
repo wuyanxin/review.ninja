@@ -38,6 +38,9 @@ describe('Socket Factory', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should listen successfully for events
+    // should emit thing upon event
+
     it('should do thing', function() {
         var factory = createFactory();
 

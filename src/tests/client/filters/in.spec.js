@@ -7,8 +7,11 @@ describe('In Filter', function() {
     beforeEach(angular.mock.module('ninja.filters'));
 
     beforeEach(angular.mock.inject(function($filter) {
-        deep = $filter('in');
+        _in = $filter('in');
     }));
+
+    // should return items in array if array is not there
+    // should push matched items to array
     
     it('should match no items', function() {
 

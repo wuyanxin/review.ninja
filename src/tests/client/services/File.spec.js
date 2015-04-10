@@ -38,6 +38,10 @@ describe('File Factory', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should determine if file is image
+    // should get tree types if image
+    // should get file types raw if image
+    
     it('should do thing', function() {
         var factory = createFactory();
 

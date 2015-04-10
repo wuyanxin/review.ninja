@@ -38,6 +38,18 @@ describe('Repo Controller', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // set the statuses based on the combined stuff
+    // get open pull request
+    // get closed pull requests
+    // get collaborators
+    // badge modal
+    // invite modal
+    // get text for single status
+    // get text for multiple statuses
+    // proper tooltip for status
+    // get user stars
+    // web socket functions -> get pullRequests
+
     it('should do thing', function() {
         var ctrl = createCtrl();
 

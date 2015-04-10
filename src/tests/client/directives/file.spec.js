@@ -38,6 +38,18 @@ describe('File Directive', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should clear selection
+
+    // should determine where selection starts
+
+    // should determine if is selected
+    // should determine ref starts again
+    // should determine if is referenced
+
+    // should do thing upon select
+
+    // should go to line
+
     it('should do thing', function() {
         var directive = createDirective();
 

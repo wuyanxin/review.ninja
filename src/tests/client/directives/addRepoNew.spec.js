@@ -38,6 +38,10 @@ describe('Add Repo (new) Directive', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should get all repos
+    // should successfully add repo
+    // should say contains successfully
+
     it('should do thing', function() {
         var directive = createDirective();
 

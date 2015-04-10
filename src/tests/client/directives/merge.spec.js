@@ -38,6 +38,16 @@ describe('Merge Directive', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should set scope.branch to true if repo id is equal to head
+    // should watch status
+    // should increment status count if status state is equal to state
+    // should count error statuses as failed when combined status is fails
+    // should set default status to either status or ‘pending’
+    // should get star text successfully
+    // should delete branch successfully
+    // should merge pr successfully
+    // should confirm thing
+
     it('should do thing', function() {
         var directive = createDirective();
 

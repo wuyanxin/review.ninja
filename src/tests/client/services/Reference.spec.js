@@ -38,6 +38,12 @@ describe('Reference Factory', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should get reference successfully
+    // should get selection
+    // should return starts
+    // should return proper includes
+    // should return anchor
+
     it('should do thing', function() {
         var factory = createFactory();
 

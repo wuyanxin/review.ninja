@@ -38,6 +38,10 @@ describe('Moment Directive', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should watch for moment
+    // should refresh
+    // should call moment successfully
+
     it('should do thing', function() {
         var directive = createDirective();
 

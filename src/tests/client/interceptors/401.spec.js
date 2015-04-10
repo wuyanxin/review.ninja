@@ -38,6 +38,8 @@ describe('401 interceptor', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should have promise reject upon 401
+
     it('should do thing', function() {
         var factory = createFactory();
 

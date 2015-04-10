@@ -38,6 +38,9 @@ describe('Comment Factory', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should render comment if comment exists
+    // should do markdown stuff
+
     it('should do thing', function() {
         var factory = createFactory();
 

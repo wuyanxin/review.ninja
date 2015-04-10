@@ -38,6 +38,8 @@ describe('Scroll Directive', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should scroll to location successfully
+
     it('should do thing', function() {
         var directive = createDirective();
 

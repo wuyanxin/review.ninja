@@ -38,6 +38,12 @@ describe('Root Controller', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // create promise
+    // get user and repo params
+    // should change to error on statechangeerror
+    // should create webhook
+    // should send dismiss thing to server for user history
+
     it('should do thing', function() {
         var ctrl = createCtrl();
 

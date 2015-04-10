@@ -38,6 +38,14 @@ describe('Pull Factory', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should match sha
+    // should match ref
+    // should match path
+    // should match start
+    // should match end
+    // should match body
+    // should render body if body exists
+
     it('should do thing', function() {
         var factory = createFactory();
 

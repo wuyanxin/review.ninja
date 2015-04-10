@@ -38,6 +38,9 @@ describe('Focus Directive', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should watch if elem is focused
+    // should focus on focus
+    
     it('should do thing', function() {
         var directive = createDirective();
 

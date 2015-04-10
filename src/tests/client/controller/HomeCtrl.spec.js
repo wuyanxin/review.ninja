@@ -16,6 +16,8 @@ describe('Home Controller', function() {
 
         });
 
+        // create promise for user
+
         scope = $rootScope.$new();
         $rootScope.user = {
             value: {
@@ -47,6 +49,11 @@ describe('Home Controller', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // load user repos
+    // add a repo
+    // remove repo
+    // create onboarding repo
+    
     it('should load user repos propely', function() {
 
         var ctrl = createCtrl();

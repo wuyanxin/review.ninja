@@ -38,6 +38,8 @@ describe('Graph Directive', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // should check if any openissues are on head sha
+
     it('should do thing', function() {
         var directive = createDirective();
 

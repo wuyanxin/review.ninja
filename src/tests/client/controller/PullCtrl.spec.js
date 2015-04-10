@@ -38,6 +38,38 @@ describe('Pull Controller', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
+    // get pull request
+
+    // set line selection
+
+    // get combined statuses
+
+    // get repo settings for threshold
+
+    // get pull request comments
+
+    // get open issues
+
+    // get closed issues
+
+    // get star number text
+
+    // compcomm
+
+    // set star on pr
+
+    // get pull request
+
+    // create issue
+
+    // add comment
+
+    // watch
+
+    // badge modal
+
+    // all the socket functions
+
     it('should do thing', function() {
         var ctrl = createCtrl();
 
