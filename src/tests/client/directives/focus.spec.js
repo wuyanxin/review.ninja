@@ -2,13 +2,13 @@
 // settings test
 describe('Focus Directive', function() {
 
-    var scope, repo, httpBackend, createDirective;
+    var scope, repo, httpBackend, element;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -22,12 +22,7 @@ describe('Focus Directive', function() {
                 id: 1234
             }
         };
-        createDirective = function() {
-
-            var directive = $injector.get('focus');
-            directive.scope = scope;
-            return directive;
-        };
+        element = $compile("<focus></focus>")($rootScope);
     }));
 
     afterEach(function() {
@@ -39,7 +34,7 @@ describe('Focus Directive', function() {
     // should focus on focus
     
     it('should do thing', function() {
-        var directive = createDirective();
+        
 
         httpBackend.expect('POST', '/api/settings/get').respond({
             settings: 'settings'

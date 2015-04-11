@@ -2,13 +2,13 @@
 // settings test
 describe('Graph Directive', function() {
 
-    var scope, repo, httpBackend, createDirective;
+    var scope, repo, httpBackend, element;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -22,10 +22,7 @@ describe('Graph Directive', function() {
                 id: 1234
             }
         };
-        createDirective = function() {
-            var directive = $injector.get('graph');
-            return directive;
-        };
+        element = $compile("<graph></graph>")($rootScope);
     }));
 
     afterEach(function() {
@@ -36,7 +33,7 @@ describe('Graph Directive', function() {
     // should check if any openissues are on head sha
 
     it('should do thing', function() {
-        var directive = createDirective();
+        
 
         httpBackend.expect('POST', '/api/settings/get').respond({
             settings: 'settings'

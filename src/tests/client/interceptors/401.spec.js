@@ -15,9 +15,10 @@ describe('401 interceptor', function() {
 
     // should have promise reject upon 401
 
-    it('should do thing', function() {
+    it('should return response error', function() {
         var factory = createFactory();
         console.log(factory);
+
     });
 
 });

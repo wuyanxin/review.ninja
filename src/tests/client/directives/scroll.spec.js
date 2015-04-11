@@ -8,7 +8,7 @@ describe('Scroll Directive', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -38,7 +38,7 @@ describe('Scroll Directive', function() {
     // should scroll to location successfully
 
     it('should do thing', function() {
-        var directive = createDirective();
+        
 
         httpBackend.expect('POST', '/api/settings/get').respond({
             settings: 'settings'

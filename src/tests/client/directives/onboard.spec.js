@@ -2,13 +2,13 @@
 // settings test
 describe('Onboard Directive', function() {
 
-    var scope, repo, httpBackend, createDirective;
+    var scope, repo, httpBackend, createDirective, element;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -24,12 +24,7 @@ describe('Onboard Directive', function() {
                 id: 1234
             }
         };
-        createDirective = function() {
-
-            var directive = $injector.get('onboard');
-            directive.scope = scope;
-            return directive;
-        };
+        element = $compile('<onboard></onboard>')($rootScope);
     }));
 
     afterEach(function() {
@@ -43,7 +38,6 @@ describe('Onboard Directive', function() {
     // socket -> get user’s actions upon getting action value from server
 
     it('should do thing', function() {
-        var directive = createDirective();
 
         httpBackend.expect('POST', '/api/settings/get').respond({
             settings: 'settings'

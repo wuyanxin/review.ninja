@@ -23,7 +23,6 @@ describe('Comment Factory', function() {
             }
         };
         createFactory = function() {
-
             var factory = $injector.get('Comment');
             return factory;
         };

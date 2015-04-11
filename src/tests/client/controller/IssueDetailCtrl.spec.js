@@ -2,7 +2,7 @@
 // settings test
 describe('Issue Detail Controller', function() {
 
-    var scope, repo, httpBackend, createCtrl;
+    var scope, repo, httpBackend, createCtrl, Issue;
 
     beforeEach(angular.mock.module('app'));
 
@@ -11,6 +11,7 @@ describe('Issue Detail Controller', function() {
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
 
         httpBackend = $injector.get('$httpBackend');
+        Issue = $injector.get('Issue');
 
         httpBackend.when('GET', '/config').respond({
 
@@ -26,6 +27,7 @@ describe('Issue Detail Controller', function() {
 
             var ctrl = $controller('IssueDetailCtrl', {
                 $scope: scope,
+                Issue: 'Issue',
                 repo: repo
             });
             ctrl.scope = scope;

@@ -2,13 +2,13 @@
 // settings test
 describe('Moment Directive', function() {
 
-    var scope, repo, httpBackend, createDirective;
+    var scope, repo, httpBackend, element;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -22,12 +22,7 @@ describe('Moment Directive', function() {
                 id: 1234
             }
         };
-        createDirective = function() {
-
-            var directive = $injector.get('moment');
-            directive.scope = scope;
-            return directive;
-        };
+        element = $compile("<element></element>")($rootScope);
     }));
 
     afterEach(function() {
@@ -40,7 +35,7 @@ describe('Moment Directive', function() {
     // should call moment successfully
 
     it('should do thing', function() {
-        var directive = createDirective();
+        
 
         httpBackend.expect('POST', '/api/settings/get').respond({
             settings: 'settings'

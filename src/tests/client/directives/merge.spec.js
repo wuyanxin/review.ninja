@@ -2,13 +2,13 @@
 // settings test
 describe('Merge Directive', function() {
 
-    var scope, repo, httpBackend, createDirective;
+    var scope, repo, httpBackend, element;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -22,12 +22,7 @@ describe('Merge Directive', function() {
                 id: 1234
             }
         };
-        createDirective = function() {
-
-            var directive = $injector.get('mergeButton');
-            directive.scope = scope;
-            return directive;
-        };
+        element = $compile("<element></element>")($rootScope);
     }));
 
     afterEach(function() {
@@ -46,7 +41,7 @@ describe('Merge Directive', function() {
     // should confirm thing
 
     it('should do thing', function() {
-        var directive = createDirective();
+        
 
         httpBackend.expect('POST', '/api/settings/get').respond({
             settings: 'settings'

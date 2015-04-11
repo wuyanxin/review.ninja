@@ -2,13 +2,13 @@
 // settings test
 describe('File Browser Directive', function() {
 
-    var scope, repo, httpBackend, createDirective;
+    var scope, repo, httpBackend, element;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -22,12 +22,7 @@ describe('File Browser Directive', function() {
                 id: 1234
             }
         };
-        createDirective = function() {
-
-            var directive = $injector.get('browser');
-            directive.scope = scope;
-            return directive;
-        };
+        element = $compile("<browser></browser>")($rootScope);
     }));
 
     // should watch git data
@@ -41,7 +36,7 @@ describe('File Browser Directive', function() {
     });
 
     it('should do thing', function() {
-        var directive = createDirective();
+        
 
         httpBackend.expect('POST', '/api/settings/get').respond({
             settings: 'settings'

@@ -2,13 +2,13 @@
 // settings test
 describe('Add Repo (old) Directive', function() {
 
-    var scope, repo, httpBackend, createDirective;
+    var scope, repo, httpBackend, createDirective, element;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -22,11 +22,7 @@ describe('Add Repo (old) Directive', function() {
                 id: 1234
             }
         };
-        createDirective = function() {
-
-            var directive = $injector.get('addRepoOld')
-            return directive;
-        };
+        element = $compile("<add-repo-old></add-repo-old>")($rootScope);
     }));
 
     afterEach(function() {
@@ -39,7 +35,7 @@ describe('Add Repo (old) Directive', function() {
     // should reset query successfully
 
     it('should do thing', function() {
-        var directive = createDirective();
+        
 
         httpBackend.expect('POST', '/api/settings/get').respond({
             settings: 'settings'

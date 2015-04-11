@@ -2,7 +2,7 @@
 // settings test
 describe('Pull Controller', function() {
 
-    var scope, repo, httpBackend, createCtrl;
+    var scope, repo, httpBackend, createCtrl, Pull;
 
     beforeEach(angular.mock.module('app'));
 
@@ -11,6 +11,8 @@ describe('Pull Controller', function() {
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
 
         httpBackend = $injector.get('$httpBackend');
+
+        Pull = $injector.get('Pull');
 
         httpBackend.when('GET', '/config').respond({
 
@@ -26,6 +28,7 @@ describe('Pull Controller', function() {
 
             var ctrl = $controller('PullCtrl', {
                 $scope: scope,
+                Pull: 'Pull',
                 repo: repo
             });
             ctrl.scope = scope;

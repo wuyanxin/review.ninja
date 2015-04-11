@@ -23,7 +23,6 @@ describe('File Factory', function() {
             }
         };
         createFactory = function() {
-
             var factory = $injector.get('File');
             return factory;
         };
