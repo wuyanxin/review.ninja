@@ -2,6 +2,7 @@
 var module = angular.module('app',
     ['ninja.config',
      'ninja.filters',
+     'ninja.services',
      'ui.utils',
      'ui.router',
      'ui.bootstrap',
@@ -12,6 +13,7 @@ var module = angular.module('app',
         'angular.filter']);
 
 var filters = angular.module('ninja.filters', []);
+var services = angular.module('ninja.services', []);
 
 // *************************************************************
 // Delay start

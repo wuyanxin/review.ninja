@@ -2,33 +2,24 @@
 // settings test
 describe('Merge Directive', function() {
 
-    var scope, repo, httpBackend, element;
+    var scope, httpBackend, element, isolated;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
-
         httpBackend = $injector.get('$httpBackend');
-
         httpBackend.when('GET', '/config').respond({
-
+            
         });
+
         scope = $rootScope.$new();
 
-        repo = {
-            value: {
-                id: 1234
-            }
-        };
-        element = $compile("<element></element>")($rootScope);
+        element = $compile("<merge></merge>")(scope);
+        scope.$digest();
+        isolated = element.isolateScope();
     }));
-
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
 
     // should set scope.branch to true if repo id is equal to head
     // should watch status

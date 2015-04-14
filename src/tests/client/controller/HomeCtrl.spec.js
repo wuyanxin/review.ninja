@@ -8,7 +8,7 @@ describe('Home Controller', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $q) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -19,11 +19,6 @@ describe('Home Controller', function() {
         // create promise for user
 
         scope = $rootScope.$new();
-        $rootScope.user = {
-            value: {
-                login: 'login'
-            }
-        };
         scope.orgs = [
         {
             login: 'login-1'
@@ -34,6 +29,17 @@ describe('Home Controller', function() {
         {
             login: 'login-3'
         }];
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        promise.then(function(value) { scope.user = value; });
+
+        deferred.resolve({
+            value: {
+                id: 2757082,
+                login: 'login-1',
+                repos: [1234, 1235, 1236]
+            }
+        });
 
         scope.query = 'user/repo';
 
@@ -70,7 +76,6 @@ describe('Home Controller', function() {
             ],
             'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
             'uuid': 1387834
-
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({

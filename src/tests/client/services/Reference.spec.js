@@ -2,7 +2,7 @@
 // settings test
 describe('Reference Factory', function() {
 
-    var scope, repo, httpBackend, createFactory;
+    var scope, repo, httpBackend, sha, path, start, end, ref, altRef, Reference, line, altLine;
 
     beforeEach(angular.mock.module('app'));
 
@@ -16,43 +16,38 @@ describe('Reference Factory', function() {
 
         });
         scope = $rootScope.$new();
-
-        repo = {
-            value: {
-                id: 1234
-            }
-        };
-        createFactory = function() {
-
-            var factory = $injector.get('Reference');
-            return factory;
-        };
+        Reference = $injector.get('Reference');
+        sha = 'sha';
+        path = 'path';
+        start = 'start';
+        end = 'end';
+        ref = 'sha/path#Lstart-Lend';
+        altRef = 'sha/path#Lend-Lstart';
+        line = 'start';
+        altLine = 'fail';
     }));
 
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
+    // should get reference successfully
+    it('should successfully get reference', function() {
+        var result = Reference.get(sha, path, start, end);
+        (result).should.be.exactly(ref);
     });
 
-    // should get reference successfully
     // should get selection
+    it('should get a selection', function() {
+        var result = Reference.select(sha, path, start, end);
+        (result).should.be.exactly({
+            sha: sha,
+            path: path,
+            start: start,
+            end: end,
+            ref: altRef
+        });
+    });
+
     // should return starts
+    it('should return starts')
     // should return proper includes
     // should return anchor
-
-    it('should do thing', function() {
-        var factory = createFactory();
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
-        });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
-        });
-
-        httpBackend.flush();
-        (factory.scope.settings.value.settings).should.be.exactly('settings');
-        (factory.scope.reposettings.value.repo).should.be.exactly('repo');
-    });
 
 });

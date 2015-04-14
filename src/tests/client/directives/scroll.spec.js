@@ -2,32 +2,23 @@
 // settings test
 describe('Scroll Directive', function() {
 
-    var scope, repo, httpBackend, createDirective;
+    var scope, httpBackend, element, isolated;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
-
         httpBackend = $injector.get('$httpBackend');
-
         httpBackend.when('GET', '/config').respond({
-
+            
         });
+
         scope = $rootScope.$new();
 
-        repo = {
-            value: {
-                id: 1234
-            }
-        };
-        createDirective = function() {
-
-            var directive = $injector.get('scroll');
-            directive.scope = scope;
-            return directive;
-        };
+        element = $compile("<scroll></scroll>")(scope);
+        scope.$digest();
+        isolated = element.isolateScope();
     }));
 
     afterEach(function() {

@@ -5,16 +5,13 @@ describe('Pull Controller', function() {
     var scope, repo, httpBackend, createCtrl, Pull;
 
     beforeEach(angular.mock.module('app'));
-
     beforeEach(angular.mock.module('templates'));
+    beforeEach(angular.mock.module('ninja.services'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
-
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $provide) {
         httpBackend = $injector.get('$httpBackend');
 
-        Pull = $injector.get('Pull');
-
-        httpBackend.when('GET', '/config').respond({
+        httpBackend.when('GET', '/api/user/get').respond({
 
         });
         scope = $rootScope.$new();
@@ -28,7 +25,6 @@ describe('Pull Controller', function() {
 
             var ctrl = $controller('PullCtrl', {
                 $scope: scope,
-                Pull: 'Pull',
                 repo: repo
             });
             ctrl.scope = scope;

@@ -1,17 +1,18 @@
 'use strict';
 // settings test
+
+angular.module('mock.users', []).factory('User')
 describe('Issue Detail Controller', function() {
 
     var scope, repo, httpBackend, createCtrl, Issue;
 
     beforeEach(angular.mock.module('app'));
-
     beforeEach(angular.mock.module('templates'));
+    beforeEach(angular.mock.module('ninja.services'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $provide) {
 
         httpBackend = $injector.get('$httpBackend');
-        Issue = $injector.get('Issue');
 
         httpBackend.when('GET', '/config').respond({
 
@@ -27,7 +28,6 @@ describe('Issue Detail Controller', function() {
 
             var ctrl = $controller('IssueDetailCtrl', {
                 $scope: scope,
-                Issue: 'Issue',
                 repo: repo
             });
             ctrl.scope = scope;
