@@ -2,7 +2,7 @@
 // settings test
 describe('Socket Factory', function() {
 
-    var scope, repo, httpBackend, socket, cb;
+    var scope, repo, httpBackend, socket, cbOn, cbEmit;
 
     beforeEach(angular.mock.module('app'));
 
@@ -31,7 +31,7 @@ describe('Socket Factory', function() {
 
     // should listen successfully for events
     it('should listen for events', function() {
-        socket.on('thing', cb);
+        socket.on('thing', cbOn);
         socket.emit('thing', {}, cbEmit);
         scope.$digest();
     });

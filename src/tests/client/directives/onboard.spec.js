@@ -9,13 +9,17 @@ describe('Onboard Directive', function() {
     beforeEach(angular.mock.module('templates'));
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams, $q) {
-
+        $stateParams.user = 'gabe';
+        $stateParams.repo = 'test';
         httpBackend = $injector.get('$httpBackend');
         httpBackend.when('GET', '/config').respond({
             
         });
 
-        httpBackend.when('POST', '/api/onboard/getactions').respond({
+        httpBackend.when('POST', '/api/onboard/getactions', '{"args":' + JSON.stringify({
+            user: 'gabe',
+            repo: 'test'
+        })).respond({
             value: {
                 'user:addRepo': true,
                 'pullRequests:get': true
@@ -34,6 +38,7 @@ describe('Onboard Directive', function() {
                 repos: [1234, 1235, 1236]
             }
         });
+        
         rootScope.promise = promise;
         console.log(rootScope.promise);
         element = $compile('<onboard></onboard>')(rootScope);
@@ -57,7 +62,10 @@ describe('Onboard Directive', function() {
     // });
 
     // should get a user’s completed actions for onboarding
-
+    it('should add the right actions for onboarding', function() {
+        httpBackend.flush();
+        scope.complete = false;
+    });
 
     // should add transition class to element
     it('should add transition class to an element', function($compile) {

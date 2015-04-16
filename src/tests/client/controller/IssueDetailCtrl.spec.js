@@ -4,11 +4,10 @@
 angular.module('mock.users', []).factory('User')
 describe('Issue Detail Controller', function() {
 
-    var scope, repo, httpBackend, createCtrl, Issue;
+    var scope, repo, httpBackend, IssueDetailCtrl;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
-    beforeEach(angular.mock.module('ninja.services'));
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $provide) {
 
@@ -18,48 +17,19 @@ describe('Issue Detail Controller', function() {
 
         });
         scope = $rootScope.$new();
+        scope.$parent = {$parent: {}};
 
-        repo = {
-            value: {
-                id: 1234
-            }
-        };
-        createCtrl = function() {
-
-            var ctrl = $controller('IssueDetailCtrl', {
-                $scope: scope,
-                repo: repo
-            });
-            ctrl.scope = scope;
-            return ctrl;
-        };
+        var IssueDetailCtrl = $controller('IssueDetailCtrl', {
+            $scope: scope,
+        });
     }));
 
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
+    it('should update comparison view', function() {
+
     });
 
-    // get comments on issue
-    // get anchor?
-    // set state of issue to close
-    // add a comment to issue
-    // get proper status text of issue depending on if there is comment
-    // web socket functions 
-
-    it('should do thing', function() {
-        var ctrl = createCtrl();
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
-        });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
-        });
-
-        httpBackend.flush();
-        (ctrl.scope.settings.value.settings).should.be.exactly('settings');
-        (ctrl.scope.reposettings.value.repo).should.be.exactly('repo');
+    it('should set issue sha to null', function() {
+        ([scope.parent.parent.sha]).should.be.eql([null]);
     });
 
 });
