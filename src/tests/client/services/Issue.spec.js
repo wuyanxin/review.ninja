@@ -8,7 +8,9 @@ describe('Issue Factory', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $stateParams) {
+        $stateParams.user = 'gabe';
+        $stateParams.repo = 'repo1';
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -19,25 +21,48 @@ describe('Issue Factory', function() {
 
         Issue = $injector.get('Issue');
         fakeIssue = {
-            body: 'Test body\r\n\r\n' +
-           '|commit|file reference|pull request|   |\r\n' +
-           '|------|--------------|------------|---|\r\n' +
-           '|*commitsha*|[src/tests/server/api/issue.js#L24](https://github.com/reviewninja/review.ninja/blob/*commitsha*/src/tests/server/api/issue.js#L24)| #1 |[![#1](https://review.ninja/assets/images/icon-alt-36.png)](https://review.ninja/reviewninja/review.ninja/pull/1)|'
+            body: '|commit|file reference|pull request|   |\r\n' + 
+            '|------|--------------|------------|---|\r\n' + 
+            '|abcdabcd12341234abcdabcd12341234abcdabcd|[culture#L1](https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1)| #1 |[![#1](http://app.review.ninja/assets/images/icon-alt-36.png)](http://app.review.ninja/reviewninja/foo/pull/1)|'
        };
     }));
 
     it('should parse issue well', function() {
         var resultingIssue = {
             body: '',
-            sha: '*commitsha*',
-            ref: 'src/tests/server/api/issue.js#L24',
-            path: 'https://github.com/reviewninja/review.ninja/blob/*commitsha*/src/tests/server/api/issue.js#L24',
-            start: '#1',
+            sha: 'abcdabcd12341234abcdabcd12341234abcdabcd',
+            ref: 'culture#L1',
+            path: 'culture',
+            start: 1,
             end: null,
-            key: '*commitsha*' + '/' + 'src/tests/server/api/issue.js#L24'
+            key: 'abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1'
         };
         var result = Issue.parse(fakeIssue);
+        console.log('hahah', result);
+        // (result.sha).should.be.exactly('abcdabcd12341234abcdabcd12341234abcdabcd');
+        // (result.ref).should.be.exactly('culture#L1');
+        // (result.path).should.be.exactly('culture');
+        // (result.start).should.be.exactly(1);
+        // ([result.end]).should.be.eql([null]);
+        // (result.body).should.be.empty;
+        // (result.key).should.be.exactly('abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1');
         (result).should.be.eql(resultingIssue);
+    });
+
+    it('should render issue', function() {
+        var fakeIssue2 = {body: 'hello world'};
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
+          text: "hello world",
+          mode: "gfm",
+          context: "gabe/repo1"
+        }) + '}').respond({
+            value: {
+                body: '<p>hello world</p>'
+            }
+        });
+        var result = Issue.render(fakeIssue2);
+        httpBackend.flush();
+        (result.html).should.be.exactly('<p>hello world</p>')
     });
 
 });

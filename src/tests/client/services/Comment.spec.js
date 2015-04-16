@@ -9,6 +9,8 @@ describe('Comment Factory', function() {
     beforeEach(angular.mock.module('templates'));
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $stateParams) {
+        $stateParams.user = 'github';
+        $stateParams.repo = 'gollum';
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -16,12 +18,12 @@ describe('Comment Factory', function() {
 
         });
 
-        httpBackend.when('POST', '/api/github/wrap', '{"obj": "markdown", "fun": "render", "arg": "' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
           text: "Hello world github/linguist#1 **cool**, and #1!",
           mode: "gfm",
           context: "github/gollum"
-        })
-        ).respond({value: {
+        }) + '}').respond({
+            value: {
                 body: '<p>Hello world <a href="https://github.com/github/linguist/issues/1" class="issue-link" title="Binary detection issues on extensionless files">github/linguist#1</a> <strong>cool</strong>, and <a href="https://github.com/gollum/gollum/issues/1" class="issue-link" title="no method to write a file?">#1</a>!</p>'
             }
         });
@@ -36,8 +38,6 @@ describe('Comment Factory', function() {
         };
 
         Comment = $injector.get('Comment');
-        $stateParams.user = 'github';
-        $stateParams.repo = 'gollum';
         scope.$digest();
         console.log($stateParams);
     }));
@@ -45,8 +45,8 @@ describe('Comment Factory', function() {
     // should render comment if comment exists
     it('should render comment in proper html', function() {
         var result = Comment.render(comment);
-        (result).should.be.eql(renderedHTML);
         httpBackend.flush();
+        (result).should.be.eql(renderedHTML);
     });
     // should do markdown stuff
 

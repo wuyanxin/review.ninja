@@ -1,6 +1,6 @@
 'use strict';
 // settings test
-describe('Repo Controller', function() {
+describe('Root Controller', function() {
 
     var scope, repo, httpBackend, createCtrl;
 
@@ -23,7 +23,8 @@ describe('Repo Controller', function() {
             }
         };
         createCtrl = function() {
-            var ctrl = $controller('RepoCtrl', {
+
+            var ctrl = $controller('RootCtrl', {
                 $scope: scope,
                 repo: repo
             });
@@ -37,17 +38,11 @@ describe('Repo Controller', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
-    // set the statuses based on the combined stuff
-    // get open pull request
-    // get closed pull requests
-    // get collaborators
-    // badge modal
-    // invite modal
-    // get text for single status
-    // get text for multiple statuses
-    // proper tooltip for status
-    // get user stars
-    // web socket functions -> get pullRequests
+    // create promise
+    // get user and repo params
+    // should change to error on statechangeerror
+    // should create webhook
+    // should send dismiss thing to server for user history
 
     it('should do thing', function() {
         var ctrl = createCtrl();

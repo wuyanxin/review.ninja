@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "angular-mocks": "~1.2.19",
-    "should": "~3.3.1"
+    "should": "~3.3.1",
+    "angular-socket.io-mock": "~0.1.0"
   }
 }

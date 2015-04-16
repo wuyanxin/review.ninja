@@ -2,7 +2,7 @@
 // settings test
 describe('Socket Factory', function() {
 
-    var scope, repo, httpBackend, createFactory, socket;
+    var scope, repo, httpBackend, socket, cb;
 
     beforeEach(angular.mock.module('app'));
 
@@ -15,37 +15,31 @@ describe('Socket Factory', function() {
         httpBackend.when('GET', '/config').respond({
 
         });
+
         scope = $rootScope.$new();
 
-        repo = {
-            value: {
-                id: 1234
-            }
-        };
         socket = $injector.get('socket');
+
+        cbOn = function(socket, args) {
+            scope.received = true;
+        };
+
+        cbEmit = function(socket, args) {
+            scope.emitted = true;
+        };
     }));
 
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
+    // should listen successfully for events
+    it('should listen for events', function() {
+        socket.on('thing', cb);
+        socket.emit('thing', {}, cbEmit);
+        scope.$digest();
     });
 
-    // should listen successfully for events
     // should emit thing upon event
-
-    it('should do thing', function() {
-        var factory = createFactory();
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
-        });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
-        });
-
-        httpBackend.flush();
-        (factory.scope.settings.value.settings).should.be.exactly('settings');
-        (factory.scope.reposettings.value.repo).should.be.exactly('repo');
+    it('should emit something when an event happens', function() {
+        socket.emit('stuff', {}, cbOn);
+        scope.$digest();
     });
 
 });

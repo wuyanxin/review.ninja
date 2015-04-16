@@ -27,21 +27,29 @@ describe('Add Repo (new) Directive', function() {
 
         scope = $rootScope.$new();
 
-        var addFake = function(repo, done) {
-            done(null);
+        var addFake = function(obj) {
+            (obj.done)();
         };
         element = $compile("<add-repo-new></add-repo-new>")(scope);
         scope.$digest();
         elScope = element.isolateScope();
-        console.log(elScope);
-        elScope.repos = [{id: 1234}, {id: 2345}, {id: 3456}];
+        elScope.repos = [{id: 1234}, {id: 2345}];
         elScope.add = addFake;
-        console.log(elScope.repos);
+        elScope.active = true;
     }));
 
     // should get all repos
     // should successfully add repo
     // should say contains successfully
+    it('should add a repo with an adddate', function() {
+        var resultRepo = [{id: 1234}, {id: 2345}, {id: 3456}];
+        elScope.addRepo({id: 3456});
+        ([elScope.active]).should.be.eql([null]);
+        (elScope.repos[elScope.repos.length-1]).should.have.property('adddate');
+        (elScope.repos[elScope.repos.length-1].id).should.be.exactly(3456);
+        (elScope.search).should.be.empty;
+        (elScope.show).should.be.false;
+    });
 
     it('should check contains', function() {
         var result = elScope.contains(1234);
