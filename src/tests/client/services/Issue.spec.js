@@ -2,7 +2,7 @@
 // settings test
 describe('Issue Factory', function() {
 
-    var scope, repo, httpBackend, createFactory;
+    var scope, repo, httpBackend, Issue, fakeIssue;
 
     beforeEach(angular.mock.module('app'));
 
@@ -17,36 +17,27 @@ describe('Issue Factory', function() {
         });
         scope = $rootScope.$new();
 
-        repo = {
-            value: {
-                id: 1234
-            }
-        };
-        createFactory = function() {
-
-            var factory = $injector.get('Issue');
-            return factory;
-        };
+        Issue = $injector.get('Issue');
+        fakeIssue = {
+            body: 'Test body\r\n\r\n' +
+           '|commit|file reference|pull request|   |\r\n' +
+           '|------|--------------|------------|---|\r\n' +
+           '|*commitsha*|[src/tests/server/api/issue.js#L24](https://github.com/reviewninja/review.ninja/blob/*commitsha*/src/tests/server/api/issue.js#L24)| #1 |[![#1](https://review.ninja/assets/images/icon-alt-36.png)](https://review.ninja/reviewninja/review.ninja/pull/1)|'
+       };
     }));
 
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
-
-    it('should do thing', function() {
-        var factory = createFactory();
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
-        });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
-        });
-
-        httpBackend.flush();
-        (factory.scope.settings.value.settings).should.be.exactly('settings');
-        (factory.scope.reposettings.value.repo).should.be.exactly('repo');
+    it('should parse issue well', function() {
+        var resultingIssue = {
+            body: '',
+            sha: '*commitsha*',
+            ref: 'src/tests/server/api/issue.js#L24',
+            path: 'https://github.com/reviewninja/review.ninja/blob/*commitsha*/src/tests/server/api/issue.js#L24',
+            start: '#1',
+            end: null,
+            key: '*commitsha*' + '/' + 'src/tests/server/api/issue.js#L24'
+        };
+        var result = Issue.parse(fakeIssue);
+        (result).should.be.eql(resultingIssue);
     });
 
 });

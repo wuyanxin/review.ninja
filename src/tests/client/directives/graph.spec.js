@@ -26,13 +26,13 @@ describe('Graph Directive', function() {
         isolated.headSha = 111;
         isolated.openIssues = [111, 2222, 1111];
         var result = isolated.headCommitIssues();
-        (result).should.be.exactly(true);
+        (result).should.be.true;
     });
 
     it('should return false if head sha not in open issues', function() {
         isolated.headSha = 111;
         isolated.openIssues = [222];
         var result = isolated.headCommitIssues();
-        (result).should.be.exactly(false);
+        (result).should.be.false;
     });
 });

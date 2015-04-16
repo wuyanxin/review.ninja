@@ -16,19 +16,25 @@ describe('Home Controller', function() {
 
         });
 
+        httpBackend.when('GET', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
+            data: {
+                name: 'repo-1',
+                user: 'me',
+                id: 21620444
+            }
+        });
+
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
+            data: {
+                name: 'repo-1',
+                user: 'me',
+                id: 21620444
+            }
+        });
+
         // create promise for user
 
         scope = $rootScope.$new();
-        scope.orgs = [
-        {
-            login: 'login-1'
-        },
-        {
-            login: 'login-2'
-        },
-        {
-            login: 'login-3'
-        }];
         var deferred = $q.defer();
         var promise = deferred.promise;
         promise.then(function(value) { scope.user = value; });
@@ -42,141 +48,139 @@ describe('Home Controller', function() {
         });
 
         scope.query = 'user/repo';
+        scope.promise = promise;
+        scope.repos = [];
 
         createCtrl = function() {
             return $controller('HomeCtrl', {
                 $scope: scope
             });
         };
+        scope.$apply();
     }));
-
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
 
     // load user repos
     // add a repo
     // remove repo
     // create onboarding repo
     
-    it('should load user repos propely', function() {
+    // it('should load user repos propely', function() {
 
-        var ctrl = createCtrl();
+    //     var ctrl = createCtrl();
 
-        // load the data
+    //     // load the data
 
-        httpBackend.expect('POST', '/api/user/get').respond({
-            '__v': 18,
-            '_id': {
-                '$oid': '53f991fbee5d5ef38f67ce5f'
-            },
-            'repos': [
-                21620444
-            ],
-            'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
-            'uuid': 1387834
-        });
+    //     httpBackend.expect('POST', '/api/user/get').respond({
+    //         '__v': 18,
+    //         '_id': {
+    //             '$oid': '53f991fbee5d5ef38f67ce5f'
+    //         },
+    //         'repos': [
+    //             21620444
+    //         ],
+    //         'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
+    //         'uuid': 1387834
+    //     });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
-            data: []
-        });
+    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
+    //         data: []
+    //     });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-            data: {
-                name: 'repo-1',
-                user: 'me',
-                id: 21620444
-            }
-        });
+    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
+    //         data: {
+    //             name: 'repo-1',
+    //             user: 'me',
+    //             id: 21620444
+    //         }
+    //     });
 
-        httpBackend.flush();
+    //     httpBackend.flush();
 
-        (scope.repos[0].name).should.be.exactly('repo-1');
-    });
-
-
-    it('should add a repo without error', function() {
-        var ctrl = createCtrl();
-
-        // load the data
-
-       httpBackend.expect('POST', '/api/user/get').respond({
-            '__v': 18,
-            '_id': {
-                '$oid': '53f991fbee5d5ef38f67ce5f'
-            },
-            'repos': [
-                21620444
-            ],
-            'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
-            'uuid': 1387834
-
-        });
-
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
-            data: []
-        });
-
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-            data: {
-                name: 'repo-1',
-                user: 'me',
-                id: 21620444
-            }
-        });
-
-        httpBackend.flush();
-
-        scope.add({owner: {login: 'login'}, name: 'name', id: '1234'});
-
-        httpBackend.expect('POST', '/api/user/addRepo').respond(null);
-        httpBackend.flush();
-
-        scope.repos.length.should.be.exactly(2);
-    });
+    //     (scope.repos[0].name).should.be.exactly('repo-1');
+    // });
 
 
-    it('should remove a repo without error', function() {
-               var ctrl = createCtrl();
+    // it('should add a repo without error', function() {
+    //     var ctrl = createCtrl();
 
-        // load the data
+    //     // load the data
 
-        httpBackend.expect('POST', '/api/user/get').respond({
-            '__v': 18,
-            '_id': {
-                '$oid': '53f991fbee5d5ef38f67ce5f'
-            },
-            'repos': [
-                21620444
-            ],
-            'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
-            'uuid': 1387834
-        });
+    //    httpBackend.expect('POST', '/api/user/get').respond({
+    //         '__v': 18,
+    //         '_id': {
+    //             '$oid': '53f991fbee5d5ef38f67ce5f'
+    //         },
+    //         'repos': [
+    //             21620444
+    //         ],
+    //         'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
+    //         'uuid': 1387834
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
-            data: []
-        });
+    //     });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-            data: {
-                name: 'repo-1',
-                user: 'me',
-                id: 21620444
-            }
-        });
+    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
+    //         data: []
+    //     });
 
-        httpBackend.flush();
+    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
+    //         data: {
+    //             name: 'repo-1',
+    //             user: 'me',
+    //             id: 21620444
+    //         }
+    //     });
+
+    //     httpBackend.flush();
+
+    //     scope.add({owner: {login: 'login'}, name: 'name', id: '1234'});
+
+    //     httpBackend.expect('POST', '/api/user/addRepo').respond(null);
+    //     httpBackend.flush();
+
+    //     scope.repos.length.should.be.exactly(2);
+    // });
 
 
-        scope.remove({owner: {login: 'login'}, name: 'name', id: '1234'});
+    // it('should remove a repo without error', function() {
+    //            var ctrl = createCtrl();
 
-        httpBackend.expect('POST', '/api/user/rmvRepo').respond(null);
+    //     // load the data
 
-        httpBackend.flush();
+    //     httpBackend.expect('POST', '/api/user/get').respond({
+    //         '__v': 18,
+    //         '_id': {
+    //             '$oid': '53f991fbee5d5ef38f67ce5f'
+    //         },
+    //         'repos': [
+    //             21620444
+    //         ],
+    //         'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
+    //         'uuid': 1387834
+    //     });
 
-        scope.repos.length.should.be.exactly(0);
+    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
+    //         data: []
+    //     });
 
-    });
+    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
+    //         data: {
+    //             name: 'repo-1',
+    //             user: 'me',
+    //             id: 21620444
+    //         }
+    //     });
+
+    //     httpBackend.flush();
+
+
+    //     scope.remove({owner: {login: 'login'}, name: 'name', id: '1234'});
+
+    //     httpBackend.expect('POST', '/api/user/rmvRepo').respond(null);
+
+    //     httpBackend.flush();
+
+    //     scope.repos.length.should.be.exactly(0);
+
+    // });
 
 });

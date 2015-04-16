@@ -2,13 +2,40 @@
 // settings test
 describe('Pull Controller', function() {
 
-    var scope, repo, httpBackend, createCtrl, Pull;
+    var scope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
-    beforeEach(angular.mock.module('ninja.services'));
+    // beforeEach(angular.mock.module('ninja.services'));
+    beforeEach(function() {
+        PullMock = {
+            milestone: function(val) {
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $provide) {
+            },
+
+            render: function(val) {
+
+            },
+
+            stars: function(val, t) {
+
+            }
+        };
+    });
+
+    beforeEach(function() {
+        IssueMock = {
+            parse: function(val) {
+
+            },
+
+            render: function(val) {
+
+            }
+        };
+    });
+
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
         httpBackend = $injector.get('$httpBackend');
 
         httpBackend.when('GET', '/api/user/get').respond({
@@ -21,21 +48,16 @@ describe('Pull Controller', function() {
                 id: 1234
             }
         };
-        createCtrl = function() {
 
-            var ctrl = $controller('PullCtrl', {
-                $scope: scope,
-                repo: repo
-            });
-            ctrl.scope = scope;
-            return ctrl;
-        };
+        PullCtrl = $controller('PullCtrl', {
+            $scope: scope,
+            repo: repo.value,
+            sha: null,
+            Pull: PullMock,
+            Issue: IssueMock
+        });
+        PullCtrl.scope = scope;
     }));
-
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
 
     // get pull request
 
@@ -71,17 +93,7 @@ describe('Pull Controller', function() {
 
     it('should do thing', function() {
         var ctrl = createCtrl();
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
-        });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
-        });
-
         httpBackend.flush();
-        (ctrl.scope.settings.value.settings).should.be.exactly('settings');
-        (ctrl.scope.reposettings.value.repo).should.be.exactly('repo');
     });
 
 });

@@ -2,7 +2,7 @@
 // settings test
 describe('Socket Factory', function() {
 
-    var scope, repo, httpBackend, createFactory;
+    var scope, repo, httpBackend, createFactory, socket;
 
     beforeEach(angular.mock.module('app'));
 
@@ -22,10 +22,7 @@ describe('Socket Factory', function() {
                 id: 1234
             }
         };
-        createFactory = function() {
-            var factory = $injector.get('socket');
-            return factory;
-        };
+        socket = $injector.get('socket');
     }));
 
     afterEach(function() {

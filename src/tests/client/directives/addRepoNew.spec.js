@@ -2,7 +2,7 @@
 // settings test
 describe('Add Repo (new) Directive', function() {
 
-    var scope, repo, httpBackend, element;
+    var scope, elScope, repo, httpBackend, element, add;
 
     beforeEach(angular.mock.module('app'));
 
@@ -15,39 +15,39 @@ describe('Add Repo (new) Directive', function() {
         httpBackend.when('GET', '/config').respond({
 
         });
+
+        httpBackend.expect('POST', '/api/github/call','{"obj":"repos","fun":"getAll","arg":' + JSON.stringify({
+           headers:{accept:'application/vnd.github.moondragon+json'},
+           per_page:50
+        }) + '}').respond({
+            value: {
+                repos: [123, 134, 123]
+            }
+        });
+
         scope = $rootScope.$new();
 
-        repo = {
-            value: {
-                id: 1234
-            }
+        var addFake = function(repo, done) {
+            done(null);
         };
-        
-        element = $compile("<add-repo-new></add-repo-new>")($rootScope);
+        element = $compile("<add-repo-new></add-repo-new>")(scope);
+        scope.$digest();
+        elScope = element.isolateScope();
+        console.log(elScope);
+        elScope.repos = [{id: 1234}, {id: 2345}, {id: 3456}];
+        elScope.add = addFake;
+        console.log(elScope.repos);
     }));
-
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
 
     // should get all repos
     // should successfully add repo
     // should say contains successfully
 
-    it('should do thing', function() {
-        
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
-        });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
-        });
-
-        httpBackend.flush();
-        (directive.scope.settings.value.settings).should.be.exactly('settings');
-        (directive.scope.reposettings.value.repo).should.be.exactly('repo');
+    it('should check contains', function() {
+        var result = elScope.contains(1234);
+        var result2 = elScope.contains(9999);
+        (result).should.be.true;
+        (result2).should.be.false;
     });
 
 });

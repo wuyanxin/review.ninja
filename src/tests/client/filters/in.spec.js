@@ -26,8 +26,8 @@ describe('In Filter', function() {
         var result = _in(items, array, 1);
         var result2 = _in(items, null, 1);
 
-        result.should.be.exactly(items);
-        result2.should.be.exactly(items);
+        (result).should.be.eql(items);
+        (result2).should.be.eql(items);
     });
 
     it('should return matched items in an array', function() {
@@ -35,8 +35,8 @@ describe('In Filter', function() {
         var result = _in(items, array, 'attr');
         var result2 = _in(items, array, null);
 
-        result.should.be.exactly([2, 3]);
-        result2.should.be.exactly([4]);
+        (result).should.be.eql([2, 3]);
+        (result2).should.be.eql([4]);
     });
 
 });

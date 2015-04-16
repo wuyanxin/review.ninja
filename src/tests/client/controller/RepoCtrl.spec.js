@@ -23,7 +23,6 @@ describe('Repo Controller', function() {
             }
         };
         createCtrl = function() {
-
             var ctrl = $controller('RepoCtrl', {
                 $scope: scope,
                 repo: repo

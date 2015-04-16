@@ -2,7 +2,7 @@
 // file factory test
 describe('File Factory', function() {
 
-    var scope, repo, httpBackend, createFactory;
+    var scope, repo, httpBackend, File;
 
     beforeEach(angular.mock.module('app'));
 
@@ -17,39 +17,22 @@ describe('File Factory', function() {
         });
         scope = $rootScope.$new();
 
-        repo = {
-            value: {
-                id: 1234
-            }
-        };
-        createFactory = function() {
-            var factory = $injector.get('File');
-            return factory;
-        };
+        File = $injector.get('File');
     }));
 
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
+    // should change node to image if image
+    it('should change node to image if image', function() {
+        var tree = {tree: [{type: 'haha', path: 'test.txt'}, {type: 'blob', path: 'test.png'}]};
+        var treeCorrect = {tree: [{type: 'haha', path: 'test.txt'}, {type: 'image', path: 'test.png'}]};
+        var result = File.getTreeTypes(tree);
+        (result).should.eql(treeCorrect);
+    }); 
 
-    // should determine if file is image
-    // should get tree types if image
     // should get file types raw if image
-    
-    it('should do thing', function() {
-        var factory = createFactory();
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
-        });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
-        });
-
-        httpBackend.flush();
-        (factory.scope.settings.value.settings).should.be.exactly('settings');
-        (factory.scope.reposettings.value.repo).should.be.exactly('repo');
+    it('should get raw url of file and put it in file', function() {
+        var files = [{filename: 'raw.png'}];
+        var filesCorrect = [{filename: 'raw.png', image: 'raw.png'}];
+        var result = File.getFileTypes(files);
+        (result).should.eql(treeCorrect);
     });
-
 });

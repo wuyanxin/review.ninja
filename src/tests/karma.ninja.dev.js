@@ -11,7 +11,7 @@ module.exports = function(config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['mocha'],
+        frameworks: ['mocha', 'sinon'],
 
 
         // list of files / patterns to load in the browser
@@ -50,6 +50,7 @@ module.exports = function(config) {
             'src/client/filters/**/*.js',
             'src/client/interceptors/**/*.js',
             'src/client/services/**/*.js',
+            // 'src/client/**/*.js',
 
             // Client templates
             'src/client/**/*.html',
@@ -73,9 +74,9 @@ module.exports = function(config) {
         },
 
         coverageReporter: {
-            dir: './output/coverage/',
-            subdir: 'client-html',
-            type: 'html'
+            type: 'html',
+            dir: 'output/coverage/',
+            subdir: 'client-html'
         },
 
         ngHtml2JsPreprocessor: {
