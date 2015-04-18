@@ -8,7 +8,8 @@ var gulp = require('gulp'),
 // client-side tests
 gulp.task('karma', function() {
   return karma.start({
-    configFile: __dirname + '/../../' + config.karmaSrc
+    configFile: __dirname + '/../../' + config.karmaSrc,
+    singleRun: true
   });
 });
 

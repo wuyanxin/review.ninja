@@ -2,15 +2,16 @@
 // settings test
 describe('Merge Directive', function() {
 
-    var scope, repo, httpBackend, element, elScope;
+    var scope, repo, httpBackend, element, elScope, timeout;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams, $timeout) {
         $stateParams.user = 'gabe';
         $stateParams.repo = 1234;
+        timeout = $timeout;
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -19,95 +20,39 @@ describe('Merge Directive', function() {
         });
 
         scope = $rootScope.$new();
-        element = $compile("<merge></merge>")(scope);
+        scope.permissions = {};
+        scope.$digest();
+        element = $compile("<merge-button></merge-button>")(scope);
         scope.$digest();
         elScope = element.isolateScope();
+        console.log(elScope);
     }));
 
-    // should watch git data
-    it('should change stack and path upon new sha', function() {
-        // var testTree = {
-        //     tree: [
-        //     {type: 'haha', path: 'test.txt'}, 
-        //     {type: 'blob', path: 'test.png'}
-        //     ]
-        // };
-        // httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"getTree","arg":' + JSON.stringify({
-        //    user: 'gabe',
-        //    repo: 1234,
-        //    sha: 'magic'
-        // }) + '}').respond({
-        //     value: testTree
-        // });
+    it('should get if thing is branch', function() {
 
-        // elScope.sha = 'magic';
-        // scope.$digest();
-        // elScope.$apply();
-
-        // (elScope.stack).should.be.empty;
-        // (elScope.path).should.be.empty;
-        // httpBackend.flush();
-        // (elScope.tree).should.be.eql({
-        //     tree: [
-        //     {type: 'haha', path: 'test.txt'}, 
-        //     {type: 'image', path: 'test.png'}
-        //     ]
-        // });
-        elScope.permissions = {push: true};
-        elScope.pull = {stars: [1,2,3], 
-            head: {repo: {id: 1}, ref: 'thing'},
-            base: {repo: {id: 1}, ref: 'lol'}};
-        elScope.reposettings = {value: {threshold: 3}};
-        httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"getReference","arg":' + JSON.stringify({
-           user: 'gabe',
-           repo: 1234,
-           ref: 'heads/thing'
-        }) + '}').respond({
-            value: [1,2,3]
-        });
     });
 
-    // should successfully pop from stack
+    it('should watch status + set default status', function() {
+
+    });
+
     it('should get star text', function() {
 
     });
 
-    // should do nothing if stack is empty
-    it('should do nothing if stack is empty', function() {
-        // elScope.stack = [];
-        // var result = elScope.up();
-        // ([result]).should.be.eql([undefined]);
+    it('should delete branch', function() {
+
+    });
+
+    it('should merge branch', function() {
+
     });
 
     // should push onto stack
-    it('should push tree onto stack', function() {
-        // var testTree = {
-        //     tree: [
-        //     {type: 'haha', path: 'test.txt'}, 
-        //     {type: 'blob', path: 'test.png'}
-        //     ]
-        // };
-        // httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"getTree","arg":' + JSON.stringify({
-        //    user: 'gabe',
-        //    repo: 1234,
-        //    sha: 'magic'
-        // }) + '}').respond({
-        //     value: testTree
-        // });
-    });
-
-    it('should push file onto stack', function() {
-        // httpBackend.expect('POST', '/api/github/wrap','{"obj":"gitdata","fun":"getBlob","arg":' + JSON.stringify({
-        //    user: 'gabe',
-        //    repo: 1234,
-        //    sha: 'magic'
-        // }) + '}').respond({
-        //     value: 'test.png'
-        // });
-    });
-
     it('should confirm', function() {
-
+        elScope.confirm();
+        (elScope.showConfirmation).should.be.true;
+        timeout.flush();
+        (elScope.showConfirmation).should.be.false;
     });
-
 });

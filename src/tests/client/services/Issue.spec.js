@@ -20,14 +20,14 @@ describe('Issue Factory', function() {
         scope = $rootScope.$new();
 
         Issue = $injector.get('Issue');
-        fakeIssue = {
-            body: '|commit|file reference|pull request|   |\r\n' + 
-            '|------|--------------|------------|---|\r\n' + 
-            '|abcdabcd12341234abcdabcd12341234abcdabcd|[culture#L1](https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1)| #1 |[![#1](http://app.review.ninja/assets/images/icon-alt-36.png)](http://app.review.ninja/reviewninja/foo/pull/1)|'
-       };
     }));
 
     it('should parse issue well', function() {
+        var fakeIssue = {
+            body: '|commit|file reference|pull request|   |\r\n' + 
+            '|------|--------------|------------|---|\r\n' + 
+            '|abcdabcd12341234abcdabcd12341234abcdabcd|[culture#L1](https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1)| #1 |[![#1](http://app.review.ninja/assets/images/icon-alt-36.png)](http://app.review.ninja/reviewninja/foo/pull/1)|'
+        };
         var resultingIssue = {
             body: '',
             sha: 'abcdabcd12341234abcdabcd12341234abcdabcd',
@@ -39,13 +39,6 @@ describe('Issue Factory', function() {
         };
         var result = Issue.parse(fakeIssue);
         console.log('hahah', result);
-        // (result.sha).should.be.exactly('abcdabcd12341234abcdabcd12341234abcdabcd');
-        // (result.ref).should.be.exactly('culture#L1');
-        // (result.path).should.be.exactly('culture');
-        // (result.start).should.be.exactly(1);
-        // ([result.end]).should.be.eql([null]);
-        // (result.body).should.be.empty;
-        // (result.key).should.be.exactly('abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1');
         (result).should.be.eql(resultingIssue);
     });
 
@@ -55,14 +48,12 @@ describe('Issue Factory', function() {
           text: "hello world",
           mode: "gfm",
           context: "gabe/repo1"
-        }) + '}').respond({
-            value: {
-                body: '<p>hello world</p>'
-            }
+        }) + '}').respond(200, {
+            body: '<p>hello world</p>'
         });
         var result = Issue.render(fakeIssue2);
         httpBackend.flush();
-        (result.html).should.be.exactly('<p>hello world</p>')
+        (result.html).should.be.exactly('<p>hello world</p>');
     });
 
 });

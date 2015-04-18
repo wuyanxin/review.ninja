@@ -25,6 +25,15 @@ describe('Repo Controller', function() {
             value: 'success'
         });
 
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"pullRequests","fun":"getAll","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 1234,
+          state: 'open',
+          per_page: 10
+        }) + '}').respond({
+            affix: [1, 2, 3, 4]
+        });
+
         scope = $rootScope.$new();
         var RepoCtrl = $controller('RepoCtrl', {
             $scope: scope,
@@ -36,12 +45,6 @@ describe('Repo Controller', function() {
 
     it('should be default open', function() {
         (scope.type).should.be.exactly('open');
-    });
-
-    it('should set status', function() {
-        setStatus(scope.pull);
-        httpBackend.flush();
-        (scope.pull).should.be.eql({head: {sha: 'abcd1234'}, status: {value: 'success'}});
     });
 
     it('should get collaborators', function() {
@@ -56,14 +59,7 @@ describe('Repo Controller', function() {
     });
 
     it('should get open pull requests', function() {
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"pullRequests","fun":"getAll","arg":' + JSON.stringify({
-          user: 'gabe',
-          repo: 1234,
-          state: 'open',
-          per_page: 10
-        }) + '}').respond({
-            affix: [1, 2, 3, 4]
-        });
+        
     })
 
     /// UI Text

@@ -50,6 +50,11 @@ describe('Add Repo (old) Directive', function() {
     });
 
     it('should search successfully', function() {
+        httpBackend.expect('POST', '/api/github/wrap','{"obj":"search","fun":"repos","arg":' + JSON.stringify({
+           q: 'test+in:name+fork:true+user:hello'
+        }) + '}').respond({
+            value: [123, 134, 123]
+        });
         var results =  [123, 134, 123];
         elScope.search();
         httpBackend.flush();

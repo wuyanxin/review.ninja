@@ -8,7 +8,7 @@ describe('Home Controller', function() {
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $q) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $q, $stateParams) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -16,171 +16,110 @@ describe('Home Controller', function() {
 
         });
 
-        httpBackend.when('GET', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-            data: {
-                name: 'repo-1',
-                user: 'me',
-                id: 21620444
-            }
-        });
-
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-            data: {
-                name: 'repo-1',
-                user: 'me',
-                id: 21620444
-            }
-        });
 
         // create promise for user
 
         scope = $rootScope.$new();
         var deferred = $q.defer();
-        var promise = deferred.promise;
-        promise.then(function(value) { scope.user = value; });
-
         deferred.resolve({
             value: {
                 id: 2757082,
-                login: 'login-1',
-                repos: [1234, 1235, 1236]
+                login: 'gabe',
+                repos: [1234]
             }
         });
+        var promise = deferred.promise;
 
         scope.query = 'user/repo';
         scope.promise = promise;
-        scope.repos = [];
+        scope.$digest();
+        scope.$apply();
 
         createCtrl = function() {
             return $controller('HomeCtrl', {
-                $scope: scope
+                $scope: scope,
+                $rootScope: scope
             });
         };
-        scope.$apply();
     }));
 
-    // load user repos
-    // add a repo
-    // remove repo
-    // create onboarding repo
-    
-    // it('should load user repos propely', function() {
+    it('should load all the things', function() {
+        var repoIds = [1234];
+        repoIds.forEach(function(id, index) {
+            httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":' + id.toString() + '}}').respond({
+                value: {
+                    name: 'repo-' + (index + 1).toString(),
+                    user: 'me',
+                    id: id
+                }
+            });
+        });
 
-    //     var ctrl = createCtrl();
+        var HomeCtrl = createCtrl();
+        scope.$apply();
+        (scope.repos).should.be.empty;
+        (scope.loaded).should.be.false;
+        (scope.show).should.be.false;
+        httpBackend.flush();
+    });
 
-    //     // load the data
+    it('should send call to add repo', function() {
+        // filler request
+        httpBackend.expect('POST', '/api/github/call').respond({value: true});
+        var HomeCtrl = createCtrl();
+        httpBackend.flush();
+        httpBackend.expect('POST', '/api/user/addRepo', JSON.stringify({
+           user: 'gabe',
+           repo: 'lol',
+           repo_uuid: 1234
+        })).respond({
+            value: true
+        });
+        var fakeRepo = {owner: {login: 'gabe'}, name: 'lol', id: 1234};
+        var doneFn = function(err, res) {
+            if (!err) {
+                return true;
+            }
+        };
+        scope.add(fakeRepo, doneFn);
+        httpBackend.flush();
+    });
 
-    //     httpBackend.expect('POST', '/api/user/get').respond({
-    //         '__v': 18,
-    //         '_id': {
-    //             '$oid': '53f991fbee5d5ef38f67ce5f'
-    //         },
-    //         'repos': [
-    //             21620444
-    //         ],
-    //         'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
-    //         'uuid': 1387834
-    //     });
+    it('should send call to delete repo', function() {
+        httpBackend.expect('POST', '/api/github/call').respond({value: true});
+        var HomeCtrl = createCtrl();
+        httpBackend.flush();
+        scope.repos = [{owner: {login: 'gabe'}, name: 'lol', id: 1234}];
+        httpBackend.expect('POST', '/api/user/rmvRepo', JSON.stringify({
+           user: 'gabe',
+           repo: 'lol',
+           repo_uuid: 1234
+        })).respond({
+            value: true
+        });
+        var fakeRepo = {owner: {login: 'gabe'}, name: 'lol', id: 1234};
+        scope.remove(fakeRepo);
+        httpBackend.flush();
+        (scope.repos).should.be.empty;
+    });
 
-    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
-    //         data: []
-    //     });
-
-    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-    //         data: {
-    //             name: 'repo-1',
-    //             user: 'me',
-    //             id: 21620444
-    //         }
-    //     });
-
-    //     httpBackend.flush();
-
-    //     (scope.repos[0].name).should.be.exactly('repo-1');
-    // });
-
-
-    // it('should add a repo without error', function() {
-    //     var ctrl = createCtrl();
-
-    //     // load the data
-
-    //    httpBackend.expect('POST', '/api/user/get').respond({
-    //         '__v': 18,
-    //         '_id': {
-    //             '$oid': '53f991fbee5d5ef38f67ce5f'
-    //         },
-    //         'repos': [
-    //             21620444
-    //         ],
-    //         'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
-    //         'uuid': 1387834
-
-    //     });
-
-    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
-    //         data: []
-    //     });
-
-    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-    //         data: {
-    //             name: 'repo-1',
-    //             user: 'me',
-    //             id: 21620444
-    //         }
-    //     });
-
-    //     httpBackend.flush();
-
-    //     scope.add({owner: {login: 'login'}, name: 'name', id: '1234'});
-
-    //     httpBackend.expect('POST', '/api/user/addRepo').respond(null);
-    //     httpBackend.flush();
-
-    //     scope.repos.length.should.be.exactly(2);
-    // });
-
-
-    // it('should remove a repo without error', function() {
-    //            var ctrl = createCtrl();
-
-    //     // load the data
-
-    //     httpBackend.expect('POST', '/api/user/get').respond({
-    //         '__v': 18,
-    //         '_id': {
-    //             '$oid': '53f991fbee5d5ef38f67ce5f'
-    //         },
-    //         'repos': [
-    //             21620444
-    //         ],
-    //         'token': '3004a2ac4c2055dfed8258274fb697bd8638bf32',
-    //         'uuid': 1387834
-    //     });
-
-    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":{"headers":{"accept":"application/vnd.github.moondragon+json"},"per_page":50}}').respond({
-    //         data: []
-    //     });
-
-    //     httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"one","arg":{"id":21620444}}').respond({
-    //         data: {
-    //             name: 'repo-1',
-    //             user: 'me',
-    //             id: 21620444
-    //         }
-    //     });
-
-    //     httpBackend.flush();
-
-
-    //     scope.remove({owner: {login: 'login'}, name: 'name', id: '1234'});
-
-    //     httpBackend.expect('POST', '/api/user/rmvRepo').respond(null);
-
-    //     httpBackend.flush();
-
-    //     scope.repos.length.should.be.exactly(0);
-
-    // });
-
+    it('should send call to create onboarding repo', function() {
+        httpBackend.expect('POST', '/api/github/call').respond({value: true});
+        var HomeCtrl = createCtrl();
+        httpBackend.flush();
+        scope.repos = [];
+        httpBackend.expect('POST', '/api/onboard/createrepo').respond({
+            value: {owner: {login: 'gabe'}, name: 'lol', id: 1234}
+        });
+        httpBackend.expect('POST', '/api/user/addRepo', JSON.stringify({
+           user: 'gabe',
+           repo: 'lol',
+           repo_uuid: 1234
+        })).respond({
+            value: true
+        });
+        scope.createOnboardingRepo();
+        httpBackend.flush();
+        (scope.repos).should.be.eql([{owner: {login: 'gabe'}, name: 'lol', id: 1234}]);
+    });
 });

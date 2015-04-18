@@ -2,13 +2,13 @@
 // pull test
 describe('Pull Factory', function() {
 
-    var scope, httpBackend, Pull, pull, pull2;
+    var scope, rootScope, httpBackend, Pull, pull, pull2;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $stateParams) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $stateParams, $q) {
         $stateParams.user = 'gabe';
         $stateParams.repo = 'repo1';
 
@@ -17,7 +17,20 @@ describe('Pull Factory', function() {
         httpBackend.when('GET', '/config').respond({
 
         });
+        var deferred = $q.defer();
+        deferred.resolve({
+            value: {
+                id: 2757082,
+                login: 'login-1',
+                repos: [1234, 1235, 1236]
+            }
+        });
+        var promise = deferred.promise;
+
         scope = $rootScope.$new();
+        rootScope = $rootScope;
+        rootScope.promise = promise;
+
         Pull = $injector.get('Pull');
         pull = {
             base: {
@@ -65,7 +78,7 @@ describe('Pull Factory', function() {
             user: 'gabe',
             repo: 'repo1',
             number: '1.3.0'
-        }) + '}').respond({
+        }) + '}').respond(200, {
             value: {
                 number: '1.4.0',
                 id: 1234
@@ -78,29 +91,45 @@ describe('Pull Factory', function() {
     });
 
     // should render pull body
-    // it('should render pull body', function(){
-    //     httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
-    //       text: "Hello world github/linguist#1 **cool**, and #1!",
-    //       mode: "gfm",
-    //       context: "github/gollum"
-    //     }) + '}').respond({
-    //         value: {
-    //             body: '<p>Hello world <a href="https://github.com/github/linguist/issues/1" class="issue-link" title="Binary detection issues on extensionless files">github/linguist#1</a> <strong>cool</strong>, and <a href="https://github.com/gollum/gollum/issues/1" class="issue-link" title="no method to write a file?">#1</a>!</p>'
-    //         }
-    //     });
-    // });
+    it('should render pull body', function(){
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
+          text: "this is pull body",
+          mode: "gfm",
+          context: "gabe/repo1"
+        }) + '}').respond(200, {
+            value: {
+                body: '<p>this is pull body</p>'
+            }
+        });
+        var fakePull = {body: 'this is pull body'};
+        var result = Pull.render(fakePull);
+        httpBackend.flush();
+        (result).should.be.eql(200, {body: 'this is pull body', html: '<p>this is pull body</p>'});
+    });
 
-    // // should get star count
-    // it('should get star count', function(){
-    //     httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
-    //       sha: 'magic',
-    //       repo_uuid: 11111
-    //     }) + '}').respond({
-    //         value: {
-    //             body: '<p>Hello world <a href="https://github.com/github/linguist/issues/1" class="issue-link" title="Binary detection issues on extensionless files">github/linguist#1</a> <strong>cool</strong>, and <a href="https://github.com/gollum/gollum/issues/1" class="issue-link" title="no method to write a file?">#1</a>!</p>'
-    //         }
-    //     });
-    // });
+    // should get star count
+    it('should get star count', function(){
+        httpBackend.expect('POST', '/api/star/all', '{"arg":' + JSON.stringify({
+          sha: 'magic',
+          repo_uuid: 11111
+        }) + '}').respond({
+            value: [
+                {
+                    name: 'gabe'
+                },
+                {
+                    name: 'blah'
+                }]
+        });
+        var fakePull = {head: {sha: 'magic'}, base: {repo: {id: 11111}}};
+        var result = Pull.stars(fakePull, 'avatar');
+        ([result.star]).should.be.eql([null]);
+        (result.stars).should.be.eql([{name: 'gabe'},{name: 'blah'}]);
+        stars.forEach(function(x) {
+            scope.apply();
+        });
+        (result.star).should.be.eql({name: 'blah'});
+    });
 
     // should get comments count
     it('should get comments count', function(){
@@ -130,7 +159,7 @@ describe('Pull Factory', function() {
             repo: 'repo1',
             number: 1,
             per_page: 10
-        }) + '}').respond({
+        }) + '}').respond(200, {
             value: ['these', 'are', 'some', 'test', 'comments']
         });
         var result = Pull.commentsCount(pull);

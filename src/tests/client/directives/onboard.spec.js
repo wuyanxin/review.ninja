@@ -2,24 +2,23 @@
 // settings test
 describe('Onboard Directive', function() {
 
-    var rootScope, elScope, repo, httpBackend, createDirective, element;
+    var rootScope, scope, elScope, repo, httpBackend, createDirective, element;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
-
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams, $q) {
+    beforeEach(angular.mock.inject(function($stateParams) {
         $stateParams.user = 'gabe';
         $stateParams.repo = 'test';
+    }));
+
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams, $q) {
         httpBackend = $injector.get('$httpBackend');
         httpBackend.when('GET', '/config').respond({
             
         });
 
-        httpBackend.when('POST', '/api/onboard/getactions', '{"args":' + JSON.stringify({
-            user: 'gabe',
-            repo: 'test'
-        })).respond({
+        httpBackend.expect('POST', '/api/onboard/getactions').respond({
             value: {
                 'user:addRepo': true,
                 'pullRequests:get': true
@@ -27,10 +26,9 @@ describe('Onboard Directive', function() {
         });
 
         // create user promise
-        rootScope = $rootScope.$new();
+        rootScope = $rootScope;
+        scope = $rootScope.$new();
         var deferred = $q.defer();
-        var promise = deferred.promise;
-        promise.then(function(value) { rootScope.user = value; });
         deferred.resolve({
             value: {
                 id: 2757082,
@@ -38,22 +36,15 @@ describe('Onboard Directive', function() {
                 repos: [1234, 1235, 1236]
             }
         });
+        var promise = deferred.promise;
         
         rootScope.promise = promise;
-        console.log(rootScope.promise);
-        element = $compile('<onboard></onboard>')(rootScope);
-        console.log(element);
         rootScope.$digest();
+        scope.$digest();
+        element = $compile('<onboard></onboard>')(scope);
+        console.log(element);
+        scope.$digest();
         elScope = element.isolateScope();
-        elScope.actions = [
-            {key: 'user:addRepo', text: 'Add repo'},
-            {key: 'pullRequests:get', text: 'View pull request', elementclass: 'ob-pull', transition: 'wobble-vertical'},
-            {key: 'issues:add', text: 'Open issue', elementclass: 'ob-create', transition: 'wobble-vertical'},
-            {key: 'issues:closed', text: 'Close issue', elementclass: 'ob-close', transition: 'wobble-vertical'},
-            {key: 'star:add', text: 'Add ninja star', elementclass: 'ob-star', transition: 'rotate'},
-            {key: 'pullRequests:merge', text: 'Merge pull request', elementclass: 'ob-merge', transition: 'wobble-vertical'}
-        ];
-        elScope.$digest();
     }));
 
     // afterEach(function() {
@@ -64,7 +55,7 @@ describe('Onboard Directive', function() {
     // should get a user’s completed actions for onboarding
     it('should add the right actions for onboarding', function() {
         httpBackend.flush();
-        scope.complete = false;
+        (scope.complete).should.be.false;
     });
 
     // should add transition class to element
@@ -74,7 +65,7 @@ describe('Onboard Directive', function() {
         elScope.addClass('ob', 'test');
         elScope.$digest();
         console.log(fakeNoClass);
-        (fakeNoClass).should.be.exactly($compile('<div class="ob test"></div>')(elScope));
+        (fakeNoClass).should.be.eql($compile('<div class="ob test"></div>')(elScope));
     });
 
     // should remove transition class from element
@@ -84,7 +75,7 @@ describe('Onboard Directive', function() {
         elScope.removeClass('ob', 'test');
         elScope.$digest();
         console.log(fakeClass);
-        (fakeClass).should.be.exactly($compile('<div class="ob"></div>')(elScope));
+        (fakeClass).should.be.eql($compile('<div class="ob"></div>')(elScope));
     });
 
     // socket -> get user’s actions upon getting action value from server

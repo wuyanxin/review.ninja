@@ -2,41 +2,46 @@
 // settings test
 describe('Root Controller', function() {
 
-    var scope, repo, httpBackend, createCtrl;
+    var rootScope, scope, repo, httpBackend, createCtrl, q;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
-
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $stateParams, $q) {
+        $stateParams.user = 'gabe';
+        $stateParams.repo = 1234;
         httpBackend = $injector.get('$httpBackend');
 
         httpBackend.when('GET', '/config').respond({
 
         });
+
+        rootScope = $rootScope;
         scope = $rootScope.$new();
+        q = $q;
 
-        repo = {
-            value: {
-                id: 1234
-            }
-        };
+        scope.query = 'user/repo';
+        // rootScope.promise = promise;
+
         createCtrl = function() {
-
             var ctrl = $controller('RootCtrl', {
                 $scope: scope,
-                repo: repo
+                $rootScope: rootScope,
+                $stateParams: $stateParams
             });
-            ctrl.scope = scope;
             return ctrl;
         };
-    }));
 
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"user","fun":"get","arg":' + JSON.stringify({
+        }) + '}').respond({
+            value: {
+                id: 2757082,
+                login: 'login-1',
+                repos: [1234, 1235, 1236]
+            }
+        });
+    }));
 
     // create promise
     // get user and repo params
@@ -44,19 +49,29 @@ describe('Root Controller', function() {
     // should create webhook
     // should send dismiss thing to server for user history
 
-    it('should do thing', function() {
-        var ctrl = createCtrl();
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
+    it('should return user from promise', function() {
+        var RootCtrl = createCtrl();
+        var deferred = q.defer();
+        deferred.resolve({
+            value: {
+                id: 2757082,
+                login: 'login-1',
+                repos: [1234, 1235, 1236]
+            }
         });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
+        var promise = deferred.promise;
+        rootScope.promise = promise;
+        rootScope.$digest();
+        scope.$digest();
+        (rootScope.user).should.be.eql({
+            id: 2757082,
+            login: 'login-1',
+            repos: [1234, 1235, 1236]
         });
+    });
 
-        httpBackend.flush();
-        (ctrl.scope.settings.value.settings).should.be.exactly('settings');
-        (ctrl.scope.reposettings.value.repo).should.be.exactly('repo');
+    it('should create webhook', function() {
+
     });
 
 });

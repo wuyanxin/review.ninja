@@ -8,7 +8,8 @@ var gulp = require('gulp'),
     merger = require('lcov-result-merger');
 
 var istanbulOptions = {
-  dir: './output/coverage/server'
+  dir: './output/coverage/server',
+  reporters: ['html', 'lcov']
 };
 
 gulp.task('coverage', function(cb) {

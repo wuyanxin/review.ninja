@@ -42,7 +42,7 @@ services.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) 
                     context: $stateParams.user + '/' + $stateParams.repo
                 }, function(err, markdown) {
                     if(!err) {
-                        issue.html = markdown.value.body;
+                        issue.html = $stateParams.user + '/' + $stateParams.repo;
                     }
                 });
             }

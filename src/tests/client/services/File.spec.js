@@ -33,6 +33,6 @@ describe('File Factory', function() {
         var files = [{filename: 'raw.png'}];
         var filesCorrect = [{filename: 'raw.png', image: 'raw.png'}];
         var result = File.getFileTypes(files);
-        (result).should.eql(treeCorrect);
+        (result).should.eql(filesCorrect);
     });
 });
