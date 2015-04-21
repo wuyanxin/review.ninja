@@ -63,6 +63,7 @@ describe('Root Controller', function() {
         rootScope.promise = promise;
         rootScope.$digest();
         scope.$digest();
+        scope.$apply();
         (rootScope.user).should.be.eql({
             id: 2757082,
             login: 'login-1',

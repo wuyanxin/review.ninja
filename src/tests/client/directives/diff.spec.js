@@ -2,26 +2,35 @@
 // settings test
 describe('Diff File Directive', function() {
 
-    var scope, repo, httpBackend, element, elScope;
+    var scope, repo, httpBackend, element, elScope, rootScope;
 
     beforeEach(angular.mock.module('app'));
 
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams) {
+        $stateParams.user = 'gabe';
+        $stateParams.repo = 1234;
 
         httpBackend = $injector.get('$httpBackend');
 
         httpBackend.when('GET', '/config').respond({
 
         });
+        rootScope = $rootScope;
+        rootScope.file = {
+            ignored: false,
+            sha: 'magic'
+        };
         scope = $rootScope.$new();
-        scope.file = {ignored: false};
-        element = $compile("<diff></diff>")(scope);
+        scope.file = {
+            ignored: false,
+            sha: 'magic'
+        };
+        element = $compile("<diff file=\"{ignored: false,sha:'magic'}\"></diff>")(scope);
         scope.$digest();
         elScope = element.isolateScope();
-        elScope.headSha = 'aaaa';
-        elScope.path = 'hello/world';
+        scope.$digest();
     }));
 
     // test monster watch function
@@ -70,6 +79,12 @@ describe('Diff File Directive', function() {
         (result).should.be.true;
     });
 
+    //should get anchor
+    it('should return anchor correctly', function() {
+        var result = elScope.anchor('abcdabcd12341234abcdabcd12341234abcdabcd', 'culture', '1');
+        (result).should.be.exactly('abcdabcd12341234abcdabcd12341234abcdabcd:culture:1');
+    });
+
     // should determine if is referenced
     it('should determine if line is referenced', function() {
         elScope.issues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 1, end: 99, number: 1}];
@@ -83,7 +98,8 @@ describe('Diff File Directive', function() {
     // should do thing upon select
     it('should get line selection', function() {
         var fakeLine = {
-            base: 9
+            base: 9,
+            head: 1
         };
         var fakeEvent = {shiftKey: true};
         elScope.selection = {path: 'hello/world', start: 1};

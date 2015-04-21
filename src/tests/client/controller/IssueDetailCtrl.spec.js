@@ -7,14 +7,36 @@ describe('Issue Detail Controller', function() {
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $stateParams) {
+        $stateParams.user = 'gabe';
+        $stateParams.repo = 1234;
+        $stateParams.issue = 1;
 
         httpBackend = $injector.get('$httpBackend');
 
         httpBackend.when('GET', '/config').respond({
 
         });
+
+         httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getComments","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 1234,
+          number: 1
+        }) + '}').respond(200, {
+            value: {}
+        });
+
         scope = $rootScope.$new();
+        scope.$parent = {
+            $parent: {
+                sha: 'magic'
+            }
+        };
+
+        scope.compComm = function(sha) {
+            return true;
+        };
+
         rootScope = $rootScope;
         var repo = {
             value: {
@@ -26,7 +48,10 @@ describe('Issue Detail Controller', function() {
                 body: '|commit|file reference|pull request|   |\r\n' + 
                 '|------|--------------|------------|---|\r\n' + 
                 '|abcdabcd12341234abcdabcd12341234abcdabcd|[culture#L1](https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1)| #1 |[![#1](http://app.review.ninja/assets/images/icon-alt-36.png)](http://app.review.ninja/reviewninja/foo/pull/1)|'
-            }
+            },
+            sha: 'abcdabcd12341234abcdabcd12341234abcdabcd',
+            path: 'https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1',
+            line: '#1'
         };
 
         createCtrl = function() {
@@ -44,8 +69,51 @@ describe('Issue Detail Controller', function() {
         (scope.repo).should.be.eql({id: 1234});
     });
 
-    it('should update comparison view', function() {
+    it('should return anchor correctly', function() {
+        var IssueDetailCtrl = createCtrl();
+        var result = scope.anchor();
+        (result).should.be.exactly('abcdabcd12341234abcdabcd12341234abcdabcd:culture:1');
+    });
 
+    it('should set state to open if opened', function() {
+        scope.comment = 'comment';
+        scope.issue = {number: 1, state: 'open'};
+        var IssueDetailCtrl = createCtrl();
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"issues","fun":"createComment","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 1234,
+          number: 1,
+          body: 'comment'
+        }) + '}').respond(200, {
+            value: {}
+        });
+
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"edit","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 1234,
+          number: 1,
+          body: 'comment'
+        }) + '}').respond(200, {
+            value: {}
+        });
+        scope.setState();
+        httpBackend.flush();
+    });
+
+    it('should set status text correctly based on comments', function() {
+        scope.comment = null;
+        var IssueDetailCtrl = createCtrl();
+        var result = scope.statustext();
+        (result).should.be.exactly('Reopen issue');
+        scope.comment = 'comment';
+        var result2 = scope.statustext();
+        (result2).should.be.exactly('Reopen and comment');
+        scope.issue.state = 'open';
+        var result3 = scope.statustext();
+        (result3).should.be.exactly('Close and comment');
+        scope.comment = null;
+        var result4 = scope.statustext();
+        (result4).should.be.exactly('Close issue');
     });
 
 });

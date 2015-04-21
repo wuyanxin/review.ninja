@@ -17,14 +17,6 @@ describe('Repo Controller', function() {
 
         });
 
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"statuses","fun":"getCombined","arg":' + JSON.stringify({
-          user: 'gabe',
-          repo: 1234,
-          sha: 'abcd1234'
-        }) + '}').respond({
-            value: 'success'
-        });
-
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"pullRequests","fun":"getAll","arg":' + JSON.stringify({
           user: 'gabe',
           repo: 1234,
@@ -32,6 +24,14 @@ describe('Repo Controller', function() {
           per_page: 10
         }) + '}').respond({
             affix: [1, 2, 3, 4]
+        });
+
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"statuses","fun":"getCombined","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 1234,
+          sha: 'abcd1234'
+        }) + '}').respond({
+            value: 'success'
         });
 
         scope = $rootScope.$new();

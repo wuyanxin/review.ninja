@@ -8,7 +8,7 @@ describe('Issue List Controller', function() {
     beforeEach(angular.mock.module('templates'));
     beforeEach(angular.mock.module('ninja.services'));
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $provide) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -17,13 +17,23 @@ describe('Issue List Controller', function() {
         });
         scope = $rootScope.$new();
 
-        repo = {
-            value: {
-                id: 1234
+        scope.pull = {
+            base: {
+                sha: 'magic'
             }
         };
-        createCtrl = function() {
 
+        scope.$parent = {
+            $parent: {
+                sha: 'thing'
+            }
+        };
+
+        scope.compComm = function(sha) {
+            return true;
+        };
+
+        createCtrl = function() {
             var ctrl = $controller('IssueListCtrl', {
                 $scope: scope,
                 repo: repo,
@@ -33,26 +43,8 @@ describe('Issue List Controller', function() {
         };
     }));
 
-    afterEach(function() {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
-
-    // set issue sha
-
-    it('should do thing', function() {
+    it('should set parent sha to null', function() {
         var ctrl = createCtrl();
-
-        httpBackend.expect('POST', '/api/settings/get').respond({
-            settings: 'settings'
-        });
-        httpBackend.expect('POST', '/api/repo/get').respond({
-            repo: 'repo'
-        });
-
-        httpBackend.flush();
-        (ctrl.scope.settings.value.settings).should.be.exactly('settings');
-        (ctrl.scope.reposettings.value.repo).should.be.exactly('repo');
+        ([scope.$parent.$parent.sha]).should.be.eql([null]);
     });
-
 });

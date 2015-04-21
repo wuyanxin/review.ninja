@@ -122,4 +122,62 @@ describe('Settings Controller', function() {
 
     });
 
+    it('should change threshold', function() {
+        httpBackend.expect('POST', '/api/settings/get').respond({
+                settings: 'settings',
+                watched: ['one', 'two'],
+                notifications: ['yo wassup']
+
+        });
+        httpBackend.expect('POST', '/api/repo/get').respond({
+            repo: 'repo'
+        });
+
+        var ctrl = createCtrl();
+        ctrl.scope.reposettings = {
+            value: {
+                threshold: 2
+            }
+        };
+        httpBackend.expect('POST', '/api/repo/setThreshold', JSON.stringify({
+            repo_uuid: 1234,
+            threshold: 2
+        })).respond({
+            value: {
+                comment: 'test'
+            }
+        });
+        ctrl.scope.changeThreshold();
+        httpBackend.flush();
+    });
+
+    it('should toggle comments', function() {
+        httpBackend.expect('POST', '/api/settings/get').respond({
+                settings: 'settings',
+                watched: ['one', 'two'],
+                notifications: ['yo wassup']
+
+        });
+        httpBackend.expect('POST', '/api/repo/get').respond({
+            repo: 'repo'
+        });
+
+        var ctrl = createCtrl();
+        ctrl.scope.reposettings = {
+            value: {
+                comment: 'thing'
+            }
+        };
+        httpBackend.expect('POST', '/api/repo/setComment', JSON.stringify({
+            repo_uuid: 1234,
+            comment: 'thing'
+        })).respond({
+            value: {
+                comment: 'test'
+            }
+        });
+        ctrl.scope.toggleComments();
+        httpBackend.flush();
+    });
+
 });

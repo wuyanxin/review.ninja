@@ -6,7 +6,6 @@ describe('Pull Controller', function() {
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
-    // beforeEach(angular.mock.module('ninja.services'));
 
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $stateParams) {
@@ -19,19 +18,70 @@ describe('Pull Controller', function() {
 
         });
 
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+
+        var fakePull = {
+            base: {
+                repo: {
+                    owner: {
+                        login: 'gabe'
+                    },
+                    name: 'repo1',
+                    id: 11111
+                }
+            },
+            head: {
+                sha: 'magic',
+            },
+            milestone: {
+                number: '1.3.0',
+                id: 1234
+            },
+            body: 'hello world',
+            number: 1
+        };
+
+        createCtrl = function() {
+            var ctrl = $controller('PullCtrl', {
+                $scope: scope,
+                $rootScope: rootScope,
+                repo: {value: {id: 1234}},
+                pull: {value: fakePull}
+            });
+            return ctrl;
+        }
+
+        scope.$digest();
+
         httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getMilestone","arg":' + JSON.stringify({
           user: 'gabe',
           repo: 'repo1',
           number: '1.3.0'
         }) + '}').respond({
-            value: 'success'
+            value: {
+                id: 1234,
+                number: '1.3.0'
+            }
+        });
+
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
+          text: 'hello world',
+          mode: 'gfm',
+          context: 'gabe/repo1'
+        }) + '}').respond({
+            value: {
+                body: '<p>hello world</p>'
+            }
         });
 
         httpBackend.expect('POST', '/api/star/all', JSON.stringify({
           sha: 'magic',
           repo_uuid: 11111
         })).respond({
-            value: 'success'
+            value: {
+                name: 'gabe'
+            }
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"statuses","fun":"getCombined","arg":' + JSON.stringify({
@@ -73,39 +123,6 @@ describe('Pull Controller', function() {
         }) + '}').respond({
             value: 'success'
         });
-
-        scope = $rootScope.$new();
-        rootScope = $rootScope;
-
-        var fakePull = {
-            base: {
-                repo: {
-                    owner: {
-                        login: 'gabe'
-                    },
-                    name: 'repo1',
-                    id: 11111
-                }
-            },
-            head: {
-                sha: 'magic',
-            },
-            milestone: {
-                number: '1.3.0',
-                id: 1234
-            },
-            number: 1
-        };
-
-        createCtrl = function() {
-            var ctrl = $controller('PullCtrl', {
-                $scope: scope,
-                $rootScope: rootScope,
-                repo: {value: {id: 1234}},
-                pull: {value: fakePull}
-            });
-            return ctrl;
-        }
     }));
 
     // get pull request

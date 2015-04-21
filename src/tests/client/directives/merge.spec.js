@@ -2,7 +2,7 @@
 // settings test
 describe('Merge Directive', function() {
 
-    var scope, repo, httpBackend, element, elScope, timeout;
+    var scope, repo, httpBackend, element, elScope, timeout, pull;
 
     beforeEach(angular.mock.module('app'));
 
@@ -20,11 +20,22 @@ describe('Merge Directive', function() {
         });
 
         scope = $rootScope.$new();
-        scope.permissions = {};
-        scope.$digest();
-        element = $compile("<merge-button></merge-button>")(scope);
+        pull = {
+            head: {
+                repo: {
+                    id: 1234
+                }
+            },
+            base: {
+                repo: {
+                    id: 123
+                }
+            }
+        };
+        element = $compile("<merge-button permissions='{push:false}' pull='{stars: false}'></merge-button>")(scope);
         scope.$digest();
         elScope = element.isolateScope();
+        elScope.pull = pull;
         console.log(elScope);
     }));
 
