@@ -20,6 +20,16 @@ describe('Root Controller', function() {
         rootScope = $rootScope;
         scope = $rootScope.$new();
         q = $q;
+        var deferred = q.defer();
+        deferred.resolve({
+            value: {
+                id: 2757082,
+                login: 'login-1',
+                repos: [1234, 1235, 1236]
+            }
+        });
+        var promise = deferred.promise;
+        rootScope.promise = promise;
 
         scope.query = 'user/repo';
         // rootScope.promise = promise;
@@ -43,25 +53,18 @@ describe('Root Controller', function() {
         });
     }));
 
+    it('should do stuff with state change success', function() {
+        rootScope.$broadcast('$stateChangeSuccess');
+    });
+
     // create promise
     // get user and repo params
     // should change to error on statechangeerror
-    // should create webhook
-    // should send dismiss thing to server for user history
 
     it('should return user from promise', function() {
         var RootCtrl = createCtrl();
-        var deferred = q.defer();
-        deferred.resolve({
-            value: {
-                id: 2757082,
-                login: 'login-1',
-                repos: [1234, 1235, 1236]
-            }
-        });
-        var promise = deferred.promise;
-        rootScope.promise = promise;
         rootScope.$digest();
+        rootScope.$apply();
         scope.$digest();
         scope.$apply();
         (rootScope.user).should.be.eql({
@@ -71,8 +74,32 @@ describe('Root Controller', function() {
         });
     });
 
-    it('should create webhook', function() {
-
+    it('should send call to create webhook', function() {
+        rootScope.user = {value: {id: 1}};
+        httpBackend.expect('POST', '/api/webhook/create', JSON.stringify({
+            user: 'gabe',
+            repo: 1234,
+            user_uuid: 1
+        })).respond({
+            value: 1
+        });
+        var ctrl = createCtrl();
+        scope.createWebhook();
+        httpBackend.flush();
+        (scope.hook).should.be.eql({value: 1});
+        (scope.created).should.be.true;
     });
 
+    it('should send call to dismiss from history', function() {
+        rootScope.user = {value: {history: {'create': false}}};
+        httpBackend.expect('POST', '/api/user/dismiss', JSON.stringify({
+            dismiss: 'create'  
+        })).respond({
+            value: true
+        });
+        var ctrl = createCtrl();
+        scope.dismiss('create');
+        httpBackend.flush();
+        (rootScope.user.value.history['create']).should.be.true;
+    });
 });

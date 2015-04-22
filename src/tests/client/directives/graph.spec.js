@@ -24,7 +24,7 @@ describe('Graph Directive', function() {
     // should check if any openissues are on head sha
     it('should return true if head sha in open issues', function() {
         isolated.headSha = 111;
-        isolated.openIssues = [111, 2222, 1111];
+        isolated.openIssues = [{sha: 111}, {sha: 2222}, {sha: 1111}];
         var result = isolated.headCommitIssues();
         (result).should.be.true;
     });

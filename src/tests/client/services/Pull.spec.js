@@ -109,10 +109,10 @@ describe('Pull Factory', function() {
 
     // should get star count
     it('should get star count', function(){
-        httpBackend.expect('POST', '/api/star/all', '{"arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/star/all', JSON.stringify({
           sha: 'magic',
           repo_uuid: 11111
-        }) + '}').respond({
+        })).respond({
             value: [
                 {
                     name: 'gabe'
@@ -123,6 +123,7 @@ describe('Pull Factory', function() {
         });
         var fakePull = {head: {sha: 'magic'}, base: {repo: {id: 11111}}};
         var result = Pull.stars(fakePull, 'avatar');
+        httpBackend.flush();
         ([result.star]).should.be.eql([null]);
         (result.stars).should.be.eql([{name: 'gabe'},{name: 'blah'}]);
         stars.forEach(function(x) {

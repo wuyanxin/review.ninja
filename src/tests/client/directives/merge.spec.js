@@ -2,7 +2,7 @@
 // settings test
 describe('Merge Directive', function() {
 
-    var scope, repo, httpBackend, element, elScope, timeout, pull;
+    var scope, repo, httpBackend, element, elScope, compile, timeout, pull;
 
     beforeEach(angular.mock.module('app'));
 
@@ -10,7 +10,8 @@ describe('Merge Directive', function() {
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams, $timeout) {
         $stateParams.user = 'gabe';
-        $stateParams.repo = 1234;
+        $stateParams.repo = 'test';
+        $stateParams.number = 1;
         timeout = $timeout;
 
         httpBackend = $injector.get('$httpBackend');
@@ -19,28 +20,44 @@ describe('Merge Directive', function() {
 
         });
 
+        compile = $compile;
+
         scope = $rootScope.$new();
-        pull = {
-            head: {
-                repo: {
-                    id: 1234
-                }
-            },
+        scope.permissions = {push: false};
+        scope.pull = {
             base: {
                 repo: {
-                    id: 123
+                    id: 2
                 }
-            }
+            }, 
+            head: {
+                repo: {
+                    id: 3
+                },
+                ref: 'master'
+            },
+            stars: [{name: 'gabe'}]
         };
-        element = $compile("<merge-button permissions='{push:false}' pull='{stars: false}'></merge-button>")(scope);
+        scope.reposettings = {value: {threshold: 2}};
+        scope.status = {statuses: ['closed']};
+        element = $compile('<merge-button permissions="permissions" pull="pull" reposettings="reposettings" status="status"></merge-button>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
-        elScope.pull = pull;
-        console.log(elScope);
     }));
 
-    it('should get if thing is branch', function() {
-
+    it('should get ref if base and head are equal', function() {
+        httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"getReference","arg":' + JSON.stringify({
+           user: 'gabe',
+           repo: 'test',
+           ref: 'heads/master'
+        }) + '}').respond({
+            value: true
+        });
+        scope.permissions.push = true;
+        scope.pull.head.repo.id = 2;
+        element = compile('<merge-button permissions="permissions" pull="pull" reposettings="reposettings" status="status"></merge-button>')(scope);
+        scope.$digest();
+        elScope = element.isolateScope();
     });
 
     it('should watch status + set default status', function() {
@@ -48,15 +65,35 @@ describe('Merge Directive', function() {
     });
 
     it('should get star text', function() {
-
+        var result = elScope.getStarText();
+        (result).should.be.exactly('1 more ninja star needed');
+        elScope.reposettings.value.threshold = 1;
+        var result2 = elScope.getStarText();
+        (result2).should.be.exactly('1 ninja star');
     });
 
     it('should delete branch', function() {
-
+        httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"deleteReference","arg":' + JSON.stringify({
+           user: 'gabe',
+           repo: 'test',
+           ref: 'heads/master'
+        }) + '}').respond({
+            value: true
+        });
+        elScope.deleteBranch();
+        (elScope.showConfirmation).should.be.false;
+        httpBackend.flush();
+        (elScope.branch).should.be.false;
+        (elScope.branchRemoved).should.be.true;
     });
 
     it('should merge branch', function() {
-
+        httpBackend.expect('POST', '/api/github/call','{"obj":"pullRequests","fun":"merge","arg":' + JSON.stringify({
+           user: 'gabe',
+           repo: 'test',
+           number: 1
+        }) + '}').respond(true);
+        elScope.merge();
     });
 
     // should push onto stack

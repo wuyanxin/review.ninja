@@ -20,12 +20,16 @@ describe('Socket Factory', function() {
 
         socket = $injector.get('socket');
 
-        cbOn = function(socket, args) {
-            scope.received = true;
+        cbOn = { 
+            apply: function(socket, args) {
+                scope.received = true;
+            }
         };
 
-        cbEmit = function(socket, args) {
-            scope.emitted = true;
+        cbEmit = {
+            apply: function(socket, args) {
+                scope.emitted = true;
+            }
         };
     }));
 
