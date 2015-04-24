@@ -42,7 +42,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             number: $stateParams.number
         }, function(err, comments) {
             if(!err) {
-                console.log(comments)
                 comments.affix.forEach(function(comment) {
                     comment = Comment.render(comment);
                 });
