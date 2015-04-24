@@ -41,7 +41,9 @@ describe('Pull Controller', function() {
         SocketMockFunc = function($rootScope) {
             this.events = {};
             this.on = function(evt, cb) {
-                if(!this.events[evt]) this.events[evt] = [];
+                if(!this.events[evt]) {
+                    this.events[evt] = [];
+                }
                 this.events[evt].push(cb);
             };
             this.receive = function(evt) {
@@ -53,8 +55,8 @@ describe('Pull Controller', function() {
                             cb.apply(this, args);
                         });
                     });
-                };
-            }
+                }
+            };
         };
 
         ModalMock = {
@@ -150,7 +152,7 @@ describe('Pull Controller', function() {
                 }
             },
             head: {
-                sha: 'abcd1234',
+                sha: 'abcd1234'
             },
             milestone: {
                 number: 1,
@@ -176,14 +178,14 @@ describe('Pull Controller', function() {
                 socket: SocketMock
             });
             return ctrl;
-        }
+        };
     }));
 
     // set all the stuff
     it('should set stuff', function() {
         PullCtrl = createCtrl();
         httpBackend.flush();
-    }); 
+    });
 
     // star text
     it('should get star text', function() {
@@ -205,7 +207,7 @@ describe('Pull Controller', function() {
           base: 'master',
           head: 'testbranch'
         }) + '}').respond({
-            data: {files: ['main', 'thing']},
+            data: {files: ['main', 'thing']}
         });
         scope.compComm('master', 'testbranch');
         httpBackend.flush();
@@ -238,7 +240,7 @@ describe('Pull Controller', function() {
           repo: 'test',
           number: 1
         }) + '}').respond({
-            data: {head: {sha: 'abcd1234'}},
+            data: {head: {sha: 'abcd1234'}}
         });
         scope.getPullRequest();
         httpBackend.flush();
@@ -253,7 +255,7 @@ describe('Pull Controller', function() {
                 }
             },
             head: {
-                sha: 'abcd1234',
+                sha: 'abcd1234'
             },
             milestone: {
                 number: 1,
@@ -356,7 +358,7 @@ describe('Pull Controller', function() {
         scope.open = {value: fakeIssues};
         scope.closed = {value: []};
         SocketMock.receive('gabe:test:issues', {action: 'closed', pull: 1, number: 1});
-        (scope.open.value).should.be.eql([{number: 2, state: 'open'},{number: 3, state: 'open'}]);
+        (scope.open.value).should.be.eql([{number: 2, state: 'open'}, {number: 3, state: 'open'}]);
         (scope.closed.value).should.be.eql([{number: 1, state: 'closed'}]);
     });
 
@@ -370,7 +372,7 @@ describe('Pull Controller', function() {
         scope.closed = {value: fakeIssues};
         scope.open = {value: []};
         SocketMock.receive('gabe:test:issues', {action: 'reopened', pull: 1, number: 1});
-        (scope.closed.value).should.be.eql([{number: 2, state: 'closed'},{number: 3, state: 'closed'}]);
+        (scope.closed.value).should.be.eql([{number: 2, state: 'closed'}, {number: 3, state: 'closed'}]);
         (scope.open.value).should.be.eql([{number: 1, state: 'open'}]);
     });
 

@@ -49,7 +49,7 @@ describe('Repo Controller', function() {
 
         var mockModal = {
             open: function(obj) {
-                return (!!obj.templateUrl && !!obj.controller)
+                return (!!obj.templateUrl && !!obj.controller);
             }
         };
 
@@ -95,7 +95,7 @@ describe('Repo Controller', function() {
     it('should get collaborators', function() {
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"repos","fun":"getCollaborators","arg":' + JSON.stringify({
           user: 'gabe',
-          repo: 1234,
+          repo: 1234
         }) + '}').respond({
             value: ['david', 'dominik']
         });
@@ -152,5 +152,4 @@ describe('Repo Controller', function() {
         var result = scope.getStarUsers(fakePull2);
         (result).should.be.exactly('gabe, david starred');
     });
-
 });

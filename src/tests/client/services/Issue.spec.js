@@ -24,8 +24,8 @@ describe('Issue Factory', function() {
 
     it('should parse issue well', function() {
         var fakeIssue = {
-            body: '|commit|file reference|pull request|   |\r\n' + 
-            '|------|--------------|------------|---|\r\n' + 
+            body: '|commit|file reference|pull request|   |\r\n' +
+            '|------|--------------|------------|---|\r\n' +
             '|abcdabcd12341234abcdabcd12341234abcdabcd|[culture#L1](https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1)| #1 |[![#1](http://app.review.ninja/assets/images/icon-alt-36.png)](http://app.review.ninja/reviewninja/foo/pull/1)|'
         };
         var resultingIssue = {
@@ -45,9 +45,9 @@ describe('Issue Factory', function() {
     it('should render issue', function() {
         var fakeIssue2 = {body: 'hello world'};
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
-          text: "hello world",
-          mode: "gfm",
-          context: "gabe/repo1"
+          text: 'hello world',
+          mode: 'gfm',
+          context: 'gabe/repo1'
         }) + '}').respond(200, {
             body: '<p>hello world</p>'
         });
@@ -55,5 +55,4 @@ describe('Issue Factory', function() {
         httpBackend.flush();
         (result.html).should.be.exactly('<p>hello world</p>');
     });
-
 });

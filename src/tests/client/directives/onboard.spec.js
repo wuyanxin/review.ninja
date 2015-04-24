@@ -14,9 +14,7 @@ describe('Onboard Directive', function() {
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams, $q) {
         httpBackend = $injector.get('$httpBackend');
-        httpBackend.when('GET', '/config').respond({
-            
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         httpBackend.expect('POST', '/api/onboard/getactions').respond({
             value: {

@@ -27,18 +27,18 @@ describe('Comment Factory', function() {
     // should render comment if comment exists
     it('should render comment in proper html', function() {
         var comment = {
-          body: "Hello world github/linguist#1 **cool**, and #1!"
+          body: 'Hello world github/linguist#1 **cool**, and #1!'
         };
 
         var renderedHTML = {
-            body: "Hello world github/linguist#1 **cool**, and #1!", 
+            body: 'Hello world github/linguist#1 **cool**, and #1!',
             html: '<p>Hello world <a href="https://github.com/github/linguist/issues/1" class="issue-link" title="Binary detection issues on extensionless files">github/linguist#1</a> <strong>cool</strong>, and <a href="https://github.com/gollum/gollum/issues/1" class="issue-link" title="no method to write a file?">#1</a>!</p>'
         };
 
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
-          text: "Hello world github/linguist#1 **cool**, and #1!",
-          mode: "gfm",
-          context: "github/gollum"
+          text: 'Hello world github/linguist#1 **cool**, and #1!',
+          mode: 'gfm',
+          context: 'github/gollum'
         }) + '}').respond({
             body: '<p>Hello world <a href="https://github.com/github/linguist/issues/1" class="issue-link" title="Binary detection issues on extensionless files">github/linguist#1</a> <strong>cool</strong>, and <a href="https://github.com/gollum/gollum/issues/1" class="issue-link" title="no method to write a file?">#1</a>!</p>'
         });

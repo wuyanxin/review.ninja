@@ -45,8 +45,8 @@ describe('Issue Detail Controller', function() {
         };
         var issue = {
             value: {
-                body: '|commit|file reference|pull request|   |\r\n' + 
-                '|------|--------------|------------|---|\r\n' + 
+                body: '|commit|file reference|pull request|   |\r\n' +
+                '|------|--------------|------------|---|\r\n' +
                 '|abcdabcd12341234abcdabcd12341234abcdabcd|[culture#L1](https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1)| #1 |[![#1](http://app.review.ninja/assets/images/icon-alt-36.png)](http://app.review.ninja/reviewninja/foo/pull/1)|'
             },
             sha: 'abcdabcd12341234abcdabcd12341234abcdabcd',
@@ -62,7 +62,7 @@ describe('Issue Detail Controller', function() {
                 issue: issue
             });
             return ctrl;
-        }
+        };
     }));
     it('should test if stuff is created', function() {
         var IssueDetailCtrl = createCtrl();

@@ -36,7 +36,7 @@ describe('Issue List Controller', function() {
         createCtrl = function() {
             var ctrl = $controller('IssueListCtrl', {
                 $scope: scope,
-                repo: repo,
+                repo: repo
             });
             ctrl.scope = scope;
             return ctrl;

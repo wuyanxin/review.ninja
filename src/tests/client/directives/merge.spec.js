@@ -29,7 +29,7 @@ describe('Merge Directive', function() {
                 repo: {
                     id: 2
                 }
-            }, 
+            },
             head: {
                 repo: {
                     id: 3
@@ -46,7 +46,7 @@ describe('Merge Directive', function() {
     }));
 
     it('should get ref if base and head are equal', function() {
-        httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"getReference","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"gitdata","fun":"getReference","arg":' + JSON.stringify({
            user: 'gabe',
            repo: 'test',
            ref: 'heads/master'
@@ -73,7 +73,7 @@ describe('Merge Directive', function() {
     });
 
     it('should delete branch', function() {
-        httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"deleteReference","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"gitdata","fun":"deleteReference","arg":' + JSON.stringify({
            user: 'gabe',
            repo: 'test',
            ref: 'heads/master'
@@ -88,7 +88,7 @@ describe('Merge Directive', function() {
     });
 
     it('should merge branch', function() {
-        httpBackend.expect('POST', '/api/github/call','{"obj":"pullRequests","fun":"merge","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"pullRequests","fun":"merge","arg":' + JSON.stringify({
            user: 'gabe',
            repo: 'test',
            number: 1

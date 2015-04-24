@@ -19,7 +19,7 @@ describe('File Directive', function() {
 
         Reference = Reference;
         scope = $rootScope.$new();
-        element = $compile("<file></file>")(scope);
+        element = $compile('<file></file>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
         elScope.headSha = 'aaaa';

@@ -10,13 +10,11 @@ describe('Graph Directive', function() {
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile) {
         httpBackend = $injector.get('$httpBackend');
-        httpBackend.when('GET', '/config').respond({
-            
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         scope = $rootScope.$new();
 
-        element = $compile("<graph></graph>")(scope);
+        element = $compile('<graph></graph>')(scope);
         scope.$digest();
         isolated = element.isolateScope();
     }));

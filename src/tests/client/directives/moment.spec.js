@@ -10,13 +10,11 @@ describe('Moment Directive', function() {
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $timeout) {
         httpBackend = $injector.get('$httpBackend');
-        httpBackend.when('GET', '/config').respond({
-            
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         scope = $rootScope.$new();
         timeout = $timeout;
-        element = $compile("<div moment></div>")(scope);
+        element = $compile('<div moment></div>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
         console.log(elScope);
@@ -28,6 +26,6 @@ describe('Moment Directive', function() {
         elScope.moment = 2;
         elScope.$apply();
         timeout.flush();
-    })
+    });
     // should call moment successfully
 });

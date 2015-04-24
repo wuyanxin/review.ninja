@@ -26,7 +26,7 @@ describe('File Factory', function() {
         var treeCorrect = {tree: [{type: 'haha', path: 'test.txt'}, {type: 'image', path: 'test.png'}]};
         var result = File.getTreeTypes(tree);
         (result).should.eql(treeCorrect);
-    }); 
+    });
 
     // should get file types raw if image
     it('should get raw url of file and put it in file', function() {

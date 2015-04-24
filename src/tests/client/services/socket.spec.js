@@ -20,7 +20,7 @@ describe('Socket Factory', function() {
 
         socket = $injector.get('socket');
 
-        cbOn = { 
+        cbOn = {
             apply: function(socket, args) {
                 scope.received = true;
             }

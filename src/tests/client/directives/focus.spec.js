@@ -11,13 +11,11 @@ describe('Focus Directive', function() {
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $timeout) {
 
         httpBackend = $injector.get('$httpBackend');
-        httpBackend.when('GET', '/config').respond({
-            
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         scope = $rootScope.$new();
-        timeout = $timeout
-        element = $compile("<focus><div></div></focus>")(scope);
+        timeout = $timeout;
+        element = $compile('<focus><div></div></focus>')(scope);
         scope.$digest();
         isolated = element.isolateScope();
     }));

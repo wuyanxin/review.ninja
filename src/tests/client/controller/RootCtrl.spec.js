@@ -13,9 +13,7 @@ describe('Root Controller', function() {
         $stateParams.repo = 1234;
         httpBackend = $injector.get('$httpBackend');
 
-        httpBackend.when('GET', '/config').respond({
-
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         rootScope = $rootScope;
         scope = $rootScope.$new();
@@ -100,6 +98,6 @@ describe('Root Controller', function() {
         var ctrl = createCtrl();
         scope.dismiss('create');
         httpBackend.flush();
-        (rootScope.user.value.history['create']).should.be.true;
+        (rootScope.user.value.history.create).should.be.true;
     });
 });

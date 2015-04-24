@@ -16,13 +16,9 @@ describe('In Filter', function() {
             'attr': 3
         }, 4];
     }));
-
-    // should return items in array if array is not there
-    // should push matched items to array
     
     it('should return all items if there is not match', function() {
         var array = [];
-
         var result = _in(items, array, 1);
         var result2 = _in(items, null, 1);
 

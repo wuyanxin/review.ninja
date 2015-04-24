@@ -27,7 +27,7 @@ describe('Diff File Directive', function() {
             ignored: false,
             sha: 'magic'
         };
-        element = $compile("<diff file=\"{ignored: false,sha:'magic'}\"></diff>")(scope);
+        element = $compile('<diff file=\"{ignored: false,sha:"magic"}\"></diff>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
         scope.$digest();

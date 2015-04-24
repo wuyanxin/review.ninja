@@ -16,9 +16,9 @@ describe('Add Repo (new) Directive', function() {
 
         });
 
-        httpBackend.expect('POST', '/api/github/call','{"obj":"repos","fun":"getAll","arg":' + JSON.stringify({
-           headers:{accept:'application/vnd.github.moondragon+json'},
-           per_page:50
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":' + JSON.stringify({
+           headers: {accept: 'application/vnd.github.moondragon+json'},
+           per_page: 50
         }) + '}').respond({
             value: {
                 repos: [123, 134, 123]
@@ -30,7 +30,7 @@ describe('Add Repo (new) Directive', function() {
         var addFake = function(obj) {
             (obj.done)();
         };
-        element = $compile("<add-repo-new></add-repo-new>")(scope);
+        element = $compile('<add-repo-new></add-repo-new>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
         elScope.repos = [{id: 1234}, {id: 2345}];
@@ -45,8 +45,8 @@ describe('Add Repo (new) Directive', function() {
         var resultRepo = [{id: 1234}, {id: 2345}, {id: 3456}];
         elScope.addRepo({id: 3456});
         ([elScope.active]).should.be.eql([null]);
-        (elScope.repos[elScope.repos.length-1]).should.have.property('adddate');
-        (elScope.repos[elScope.repos.length-1].id).should.be.exactly(3456);
+        (elScope.repos[elScope.repos.length - 1]).should.have.property('adddate');
+        (elScope.repos[elScope.repos.length - 1].id).should.be.exactly(3456);
         (elScope.search).should.be.empty;
         (elScope.show).should.be.false;
     });

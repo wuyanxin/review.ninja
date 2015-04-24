@@ -19,7 +19,7 @@ describe('File Browser Directive', function() {
         });
 
         scope = $rootScope.$new();
-        element = $compile("<browser></browser>")(scope);
+        element = $compile('<browser></browser>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
     }));
@@ -28,11 +28,11 @@ describe('File Browser Directive', function() {
     it('should change stack and path upon new sha', function() {
         var testTree = {
             tree: [
-            {type: 'haha', path: 'test.txt'}, 
+            {type: 'haha', path: 'test.txt'},
             {type: 'blob', path: 'test.png'}
             ]
         };
-        httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"getTree","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"gitdata","fun":"getTree","arg":' + JSON.stringify({
            user: 'gabe',
            repo: 1234,
            sha: 'magic'
@@ -49,7 +49,7 @@ describe('File Browser Directive', function() {
         httpBackend.flush();
         (elScope.tree).should.be.eql({
             tree: [
-            {type: 'haha', path: 'test.txt'}, 
+            {type: 'haha', path: 'test.txt'},
             {type: 'image', path: 'test.png'}
             ]
         });
@@ -77,11 +77,11 @@ describe('File Browser Directive', function() {
     it('should push tree onto stack', function() {
         var testTree = {
             tree: [
-            {type: 'haha', path: 'test.txt'}, 
+            {type: 'haha', path: 'test.txt'},
             {type: 'blob', path: 'test.png'}
             ]
         };
-        httpBackend.expect('POST', '/api/github/call','{"obj":"gitdata","fun":"getTree","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"gitdata","fun":"getTree","arg":' + JSON.stringify({
            user: 'gabe',
            repo: 1234,
            sha: 'magic'
@@ -97,14 +97,14 @@ describe('File Browser Directive', function() {
         (elScope.stack).should.be.eql([testTree]);
         (elScope.tree).should.be.eql({
             tree: [
-            {type: 'haha', path: 'test.txt'}, 
+            {type: 'haha', path: 'test.txt'},
             {type: 'image', path: 'test.png'}
             ]
         });
     });
 
     it('should push file onto stack', function() {
-        httpBackend.expect('POST', '/api/github/wrap','{"obj":"gitdata","fun":"getBlob","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"gitdata","fun":"getBlob","arg":' + JSON.stringify({
            user: 'gabe',
            repo: 1234,
            sha: 'magic'

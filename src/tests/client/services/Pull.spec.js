@@ -43,7 +43,7 @@ describe('Pull Factory', function() {
                 }
             },
             head: {
-                sha: 'magic',
+                sha: 'magic'
             },
             milestone: {
                 number: '1.3.0',
@@ -93,9 +93,9 @@ describe('Pull Factory', function() {
     // should render pull body
     it('should render pull body', function(){
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
-          text: "this is pull body",
-          mode: "gfm",
-          context: "gabe/repo1"
+          text: 'this is pull body',
+          mode: 'gfm',
+          context: 'gabe/repo1'
         }) + '}').respond(200, {
             value: {
                 body: '<p>this is pull body</p>'
@@ -125,7 +125,7 @@ describe('Pull Factory', function() {
         var result = Pull.stars(fakePull, 'avatar');
         httpBackend.flush();
         ([result.star]).should.be.eql([null]);
-        (result.stars).should.be.eql([{name: 'gabe'},{name: 'blah'}]);
+        (result.stars).should.be.eql([{name: 'gabe'}, {name: 'blah'}]);
         stars.forEach(function(x) {
             scope.apply();
         });
@@ -145,7 +145,7 @@ describe('Pull Factory', function() {
                 }
             },
             head: {
-                sha: 'magic',
+                sha: 'magic'
             },
             milestone: {
                 number: '1.3.0',
