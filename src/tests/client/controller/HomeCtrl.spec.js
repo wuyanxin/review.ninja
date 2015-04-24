@@ -2,7 +2,7 @@
 // home test
 describe('Home Controller', function() {
 
-    var scope, httpBackend, createCtrl;
+    var scope, httpBackend, createCtrl, rootScope;
 
     beforeEach(angular.mock.module('app'));
 
@@ -20,6 +20,7 @@ describe('Home Controller', function() {
         // create promise for user
 
         scope = $rootScope.$new();
+        rootScope = $rootScope;
         var deferred = $q.defer();
         deferred.resolve({
             value: {
@@ -31,14 +32,17 @@ describe('Home Controller', function() {
         var promise = deferred.promise;
 
         scope.query = 'user/repo';
-        scope.promise = promise;
-        scope.$digest();
-        scope.$apply();
+        rootScope.promise = promise;
+        rootScope.dismiss = function(str) {
+            return true;
+        };
+        rootScope.$digest();
+        rootScope.$apply();
 
         createCtrl = function() {
             return $controller('HomeCtrl', {
                 $scope: scope,
-                $rootScope: scope
+                $rootScope: rootScope
             });
         };
     }));
@@ -108,8 +112,8 @@ describe('Home Controller', function() {
         var HomeCtrl = createCtrl();
         httpBackend.flush();
         scope.repos = [];
-        httpBackend.expect('POST', '/api/onboard/createrepo').respond({
-            value: {owner: {login: 'gabe'}, name: 'lol', id: 1234}
+        httpBackend.expect('POST', '/api/onboard/createrepo', JSON.stringify({})).respond({
+            owner: {login: 'gabe'}, name: 'lol', id: 1234
         });
         httpBackend.expect('POST', '/api/user/addRepo', JSON.stringify({
            user: 'gabe',

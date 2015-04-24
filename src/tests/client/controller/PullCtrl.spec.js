@@ -2,7 +2,7 @@
 // settings test
 describe('Pull Controller', function() {
 
-    var scope, rootScope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock, CommentMock, FileMock, q;
+    var scope, rootScope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock, CommentMock, FileMock, ModalMock, q;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
@@ -34,7 +34,13 @@ describe('Pull Controller', function() {
 
         FileMock = {
             getFileTypes: function(files) {
+                return files.map(function(x) { return x + '.test'; });
+            }
+        };
 
+        ModalMock = {
+            open: function(obj) {
+                return obj;
             }
         };
     });
@@ -64,10 +70,10 @@ describe('Pull Controller', function() {
           user: 'gabe',
           repo: 'test',
           number: 1
-        }) + '}').respond({
-            value: ['test'],
-            affix: ['test', 'this']
-        });
+        }) + '}').respond([
+            {body: 'test'},
+            {body: 'this'}
+        ]);
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"repoIssues","arg":' + JSON.stringify({
           user: 'gabe',
@@ -131,7 +137,8 @@ describe('Pull Controller', function() {
                 id: 1234
             },
             body: 'hello world',
-            number: 1
+            number: 1,
+            stars: [{name: 'gabe'}]
         };
 
         createCtrl = function() {
@@ -139,6 +146,7 @@ describe('Pull Controller', function() {
                 $scope: scope,
                 $rootScope: rootScope,
                 $state: mockState,
+                $modal: ModalMock,
                 Pull: PullMock,
                 repo: {value: {id: 1}},
                 pull: {value: fakePull}
@@ -147,13 +155,40 @@ describe('Pull Controller', function() {
         }
     }));
 
-    // get pull request
+    // set all the stuff
     it('should set stuff', function() {
         PullCtrl = createCtrl();
         httpBackend.flush();
+    }); 
+
+    // star text
+    it('should get star text', function() {
+        var PullCtrl = createCtrl();
+        scope.reposettings = {value: {threshold: 2}};
+        var result = scope.getStarText();
+        (result).should.be.exactly('Pull Request needs 1 more ninja star');
+        scope.reposettings.value.threshold = 1;
+        var result2 = scope.getStarText();
+        (result2).should.be.exactly('No more ninja stars needed');
     });
 
     // compcomm
+    it('should compare commits', function() {
+        PullCtrl = createCtrl();
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"repos","fun":"compareCommits","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 'test',
+          base: 'master',
+          head: 'testbranch'
+        }) + '}').respond({
+            value: {files: ['main', 'thing']},
+        });
+        scope.compComm('master', 'testbranch');
+        httpBackend.flush();
+        (scope.base).should.be.exactly('master');
+        (scope.head).should.be.exactly('testbranch');
+        (scope.files).should.be.eql(['main.txt', 'thing.txt']);
+    });
 
     // set star on pr
     it('should set star', function() {
@@ -164,22 +199,24 @@ describe('Pull Controller', function() {
             sha: 'abcd1234',
             number: 1,
             repo_uuid: 11111
-        }));
-        PullCtrl.setStar();
+        })).respond({
+            value: true
+        });
+        scope.setStar();
         httpBackend.flush();
     });
 
     // get pull request
     it('should get pull request', function() {
         PullCtrl = createCtrl();
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"issues","fun":"repoIssues","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"pullRequests","fun":"get","arg":' + JSON.stringify({
           user: 'gabe',
           repo: 'test',
           number: 1
         }) + '}').respond({
             value: {head: {sha: 'abcd1234'}},
         });
-        PullCtrl.getPullRequest();
+        scope.getPullRequest();
         httpBackend.flush();
         var fakePull = {
             base: {
@@ -252,6 +289,10 @@ describe('Pull Controller', function() {
     // watch
 
     // badge modal
+    it('should call to open modal', function() {
+        var PullCtrl = createCtrl();
+        scope.badge();
+    });
 
     // all the socket functions
 
