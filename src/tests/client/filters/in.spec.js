@@ -8,8 +8,7 @@ describe('In Filter', function() {
 
     beforeEach(angular.mock.inject(function($filter) {
         _in = $filter('in');
-        items = [{
-            'attr': 1
+        items = [{'attr': 1
         }, {
             'attr': 2
         }, {
@@ -31,7 +30,7 @@ describe('In Filter', function() {
         var result = _in(items, array, 'attr');
         var result2 = _in(items, array, null);
 
-        (result).should.be.eql([2, 3]);
+        (result).should.be.eql([{'attr': 2}, {'attr': 3}, 4]);
         (result2).should.be.eql([4]);
     });
 

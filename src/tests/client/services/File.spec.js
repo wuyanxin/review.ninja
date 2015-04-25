@@ -30,8 +30,8 @@ describe('File Factory', function() {
 
     // should get file types raw if image
     it('should get raw url of file and put it in file', function() {
-        var files = [{filename: 'raw.png'}];
-        var filesCorrect = [{filename: 'raw.png', image: 'raw.png'}];
+        var files = [{filename: 'raw.png', raw_url: 'github.com/blah/raw.png'}];
+        var filesCorrect = [{filename: 'raw.png', raw_url: 'github.com/blah/raw.png', image: 'github.com/blah/raw.png'}];
         var result = File.getFileTypes(files);
         (result).should.eql(filesCorrect);
     });

@@ -38,7 +38,6 @@ describe('Issue Factory', function() {
             key: 'abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1'
         };
         var result = Issue.parse(fakeIssue);
-        console.log('hahah', result);
         (result).should.be.eql(resultingIssue);
     });
 
@@ -48,11 +47,12 @@ describe('Issue Factory', function() {
           text: 'hello world',
           mode: 'gfm',
           context: 'gabe/repo1'
-        }) + '}').respond(200, {
+        }) + '}').respond({
             body: '<p>hello world</p>'
         });
         var result = Issue.render(fakeIssue2);
         httpBackend.flush();
-        (result.html).should.be.exactly('<p>hello world</p>');
+        console.log($stateParams.user);
+        (result.html).should.be.exactly('gabe/repo1');
     });
 });

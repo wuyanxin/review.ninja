@@ -23,7 +23,7 @@ describe('Repo Controller', function() {
           state: 'open',
           per_page: 10
         }) + '}').respond({
-            affix: [{head: {sha: 'abcd1234'}}]
+            data: [{head: {sha: 'abcd1234'}}]
         });
 
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"pullRequests","fun":"getAll","arg":' + JSON.stringify({
@@ -32,7 +32,7 @@ describe('Repo Controller', function() {
           state: 'closed',
           per_page: 10
         }) + '}').respond({
-            affix: [{head: {sha: 'abcd1234'}}]
+            data: [{head: {sha: 'abcd1234'}}]
         });
 
         var mockPullService = {
@@ -97,7 +97,7 @@ describe('Repo Controller', function() {
           user: 'gabe',
           repo: 1234
         }) + '}').respond({
-            value: ['david', 'dominik']
+            data: ['david', 'dominik']
         });
         var ctrl = createCtrl();
         httpBackend.flush();

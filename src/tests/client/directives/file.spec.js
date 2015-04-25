@@ -38,7 +38,6 @@ describe('File Directive', function() {
             base: 1
         };
         elScope.selection = {path: 'hello/world', sha: 'aaaa', start: 1};
-        console.log('hahahaha');
         var result = elScope.selStarts(fakeLine);
         (result).should.be.true;
     });
@@ -49,7 +48,6 @@ describe('File Directive', function() {
             base: 44
         };
         elScope.selection = {path: 'hello/world', sha: 'aaaa', start: 1, end: 99};
-        console.log('hahahaha');
         var result = elScope.isSelected(fakeLine);
         (result).should.be.true;
     });
@@ -82,7 +80,7 @@ describe('File Directive', function() {
         var fakeEvent = {shiftKey: true};
         elScope.selection = {path: 'hello/world', start: 1};
         var result = elScope.select(fakeLine, fakeEvent);
-        (result).should.be.eql({
+        (elScope.selection).should.be.eql({
             sha: elScope.headSha,
             path: elScope.path,
             start: 1,
@@ -93,8 +91,9 @@ describe('File Directive', function() {
 
     it('should do nothing if no line base', function() {
         var fakeLine = {};
+        elScope.selection = {};
         var result = elScope.select(fakeLine);
-        ([result]).should.be.eql([undefined]);
+        (elScope.selection).should.be.empty;
     });
 
     // should go to line
@@ -102,7 +101,7 @@ describe('File Directive', function() {
         var fakeLine = {
             base: 5
         };
-        var correctIssues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 5, end: 23, number: 3}];
+        var correctIssues = [2, 3];
         elScope.issues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 5, end: 23, number: 3}, {path: 'hello/world', sha: 'aaaa', start: 1, end: 99, number: 1}];
         elScope.go(fakeLine);
         (elScope.refIssues).should.be.eql(correctIssues);

@@ -51,7 +51,6 @@ describe('Pull Controller', function() {
                 if (this.events[evt]) {
                     this.events[evt].forEach(function(cb){
                         $rootScope.$apply(function() {
-                            console.log(args);
                             cb.apply(this, args);
                         });
                     });
@@ -244,27 +243,7 @@ describe('Pull Controller', function() {
         });
         scope.getPullRequest();
         httpBackend.flush();
-        var fakePull = {
-            base: {
-                repo: {
-                    owner: {
-                        login: 'gabe'
-                    },
-                    name: 'repo1',
-                    id: 11111
-                }
-            },
-            head: {
-                sha: 'abcd1234'
-            },
-            milestone: {
-                number: 1,
-                id: 1234
-            },
-            body: 'hello world',
-            number: 1
-        };
-        (scope.pull).should.be.eql(fakePull);
+        (scope.pull).should.be.eql({head: {sha: 'abcd1234'}});
     });
 
     // create issue

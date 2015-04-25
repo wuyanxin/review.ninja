@@ -22,7 +22,6 @@ describe('Focus Directive', function() {
 
     // should watch if elem is focused
     it('should watch if element is focused', function() {
-        console.log(element[0]);
     });
 
     // should focus on focus

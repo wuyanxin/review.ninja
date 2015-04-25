@@ -9,7 +9,7 @@ describe('Issue Detail Controller', function() {
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $stateParams) {
         $stateParams.user = 'gabe';
-        $stateParams.repo = 1234;
+        $stateParams.repo = 'test';
         $stateParams.issue = 1;
 
         httpBackend = $injector.get('$httpBackend');
@@ -20,7 +20,7 @@ describe('Issue Detail Controller', function() {
 
          httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getComments","arg":' + JSON.stringify({
           user: 'gabe',
-          repo: 1234,
+          repo: 'test',
           number: 1
         }) + '}').respond(200, {
             value: {}
@@ -81,7 +81,7 @@ describe('Issue Detail Controller', function() {
         var IssueDetailCtrl = createCtrl();
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"issues","fun":"createComment","arg":' + JSON.stringify({
           user: 'gabe',
-          repo: 1234,
+          repo: 'test',
           number: 1,
           body: 'comment'
         }) + '}').respond(200, {
@@ -90,9 +90,8 @@ describe('Issue Detail Controller', function() {
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"edit","arg":' + JSON.stringify({
           user: 'gabe',
-          repo: 1234,
-          number: 1,
-          body: 'comment'
+          repo: 'test',
+          state: 'open'
         }) + '}').respond(200, {
             value: {}
         });

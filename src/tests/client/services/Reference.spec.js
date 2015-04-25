@@ -22,7 +22,7 @@ describe('Reference Factory', function() {
         start = 0;
         end = 100;
         ref = 'sha/path#L0-L100';
-        altRef = 'sha/path#L100-L0';
+        altRef = 'sha/path#L100';
         line = 0;
         line2 = 1;
         altLine = 'fail';
@@ -37,7 +37,7 @@ describe('Reference Factory', function() {
 
     it('should reverse start and end if start is greater than end', function() {
         var result = Reference.get(sha, path, end, start);
-        (result).should.be.exactly(ref);
+        (result).should.be.exactly(altRef);
     });
 
     // should get selection
@@ -48,7 +48,7 @@ describe('Reference Factory', function() {
             path: path,
             start: start,
             end: end,
-            ref: altRef
+            ref: ref
         });
     });
 

@@ -79,14 +79,14 @@ describe('Pull Factory', function() {
             repo: 'repo1',
             number: '1.3.0'
         }) + '}').respond(200, {
-            value: {
+            data: {
                 number: '1.4.0',
                 id: 1234
             }
         });
         var result = Pull.milestone(pull);
         httpBackend.flush();
-        (result.milestone).should.eql({number: '1.4.0'});
+        (result.milestone).should.eql({number: '1.4.0', id: 1234});
         (result).should.eql(pullMilestone);
     });
 
@@ -97,14 +97,14 @@ describe('Pull Factory', function() {
           mode: 'gfm',
           context: 'gabe/repo1'
         }) + '}').respond(200, {
-            value: {
+            data: {
                 body: '<p>this is pull body</p>'
             }
         });
         var fakePull = {body: 'this is pull body'};
         var result = Pull.render(fakePull);
         httpBackend.flush();
-        (result).should.be.eql(200, {body: 'this is pull body', html: '<p>this is pull body</p>'});
+        (result).should.be.eql({body: 'this is pull body', html: '<p>this is pull body</p>'});
     });
 
     // should get star count
@@ -113,7 +113,7 @@ describe('Pull Factory', function() {
           sha: 'magic',
           repo_uuid: 11111
         })).respond({
-            value: [
+            data: [
                 {
                     name: 'gabe'
                 },
@@ -161,7 +161,7 @@ describe('Pull Factory', function() {
             number: 1,
             per_page: 10
         }) + '}').respond(200, {
-            value: ['these', 'are', 'some', 'test', 'comments']
+            data: ['these', 'are', 'some', 'test', 'comments']
         });
         var result = Pull.commentsCount(pull);
         httpBackend.flush();

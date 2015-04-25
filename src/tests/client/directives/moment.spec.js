@@ -17,7 +17,6 @@ describe('Moment Directive', function() {
         element = $compile('<div moment></div>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
-        console.log(elScope);
         elScope.moment = 0;
     }));
     

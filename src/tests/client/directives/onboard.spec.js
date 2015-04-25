@@ -2,7 +2,7 @@
 // settings test
 describe('Onboard Directive', function() {
 
-    var rootScope, scope, elScope, repo, httpBackend, createDirective, element;
+    var rootScope, scope, elScope, compile, repo, httpBackend, createDirective, element;
 
     beforeEach(angular.mock.module('app'));
 
@@ -35,12 +35,13 @@ describe('Onboard Directive', function() {
             }
         });
         var promise = deferred.promise;
+
+        compile = $compile;
         
         rootScope.promise = promise;
         rootScope.$digest();
         scope.$digest();
         element = $compile('<onboard></onboard>')(scope);
-        console.log(element);
         scope.$digest();
         elScope = element.isolateScope();
     }));
@@ -57,23 +58,19 @@ describe('Onboard Directive', function() {
     });
 
     // should add transition class to element
-    it('should add transition class to an element', function($compile) {
-        var fakeNoClass = $compile('<div class="ob"></div>')(elScope);
-        console.log(fakeNoClass);
+    it('should add transition class to an element', function() {
+        var fakeNoClass = compile('<div class="ob"></div>')(scope);
         elScope.addClass('ob', 'test');
         elScope.$digest();
-        console.log(fakeNoClass);
-        (fakeNoClass).should.be.eql($compile('<div class="ob test"></div>')(elScope));
+        (fakeNoClass).should.be.eql(compile('<div class="ob test"></div>')(elScope));
     });
 
     // should remove transition class from element
-    it('should remove a transition class from an element', function($compile) {
-        var fakeClass = $compile('<div class="ob test"></div>')(elScope);
-        console.log(fakeClass);
+    it('should remove a transition class from an element', function() {
+        var fakeClass = compile('<div class="ob test"></div>')(scope);
         elScope.removeClass('ob', 'test');
         elScope.$digest();
-        console.log(fakeClass);
-        (fakeClass).should.be.eql($compile('<div class="ob"></div>')(elScope));
+        (fakeClass).should.be.eql(compile('<div class="ob"></div>')(scope));
     });
 
     // socket -> get user’s actions upon getting action value from server

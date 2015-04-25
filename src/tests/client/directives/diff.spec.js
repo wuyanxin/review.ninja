@@ -25,9 +25,12 @@ describe('Diff File Directive', function() {
         scope = $rootScope.$new();
         scope.file = {
             ignored: false,
-            sha: 'magic'
+            sha: 'magic',
+            filename: 'hello/world'
         };
-        element = $compile('<diff file=\"{ignored: false,sha:"magic"}\"></diff>')(scope);
+        scope.headSha = 'aaaa';
+        scope.selection = {path: 'hello/world', sha: 'aaaa', start: 1};
+        element = $compile('<diff file=\"file\" selection=\"selection\" headSha=\"headSha\"></diff>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
         scope.$digest();
@@ -47,13 +50,15 @@ describe('Diff File Directive', function() {
         (elScope.selection).should.be.empty;
     });
 
-    // should determine where selection starts
+    // should determine if selection starts
     it('should determine if selection starts', function() {
         var fakeLine = {
-            base: 1
+            head: 1
         };
-        elScope.selection = {path: 'hello/world', sha: 'aaaa', start: 1};
-        console.log('hahahaha');
+        console.log((scope.headSha === scope.selection.sha), 
+            (scope.file.filename === scope.selection.path),
+            (fakeLine.head === scope.selection.start))
+        console.log('filtering', scope.headSha, scope.file.filename, fakeLine.head, scope.selection)
         var result = elScope.selStarts(fakeLine);
         (result).should.be.true;
     });
@@ -64,7 +69,6 @@ describe('Diff File Directive', function() {
             base: 44
         };
         elScope.selection = {path: 'hello/world', sha: 'aaaa', start: 1, end: 99};
-        console.log('hahahaha');
         var result = elScope.isSelected(fakeLine);
         (result).should.be.true;
     });

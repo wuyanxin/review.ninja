@@ -65,7 +65,7 @@ describe('Root Controller', function() {
         rootScope.$apply();
         scope.$digest();
         scope.$apply();
-        (rootScope.user).should.be.eql({
+        (scope.user).should.be.eql({
             id: 2757082,
             login: 'login-1',
             repos: [1234, 1235, 1236]
@@ -84,7 +84,7 @@ describe('Root Controller', function() {
         var ctrl = createCtrl();
         scope.createWebhook();
         httpBackend.flush();
-        (scope.hook).should.be.eql({value: 1});
+        (scope.hook).should.be.eql({loaded: true, loading: false, error: null, affix: {value: 1}, value: {value: 1}});
         (scope.created).should.be.true;
     });
 
