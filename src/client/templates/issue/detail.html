@@ -9,7 +9,7 @@
                 <a class="link-external" target="_blank"  ng-href="{{ issue.html_url }}">#{{ issue.number }}</a>
             </h4>
             <p style="padding-top:15px">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span></p>
-            <a href="#" scroll="{{ anchor() }}">
+            <a href="#" scroll="anchor()">
                 <i class="fa fa-lg fa-link text-warning scroll"
                    ng-show="issue.ref"
                    style="padding-top:10px;">

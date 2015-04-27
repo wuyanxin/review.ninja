@@ -14,7 +14,7 @@ describe('Scroll Directive', function() {
 
         scope = $rootScope.$new();
 
-        element = $compile('<scroll></scroll>')(scope);
+        element = $compile('<div scroll=\"\"></div>')(scope);
         scope.$digest();
         isolated = element.isolateScope();
     }));

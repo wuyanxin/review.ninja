@@ -3,9 +3,13 @@
 // Scroll Directive
 // *****************************************************
 
-module.directive('scroll', ['$location',
-    function($location) {
-        return function(scope, element, attr) {
+module.directive('scroll', function($location) {
+    return {
+        restrict: 'A',
+        scope: {
+            scroll: '='
+        },
+        link: function(scope, element, attr) {
             element.click(function(e) {
                 e.preventDefault();
                 $location.hash('');
@@ -15,6 +19,6 @@ module.directive('scroll', ['$location',
                     $('html,body').animate({ scrollTop: dest.offset().top }, 300);
                 }
             });
-        };
+        }
     }
-]);
+});
