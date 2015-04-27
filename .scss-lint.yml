@@ -139,7 +139,7 @@ linters:
   UrlQuotes:
     enabled: true
 
-  VendorPrefixes:
+  VendorPrefix:
     enabled: false
 
   ZeroUnit:
