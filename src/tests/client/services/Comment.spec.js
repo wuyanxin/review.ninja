@@ -14,9 +14,7 @@ describe('Comment Factory', function() {
 
         httpBackend = $injector.get('$httpBackend');
 
-        httpBackend.when('GET', '/config').respond({
-
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         scope = $rootScope.$new();
 
@@ -40,7 +38,9 @@ describe('Comment Factory', function() {
           mode: 'gfm',
           context: 'github/gollum'
         }) + '}').respond({
-            body: '<p>Hello world <a href="https://github.com/github/linguist/issues/1" class="issue-link" title="Binary detection issues on extensionless files">github/linguist#1</a> <strong>cool</strong>, and <a href="https://github.com/gollum/gollum/issues/1" class="issue-link" title="no method to write a file?">#1</a>!</p>'
+            data: {
+                body: '<p>Hello world <a href="https://github.com/github/linguist/issues/1" class="issue-link" title="Binary detection issues on extensionless files">github/linguist#1</a> <strong>cool</strong>, and <a href="https://github.com/gollum/gollum/issues/1" class="issue-link" title="no method to write a file?">#1</a>!</p>'
+            }
         });
 
         var result = Comment.render(comment);

@@ -12,15 +12,11 @@ describe('Home Controller', function() {
 
         httpBackend = $injector.get('$httpBackend');
 
-        httpBackend.when('GET', '/config').respond({
-
-        });
-
-
-        // create promise for user
-
+        httpBackend.when('GET', '/config').respond({});
         scope = $rootScope.$new();
         rootScope = $rootScope;
+
+        // create promise for user
         var deferred = $q.defer();
         deferred.resolve({
             value: {
@@ -113,17 +109,19 @@ describe('Home Controller', function() {
         httpBackend.flush();
         scope.repos = [];
         httpBackend.expect('POST', '/api/onboard/createrepo', JSON.stringify({})).respond({
-            owner: {login: 'gabe'}, name: 'lol', id: 1234
+            owner: {login: 'gabe'}, name: 'onboarding', id: 1234
         });
         httpBackend.expect('POST', '/api/user/addRepo', JSON.stringify({
            user: 'gabe',
-           repo: 'lol',
+           repo: 'onboarding',
            repo_uuid: 1234
         })).respond({
             value: true
         });
+        var clock = sinon.useFakeTimers(11111);
         scope.createOnboardingRepo();
         httpBackend.flush();
-        (scope.repos).should.be.eql([{owner: {login: 'gabe'}, name: 'lol', id: 1234}]);
+        (scope.repos).should.be.eql([{owner: {login: 'gabe'}, name: 'onboarding', id: 1234, adddate: -11111}]);
+        clock.restore();
     });
 });

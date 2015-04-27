@@ -10,7 +10,7 @@ describe('Repo Controller', function() {
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $stateParams) {
         $stateParams.user = 'gabe';
-        $stateParams.repo = 1234;
+        $stateParams.repo = 'test';
         httpBackend = $injector.get('$httpBackend');
 
         httpBackend.when('GET', '/config').respond({
@@ -19,7 +19,7 @@ describe('Repo Controller', function() {
 
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"pullRequests","fun":"getAll","arg":' + JSON.stringify({
           user: 'gabe',
-          repo: 1234,
+          repo: 'test',
           state: 'open',
           per_page: 10
         }) + '}').respond({
@@ -28,11 +28,18 @@ describe('Repo Controller', function() {
 
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"pullRequests","fun":"getAll","arg":' + JSON.stringify({
           user: 'gabe',
-          repo: 1234,
+          repo: 'test',
           state: 'closed',
           per_page: 10
         }) + '}').respond({
             data: [{head: {sha: 'abcd1234'}}]
+        });
+
+        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"repos","fun":"getCollaborators","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 'test'
+        }) + '}').respond({
+            data: ['david', 'dominik']
         });
 
         var mockPullService = {
@@ -57,7 +64,7 @@ describe('Repo Controller', function() {
         createCtrl = function() {
             var ctrl = $controller('RepoCtrl', {
                 $scope: scope,
-                repo: 1234,
+                repo: 'test',
                 Pull: mockPullService,
                 $modal: mockModal
             });
@@ -72,38 +79,6 @@ describe('Repo Controller', function() {
         (scope.type).should.be.exactly('open');
     });
 
-    it('should get open and closed pull requests', function() {
-        var ctrl = createCtrl();
-        httpBackend.flush();
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"statuses","fun":"getCombined","arg":' + JSON.stringify({
-          user: 'gabe',
-          repo: 1234,
-          sha: 'abcd1234'
-        }) + '}').respond({
-            value: 'success'
-        });
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"statuses","fun":"getCombined","arg":' + JSON.stringify({
-          user: 'gabe',
-          repo: 1234,
-          sha: 'abcd1234'
-        }) + '}').respond({
-            value: 'success'
-        });
-        httpBackend.flush();
-    });
-
-    it('should get collaborators', function() {
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"repos","fun":"getCollaborators","arg":' + JSON.stringify({
-          user: 'gabe',
-          repo: 1234
-        }) + '}').respond({
-            data: ['david', 'dominik']
-        });
-        var ctrl = createCtrl();
-        httpBackend.flush();
-        (scope.collaborators).should.be.eql({value: ['david', 'dominik']});
-    });
-
     // Actions
     it('should open badge modal', function() {
         var ctrl = createCtrl();
@@ -113,7 +88,7 @@ describe('Repo Controller', function() {
     it('should send an invite', function() {
         httpBackend.expect('/api/invitation/invite', JSON.stringify({
             user: 'gabe',
-            repo: 1234,
+            repo: 'test',
             invitee: 'dfarr',
             email: 'thing@example.com'
         })).respond({

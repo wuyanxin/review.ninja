@@ -2,7 +2,7 @@
 // settings test
 describe('Issue Factory', function() {
 
-    var scope, repo, httpBackend, Issue, fakeIssue;
+    var scope, repo, httpBackend, Issue, fakeIssue, stateParams;
 
     beforeEach(angular.mock.module('app'));
 
@@ -11,6 +11,8 @@ describe('Issue Factory', function() {
     beforeEach(angular.mock.inject(function($injector, $rootScope, $stateParams) {
         $stateParams.user = 'gabe';
         $stateParams.repo = 'repo1';
+
+        stateParams = $stateParams;
 
         httpBackend = $injector.get('$httpBackend');
 
@@ -43,15 +45,16 @@ describe('Issue Factory', function() {
 
     it('should render issue', function() {
         var fakeIssue2 = {body: 'hello world'};
+        console.log(stateParams.user);
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
           text: 'hello world',
           mode: 'gfm',
           context: 'gabe/repo1'
         }) + '}').respond({
-            body: '<p>hello world</p>'
+            data: '<p>hello world</p>'
         });
         var result = Issue.render(fakeIssue2);
         httpBackend.flush();
-        (result.html).should.be.exactly('gabe/repo1');
+        (result).should.be.exactly({body: 'hello world', html: 'gabe/repo1'});
     });
 });

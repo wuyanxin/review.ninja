@@ -14,16 +14,15 @@ describe('Moment Directive', function() {
 
         scope = $rootScope.$new();
         timeout = $timeout;
-        element = $compile('<div moment></div>')(scope);
+        scope.moment = 0;
+        element = $compile('<div moment=\"moment\"></div>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
-        elScope.moment = 0;
     }));
     
     // should refresh
     it('should refresh upon new moment value', function() {
         elScope.moment = 2;
-        elScope.$apply();
         timeout.flush();
     });
     // should call moment successfully

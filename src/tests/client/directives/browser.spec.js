@@ -10,22 +10,12 @@ describe('File Browser Directive', function() {
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $compile, $stateParams) {
         $stateParams.user = 'gabe';
-        $stateParams.repo = 1234;
+        $stateParams.repo = 'test';
 
         httpBackend = $injector.get('$httpBackend');
 
-        httpBackend.when('GET', '/config').respond({
+        httpBackend.when('GET', '/config').respond({});
 
-        });
-
-        scope = $rootScope.$new();
-        element = $compile('<browser></browser>')(scope);
-        scope.$digest();
-        elScope = element.isolateScope();
-    }));
-
-    // should watch git data
-    it('should change stack and path upon new sha', function() {
         var testTree = {
             tree: [
             {type: 'haha', path: 'test.txt'},
@@ -34,20 +24,23 @@ describe('File Browser Directive', function() {
         };
         httpBackend.expect('POST', '/api/github/call', '{"obj":"gitdata","fun":"getTree","arg":' + JSON.stringify({
            user: 'gabe',
-           repo: 1234,
+           repo: 'test',
            sha: 'magic'
         }) + '}').respond({
-            value: testTree
+            data: testTree
         });
 
-        elScope.sha = 'magic';
+        scope = $rootScope.$new();
+        scope.sha = 'magic';
+        element = $compile('<browser sha=\"sha\"></browser>')(scope);
         scope.$digest();
-        elScope.$apply();
+        elScope = element.isolateScope();
+    }));
 
-        (elScope.stack).should.be.empty;
-        (elScope.path).should.be.empty;
+    // should watch git data
+    it('should change stack and path upon new sha', function() {
         httpBackend.flush();
-        (elScope.tree).should.be.eql({
+        (elScope.tree).should.containDeep({
             tree: [
             {type: 'haha', path: 'test.txt'},
             {type: 'image', path: 'test.png'}
@@ -78,15 +71,15 @@ describe('File Browser Directive', function() {
         var testTree = {
             tree: [
             {type: 'haha', path: 'test.txt'},
-            {type: 'blob', path: 'test.png'}
+            {type: 'image', path: 'test.png'}
             ]
         };
         httpBackend.expect('POST', '/api/github/call', '{"obj":"gitdata","fun":"getTree","arg":' + JSON.stringify({
            user: 'gabe',
-           repo: 1234,
+           repo: 'test',
            sha: 'magic'
         }) + '}').respond({
-            value: testTree
+            data: testTree
         });
 
         elScope.path = [];
@@ -94,8 +87,8 @@ describe('File Browser Directive', function() {
         elScope.down({type: 'tree', path: 'testpath', sha: 'magic'});
         httpBackend.flush();
         (elScope.path).should.be.eql(['testpath']);
-        (elScope.stack).should.be.eql([testTree]);
-        (elScope.tree).should.be.eql({
+        (elScope.stack).should.containDeep([testTree]);
+        (elScope.tree).should.containDeep({
             tree: [
             {type: 'haha', path: 'test.txt'},
             {type: 'image', path: 'test.png'}
@@ -104,21 +97,27 @@ describe('File Browser Directive', function() {
     });
 
     it('should push file onto stack', function() {
+        var testTree = {
+            tree: [
+            {type: 'haha', path: 'test.txt'},
+            {type: 'image', path: 'test.png'}
+            ]
+        };
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"gitdata","fun":"getBlob","arg":' + JSON.stringify({
            user: 'gabe',
-           repo: 1234,
+           repo: 'test',
            sha: 'magic'
         }) + '}').respond({
-            value: 'test.png'
+            data: 'test.png'
         });
 
         elScope.path = [];
         elScope.stack = [];
-        elScope.tree = {tree: {test: 'func'}};
         elScope.down({type: 'file', path: 'test.png', sha: 'magic'});
         httpBackend.flush();
         (elScope.path).should.be.eql(['test.png']);
-        (elScope.stack).should.be.eql([{tree: {test: 'func'}}]);
+        (elScope.stack[0].tree[0]).should.containDeep(testTree.tree[0]);
+        (elScope.stack[0].tree[1]).should.containDeep(testTree.tree[1]);
         (elScope.file).should.be.exactly('test.png');
     });
 
