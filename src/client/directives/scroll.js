@@ -20,5 +20,5 @@ module.directive('scroll', function($location) {
                 }
             });
         }
-    }
+    };
 });
