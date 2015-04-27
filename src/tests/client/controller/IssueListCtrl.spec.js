@@ -46,4 +46,21 @@ describe('Issue List Controller', function() {
         var ctrl = createCtrl();
         ([scope.$parent.$parent.sha]).should.be.eql([null]);
     });
+
+    it('should return proper reference with anchor', function() {
+        var ctrl = createCtrl();
+        var issue = {
+            value: {
+                body: '|commit|file reference|pull request|   |\r\n' +
+                '|------|--------------|------------|---|\r\n' +
+                '|abcdabcd12341234abcdabcd12341234abcdabcd|[culture#L1](https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1)| #1 |[![#1](http://app.review.ninja/assets/images/icon-alt-36.png)](http://app.review.ninja/reviewninja/foo/pull/1)|'
+            },
+            sha: 'abcdabcd12341234abcdabcd12341234abcdabcd',
+            path: 'culture',
+            line: '#1',
+            start: 1
+        };
+        var result = scope.anchor(issue);
+        (result).should.be.exactly('abcdabcd12341234abcdabcd12341234abcdabcd:culture:1');
+    });
 });

@@ -58,8 +58,9 @@ describe('Issue Detail Controller', function() {
                 '|abcdabcd12341234abcdabcd12341234abcdabcd|[culture#L1](https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1)| #1 |[![#1](http://app.review.ninja/assets/images/icon-alt-36.png)](http://app.review.ninja/reviewninja/foo/pull/1)|'
             },
             sha: 'abcdabcd12341234abcdabcd12341234abcdabcd',
-            path: 'https://github.com/reviewninja/foo/blob/abcdabcd12341234abcdabcd12341234abcdabcd/culture#L1',
-            line: '#1'
+            path: 'culture',
+            line: '#1',
+            start: 1
         };
 
         createCtrl = function() {
