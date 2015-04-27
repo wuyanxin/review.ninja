@@ -13,7 +13,6 @@ module.exports = function(config) {
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['mocha', 'sinon'],
 
-
         // list of files / patterns to load in the browser
         files: [
             // Testing libs
@@ -73,9 +72,15 @@ module.exports = function(config) {
         },
 
         coverageReporter: {
-            dir: './output/coverage/',
-            subdir: 'client',
-            type: 'lcov'
+            reporters: [{
+                dir: './output/coverage/',
+                subdir: 'client',
+                type: 'lcov'
+            }, {
+                dir: './output/coverage/',
+                subdir: 'client-html',
+                type: 'html'
+            }]
         },
 
         ngHtml2JsPreprocessor: {

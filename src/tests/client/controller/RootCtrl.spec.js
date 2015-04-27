@@ -15,6 +15,16 @@ describe('Root Controller', function() {
 
         httpBackend.when('GET', '/config').respond({});
 
+        httpBackend.when('POST', '/api/github/wrap', '{"obj":"user","fun":"get","arg":' + JSON.stringify({
+        }) + '}').respond({
+            data: {
+                id: 2757082,
+                login: 'login-1',
+                repos: [1234, 1235, 1236],
+                history: {'create': false}
+            }
+        });
+
         rootScope = $rootScope;
         scope = $rootScope.$new();
         q = $q;
@@ -40,15 +50,6 @@ describe('Root Controller', function() {
             });
             return ctrl;
         };
-
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"user","fun":"get","arg":' + JSON.stringify({
-        }) + '}').respond({
-            value: {
-                id: 2757082,
-                login: 'login-1',
-                repos: [1234, 1235, 1236]
-            }
-        });
     }));
 
     it('should do stuff with state change success', function() {
@@ -58,19 +59,6 @@ describe('Root Controller', function() {
     // create promise
     // get user and repo params
     // should change to error on statechangeerror
-
-    it('should return user from promise', function() {
-        var RootCtrl = createCtrl();
-        rootScope.$digest();
-        rootScope.$apply();
-        scope.$digest();
-        scope.$apply();
-        (scope.user).should.be.eql({
-            id: 2757082,
-            login: 'login-1',
-            repos: [1234, 1235, 1236]
-        });
-    });
 
     it('should send call to create webhook', function() {
         rootScope.user = {value: {id: 1}};
@@ -89,9 +77,8 @@ describe('Root Controller', function() {
     });
 
     it('should send call to dismiss from history', function() {
-        rootScope.user = {value: {history: {'create': false}}};
         httpBackend.expect('POST', '/api/user/dismiss', JSON.stringify({
-            dismiss: 'create'  
+            dismiss: 'create'
         })).respond({
             value: true
         });

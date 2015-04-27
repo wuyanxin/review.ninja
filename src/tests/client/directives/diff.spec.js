@@ -25,7 +25,7 @@ describe('Diff File Directive', function() {
             filename: 'hello/world'
         };
         scope.headSha = 'aaaa';
-        scope.issues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 5, end: 23, number: 3}];;
+        scope.issues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 5, end: 23, number: 3}];
         scope.selection = {path: 'hello/world', sha: 'aaaa', start: 1, end: 88};
         element = $compile('<diff file=\"file\" head-sha=\"headSha\" selection=\"selection\" issues=\"issues\"></diff>')(scope);
         scope.$digest();

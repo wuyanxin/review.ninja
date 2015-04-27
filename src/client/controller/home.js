@@ -36,7 +36,6 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         //
 
         $scope.add = function(repo, done) {
-            console.log(repo);
             $RPC.call('user', 'addRepo', {
                 user: repo.owner.login,
                 repo: repo.name,

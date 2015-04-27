@@ -2,10 +2,18 @@
 // settings test
 describe('Issue Detail Controller', function() {
 
-    var scope, rootScope, httpBackend, createCtrl;
+    var scope, rootScope, httpBackend, createCtrl, CommentMock;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
+
+    beforeEach(function() {
+        CommentMock = {
+            render: function(comment) {
+                return comment;
+            }
+        };
+    });
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $stateParams) {
         $stateParams.user = 'gabe';
@@ -18,12 +26,12 @@ describe('Issue Detail Controller', function() {
 
         });
 
-         httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getComments","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getComments","arg":' + JSON.stringify({
           user: 'gabe',
           repo: 'test',
           number: 1
         }) + '}').respond(200, {
-            value: {}
+            data: [{body: 'thing'}, {body: 'wow'}]
         });
 
         scope = $rootScope.$new();
@@ -59,11 +67,13 @@ describe('Issue Detail Controller', function() {
                 $scope: scope,
                 $rootScope: rootScope,
                 repo: repo,
-                issue: issue
+                issue: issue,
+                Comment: CommentMock
             });
             return ctrl;
         };
     }));
+
     it('should test if stuff is created', function() {
         var IssueDetailCtrl = createCtrl();
         (scope.repo).should.be.eql({id: 1234});
@@ -76,27 +86,17 @@ describe('Issue Detail Controller', function() {
     });
 
     it('should set state to open if opened', function() {
-        scope.comment = 'comment';
         scope.issue = {number: 1, state: 'open'};
         var IssueDetailCtrl = createCtrl();
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"issues","fun":"createComment","arg":' + JSON.stringify({
-          user: 'gabe',
-          repo: 'test',
-          number: 1,
-          body: 'comment'
-        }) + '}').respond(200, {
-            value: {}
-        });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"edit","arg":' + JSON.stringify({
           user: 'gabe',
           repo: 'test',
           state: 'open'
-        }) + '}').respond(200, {
-            value: {}
+        }) + '}').respond({
+            data: {}
         });
         scope.setState();
-        httpBackend.flush();
     });
 
     it('should set status text correctly based on comments', function() {

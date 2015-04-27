@@ -19,7 +19,7 @@ describe('Moment Directive', function() {
         scope.$digest();
         elScope = element.isolateScope();
     }));
-    
+
     // should refresh
     it('should refresh upon new moment value', function() {
         elScope.moment = 2;

@@ -112,24 +112,16 @@ describe('Pull Factory', function() {
         httpBackend.expect('POST', '/api/star/all', JSON.stringify({
           sha: 'magic',
           repo_uuid: 11111
-        })).respond({
-            data: [
-                {
-                    name: 'gabe'
-                },
-                {
-                    name: 'blah'
-                }]
-        });
+        })).respond([{
+                name: 'gabe'
+            }, {
+                name: 'blah'
+        }]);
         var fakePull = {head: {sha: 'magic'}, base: {repo: {id: 11111}}};
-        var result = Pull.stars(fakePull, 'avatar');
+        var result = Pull.stars(fakePull, null);
         httpBackend.flush();
         ([result.star]).should.be.eql([null]);
         (result.stars).should.be.eql([{name: 'gabe'}, {name: 'blah'}]);
-        stars.forEach(function(x) {
-            scope.apply();
-        });
-        (result.star).should.be.eql({name: 'blah'});
     });
 
     // should get comments count

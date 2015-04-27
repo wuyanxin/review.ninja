@@ -12,28 +12,19 @@ describe('Add Repo (old) Directive', function() {
 
         httpBackend = $injector.get('$httpBackend');
 
-        httpBackend.when('GET', '/config').respond({
-
-        });
-
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"search","fun":"repos","arg":' + JSON.stringify({
-           q: 'test+in:name+fork:true+user:hello'
-        }) + '}').respond({
-            value: [123, 134, 123]
-        });
-
+        httpBackend.when('GET', '/config').respond({});
         scope = $rootScope.$new();
 
         var addFake = function(obj) {
             (obj.done)();
         };
+
         element = $compile('<add-repo-old></add-repo-old>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
         elScope.repos = [{id: 1234}, {id: 2345}];
         elScope.add = addFake;
         elScope.active = true;
-        elScope.query = 'hello/test';
     }));
 
     // should get all repos
@@ -49,21 +40,21 @@ describe('Add Repo (old) Directive', function() {
         (elScope.show).should.be.false;
     });
 
-    it('should search successfully', function() {
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"search","fun":"repos","arg":' + JSON.stringify({
-           q: 'test+in:name+fork:true+user:hello'
-        }) + '}').respond({
-            value: [123, 134, 123]
-        });
-        var results = [123, 134, 123];
-        elScope.search();
-        httpBackend.flush();
-        (elScope.results).should.be.eql(results);
-    });
+    // it('should clear search results and send search request', function() {
+    //     httpBackend.expect('POST', '/api/github/wrap', '{"obj":"search","fun":"repos","arg":' + JSON.stringify({
+    //        q: 'test+in:name+fork:true+user:hello'
+    //     }) + '}').respond({
+    //         value: [123, 134, 123]
+    //     });
+    //     var results = [123, 134, 123];
+    //     elScope.search();
+    //     (elScope.results).should.be.empty;
+    //     httpBackend.flush();
+    // });
 
     it('should reset successfully', function() {
         elScope.reset();
-        ([scope.query]).should.be.eql([null]);
+        ([elScope.query]).should.be.eql([null]);
         (elScope.results).should.be.empty;
     });
 

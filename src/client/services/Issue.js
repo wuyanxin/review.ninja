@@ -42,7 +42,6 @@ services.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) 
                     context: $stateParams.user + '/' + $stateParams.repo
                 }, function(err, markdown) {
                     if(!err) {
-                        console.log($stateParams);
                         issue.html = $stateParams.user + '/' + $stateParams.repo;
                     }
                 });

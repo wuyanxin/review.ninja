@@ -316,17 +316,6 @@ describe('Pull Controller', function() {
         (scope.status.value).should.be.exactly('tested');
     });
 
-    // getting the stars on a pull request
-    it('should get stars on a pull request', function() {
-        var PullCtrl = createCtrl();
-        var pullStarSpy = sinon.spy(PullMock.stars);
-        var getPullSpy = sinon.spy(scope.getPullRequest);
-        SocketMock.receive('gabe:test:pull_request', {action: 'starred', pull: 1, number: 1});
-        (pullStarSpy.called).should.be.true;
-        SocketMock.receive('gabe:test:pull_request', {action: 'closed', pull: 1, number: 1});
-        (getPullSpy.called).should.be.true;
-    });
-
     // changing closed issues to closed
     it('should change actually closed issues to closed upon receiving websocket call', function() {
         var fakeIssues = [

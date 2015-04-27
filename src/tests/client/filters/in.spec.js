@@ -15,7 +15,7 @@ describe('In Filter', function() {
             'attr': 3
         }, 4];
     }));
-    
+
     it('should return all items if there is not match', function() {
         var array = [];
         var result = _in(items, array, 1);

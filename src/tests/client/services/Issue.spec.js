@@ -45,16 +45,17 @@ describe('Issue Factory', function() {
 
     it('should render issue', function() {
         var fakeIssue2 = {body: 'hello world'};
-        console.log(stateParams.user);
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
+        httpBackend.whenPOST('/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
           text: 'hello world',
           mode: 'gfm',
           context: 'gabe/repo1'
-        }) + '}').respond({
-            data: '<p>hello world</p>'
+        }) + '}').respond(function(method, url, data) {
+            stateParams.user = 'gabe';
+            stateParams.repo = 'repo1';
+            return [200, {}, {}];
         });
         var result = Issue.render(fakeIssue2);
         httpBackend.flush();
-        (result).should.be.exactly({body: 'hello world', html: 'gabe/repo1'});
+        (result).should.be.eql({body: 'hello world', html: 'gabe/repo1'});
     });
 });
