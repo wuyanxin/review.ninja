@@ -12,11 +12,11 @@ module.directive('scroll', function($location) {
         link: function(scope, element, attr) {
             element.click(function(e) {
                 e.preventDefault();
-                $location.hash('');
-                var dest = $('#' + attr.scroll.replace(/(:|\.|\[|\]|,)/g, '\\$1'));
+                console.log(scope.scroll);
+                var dest = $('#' + scope.scroll.replace(/(:|\.|\[|\]|,)/g, '\\$1'));
                 if(dest && dest.offset()) {
-                    $location.hash(attr.scroll);
-                    $('html,body').animate({ scrollTop: dest.offset().top }, 300);
+                    $location.hash(scope.scroll);
+                    $('html,body').animate({ scrollTop: dest.offset().top }, 1000);
                 }
             });
         }

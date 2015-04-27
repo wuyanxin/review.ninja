@@ -81,6 +81,7 @@
     "lcov-result-merger": "^1.0.2",
     "mkdirp": "^0.5.0",
     "mocha": "^2.2.1",
+    "multipipe": "^0.1.2",
     "require-dir": "^0.1.0",
     "rewire": "^2.3.1",
     "run-sequence": "^1.0.2",
