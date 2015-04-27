@@ -18,22 +18,18 @@ describe('Diff File Directive', function() {
 
         });
         rootScope = $rootScope;
-        rootScope.file = {
-            ignored: false,
-            sha: 'magic'
-        };
         scope = $rootScope.$new();
         scope.file = {
             ignored: false,
-            sha: 'magic',
+            sha: 'aaaa',
             filename: 'hello/world'
         };
         scope.headSha = 'aaaa';
-        scope.selection = {path: 'hello/world', sha: 'aaaa', start: 1};
-        element = $compile('<diff file=\"file\" selection=\"selection\" headSha=\"headSha\"></diff>')(scope);
+        scope.issues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 5, end: 23, number: 3}];;
+        scope.selection = {path: 'hello/world', sha: 'aaaa', start: 1, end: 88};
+        element = $compile('<diff file=\"file\" head-sha=\"headSha\" selection=\"selection\" issues=\"issues\"></diff>')(scope);
         scope.$digest();
         elScope = element.isolateScope();
-        scope.$digest();
     }));
 
     // test monster watch function
@@ -55,10 +51,6 @@ describe('Diff File Directive', function() {
         var fakeLine = {
             head: 1
         };
-        console.log((scope.headSha === scope.selection.sha), 
-            (scope.file.filename === scope.selection.path),
-            (fakeLine.head === scope.selection.start))
-        console.log('filtering', scope.headSha, scope.file.filename, fakeLine.head, scope.selection)
         var result = elScope.selStarts(fakeLine);
         (result).should.be.true;
     });
@@ -66,9 +58,8 @@ describe('Diff File Directive', function() {
     // should determine if is included
     it('should determine if selection is selected', function() {
         var fakeLine = {
-            base: 44
+            head: 44
         };
-        elScope.selection = {path: 'hello/world', sha: 'aaaa', start: 1, end: 99};
         var result = elScope.isSelected(fakeLine);
         (result).should.be.true;
     });
@@ -77,7 +68,7 @@ describe('Diff File Directive', function() {
     it('should determine if reference starts on issues', function() {
         elScope.issues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 1, end: 99, number: 1}];
         var fakeLine = {
-            base: 5
+            head: 5
         };
         var result = elScope.refStarts(fakeLine);
         (result).should.be.true;
@@ -91,9 +82,8 @@ describe('Diff File Directive', function() {
 
     // should determine if is referenced
     it('should determine if line is referenced', function() {
-        elScope.issues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 1, end: 99, number: 1}];
         var fakeLine = {
-            base: 19
+            head: 19
         };
         var result = elScope.isReferenced(fakeLine);
         (result).should.be.true;
@@ -102,18 +92,16 @@ describe('Diff File Directive', function() {
     // should do thing upon select
     it('should get line selection', function() {
         var fakeLine = {
-            base: 9,
-            head: 1
+            head: 6
         };
         var fakeEvent = {shiftKey: true};
-        elScope.selection = {path: 'hello/world', start: 1};
         var result = elScope.select(fakeLine, fakeEvent);
-        (result).should.be.eql({
-            sha: elScope.headSha,
-            path: elScope.path,
+        (elScope.selection).should.be.eql({
+            sha: 'aaaa',
+            path: 'hello/world',
             start: 1,
-            end: 9,
-            ref: 'aaaa/hello/world#L1-L9'
+            end: 6,
+            ref: 'aaaa/hello/world#L1-L6'
         });
     });
 
@@ -126,11 +114,9 @@ describe('Diff File Directive', function() {
     // should go to line
     it('should go to line or set refIssues', function() {
         var fakeLine = {
-            base: 5
+            head: 5
         };
-        var correctIssues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 5, end: 23, number: 3}];
-        elScope.issues = [{path: 'hello/world', sha: 'aaaa', start: 5, end: 88, number: 2}, {path: 'hello/world', sha: 'aaaa', start: 5, end: 23, number: 3}, {path: 'hello/world', sha: 'aaaa', start: 1, end: 99, number: 1}];
         elScope.go(fakeLine);
-        (elScope.refIssues).should.be.eql(correctIssues);
+        (elScope.refIssues).should.be.eql([2, 3]);
     });
 });

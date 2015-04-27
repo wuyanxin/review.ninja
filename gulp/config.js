@@ -14,7 +14,7 @@ module.exports = {
   },
 
   tests: {
-    karmaSrc: 'src/tests/karma.ninja.dev.js',
+    karmaSrc: 'src/tests/karma.ninja.js',
     mochaSrc: 'src/tests/server/*/**.js'
   }
 };

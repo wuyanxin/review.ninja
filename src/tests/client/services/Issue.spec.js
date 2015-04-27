@@ -52,7 +52,6 @@ describe('Issue Factory', function() {
         });
         var result = Issue.render(fakeIssue2);
         httpBackend.flush();
-        console.log($stateParams.user);
         (result.html).should.be.exactly('gabe/repo1');
     });
 });
