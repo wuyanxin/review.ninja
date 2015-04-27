@@ -3,7 +3,7 @@
 // Pull Factory
 // *****************************************************
 
-services.factory('Pull', ['$HUB', '$RPC', '$stateParams', '$rootScope', function($HUB, $RPC, $stateParams, $rootScope) {
+module.factory('Pull', ['$HUB', '$RPC', '$stateParams', '$rootScope', function($HUB, $RPC, $stateParams, $rootScope) {
 
     return {
 

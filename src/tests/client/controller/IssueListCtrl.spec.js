@@ -6,7 +6,6 @@ describe('Issue List Controller', function() {
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
-    beforeEach(angular.mock.module('ninja.services'));
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {
 

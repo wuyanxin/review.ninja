@@ -3,7 +3,7 @@
 // File Factory
 // *****************************************************
 
-services.factory('File', ['$HUB', '$stateParams', function($HUB, $stateParams) {
+module.factory('File', ['$HUB', '$stateParams', function($HUB, $stateParams) {
 
     var images = ['jpg', 'jpeg', 'png', 'bmp', 'psd', 'tiff', 'ico'];
 

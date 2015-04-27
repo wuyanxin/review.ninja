@@ -4,7 +4,7 @@
 // Reference Factory
 // *****************************************************
 
-services.factory('Reference', ['$stateParams', function($stateParams) {
+module.factory('Reference', ['$stateParams', function($stateParams) {
 
     var reference = function(sha, path, start, end) {
         return sha + '/' + path + '#L' + start + ((end && end !== start) ? '-L' + end : '');

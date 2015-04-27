@@ -4,7 +4,7 @@
 // Issue Factory
 // *****************************************************
 
-services.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
+module.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
 
     var regex = /\|commit\|file reference\|.*\r\n\|-+\|-+\|.*\r\n\|(\b[0-9a-f]{40}\b)\|\[?(([^#^\]^\|]+)#?L?([0-9]+)?-?L?([0-9]+)?)?\]?.*/;
 

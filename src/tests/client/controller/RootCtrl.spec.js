@@ -5,7 +5,6 @@ describe('Root Controller', function() {
     var rootScope, scope, repo, httpBackend, createCtrl, q;
 
     beforeEach(angular.mock.module('app'));
-
     beforeEach(angular.mock.module('templates'));
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $stateParams, $q) {

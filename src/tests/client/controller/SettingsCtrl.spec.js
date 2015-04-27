@@ -5,7 +5,6 @@ describe('Settings Controller', function() {
     var scope, repo, httpBackend, createCtrl;
 
     beforeEach(angular.mock.module('app'));
-
     beforeEach(angular.mock.module('templates'));
 
     beforeEach(angular.mock.inject(function($injector, $rootScope, $controller) {

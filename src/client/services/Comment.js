@@ -3,7 +3,7 @@
 // Pull Factory
 // *****************************************************
 
-services.factory('Comment', ['$HUB', '$stateParams', function($HUB, $stateParams) {
+module.factory('Comment', ['$HUB', '$stateParams', function($HUB, $stateParams) {
 
     return {
 

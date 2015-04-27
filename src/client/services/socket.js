@@ -14,7 +14,7 @@
 //
 // socket.emit('event-name', data);
 //
-services.factory('socket', ['$rootScope', function($rootScope) {
+module.factory('socket', ['$rootScope', function($rootScope) {
     var socket = io.connect();
     return {
         on: function(eventName, callback) {
