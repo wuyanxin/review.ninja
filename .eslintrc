@@ -27,7 +27,7 @@ rules:
     no-trailing-spaces: 1
     no-undef: 0
     no-underscore-dangle: 0
-    no-unused-expressions: 1
+    no-unused-expressions: 0
     no-unused-vars: 0
     no-use-before-define: [1, nofunc]
     quotes: [1, single]

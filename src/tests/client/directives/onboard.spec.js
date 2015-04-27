@@ -36,7 +36,7 @@ describe('Onboard Directive', function() {
         var promise = deferred.promise;
 
         compile = $compile;
-        
+
         rootScope.promise = promise;
         element = $compile('<onboard></onboard>')(scope);
         scope.$digest();
