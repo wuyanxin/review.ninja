@@ -32,38 +32,28 @@
       </small>
     </p>
 
-    <div class="well well-dark" ng-show="show">
-      <div class="form-group has-feedback">
-        <input type="text" ng-model="search" focus="setFocus" class="form-control" style="height:33px;" />
-        <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="allRepos.loading" style="top:0px;"></i>
-        <i class="fa fa-lg fa-times form-control-feedback" ng-show="search && !allRepos.loading" ng-click="search=''; setFocus=true;" style="top:0px;"></i>
-      </div>
-      <div class="list-group" style="max-height:200px; overflow-y:scroll;">
-        <a href="" 
-           class="list-group-item" 
-           ng-class="{ active: active===repo }" 
-           ng-click="$parent.active=repo; add(repo);"
-           ng-hide="contains(repo.id)"
-           ng-repeat="repo in allRepos.value | filter:{'full_name': search} | orderBy: 'full_name'">
-          {{ repo.owner.login }} / {{ repo.name }}
-          <span class="octicon octicon-lock text-warning pull-right" ng-show="active!==repo && repo.private" style="padding-top:2px;"></span>
-          <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo" style="padding-top:3px;"></i>
-        </a>
-      </div>
-      <div ng-show="allRepos.hasMore">
-        <strong class="text-primary" style="padding:0 10px;">Not finding your repo?</strong> 
-        <button class="btn btn-xs btn-primary" ng-click="allRepos.getMore()">Load more</button>
-      </div>
-    </div>
+    <add-repo-new repos="repos" 
+                  show="show"
+                  set-focus="setFocus"
+                  add="add(repo, done)"
+                  ng-show="!$config.enterprise && show">
+    </add-repo-new>
+
+    <add-repo-old repos="repos" 
+                  show="show"
+                  set-focus="setFocus"
+                  add="add(repo, done)"
+                  ng-show="$config.enterprise && show">
+    </add-repo-old>
 
     <div class="alert alert-info" ng-show="user && !user.value.history.welcome">
       <button type="button" class="close" style="top:-20px;" data-dismiss="alert" ng-click="dismiss('welcome')">&times</button>
       <p><strong>Hey {{ user.value.login }}, welcome to ReviewNinja, we're glad you're here!</strong></p>
       <p>To get started, <a href="" ng-click="show=!show; setFocus=true;" style="text-decoration:underline">add one of your own repositories</a>, or let us show you around by adding a welcome repository to your GitHub account.</p>
       <br>
-      <button class="btn btn-primary" ng-click="createOnboardingRepo()" ng-disabled="repoLoading.loading">Sure, add ReviewNinja welcome repo</button>
-      <button class="btn btn-link" ng-show="repoLoading.loading">
-        <i class="fa fa-2x fa-spinner fa-spin"></i>
+      <button class="btn btn-primary welcome-button" ng-click="createOnboardingRepo()" ng-disabled="repoLoading.loading">
+        <span ng-hide="repoLoading.loading">Sure, add ReviewNinja welcome repo</span>
+        <i class="fa fa-2x fa-spinner fa-spin" ng-show="repoLoading.loading"></i>
       </button>
     </div>
 

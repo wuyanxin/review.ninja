@@ -17,7 +17,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
             $scope.loaded = count === repos.length;
 
-            $scope.show = $scope.loaded && user.value.history.welcome;
+            $scope.show = $stateParams.addrepo || ($scope.loaded && user.value.history.welcome);
 
             repos.forEach(function(uuid) {
                 $HUB.call('repos', 'one', {
@@ -31,30 +31,16 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             });
         });
 
-        $scope.allRepos = $HUB.call('repos', 'getAll', {
-            headers: {accept: 'application/vnd.github.moondragon+json'},
-            per_page: 50
-        });
-
         //
         // Actions
         //
 
-        $scope.add = function(repo) {
+        $scope.add = function(repo, done) {
             $RPC.call('user', 'addRepo', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
-            }, function(err) {
-                $scope.active = null;
-                if(!err) {
-                    repo.adddate = -new Date();
-                    $scope.repos.push(repo);
-
-                    $scope.search = '';
-                    $scope.show = false;
-                }
-            });
+            }, done);
         };
 
         $scope.remove = function(repo) {
@@ -70,19 +56,16 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             });
         };
 
-        $scope.contains = function(id) {
-            var contains = false;
-            $scope.repos.forEach(function(repo) {
-                contains = contains || repo.id === id;
-            });
-
-            return contains;
-        };
-
         $scope.createOnboardingRepo = function() {
             $scope.repoLoading = $RPC.call('onboard', 'createrepo', {}, function(err, repo) {
                 if (!err) {
-                    $scope.add(repo.value);
+                    $scope.add(repo.value, function(err) {
+                        if (!err) {
+                            var repoToAdd = repo.value;
+                            repoToAdd.adddate = -new Date();
+                            $scope.repos.push(repoToAdd);
+                        }
+                    });
                     $rootScope.dismiss('welcome');
                 }
             });

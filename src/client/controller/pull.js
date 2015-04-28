@@ -82,6 +82,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // UI text
         //
 
+        // get star text
         $scope.getStarText = function() {
             if($scope.pull.stars && $scope.reposettings.value) {
                 var stars = $scope.pull.stars.length;

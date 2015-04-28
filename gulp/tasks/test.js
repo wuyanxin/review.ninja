@@ -6,11 +6,11 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence');
 
 // client-side tests
-gulp.task('karma', function(done) {
+gulp.task('karma', function() {
   return karma.start({
     configFile: __dirname + '/../../' + config.karmaSrc,
     singleRun: true
-  }, done);
+  });
 });
 
 // server-side tests

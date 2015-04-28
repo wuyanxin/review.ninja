@@ -8,11 +8,9 @@ module.exports = function(config) {
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '../../',
 
-
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['mocha'],
-
+        frameworks: ['mocha', 'sinon'],
 
         // list of files / patterns to load in the browser
         files: [
@@ -68,7 +66,20 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'src/client/**/*.html': ['ng-html2js']
+            'src/client/**/*.html': ['ng-html2js'],
+            'src/client/**/*.js': ['coverage']
+        },
+
+        coverageReporter: {
+            reporters: [{
+                dir: './output/coverage/',
+                subdir: 'client',
+                type: 'lcov'
+            }, {
+                dir: './output/coverage/',
+                subdir: 'client-html',
+                type: 'html'
+            }]
         },
 
         ngHtml2JsPreprocessor: {
@@ -80,7 +91,7 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['dots'],
+        reporters: ['mocha', 'coverage'],
 
 
         // web server port
