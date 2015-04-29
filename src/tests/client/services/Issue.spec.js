@@ -49,13 +49,13 @@ describe('Issue Factory', function() {
           text: 'hello world',
           mode: 'gfm',
           context: 'gabe/repo1'
-        }) + '}').respond(function(method, url, data) {
-            stateParams.user = 'gabe';
-            stateParams.repo = 'repo1';
-            return [200, {}, {}];
+        }) + '}').respond({
+            data: {
+                body: '<p>hello world</p>'
+            }
         });
         var result = Issue.render(fakeIssue2);
         httpBackend.flush();
-        (result).should.be.eql({body: 'hello world', html: 'gabe/repo1'});
+        (result).should.be.eql({body: 'hello world', html: '<p>hello world</p>'});
     });
 });

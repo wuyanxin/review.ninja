@@ -14,7 +14,7 @@ module.exports = {
             upsert: true
         }, function(err, settings) {
 
-            if(!err && settings.comment && config.server.github.user) {
+            if(!err && settings && settings.comment && config.server.github.user) {
 
                 var badgeUrl = url.pullRequestBadge(repo_uuid, number);
                 var pullUrl = url.reviewPullRequest(user, repo, number);

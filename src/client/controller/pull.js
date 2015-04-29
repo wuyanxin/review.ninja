@@ -161,7 +161,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     body: $scope.description || '',
                     reference: $scope.reference.selection.ref
                 }, function(err, issue) {
-                    if(!err) {
+                    if(err) {
+                        $scope.creatingIssue = false;
+                    } else {
                         $state.go('repo.pull.issue.detail', {issue: issue.value.number}).then(function() {
                             $scope.show = null;
                             $scope.title = null;
