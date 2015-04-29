@@ -316,6 +316,51 @@ describe('Pull Controller', function() {
         (scope.status.value).should.be.exactly('tested');
     });
 
+    // getting  stars via websocket
+    it('should update stars websocket event', function() {
+        var PullCtrl = createCtrl();
+        scope.pull = {number: 1};
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'starred'});
+        (scope.pull).should.be.eql({number: 1});
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'unstarred'});
+        (scope.pull).should.be.eql({number: 1});
+    });
+
+    // create comment event
+    it('should push new comment with websocket event', function() {
+        var PullCtrl = createCtrl();
+        scope.comments = {value: []};
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getComment","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 'test',
+          id: 1234
+        }) + '}').respond({
+            data: {body: 'comment'}
+        });
+        SocketMock.receive('gabe:test:issue_comment', {number: 1, action: 'created', id: 1234});
+        httpBackend.flush();
+        (scope.comments.value).should.be.eql(['comment']);
+    });
+
+    // get open issues
+    it('should get open issues with websocket event', function() {
+        var PullCtrl = createCtrl();
+        scope.open = {value: []};
+        scope.pull = {number: 1};
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getRepoIssue","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 'test',
+          number: 1
+        }) + '}').respond({
+            data: {body: 'thing', milestone: 'testmile'}
+        });
+        SocketMock.receive('gabe:test:issues', {pull: 1, number: 1, action: 'opened'});
+        httpBackend.flush();
+        (scope.open.value).should.be.eql(['thing']);
+        (scope.pull.milestone).should.be.exactly('testmile');
+        (scope.pull).should.be.eql({number: 1, milestone: 'testmile'});
+    });
+
     // changing closed issues to closed
     it('should change actually closed issues to closed upon receiving websocket call', function() {
         var fakeIssues = [
