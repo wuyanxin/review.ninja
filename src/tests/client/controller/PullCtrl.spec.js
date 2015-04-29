@@ -326,6 +326,18 @@ describe('Pull Controller', function() {
         (scope.pull).should.be.eql({number: 1});
     });
 
+    // should get closed pull request via websocket
+    it('should trigger method to get a pull request upon websocket event', function() {
+        var PullCtrl = createCtrl();
+        var mock = sinon.mock(scope);
+        var expectation = mock.expects('getPullRequest').thrice();
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'closed'});
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'reopened'});
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'synchronize'});
+        (mock.verify()).should.be.true;
+        mock.restore();
+    });
+
     // create comment event
     it('should push new comment with websocket event', function() {
         var PullCtrl = createCtrl();
