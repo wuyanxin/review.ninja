@@ -69,8 +69,8 @@ module.exports = {
 
         milestone.get(req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user.token,
             function(err, mile) {
-                if(err) {
-                    return done(err);
+                if(err || !mile) {
+                    return done(err || {});
                 }
 
                 github.call({
