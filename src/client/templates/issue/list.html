@@ -5,7 +5,8 @@
   <tr class="select" 
       ng-repeat="issue in (state==='open' ? open : closed).value | filter:{state: state} | in:reference.issues:'number' | unique: 'id' "
       ui-sref="repo.pull.issue.detail({ issue: issue.number })"
-      ng-show="issue.milestone.id===pull.milestone.id">
+      ng-show="issue.milestone.id===pull.milestone.id"
+      scroll="(!!issue.ref) ? anchor(issue) : ''">
 
     <td style="width:40px; padding-right:0;">
       <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
@@ -14,9 +15,9 @@
       <strong>{{ issue.title }}</strong> #{{ issue.number }}<br />
       <small>
         <span moment="issue.created_at"></span> &nbsp;
-        <div class="text-warning" ng-show="issue.ref" scroll="anchor(issue)">
+        <div class="text-warning" ng-show="issue.ref">
           <i class="fa fa-lg fa-link text-warning">
-          </i> <span>{{ '#L' + issue.start }}</span>
+          </i> <span>Line #{{issue.start}} in {{issue.path}}</span>
         </div>
       </small>
     </td>
