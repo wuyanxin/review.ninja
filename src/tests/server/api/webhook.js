@@ -185,8 +185,8 @@ describe('webhook:remove', function() {
     it('should return null when hook not found', function(done) {
         var webhookStub = sinon.stub(hook, 'get', function(user, repo, token, done) {
             assert.equal(user, 'user');
-            assert.equal(repo, 'repo')
-            assert.equal(token, 'token')
+            assert.equal(repo, 'repo');
+            assert.equal(token, 'token');
             done(null, null);
         });
 
@@ -212,8 +212,8 @@ describe('webhook:remove', function() {
     it('should remove the hook when found', function(done) {
         var webhookStub = sinon.stub(hook, 'get', function(user, repo, token, done) {
             assert.equal(user, 'user');
-            assert.equal(repo, 'repo')
-            assert.equal(token, 'token')
+            assert.equal(repo, 'repo');
+            assert.equal(token, 'token');
             done(null, {id: 1});
         });
 
