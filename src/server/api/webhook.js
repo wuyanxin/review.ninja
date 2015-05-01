@@ -74,7 +74,7 @@ module.exports = {
     },
 
     create: function(req, done) {
-        User.findOne({uuid: req.user.uuid}, function(err, user) {
+        User.findOne({uuid: req.user.id}, function(err, user) {
 
             if(err || !user) {
                 return done(err);

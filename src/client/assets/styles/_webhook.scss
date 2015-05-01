@@ -1,25 +1,31 @@
-.animation-webhook {
+.table-special {
+
+  > tbody > tr > td {
+    padding: 0;
+  }
+
+  .select {
+    padding: 20px 25px;
+  }
 
   .confirm {
     background: $gray-dark;
     color: #fff;
 
-    display: none;
-    margin-top: -100px;
+    padding: 10px 25px;
 
-    -moz-transition: margin-top 0.2s ease-in;
+    /*-moz-transition: margin-top 0.2s ease-in;
     -ms-transition: margin-top 0.2s ease-in;
     -o-transition: margin-top 0.2s ease-in;
     -webkit-transition: margin-top 0.2s ease-in;
-    transition: margin-top 0.2s ease-in;
+    transition: margin-top 0.2s ease-in;*/
 
     &:hover {
-      cursor: pointer;
+      cursor: default;
     }
-  }
 
-  &.active .confirm {
-    display: block;
-    margin-top: 0;
+    &.active {
+      margin-top: 0;
+    }
   }
 }
