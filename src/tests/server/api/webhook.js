@@ -167,7 +167,7 @@ describe('webhook:create', function() {
             },
             user: {
                 token: 'token',
-                uuid: 1234
+                id: 1234
             }
         };
 
@@ -196,7 +196,7 @@ describe('webhook:remove', function() {
                 repo: 'repo'
             },
             user: {
-                uuid: 1234,
+                id: 1234,
                 token: 'token'
             }
         };
@@ -237,7 +237,7 @@ describe('webhook:remove', function() {
                 repo: 'repo'
             },
             user: {
-                uuid: 1234,
+                id: 1234,
                 token: 'token'
             }
         };
