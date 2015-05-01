@@ -43,6 +43,14 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             }, done);
         };
 
+        $scope.rmv = function(repo) {
+            if(repo.permissions.admin) {
+                $scope.active = repo;
+            } else {
+                $scope.remove(repo);
+            }
+        };
+
         $scope.remove = function(repo) {
             var index = $scope.repos.indexOf(repo);
             $RPC.call('user', 'rmvRepo', {
@@ -52,6 +60,17 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             }, function(err) {
                 if(!err) {
                     $scope.repos.splice(index, 1);
+                }
+            });
+        };
+
+        $scope.removeWebhook = function(repo) {
+            $scope.webhook = $RPC.call('webhook', 'remove', {
+                user: $stateParams.user,
+                repo: $stateParams.repo
+            }, function(err) {
+                if(!err) {
+                    $scope.remove(repo);
                 }
             });
         };

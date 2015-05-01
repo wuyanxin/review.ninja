@@ -1,0 +1,25 @@
+.animation-webhook {
+
+  .confirm {
+    background: $gray-dark;
+    color: #fff;
+
+    display: none;
+    margin-top: -100px;
+
+    -moz-transition: margin-top 0.2s ease-in;
+    -ms-transition: margin-top 0.2s ease-in;
+    -o-transition: margin-top 0.2s ease-in;
+    -webkit-transition: margin-top 0.2s ease-in;
+    transition: margin-top 0.2s ease-in;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &.active .confirm {
+    display: block;
+    margin-top: 0;
+  }
+}
