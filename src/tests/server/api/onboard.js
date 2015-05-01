@@ -45,7 +45,7 @@ var onboardApi = require('../../../server/api/onboard');
 //       var doneStub = function(err, res) {
 //         assert.equal(res, {'test': true, 'test1': true});
 //       };
-//       onboardApi.getactions(req, doneStub); 
+//       onboardApi.getactions(req, doneStub);
 //       actionStub.release();
 //       done();
 //     });
