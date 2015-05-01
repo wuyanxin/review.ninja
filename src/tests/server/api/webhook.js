@@ -8,6 +8,7 @@ global.config = require('../../../config');
 
 // services
 var github = require('../../../server/services/github');
+var hook = require('../../../server/services/webhook');
 var url = require('../../../server/services/url');
 
 // model
@@ -122,8 +123,8 @@ describe('webhook:create', function() {
         });
 
         var req = {
-            args: {
-                user_uuid: 1234
+            user: {
+                uuid: 1234
             }
         };
 
@@ -135,7 +136,7 @@ describe('webhook:create', function() {
         });
     });
 
-    it('should return null when user not found', function(done) {
+    it('should return the hook when found', function(done) {
         var userStub = sinon.stub(User, 'findOne', function(args, done) {
             assert.deepEqual(args, {uuid: 1234});
             done(null, {_id: 'mongooseId'});
@@ -160,13 +161,13 @@ describe('webhook:create', function() {
 
         var req = {
             args: {
-                user_uuid: 1234,
                 user: 'user',
                 repo: 'repo',
                 name: 'web'
             },
             user: {
-                token: 'token'
+                token: 'token',
+                uuid: 1234
             }
         };
 
@@ -174,6 +175,77 @@ describe('webhook:create', function() {
             sinon.assert.called(userStub);
             sinon.assert.called(githubStub);
             userStub.restore();
+            githubStub.restore();
+            done();
+        });
+    });
+});
+
+describe('webhook:remove', function() {
+    it('should return null when hook not found', function(done) {
+        var webhookStub = sinon.stub(hook, 'get', function(user, repo, token, done) {
+            assert.equal(user, 'user');
+            assert.equal(repo, 'repo')
+            assert.equal(token, 'token')
+            done(null, null);
+        });
+
+        var req = {
+            args: {
+                user: 'user',
+                repo: 'repo'
+            },
+            user: {
+                uuid: 1234,
+                token: 'token'
+            }
+        };
+
+        webhook.remove(req, function(err, hook) {
+            assert.equal(hook, null);
+            sinon.assert.called(webhookStub);
+            webhookStub.restore();
+            done();
+        });
+    });
+
+    it('should remove the hook when found', function(done) {
+        var webhookStub = sinon.stub(hook, 'get', function(user, repo, token, done) {
+            assert.equal(user, 'user');
+            assert.equal(repo, 'repo')
+            assert.equal(token, 'token')
+            done(null, {id: 1});
+        });
+
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            assert.deepEqual(args, {
+                obj: 'repos',
+                fun: 'deleteHook',
+                arg: {
+                    user: 'user',
+                    repo: 'repo',
+                    id: 1
+                },
+                token: 'token'
+            });
+            done(null, true);
+        });
+
+        var req = {
+            args: {
+                user: 'user',
+                repo: 'repo'
+            },
+            user: {
+                uuid: 1234,
+                token: 'token'
+            }
+        };
+
+        webhook.remove(req, function(err, hook) {
+            sinon.assert.called(webhookStub);
+            sinon.assert.called(githubStub);
+            webhookStub.restore();
             githubStub.restore();
             done();
         });
