@@ -24,13 +24,6 @@ describe('onboard:getactions', function() {
     });
 });
 
-describe('onboard:dismiss', function() {
-    it('should produce trackable action for dismissing onboard', function(done) {
-      assert.equal(2, 2);
-      done();
-    });
-});
-
 describe('onboard:createrepo', function() {
     it('should create a repo and respond with the repo', function(done) {
       assert.equal(2, 2);
