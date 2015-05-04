@@ -54,7 +54,6 @@ describe('Home Controller', function() {
                 }
             });
         });
-
         var HomeCtrl = createCtrl();
         scope.$apply();
         (scope.repos).should.be.empty;
@@ -85,6 +84,31 @@ describe('Home Controller', function() {
         httpBackend.flush();
     });
 
+    it('should send call with rmv to change active status with admin permission', function() {
+        // if scope.active === fakerepo
+        var HomeCtrl = createCtrl();
+        scope.active = {name: 'test', permissions: {admin: true}};
+        var fakeRepo = scope.active;
+        scope.rmv(fakeRepo);
+        ([scope.active]).should.be.eql([null]);
+
+        // if scope.active !== fakerepo
+        scope.active = {name: 'test', permissions: {admin: true}};
+        var fakeRepo = {name: 'random', permissions: {admin: true}};
+        scope.rmv(fakeRepo);
+        (scope.active).should.be.eql(fakeRepo);
+    });
+
+    it('should send call with rmv to remove repo without admin permission', function() {
+        var HomeCtrl = createCtrl();
+        var fakeRepo = {name: 'test', permissions: {admin: false}};
+        var removeStub = sinon.stub(scope, 'remove', function(repo) {
+            (repo).should.be.eql({name: 'test', permissions: {admin: false}})
+        });
+        scope.rmv(fakeRepo);
+        removeStub.restore();
+    });
+
     it('should send call to delete repo', function() {
         httpBackend.expect('POST', '/api/github/call').respond({value: true});
         var HomeCtrl = createCtrl();
@@ -101,6 +125,25 @@ describe('Home Controller', function() {
         scope.remove(fakeRepo);
         httpBackend.flush();
         (scope.repos).should.be.empty;
+    });
+
+    it('should send call to remove webhook', function() {
+        httpBackend.expect('POST', '/api/github/call').respond({value: true});
+        var HomeCtrl = createCtrl();
+        httpBackend.flush();
+        var fakeRepo = {name: 'test', owner: {login: 'gabe'}};
+        httpBackend.expect('POST', '/api/webhook/remove', {
+            user: 'gabe',
+            repo: 'test'
+        }).respond({
+            data: true
+        });
+        var removeStub = sinon.stub(scope, 'remove', function(repo) {
+            (repo).should.be.eql({name: 'test', owner: {login: 'gabe'}});
+        });
+        scope.removeWebhook(fakeRepo);
+        httpBackend.flush();
+        removeStub.restore();
     });
 
     it('should send call to create onboarding repo', function() {
