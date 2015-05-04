@@ -45,7 +45,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.rmv = function(repo) {
             if(repo.permissions.admin) {
-                $scope.active = repo;
+                $scope.active = $scope.active !== repo ? repo : null;
             } else {
                 $scope.remove(repo);
             }
@@ -60,6 +60,7 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             }, function(err) {
                 if(!err) {
                     $scope.repos.splice(index, 1);
+                    $scope.active = null;
                 }
             });
         };
@@ -71,7 +72,6 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             }, function(err) {
                 if(!err) {
                     $scope.remove(repo);
-                    $scope.active = null;
                 }
             });
         };
