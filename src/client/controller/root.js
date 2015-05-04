@@ -42,8 +42,7 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
         $scope.createWebhook = function() {
             $scope.creating = $RPC.call('webhook', 'create', {
                 user: $stateParams.user,
-                repo: $stateParams.repo,
-                user_uuid: $rootScope.user.value.id
+                repo: $stateParams.repo
             }, function(err, hook) {
                 if(!err) {
                     $scope.hook = hook;

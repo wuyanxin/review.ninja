@@ -74,7 +74,7 @@ module.exports = {
     },
 
     create: function(req, done) {
-        User.findOne({uuid: req.args.user_uuid}, function(err, user) {
+        User.findOne({uuid: req.user.id}, function(err, user) {
 
             if(err || !user) {
                 return done(err);
@@ -90,6 +90,26 @@ module.exports = {
                     config: { url: url.webhook(user._id), content_type: 'json' },
                     events: config.server.github.webhook_events,
                     active: true
+                },
+                token: req.user.token
+            }, done);
+        });
+    },
+
+    remove: function(req, done) {
+        webhook.get(req.args.user, req.args.repo, req.user.token, function(err, hook) {
+
+            if(err || !hook) {
+                return done(err);
+            }
+
+            github.call({
+                obj: 'repos',
+                fun: 'deleteHook',
+                arg: {
+                    user: req.args.user,
+                    repo: req.args.repo,
+                    id: hook.id
                 },
                 token: req.user.token
             }, done);
