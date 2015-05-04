@@ -60,11 +60,9 @@ describe('Root Controller', function() {
     // should change to error on statechangeerror
 
     it('should send call to create webhook', function() {
-        rootScope.user = {value: {id: 1}};
         httpBackend.expect('POST', '/api/webhook/create', JSON.stringify({
             user: 'gabe',
-            repo: 1234,
-            user_uuid: 1
+            repo: 1234
         })).respond({
             value: 1
         });
