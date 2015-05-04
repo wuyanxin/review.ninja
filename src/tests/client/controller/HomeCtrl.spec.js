@@ -94,7 +94,7 @@ describe('Home Controller', function() {
 
         // if scope.active !== fakerepo
         scope.active = {name: 'test', permissions: {admin: true}};
-        var fakeRepo = {name: 'random', permissions: {admin: true}};
+        fakeRepo = {name: 'random', permissions: {admin: true}};
         scope.rmv(fakeRepo);
         (scope.active).should.be.eql(fakeRepo);
     });
@@ -103,7 +103,7 @@ describe('Home Controller', function() {
         var HomeCtrl = createCtrl();
         var fakeRepo = {name: 'test', permissions: {admin: false}};
         var removeStub = sinon.stub(scope, 'remove', function(repo) {
-            (repo).should.be.eql({name: 'test', permissions: {admin: false}})
+            (repo).should.be.eql({name: 'test', permissions: {admin: false}});
         });
         scope.rmv(fakeRepo);
         removeStub.restore();
