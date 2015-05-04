@@ -13,8 +13,8 @@
   }
 
   .confirm {
-    background: $gray-dark;
-    color: #fff;
+    background: #d9edf6;
+    color: #2e6f8b;
 
     margin-top: -40px;
     padding: 10px 25px;
@@ -27,6 +27,10 @@
     transition: margin-top 0.15s ease-in;
 
     z-index: 5;
+
+    button {
+      position: absolute;
+    }
 
     &:hover {
       cursor: default;
