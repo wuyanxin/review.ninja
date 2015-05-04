@@ -60,11 +60,10 @@
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="!loaded"></i>
 
     <table class="table table-hover table-special">
-      <tr ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })"
-          ng-repeat="repo in repos | orderBy:['adddate', 'full_name']">
+      <tr ng-repeat="repo in repos | orderBy:['adddate', 'full_name']">
 
         <td>
-          <div class="select">
+          <div class="select" ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })">
             <span class="octicon octicon-repo" ng-show="!repo.private"></span>
             <span class="octicon octicon-lock" ng-show="repo.private"></span>
             &nbsp;{{ repo.owner.login }} / {{ repo.name }}
@@ -80,8 +79,8 @@
           <div class="confirm" ng-class="{active: active===repo}">
             Would you like to remove the webhook too?
             <span class="pull-right">
-              <button class="btn btn-xs btn-info" type="button" ng-click="removeWebhook(repo); $event.stopPropagation();">Remove repo and webook</button>
-              <button class="btn btn-xs btn-info" type="button" ng-click="remove(repo); $event.stopPropagation();">Just remove repo</button>
+              <button class="btn btn-xs btn-primary" type="button" ng-click="removeWebhook(repo); $event.stopPropagation();" style="right:140px;">Remove repo and webook</button>
+              <button class="btn btn-xs btn-primary" type="button" ng-click="remove(repo); $event.stopPropagation();" style="right:24px;">Just remove repo</button>
             </span>
           </div>
         </td>
