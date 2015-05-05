@@ -11,6 +11,7 @@ module.exports = {
         Repo.findOneAndUpdate({
             repo: args.repo_uuid
         }, {}, {
+            new: true,
             upsert: true
         }, function(err, repo){
 
