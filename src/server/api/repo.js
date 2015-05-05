@@ -35,7 +35,7 @@ module.exports = {
                 repo: req.args.repo_uuid
             }, {
                 comment: req.args.comment
-            }, {}, done);
+            }, {new: true}, done);
         });
     },
 
@@ -56,7 +56,7 @@ module.exports = {
                 repo: req.args.repo_uuid
             }, {
                 threshold: req.args.threshold
-            }, {}, done);
+            }, {new: true}, done);
         });
     }
 

@@ -35,7 +35,7 @@ module.exports = {
             repo: req.args.repo_uuid
         }, {
             watched: uniqueWatched
-        }, {}, done);
+        }, {new: true}, done);
     },
 
     setNotifications: function(req, done) {
@@ -44,7 +44,7 @@ module.exports = {
             repo: req.args.repo_uuid
         }, {
             notifications: req.args.notifications
-        }, {}, done);
+        }, {new: true}, done);
     }
 
 };
