@@ -7,8 +7,8 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Issue', 'Comment', 'File', 'repo', 'pull', 'socket', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Issue, Comment, File, repo, pull, socket, $timeout) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Issue', 'Markdown', 'File', 'repo', 'pull', 'socket', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Issue, Markdown, File, repo, pull, socket, $timeout) {
 
         // set the states
         $scope.state = 'open';
@@ -18,7 +18,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.sha = null;
 
         // get the pull request
-        $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value, true);
+        $scope.pull = Pull.milestone(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
 
         // set the line selection
         $scope.reference = {selection: {}, issues: null};
@@ -43,7 +43,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         }, function(err, comments) {
             if(!err) {
                 comments.affix.forEach(function(comment) {
-                    comment = Comment.render(comment);
+                    comment = Markdown.render(comment);
                 });
             }
         });
@@ -143,7 +143,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         $scope.compComm($scope.base || $scope.pull.base.sha, pull.value.head.sha);
                     }
 
-                    $scope.pull = Pull.milestone(pull.value) && Pull.render(pull.value) && Pull.stars(pull.value, true);
+                    $scope.pull = Pull.milestone(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
                 }
             });
         };
@@ -253,7 +253,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     id: args.id
                 }, function(err, comment) {
                     if(!err) {
-                        $scope.comments.value.push(Comment.render(comment.value));
+                        $scope.comments.value.push(Markdown.render(comment.value));
                     }
                 });
             }

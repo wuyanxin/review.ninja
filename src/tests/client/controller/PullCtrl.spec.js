@@ -2,7 +2,7 @@
 // settings test
 describe('Pull Controller', function() {
 
-    var scope, rootScope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock, CommentMock, FileMock, SocketMockFunc, SocketMock, ModalMock, q;
+    var scope, rootScope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock, MarkdownMock, FileMock, SocketMockFunc, SocketMock, ModalMock, q;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
@@ -26,9 +26,9 @@ describe('Pull Controller', function() {
             }
         };
 
-        CommentMock = {
-            render: function(comment) {
-                return comment.body;
+        MarkdownMock = {
+            render: function(obj) {
+                return obj;
             }
         };
 
@@ -170,7 +170,7 @@ describe('Pull Controller', function() {
                 $modal: ModalMock,
                 Pull: PullMock,
                 Issue: IssueMock,
-                Comment: CommentMock,
+                Markdown: MarkdownMock,
                 File: FileMock,
                 repo: {value: {id: 1}},
                 pull: {value: fakePull},
@@ -351,7 +351,7 @@ describe('Pull Controller', function() {
         });
         SocketMock.receive('gabe:test:issue_comment', {number: 1, action: 'created', id: 1234});
         httpBackend.flush();
-        (scope.comments.value).should.be.eql(['comment']);
+        (scope.comments.value).should.be.eql([{body: 'comment'}]);
     });
 
     // get open issues
