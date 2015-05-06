@@ -1,8 +1,11 @@
-.table-special {
+.repo-list {
 
-  > tbody > tr > td {
-    border-top: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin-bottom: 10px;
   }
 
   .select {
@@ -10,6 +13,11 @@
     padding: 20px 25px;
     position: relative;
     z-index: 10;
+
+    &:hover {
+      background: $gray-light;
+      cursor: pointer;
+    }
   }
 
   .confirm {
@@ -27,14 +35,6 @@
     transition: margin-top 0.15s ease-in;
 
     z-index: 5;
-
-    button {
-      position: absolute;
-    }
-
-    &:hover {
-      cursor: default;
-    }
 
     &.active {
       margin-top: 0;
