@@ -2,15 +2,15 @@
 // settings test
 describe('Issue Detail Controller', function() {
 
-    var scope, rootScope, httpBackend, createCtrl, CommentMock;
+    var scope, rootScope, httpBackend, createCtrl, MarkdownMock;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
 
     beforeEach(function() {
-        CommentMock = {
-            render: function(comment) {
-                return comment;
+        MarkdownMock = {
+            render: function(obj) {
+                return obj;
             }
         };
     });
@@ -69,7 +69,7 @@ describe('Issue Detail Controller', function() {
                 $rootScope: rootScope,
                 repo: repo,
                 issue: issue,
-                Comment: CommentMock
+                Markdown: MarkdownMock
             });
             return ctrl;
         };

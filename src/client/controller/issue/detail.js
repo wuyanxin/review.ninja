@@ -8,14 +8,14 @@
 // resolve: open, closed
 // *****************************************************
 
-module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'Comment', 'Reference', 'repo', 'issue', 'socket',
-    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, Comment, Reference, repo, issue, socket) {
+module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', 'Issue', 'Markdown', 'Reference', 'repo', 'issue', 'socket',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, Issue, Markdown, Reference, repo, issue, socket) {
 
         // get the repo
         $scope.repo = repo.value;
 
         // get the issue
-        $scope.issue = Issue.parse(issue.value) && Issue.render(issue.value);
+        $scope.issue = Issue.parse(issue.value) && Markdown.render(issue.value);
 
         // switch the comparison view
         $scope.compComm($scope.issue.sha);
@@ -31,7 +31,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
         }, function(err, comments) {
             if(!err) {
                 comments.affix.forEach(function(comment) {
-                    comment = Comment.render(comment);
+                    comment = Markdown.render(comment);
                 });
             }
         });
@@ -89,7 +89,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                     id: args.id
                 }, function(err, comment) {
                     if(!err) {
-                        $scope.comments.value.push(Comment.render(comment.value));
+                        $scope.comments.value.push(Markdown.render(comment.value));
                     }
                 });
             }
@@ -103,7 +103,7 @@ module.controller('IssueDetailCtrl', ['$rootScope', '$scope', '$state', '$stateP
                     number: $stateParams.issue
                 }, function(err, issue) {
                     if(!err) {
-                        $scope.issue = Issue.parse(issue.value) && Issue.render(issue.value);
+                        $scope.issue = Issue.parse(issue.value) && Markdown.render(issue.value);
                     }
                 });
 

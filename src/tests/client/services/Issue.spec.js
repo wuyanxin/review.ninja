@@ -42,20 +42,4 @@ describe('Issue Factory', function() {
         var result = Issue.parse(fakeIssue);
         (result).should.be.eql(resultingIssue);
     });
-
-    it('should render issue', function() {
-        var fakeIssue2 = {body: 'hello world'};
-        httpBackend.whenPOST('/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
-          text: 'hello world',
-          mode: 'gfm',
-          context: 'gabe/repo1'
-        }) + '}').respond({
-            data: {
-                body: '<p>hello world</p>'
-            }
-        });
-        var result = Issue.render(fakeIssue2);
-        httpBackend.flush();
-        (result).should.be.eql({body: 'hello world', html: '<p>hello world</p>'});
-    });
 });

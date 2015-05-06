@@ -22,21 +22,6 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', '$rootScope', function($
             return pull;
         },
 
-        render: function(pull) {
-            if(pull.body) {
-                $HUB.wrap('markdown', 'render', {
-                    text: pull.body,
-                    mode: 'gfm',
-                    context: $stateParams.user + '/' + $stateParams.repo
-                }, function(err, markdown) {
-                    if(!err) {
-                        pull.html = markdown.value.body;
-                    }
-                });
-            }
-            return pull;
-        },
-
         stars: function(pull, avatar) {
             $RPC.call('star', 'all', {
                 sha: pull.head.sha,

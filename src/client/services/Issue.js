@@ -31,23 +31,6 @@ module.factory('Issue', ['$stateParams', '$HUB', function($stateParams, $HUB) {
             }
 
             return issue;
-        },
-
-        render: function(issue) {
-
-            if(issue.body) {
-                $HUB.wrap('markdown', 'render', {
-                    text: issue.body,
-                    mode: 'gfm',
-                    context: $stateParams.user + '/' + $stateParams.repo
-                }, function(err, markdown) {
-                    if(!err) {
-                        issue.html = markdown.value.body;
-                    }
-                });
-            }
-
-            return issue;
         }
     };
 }]);
