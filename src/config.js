@@ -36,6 +36,12 @@ module.exports = {
             webhook_events: ['pull_request', 'issues', 'issue_comment', 'status']
         },
 
+        slack: {
+            host: process.env.SLACK_HOST,
+            port: process.env.SLACK_PORT,
+            path: process.env.SLACK_PATH
+        },
+
         localport: process.env.PORT || 5000,
 
         always_recompile_sass: process.env.NODE_ENV === 'production' ? false : true,
