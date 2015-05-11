@@ -29,7 +29,7 @@ module.exports = {
 
             var to = user.email ? user.email : req.args.email;
             mail.send({
-                from: 'ReviewNinja <noreply@review.ninja>',
+                from: config.server.smtp.from,
                 to: to,
                 subject: req.user.login + ' invited you to try ReviewNinja!',
                 html: ejs.render(template, {

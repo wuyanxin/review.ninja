@@ -59,12 +59,13 @@ module.exports = {
             enabled: !!process.env.SMTP_HOST,
             host: process.env.SMTP_HOST,
             secure: (!!process.env.SMTP_SSL && process.env.SMTP_SSL === 'true'),
-            port: process.env.SMTP_PORT || 465,
-            auth: {
+            port: process.env.SMTP_PORT,
+            auth: process.env.SMTP_USER ? {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS
-            },
-            name: 'review.ninja'
+            } : undefined,
+            name: process.env.HOST || 'review.ninja',
+            from: process.env.SMTP_FROM || 'ReviewNinja <noreply@review.ninja>'
         },
 
         mongodb: {
