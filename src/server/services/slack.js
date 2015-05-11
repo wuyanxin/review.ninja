@@ -51,7 +51,7 @@ module.exports = {
                                         token: repo.slack.token,
                                         channel: repo.slack.channel,
                                         sender: args.sender,
-                                        pull_requst: pull,
+                                        pull_request: pull,
                                         url: url.reviewPullRequest(args.user, args.repo, args.number)
                                     };
 
