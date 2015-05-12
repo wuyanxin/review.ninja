@@ -87,8 +87,6 @@ async.series([
                 if (file && file.length) {
                     file.forEach(function(f) {
                         try {
-                            config.server.smtp.tls = config.server.smtp.tls || {ca: []};
-                            config.server.smtp.tls.ca.push(fs.readFileSync(path.relative(process.cwd(), f)));
                             https.globalAgent.options.ca = https.globalAgent.options.ca || [];
                             https.globalAgent.options.ca.push(fs.readFileSync(path.relative(process.cwd(), f)));
                             console.log('✓ '.bold.green + path.relative(process.cwd(), f));
