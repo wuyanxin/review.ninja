@@ -173,7 +173,7 @@ module.exports = function() {
                                     args.baseUrl = url.baseUrl;
 
                                     mail.send({
-                                        from: 'ReviewNinja <noreply@review.ninja>',
+                                        from: config.server.smtp.from,
                                         to: email.email,
                                         subject: notificationArgs[notificationType].subject,
                                         html: ejs.render(emailTemplate, args)
