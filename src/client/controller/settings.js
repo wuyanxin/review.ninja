@@ -78,4 +78,16 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
                 }
             });
         };
+
+        $scope.setSlack = function() {
+            $RPC.call('repo', 'setSlack', {
+                repo_uuid: repo.value.id,
+                slack: $scope.reposettings.value.slack
+            }, function(err, settings) {
+                if(!err) {
+                    $scope.reposettings.value.slack = settings.value.slack;
+                }
+            });
+        };
+
     }]);

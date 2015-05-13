@@ -5,6 +5,7 @@ var Milestone = require('mongoose').model('Milestone');
 
 //services
 var url = require('../services/url');
+var slack = require('../services/slack');
 var github = require('../services/github');
 var status = require('../services/status');
 var milestone = require('../services/milestone');
@@ -51,6 +52,16 @@ module.exports = function(req, res) {
                 });
 
                 pullRequest.badgeComment(user, repo, repo_uuid, number);
+
+                slack.notify('pull_request', {
+                    sha: sha,
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    sender: sender,
+                    repo_uuid: repo_uuid,
+                    token: ninja.token
+                });
             },
             synchronize: function() {
                 status.update({
@@ -78,6 +89,16 @@ module.exports = function(req, res) {
                 if(req.args.pull_request.merged) {
                     var event = user + ':' + repo + ':' + 'pull-request-' + number + ':merged';
                     io.emit(event, number);
+
+                    slack.notify('merge', {
+                        sha: sha,
+                        user: user,
+                        repo: repo,
+                        number: number,
+                        sender: sender,
+                        repo_uuid: repo_uuid,
+                        token: ninja.token
+                    });
                 }
 
                 milestone.close(user, repo, repo_uuid, number, ninja.token);

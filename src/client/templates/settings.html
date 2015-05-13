@@ -70,7 +70,7 @@
           <div style="margin-top: 15px">
             <p><em>Optional:</em> Filter emails by branch:</p>
             <form style="margin-top: 10px; margin-bottom: 10px" ng-submit="addWatch()">
-              <div class="input-group" style="width:300px">
+              <div class="input-group" style="max-width:300px">
                 <div class="form-group has-feedback">
                   <input type="text" ng-model="newWatch" value="E.g., feature/*" class="form-control" style="height:33px; width:400px" />
                 </div>
@@ -90,6 +90,42 @@
           </div>
         </div>
       </div>
+
+      <div class="col-md-12" style="margin-top: 20px;" ng-show="repo.value.permissions.admin">
+        <p class="settingsheading"><i class="fa fa-slack"></i> Slack Integration</p>
+        <form name="slack" style="margin:10px 15px;">
+          <div class="form-group" style="max-width:450px">
+            <label>Token</label>
+            <input type="password" 
+                   class="form-control" 
+                   ng-model="reposettings.value.slack.token" 
+                   ng-model-options="{updateOn: 'blur'}" 
+                   ng-change="setSlack()">
+          </div>
+          <div class="form-group" style="max-width:450px">
+            <label>Channel</label>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="#general" 
+                   ng-model="reposettings.value.slack.channel" 
+                   ng-model-options="{updateOn: 'blur'}" 
+                   ng-change="setSlack()">
+          </div>
+          <div class="form-group" ng-show="reposettings.value.slack.token">
+            <label>Choose the ReviewNinja events that you want posted to Slack</label><br />
+
+            <input type="checkbox" ng-model="reposettings.value.slack.events.star" ng-change="setSlack()" />
+            <label>Ninja stars</label><br />
+
+            <input type="checkbox" ng-model="reposettings.value.slack.events.pull_request" ng-change="setSlack()" />
+            <label>New pull requests</label><br />
+
+            <input type="checkbox" ng-model="reposettings.value.slack.events.merge" ng-change="setSlack()" />
+            <label>Merged pull requests</label>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>
