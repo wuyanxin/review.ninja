@@ -30,6 +30,7 @@ rules:
     no-unused-expressions: 0
     no-unused-vars: 0
     no-use-before-define: [1, nofunc]
+    no-empty: 0
     quotes: [1, single]
     semi: 2
     space-infix-ops: 1
