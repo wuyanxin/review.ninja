@@ -15,6 +15,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
 
         // set the default state
         $scope.type = 'open';
+        $scope.search = '';
 
         //
         // Helper functions
