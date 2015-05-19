@@ -36,7 +36,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
             per_page: 10
         }, function(err, res) {
             if(!err) {
-                console.log('open wtf');
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setStatus(pull);
@@ -52,7 +51,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
             per_page: 10
         }, function(err, res) {
             if(!err) {
-                console.log('closed wtf');
                 res.affix.forEach(function(pull) {
                     pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setStatus(pull);
@@ -88,19 +86,6 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         //
         // Actions
         //
-
-        $scope.setType = function(type) {
-            $scope.type = type;
-            $scope.search = null;
-        };
-
-        $scope.checkClosed = function() {
-            return $scope.type === 'closed';
-        }
-
-        $scope.checkOpen = function() {
-            return $scope.type === 'open';
-        }
 
         $scope.badge = function() {
             var modal = $modal.open({
