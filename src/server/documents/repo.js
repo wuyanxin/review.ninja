@@ -15,6 +15,12 @@ var RepoSchema = mongoose.Schema({
     threshold: {type: Number, min: 1, default: 1}
 });
 
+RepoSchema.methods.toJSON = function() {
+  var repo = this.toObject();
+  repo.slack.token = !!repo.slack.token;
+  return repo;
+};
+
 var Repo = mongoose.model('Repo', RepoSchema);
 
 module.exports = {
