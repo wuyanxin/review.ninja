@@ -96,11 +96,18 @@
         <form name="slack" style="margin:10px 15px;">
           <div class="form-group" style="max-width:450px">
             <label>Token</label>
-            <input type="password" 
-                   class="form-control" 
-                   ng-model="reposettings.value.slack.token" 
-                   ng-model-options="{updateOn: 'blur'}" 
-                   ng-change="setSlack()">
+            <div ng-hide="!updatingSlackToken && tokenSet">
+              <input type="password" 
+                     class="form-control" 
+                     ng-model="reposettings.value.slack.token"
+                     ng-model-options="{updateOn: 'blur'}" 
+                     ng-change="setSlack(); getSlack(); updatingSlackToken = false;">
+            </div>
+          </div>
+          <div class="form-group" style="max-width:450px;">
+            <span class="form-control-static" ng-show="!updatingSlackToken && tokenSet">
+              ****** <a href="" ng-click="updatingSlackToken = true;">click to change</a>
+            </span>
           </div>
           <div class="form-group" style="max-width:450px">
             <label>Channel</label>
@@ -111,7 +118,7 @@
                    ng-model-options="{updateOn: 'blur'}" 
                    ng-change="setSlack()">
           </div>
-          <div class="form-group" ng-show="reposettings.value.slack.token">
+          <div class="form-group" ng-show="tokenSet">
             <label>Choose the ReviewNinja events that you want posted to Slack</label><br />
 
             <input type="checkbox" ng-model="reposettings.value.slack.events.star" ng-change="setSlack()" />
