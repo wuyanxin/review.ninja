@@ -94,7 +94,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
                     console.log(err);
                 }
             });
-        }
+        };
 
         $scope.setSlack = function(cb) {
             $RPC.call('repo', 'setSlack', {
