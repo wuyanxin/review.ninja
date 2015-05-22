@@ -14,7 +14,7 @@ module.exports = {
 
             Repo.findOneAndUpdate({
                 repo: args.repo_uuid
-            }, {}, {new: true}, function(err, repo) {
+            }, {}, {new: true}).select('+slack.token').exec(function(err, repo) {
 
                 var type = event !== 'unstar' ? event : 'star';
 

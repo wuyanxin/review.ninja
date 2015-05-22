@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var RepoSchema = mongoose.Schema({
     repo: Number,
     slack: {
-        token: String,
+        token: {type: String, select: false},
         channel: String,
         events: {
             pull_request: {type: Boolean, default: true},

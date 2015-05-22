@@ -2,7 +2,7 @@
 // settings test
 describe('Settings Controller', function() {
 
-    var scope, repo, httpBackend, createCtrl;
+    var scope, repo, httpBackend, createCtrl, callSlack;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
@@ -14,6 +14,15 @@ describe('Settings Controller', function() {
         httpBackend.when('GET', '/config').respond({
 
         });
+
+        callSlack = function() {
+            httpBackend.expect('POST', '/api/repo/getSlack').respond({
+                events: {merge: true},
+                token: true,
+                channel: '#bottesting'
+            });
+        };
+
         scope = $rootScope.$new();
 
         repo = {
@@ -22,7 +31,6 @@ describe('Settings Controller', function() {
             }
         };
         createCtrl = function() {
-
             var ctrl = $controller('SettingsCtrl', {
                 $scope: scope,
                 repo: repo
@@ -46,6 +54,7 @@ describe('Settings Controller', function() {
         httpBackend.expect('POST', '/api/repo/get').respond({
             repo: 'repo'
         });
+        callSlack();
 
         httpBackend.flush();
         (ctrl.scope.settings.value.settings).should.be.exactly('settings');
@@ -62,6 +71,7 @@ describe('Settings Controller', function() {
         httpBackend.expect('POST', '/api/repo/get').respond({
             repo: 'repo'
         });
+        callSlack();
 
         httpBackend.flush();
 
@@ -83,6 +93,7 @@ describe('Settings Controller', function() {
         httpBackend.expect('POST', '/api/repo/get').respond({
             repo: 'repo'
         });
+        callSlack();
 
         httpBackend.flush();
 
@@ -108,6 +119,7 @@ describe('Settings Controller', function() {
         httpBackend.expect('POST', '/api/repo/get').respond({
             repo: 'repo'
         });
+        callSlack();
 
         httpBackend.flush();
 
@@ -131,6 +143,7 @@ describe('Settings Controller', function() {
         httpBackend.expect('POST', '/api/repo/get').respond({
             repo: 'repo'
         });
+        callSlack();
 
         var ctrl = createCtrl();
         ctrl.scope.reposettings = {
@@ -160,6 +173,7 @@ describe('Settings Controller', function() {
         httpBackend.expect('POST', '/api/repo/get').respond({
             repo: 'repo'
         });
+        callSlack();
 
         var ctrl = createCtrl();
         ctrl.scope.reposettings = {

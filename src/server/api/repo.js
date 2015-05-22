@@ -3,6 +3,7 @@
 var github = require('../services/github');
 // models
 var Repo = require('mongoose').model('Repo');
+var merge = require('merge');
 
 module.exports = {
 
@@ -83,6 +84,18 @@ module.exports = {
             }, {
                 slack: req.args.slack
             }, {new: true}, done);
+        });
+    },
+
+    getSlack: function(req, done) {
+        Repo.findOneAndUpdate({
+            repo: req.args.repo_uuid
+        }, {}, {new: true, upsert: true}).select('+slack.token').exec(function(err, repo) {
+            if (err) {
+                return done(err, null);
+            }
+            repo.slack.token = !!repo.slack.token;
+            done(err, repo.slack);
         });
     }
 
