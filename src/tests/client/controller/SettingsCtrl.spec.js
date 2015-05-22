@@ -14,6 +14,13 @@ describe('Settings Controller', function() {
         httpBackend.when('GET', '/config').respond({
 
         });
+
+        httpBackend.expect('POST', '/api/repo/getSlack').respond({
+            events: {merge: true},
+            token: true,
+            channel: '#bottesting'
+        });
+
         scope = $rootScope.$new();
 
         repo = {
@@ -22,7 +29,6 @@ describe('Settings Controller', function() {
             }
         };
         createCtrl = function() {
-
             var ctrl = $controller('SettingsCtrl', {
                 $scope: scope,
                 repo: repo
