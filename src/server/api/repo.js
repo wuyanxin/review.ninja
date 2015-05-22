@@ -88,13 +88,14 @@ module.exports = {
     },
 
     getSlack: function(req, done) {
-        Repo.findOne({
+        Repo.findOneAndUpdate({
             repo: req.args.repo_uuid
-        }).select('+slack.token').exec(function(err, repo) {
+        }, {}, {new: true, upsert: true}).select('+slack.token').exec(function(err, repo) {
             if (err) {
                 return done(err, null);
             }
-            done(err, !!repo.slack.token);
+            repo.slack.token = !!repo.slack.token;
+            done(err, repo.slack);
         });
     }
 

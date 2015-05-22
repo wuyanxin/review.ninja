@@ -20,10 +20,10 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
 
         $scope.reposettings = $RPC.call('repo', 'get', {
             repo_uuid: repo.value.id
-        }, function(err, settings) {
-            if (!err) {
-                $scope.getSlack();
-            }
+        });
+
+        $scope.slack = $RPC.call('repo', 'getSlack', {
+            repo_uuid: repo.value.id
         });
 
         $scope.setNotifications = function() {
@@ -83,31 +83,14 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             });
         };
 
-        $scope.getSlack = function() {
-            $RPC.call('repo', 'getSlack', {
-                repo_uuid: repo.value.id,
-                slack: $scope.reposettings.value.slack
-            }, function(err, settings) {
-                if(!err) {
-                    $scope.tokenSet = settings.value;
-                } else {
-                    console.log(err);
-                }
-            });
-        };
-
-        $scope.setSlack = function(cb) {
+        $scope.setSlack = function() {
             $RPC.call('repo', 'setSlack', {
                 repo_uuid: repo.value.id,
                 slack: $scope.reposettings.value.slack
             }, function(err, settings) {
                 if(!err) {
+                    settings.value.slack.token = true;
                     $scope.reposettings.value.slack = settings.value.slack;
-                    if (cb) {
-                        cb();
-                    }
-                } else {
-                    console.log(err);
                 }
             });
         };

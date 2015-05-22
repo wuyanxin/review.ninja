@@ -93,19 +93,19 @@
 
       <div class="col-md-12" style="margin-top: 20px;" ng-show="$config.slack && repo.value.permissions.admin">
         <p class="settingsheading"><i class="fa fa-slack"></i> Slack Integration</p>
-        <form name="slack" style="margin:10px 15px;">
+        <form style="margin:10px 15px;">
           <div class="form-group" style="max-width:450px">
             <label>Token</label>
-            <div ng-hide="!updatingSlackToken && tokenSet">
+            <div ng-hide="!updatingSlackToken && slack.value.token === 'true'">
               <input type="password" 
                      class="form-control" 
                      ng-model="reposettings.value.slack.token"
                      ng-model-options="{updateOn: 'blur'}" 
-                     ng-change="setSlack(getSlack); updatingSlackToken = false;">
+                     ng-change="setSlack(); updatingSlackToken = false;">
             </div>
           </div>
           <div class="form-group" style="max-width:450px;">
-            <span class="form-control-static" ng-show="!updatingSlackToken && tokenSet">
+            <span class="form-control-static" ng-show="!updatingSlackToken && slack.value.token === 'true'">
               ****** <a href="" ng-click="updatingSlackToken = true;">click to change</a>
             </span>
           </div>
@@ -118,7 +118,7 @@
                    ng-model-options="{updateOn: 'blur'}" 
                    ng-change="setSlack()">
           </div>
-          <div class="form-group" ng-show="tokenSet">
+          <div class="form-group" ng-show="slack.value.token === 'true'">
             <label>Choose the ReviewNinja events that you want posted to Slack</label><br />
 
             <input type="checkbox" ng-model="reposettings.value.slack.events.star" ng-change="setSlack()" />
