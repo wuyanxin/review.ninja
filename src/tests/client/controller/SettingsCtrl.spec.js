@@ -21,7 +21,7 @@ describe('Settings Controller', function() {
                 token: true,
                 channel: '#bottesting'
             });
-        }
+        };
 
         scope = $rootScope.$new();
 
