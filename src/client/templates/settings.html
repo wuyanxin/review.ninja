@@ -101,7 +101,7 @@
                      class="form-control" 
                      ng-model="reposettings.value.slack.token"
                      ng-model-options="{updateOn: 'blur'}" 
-                     ng-change="setSlack(); getSlack(); updatingSlackToken = false;">
+                     ng-change="setSlack(getSlack); updatingSlackToken = false;">
             </div>
           </div>
           <div class="form-group" style="max-width:450px;">
