@@ -89,7 +89,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
                 slack: $scope.reposettings.value.slack
             }, function(err, settings) {
                 if(!err) {
-                    settings.value.slack.token = true;
+                    $scope.slack.value.token = 'true';
                     $scope.reposettings.value.slack = settings.value.slack;
                 }
             });
