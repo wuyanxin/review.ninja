@@ -11,11 +11,11 @@
   "success_url": "/",
   "env": {
     "HOST": {
-      "description": "Change this to the hostname you expect the application to have. If you want to use the one heroku provides you, you need to deploy and then change it in the applicaton settings. If you provided an App Name, then it will be appname.herokuapp.com (be aware, this should not include http:// only appname.herokuapp.com",
-      "value": "review.ninja"
+      "description": "The hostname of your application",
+      "value": "reviewninja.herokuapp.com"
     },
     "PROTOCOL": {
-      "description": "We need this to build links in emails and other external resources.",
+      "description": "The protocol your application uses, can be either 'http' or 'https'.",
       "value": "http"
     },
     "SESSION_SECRET": {
@@ -23,16 +23,34 @@
       "generator": "secret"
     },
     "GITHUB_CLIENT": {
-      "description": "Client ID of your GitHub Application. Tip: you will need to register you application with the callback url <PROTOCOLL>://<HOST>/auth/github/callback. As stated in the HOST parameter already, if you don't know the url yet then deploy and update the GitHub application once you do know."
+      "description": "Client ID of your GitHub Application. You can create a new application here: https://github.com/settings/applications/new."
     },
     "GITHUB_SECRET": {
       "description": "Client Secret of your GitHub Application."
     },
+    "GITHUB_PROTOCOL": {
+      "description": "The protocol of your target GitHub instance. Defaults to 'https'.",
+      "required": false
+    },
+    "GITHUB_API_HOST": {
+      "description": "The API endpoint of your target GitHub instance. Defaults to 'api.github.com'.",
+      "required": false
+    },
+    "GITHUB_API_PATHPREFIX": {
+      "description": "The path prefix for the API endpoint of your target GitHub instance. For example '/api/v3' would be appended to 'company.github.com' resulting in 'company.github.com/api/v3'.",
+      "required": false
+    },
+    "GITHUB_VERSION": {
+      "description": "The API version of your target GitHub instance to use. Defaults to '3.0.0'.",
+      "required": false
+    },
     "GITHUB_USER": {
-      "description": "For ReviewNinja to comment on pull requests, it needs a user to login to."
+      "description": "Required if you wish for a 'ReviewNinja' user to comment on PRs.",
+      "required": false
     },
     "GITHUB_PASS": {
-      "description": "Create an API Key in your user settings. https://github.com/settings/tokens/new Only public_repo is necessary."
+      "description": "Required if you wish for a 'ReviewNinja' user to comment on PRs. Generate a token here: https://github.com/settings/tokens/new. Only public_repo is necessary.",
+      "required": false
     }
   },
   "addons": [
