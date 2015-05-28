@@ -102,10 +102,9 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
 
                 scope.getLineContent = function(line) {
                     if(line.content.length > 0) {
-                        if(line.add && line.content.substring(0, 1) === '+') {
-                            return line.content.substring(1);
-                        } else if(line.del && line.content.substring(0, 1) === '-') {
-                            return line.content.substring(1);
+                        if(line.add && line.content.substring(0, 1) === '+'
+                            || line.del && line.content.substring(0, 1) === '-') {
+                            return ' '.concat(line.content.substring(1));
                         }
                     }
                     return line.content;
