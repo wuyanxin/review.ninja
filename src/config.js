@@ -1,9 +1,14 @@
+'use strict';
+
 /**
  * Configuration Module
  *
  * @title config
  * @overview Configuration Module
  */
+
+var mongoURI = require('mongodb-uri');
+
 module.exports = {
 
     terms: process.env.TERMS_URL,
@@ -75,16 +80,21 @@ module.exports = {
             ignoreTLS: process.env.SMTP_TLS === 'true'
         },
 
-        mongodb: {
-            host: process.env.MONGO_HOST,
-            port: process.env.MONGO_PORT || 27017,
-            db: process.env.MONGO_DB,
-            user: process.env.MONGO_USER,
-            password: process.env.MONGO_PASS,
-            collection: 'migrations'
-        },
+        mongodb: (function() {
 
-        mongodb_uri: 'mongodb://' + (process.env.MONGO_USER ? process.env.MONGO_USER + ':' + process.env.MONGO_PASS + '@' : '') + process.env.MONGO_HOST + ':' + (process.env.MONGO_PORT || 27017) + '/' + process.env.MONGO_DB,
+            var uri = mongoURI.parse(process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/reviewninja');
+
+            return {
+                user: uri.username,
+                password: uri.password,
+                host: uri.hosts[0].host,
+                port: uri.hosts[0].port || 27107,
+                db: uri.database,
+                collection: 'migrations'
+            };
+        })(),
+
+        mongodb_uri: process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/reviewninja',
 
         keen: {
             pid: process.env.KEENIO_PID,

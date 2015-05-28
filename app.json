@@ -23,7 +23,7 @@
       "generator": "secret"
     },
     "GITHUB_CLIENT": {
-      "description": "Client ID of your GitHub Application. You can create a new application here: https://github.com/settings/applications/new."
+      "description": "Client ID of your GitHub Application. You can create a new application here: https://github.com/settings/applications/new. You should set the callback URL to <PROTOCOL>://<HOST>/auth/github/callback."
     },
     "GITHUB_SECRET": {
       "description": "Client Secret of your GitHub Application."
