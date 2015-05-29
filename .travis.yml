@@ -1,6 +1,5 @@
 language: node_js
 before_script:
-- bower install
 - gem install scss-lint
 after_script:
 - gulp coverage
