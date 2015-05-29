@@ -54,7 +54,7 @@ module.exports = {
         http: {
             protocol: process.env.PROTOCOL || 'http',
             host: process.env.HOST || 'localhost',
-            port: process.env.HOST_PORT || process.env.PORT || 5000,
+            port: process.env.HOST_PORT || (!process.env.HOST ? 5000 : null)
         },
 
         https: {

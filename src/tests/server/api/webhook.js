@@ -94,7 +94,7 @@ describe('webhook:get', function() {
                 token: 'token'
             });
 
-            done(null, [{config: { url: 'https://review.ninja/github/webhook/1234' }}]);
+            done(null, [{config: { url: 'http://localhost:5000/github/webhook/1234' }}]);
         });
 
         var req = {
@@ -108,7 +108,7 @@ describe('webhook:get', function() {
         };
 
         webhook.get(req, function(err, hook) {
-            assert.deepEqual(hook, {config: { url: 'https://review.ninja/github/webhook/1234' }});
+            assert.deepEqual(hook, {config: { url: 'http://localhost:5000/github/webhook/1234' }});
             sinon.assert.called(githubStub);
             githubStub.restore();
             done();
@@ -150,13 +150,13 @@ describe('webhook:create', function() {
                     user: 'user',
                     repo: 'repo',
                     name: 'web',
-                    config: {url: 'https://review.ninja/github/webhook/mongooseId', content_type: 'json'},
+                    config: {url: 'http://localhost:5000/github/webhook/mongooseId', content_type: 'json'},
                     events: ['pull_request', 'issues', 'issue_comment', 'status'],
                     active: true
                 },
                 token: 'token'
             });
-            done(null, {config: {url: 'https://review.ninja/github/webhook/mongooseId'}});
+            done(null, {config: {url: 'http://localhost:5000/github/webhook/mongooseId'}});
         });
 
         var req = {

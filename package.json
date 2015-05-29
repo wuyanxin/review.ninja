@@ -1,5 +1,5 @@
 {
-  "name": "review.ninja",
+  "name": "ReviewNinja",
   "author": "ReviewNinja <contact@review.ninja> (https://github.com/reviewninja)",
   "version": "1.2.0",
   "homepage": "http://review.ninja",
@@ -93,11 +93,14 @@
     "watchify": "^3.2.1"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "0.12.x"
   },
   "scripts": {
     "start": "node app.js",
     "test": "gulp",
-    "postinstall": "node_modules/.bin/bower install --config.interactive=false"
+    "lint": "gulp lint",
+    "mocha": "gulp mocha",
+    "karma": "gulp karma",
+    "postinstall": "bower install"
   }
 }

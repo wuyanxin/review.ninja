@@ -157,7 +157,7 @@ describe('star:set', function() {
                     repo: 'repo',
                     number: 2,
                     sender: {id: 3, login: 'login', token: 'token'},
-                    settings: 'https://review.ninja/user/repo/settings',
+                    settings: 'http://localhost:5000/user/repo/settings',
                     url: url.reviewPullRequest('user', 'repo', 2)
                 });
             });

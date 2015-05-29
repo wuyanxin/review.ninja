@@ -38,7 +38,7 @@ describe('pullRequest:badgeComment', function(done) {
                     user: 'user',
                     repo: 'repo',
                     number: 456,
-                    body: '<a href="https://review.ninja/user/repo/pull/456" target="_blank"><img src="https://review.ninja/123/pull/456/badge" alt="ReviewNinja"/>'
+                    body: '<a href="http://localhost:5000/user/repo/pull/456" target="_blank"><img src="http://localhost:5000/123/pull/456/badge" alt="ReviewNinja"/>'
                 },
                 basicAuth: {
                     user: 'githubUser',
