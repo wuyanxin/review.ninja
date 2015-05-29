@@ -52,9 +52,9 @@ module.exports = {
         always_recompile_sass: process.env.NODE_ENV === 'production' ? false : true,
 
         http: {
-            protocol: process.env.PROTOCOL || 'https',
-            host: process.env.HOST || 'review.ninja',
-            port: process.env.HOST_PORT
+            protocol: process.env.PROTOCOL || 'http',
+            host: process.env.HOST || 'localhost',
+            port: process.env.HOST_PORT || process.env.PORT || 5000,
         },
 
         https: {
@@ -88,7 +88,7 @@ module.exports = {
                 user: uri.username,
                 password: uri.password,
                 host: uri.hosts[0].host,
-                port: uri.hosts[0].port || 27107,
+                port: uri.hosts[0].port || 27017,
                 db: uri.database,
                 collection: 'migrations'
             };
