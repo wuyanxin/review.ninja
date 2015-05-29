@@ -1,10 +1,12 @@
 'use strict';
+
 var Star = require('mongoose').model('Star');
 
 var url = require('./url');
+var slack = require('./slack');
 var github = require('./github');
-var status = require('../services/status');
-var notification = require('../services/notification');
+var status = require('./status');
+var notification = require('./notification');
 
 module.exports = {
 
@@ -33,6 +35,15 @@ module.exports = {
                     sender: sender,
                     settings: url.reviewSettings(user, repo),
                     url: url.reviewPullRequest(user, repo, number)
+                });
+                slack.notify('star', {
+                    sha: sha,
+                    user: user,
+                    repo: repo,
+                    number: number,
+                    sender: sender,
+                    repo_uuid: repo_uuid,
+                    token: token
                 });
             }
 
@@ -70,6 +81,15 @@ module.exports = {
                         sender: sender,
                         settings: url.reviewSettings(user, repo),
                         url: url.reviewPullRequest(user, repo, number)
+                    });
+                    slack.notify('unstar', {
+                        sha: sha,
+                        user: user,
+                        repo: repo,
+                        number: number,
+                        sender: sender,
+                        repo_uuid: repo_uuid,
+                        token: token
                     });
                 }
 

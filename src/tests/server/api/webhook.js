@@ -8,6 +8,7 @@ global.config = require('../../../config');
 
 // services
 var github = require('../../../server/services/github');
+var hook = require('../../../server/services/webhook');
 var url = require('../../../server/services/url');
 
 // model
@@ -93,7 +94,7 @@ describe('webhook:get', function() {
                 token: 'token'
             });
 
-            done(null, [{config: { url: 'https://review.ninja/github/webhook/1234' }}]);
+            done(null, [{config: { url: 'http://localhost:5000/github/webhook/1234' }}]);
         });
 
         var req = {
@@ -107,7 +108,7 @@ describe('webhook:get', function() {
         };
 
         webhook.get(req, function(err, hook) {
-            assert.deepEqual(hook, {config: { url: 'https://review.ninja/github/webhook/1234' }});
+            assert.deepEqual(hook, {config: { url: 'http://localhost:5000/github/webhook/1234' }});
             sinon.assert.called(githubStub);
             githubStub.restore();
             done();
@@ -122,8 +123,8 @@ describe('webhook:create', function() {
         });
 
         var req = {
-            args: {
-                user_uuid: 1234
+            user: {
+                uuid: 1234
             }
         };
 
@@ -135,7 +136,7 @@ describe('webhook:create', function() {
         });
     });
 
-    it('should return null when user not found', function(done) {
+    it('should return the hook when found', function(done) {
         var userStub = sinon.stub(User, 'findOne', function(args, done) {
             assert.deepEqual(args, {uuid: 1234});
             done(null, {_id: 'mongooseId'});
@@ -149,24 +150,24 @@ describe('webhook:create', function() {
                     user: 'user',
                     repo: 'repo',
                     name: 'web',
-                    config: {url: 'https://review.ninja/github/webhook/mongooseId', content_type: 'json'},
+                    config: {url: 'http://localhost:5000/github/webhook/mongooseId', content_type: 'json'},
                     events: ['pull_request', 'issues', 'issue_comment', 'status'],
                     active: true
                 },
                 token: 'token'
             });
-            done(null, {config: {url: 'https://review.ninja/github/webhook/mongooseId'}});
+            done(null, {config: {url: 'http://localhost:5000/github/webhook/mongooseId'}});
         });
 
         var req = {
             args: {
-                user_uuid: 1234,
                 user: 'user',
                 repo: 'repo',
                 name: 'web'
             },
             user: {
-                token: 'token'
+                token: 'token',
+                id: 1234
             }
         };
 
@@ -174,6 +175,77 @@ describe('webhook:create', function() {
             sinon.assert.called(userStub);
             sinon.assert.called(githubStub);
             userStub.restore();
+            githubStub.restore();
+            done();
+        });
+    });
+});
+
+describe('webhook:remove', function() {
+    it('should return null when hook not found', function(done) {
+        var webhookStub = sinon.stub(hook, 'get', function(user, repo, token, done) {
+            assert.equal(user, 'user');
+            assert.equal(repo, 'repo');
+            assert.equal(token, 'token');
+            done(null, null);
+        });
+
+        var req = {
+            args: {
+                user: 'user',
+                repo: 'repo'
+            },
+            user: {
+                id: 1234,
+                token: 'token'
+            }
+        };
+
+        webhook.remove(req, function(err, hook) {
+            assert.equal(hook, null);
+            sinon.assert.called(webhookStub);
+            webhookStub.restore();
+            done();
+        });
+    });
+
+    it('should remove the hook when found', function(done) {
+        var webhookStub = sinon.stub(hook, 'get', function(user, repo, token, done) {
+            assert.equal(user, 'user');
+            assert.equal(repo, 'repo');
+            assert.equal(token, 'token');
+            done(null, {id: 1});
+        });
+
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            assert.deepEqual(args, {
+                obj: 'repos',
+                fun: 'deleteHook',
+                arg: {
+                    user: 'user',
+                    repo: 'repo',
+                    id: 1
+                },
+                token: 'token'
+            });
+            done(null, true);
+        });
+
+        var req = {
+            args: {
+                user: 'user',
+                repo: 'repo'
+            },
+            user: {
+                id: 1234,
+                token: 'token'
+            }
+        };
+
+        webhook.remove(req, function(err, hook) {
+            sinon.assert.called(webhookStub);
+            sinon.assert.called(githubStub);
+            webhookStub.restore();
             githubStub.restore();
             done();
         });

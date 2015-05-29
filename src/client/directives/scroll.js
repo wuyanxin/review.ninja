@@ -14,8 +14,9 @@ module.directive('scroll', function($location) {
                 e.preventDefault();
                 var dest = $('#' + scope.scroll.replace(/(:|\/|\.|\[|\]|,)/g, '\\$1'));
                 if(dest && dest.offset()) {
-                    $location.hash(scope.scroll);
-                    $('html,body').animate({ scrollTop: dest.offset().top }, 1000);
+                    $('html,body').animate({ scrollTop: dest.offset().top }, 1000, function() {
+                        $location.hash(scope.scroll);
+                    });
                 }
             });
         }

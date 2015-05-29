@@ -18,6 +18,7 @@ var pull_request = require('../../../server/webhooks/pull_request');
 
 // services
 var url = require('../../../server/services/url');
+var slack = require('../../../server/services/slack');
 var milestone = require('../../../server/services/milestone');
 var notification = require('../../../server/services/notification');
 var status = require('../../../server/services/status');

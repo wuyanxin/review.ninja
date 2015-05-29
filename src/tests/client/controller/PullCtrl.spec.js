@@ -2,7 +2,7 @@
 // settings test
 describe('Pull Controller', function() {
 
-    var scope, rootScope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock, CommentMock, FileMock, SocketMockFunc, SocketMock, ModalMock, q;
+    var scope, rootScope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock, MarkdownMock, FileMock, SocketMockFunc, SocketMock, ModalMock, q;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
@@ -26,9 +26,9 @@ describe('Pull Controller', function() {
             }
         };
 
-        CommentMock = {
-            render: function(comment) {
-                return comment.body;
+        MarkdownMock = {
+            render: function(obj) {
+                return obj;
             }
         };
 
@@ -170,7 +170,7 @@ describe('Pull Controller', function() {
                 $modal: ModalMock,
                 Pull: PullMock,
                 Issue: IssueMock,
-                Comment: CommentMock,
+                Markdown: MarkdownMock,
                 File: FileMock,
                 repo: {value: {id: 1}},
                 pull: {value: fakePull},
@@ -314,6 +314,63 @@ describe('Pull Controller', function() {
         SocketMock.receive('gabe:test:status', {sha: 'abcd1234'});
         httpBackend.flush();
         (scope.status.value).should.be.exactly('tested');
+    });
+
+    // getting  stars via websocket
+    it('should update stars websocket event', function() {
+        var PullCtrl = createCtrl();
+        scope.pull = {number: 1};
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'starred'});
+        (scope.pull).should.be.eql({number: 1});
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'unstarred'});
+        (scope.pull).should.be.eql({number: 1});
+    });
+
+    // should get closed pull request via websocket
+    it('should trigger method to get a pull request upon websocket event', function() {
+        var PullCtrl = createCtrl();
+        var mock = sinon.mock(scope);
+        var expectation = mock.expects('getPullRequest').thrice();
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'closed'});
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'reopened'});
+        SocketMock.receive('gabe:test:pull_request', {number: 1, action: 'synchronize'});
+        (mock.verify()).should.be.true;
+        mock.restore();
+    });
+
+    // create comment event
+    it('should push new comment with websocket event', function() {
+        var PullCtrl = createCtrl();
+        scope.comments = {value: []};
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getComment","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 'test',
+          id: 1234
+        }) + '}').respond({
+            data: {body: 'comment'}
+        });
+        SocketMock.receive('gabe:test:issue_comment', {number: 1, action: 'created', id: 1234});
+        httpBackend.flush();
+        (scope.comments.value).should.be.eql([{body: 'comment'}]);
+    });
+
+    // get open issues
+    it('should get open issues with websocket event', function() {
+        var PullCtrl = createCtrl();
+        scope.open = {value: []};
+        scope.pull = {number: 1};
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getRepoIssue","arg":' + JSON.stringify({
+          user: 'gabe',
+          repo: 'test',
+          number: 1
+        }) + '}').respond({
+            data: {body: 'thing', milestone: 'testmile'}
+        });
+        SocketMock.receive('gabe:test:issues', {pull: 1, number: 1, action: 'opened'});
+        httpBackend.flush();
+        (scope.open.value).should.be.eql(['thing']);
+        (scope.pull.milestone).should.be.exactly('testmile');
+        (scope.pull).should.be.eql({number: 1, milestone: 'testmile'});
     });
 
     // changing closed issues to closed

@@ -1,9 +1,14 @@
+'use strict';
+
 /**
  * Configuration Module
  *
  * @title config
  * @overview Configuration Module
  */
+
+var mongoURI = require('mongodb-uri');
+
 module.exports = {
 
     terms: process.env.TERMS_URL,
@@ -36,14 +41,20 @@ module.exports = {
             webhook_events: ['pull_request', 'issues', 'issue_comment', 'status']
         },
 
+        slack: {
+            host: process.env.SLACK_HOST,
+            port: process.env.SLACK_PORT,
+            path: process.env.SLACK_PATH
+        },
+
         localport: process.env.PORT || 5000,
 
         always_recompile_sass: process.env.NODE_ENV === 'production' ? false : true,
 
         http: {
-            protocol: process.env.PROTOCOL || 'https',
-            host: process.env.HOST || 'review.ninja',
-            port: process.env.HOST_PORT
+            protocol: process.env.PROTOCOL || 'http',
+            host: process.env.HOST || 'localhost',
+            port: process.env.HOST_PORT || (!process.env.HOST ? 5000 : null)
         },
 
         https: {
@@ -59,24 +70,31 @@ module.exports = {
             enabled: !!process.env.SMTP_HOST,
             host: process.env.SMTP_HOST,
             secure: (!!process.env.SMTP_SSL && process.env.SMTP_SSL === 'true'),
-            port: process.env.SMTP_PORT || 465,
-            auth: {
+            port: process.env.SMTP_PORT,
+            auth: process.env.SMTP_USER ? {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS
-            },
-            name: 'review.ninja'
+            } : undefined,
+            name: process.env.HOST || 'review.ninja',
+            from: process.env.SMTP_FROM || 'ReviewNinja <noreply@review.ninja>',
+            ignoreTLS: process.env.SMTP_TLS === 'true'
         },
 
-        mongodb: {
-            host: process.env.MONGO_HOST,
-            port: process.env.MONGO_PORT || 27017,
-            db: process.env.MONGO_DB,
-            user: process.env.MONGO_USER,
-            password: process.env.MONGO_PASS,
-            collection: 'migrations'
-        },
+        mongodb: (function() {
 
-        mongodb_uri: 'mongodb://' + (process.env.MONGO_USER ? process.env.MONGO_USER + ':' + process.env.MONGO_PASS + '@' : '') + process.env.MONGO_HOST + ':' + (process.env.MONGO_PORT || 27017) + '/' + process.env.MONGO_DB,
+            var uri = mongoURI.parse(process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/reviewninja');
+
+            return {
+                user: uri.username,
+                password: uri.password,
+                host: uri.hosts[0].host,
+                port: uri.hosts[0].port || 27017,
+                db: uri.database,
+                collection: 'migrations'
+            };
+        })(),
+
+        mongodb_uri: process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/reviewninja',
 
         keen: {
             pid: process.env.KEENIO_PID,

@@ -11,7 +11,7 @@
     </div>
   </div>
 
-	<div class="col-md-6">
+  <div class="col-md-6">
     <h2>
       Repositories
       <i class="fa fa-plus-circle plus-icon" ng-click="show=!show; setFocus=true;"></i>
@@ -59,28 +59,40 @@
 
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="!loaded"></i>
 
-		<table class="table table-hover">
+    <ul class="repo-list">
+      <li ng-repeat="repo in repos | orderBy:['adddate', 'full_name']">
 
-			<tr ng-repeat="repo in repos | orderBy:['adddate', 'full_name']"
-          ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })"
-          class="select">
-				<td>
-          <span class="octicon octicon-repo" ng-show="!repo.private"></span>
-          <span class="octicon octicon-lock" ng-show="repo.private"></span>
-          &nbsp;{{ repo.owner.login }} / {{ repo.name }}
-        </td>
+          <div class="select" ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })">
+            <span class="octicon octicon-repo" ng-show="!repo.private"></span>
+            <span class="octicon octicon-lock" ng-show="repo.private"></span>
+            &nbsp;{{ repo.owner.login }} / {{ repo.name }}
+            <i class="fa fa-times pull-right" 
+               ng-hide="active===repo && webhook.loading"
+               ng-click="rmv(repo); $event.stopPropagation();"
+               tooltip="{{ active===repo ? 'Cancel' : 'Remove' }}"
+               tooltip-placement="bottom"
+               tooltip-append-to-body="true">
+            </i>
+            <i class="fa fa-spin fa-spinner pull-right" ng-show="active===repo && webhook.loading"></i>
+          </div>
+          <div class="confirm" ng-class="{active: active===repo}">
+            Would you like to remove the webhook too?
+            <button class="btn btn-xs btn-primary" 
+                    type="button" 
+                    ng-click="removeWebhook(repo); $event.stopPropagation();" 
+                    style="position:absolute; right:140px;">
+              Remove repo and webook
+            </button>
+            <button class="btn btn-xs btn-primary" 
+                    type="button" 
+                    ng-click="remove(repo); $event.stopPropagation();" 
+                    style="position:absolute; right:24px;">
+              Just remove repo
+            </button>
+          </div>
 
-				<td style="text-align:right;">
-          <i class="fa fa-times" 
-             ng-click="remove(repo); $event.stopPropagation();"
-             tooltip="Remove"
-             tooltip-placement="bottom"
-             tooltip-append-to-body="true">
-          </i>
-        </td>
-			</tr>
+      </li>
+    </ul>
 
-		</table>
-	</div>
-
+  </div>
 </div>

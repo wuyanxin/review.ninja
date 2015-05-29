@@ -90,23 +90,6 @@ describe('Pull Factory', function() {
         (result).should.eql(pullMilestone);
     });
 
-    // should render pull body
-    it('should render pull body', function(){
-        httpBackend.expect('POST', '/api/github/wrap', '{"obj":"markdown","fun":"render","arg":' + JSON.stringify({
-          text: 'this is pull body',
-          mode: 'gfm',
-          context: 'gabe/repo1'
-        }) + '}').respond(200, {
-            data: {
-                body: '<p>this is pull body</p>'
-            }
-        });
-        var fakePull = {body: 'this is pull body'};
-        var result = Pull.render(fakePull);
-        httpBackend.flush();
-        (result).should.be.eql({body: 'this is pull body', html: '<p>this is pull body</p>'});
-    });
-
     // should get star count
     it('should get star count', function(){
         httpBackend.expect('POST', '/api/star/all', JSON.stringify({

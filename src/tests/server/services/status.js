@@ -59,7 +59,7 @@ describe('status:update', function() {
                         sha: 'sha',
                         state: 'pending',
                         description: 'ReviewNinja: 1 star needed, 0 issues',
-                        target_url: 'https://review.ninja/user/repo/pull/1',
+                        target_url: 'http://localhost:5000/user/repo/pull/1',
                         context: 'code-review/reviewninja'
                     },
                     token: 'token'
@@ -135,7 +135,7 @@ describe('status:update', function() {
                         sha: 'sha',
                         state: 'success',
                         description: 'ReviewNinja: 1 star, 0 issues',
-                        target_url: 'https://review.ninja/user/repo/pull/1',
+                        target_url: 'http://localhost:5000/user/repo/pull/1',
                         context: 'code-review/reviewninja'
                     },
                     token: 'token'
@@ -211,7 +211,7 @@ describe('status:update', function() {
                         sha: 'sha',
                         state: 'failure',
                         description: 'ReviewNinja: 1 star, 3 issues',
-                        target_url: 'https://review.ninja/user/repo/pull/1',
+                        target_url: 'http://localhost:5000/user/repo/pull/1',
                         context: 'code-review/reviewninja'
                     },
                     token: 'token'

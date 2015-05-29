@@ -17,8 +17,8 @@ describe('url:socket', function(done) {
 });
 
 describe('url:baseUrl', function(done) {
-    it('should by default be https://review.ninja', function(done) {
-        assert.equal(url.baseUrl, 'https://review.ninja');
+    it('should by default be http://localhost:5000', function(done) {
+        assert.equal(url.baseUrl, 'http://localhost:5000');
         done();
     });
 });
@@ -61,17 +61,17 @@ describe('url:githubFileReference', function(done) {
 });
 
 describe('url:reviewPullRequest', function(done) {
-    it('should by default be https://review.ninja/user/repo/pull/1', function(done) {
+    it('should by default be http://localhost:5000/user/repo/pull/1', function(done) {
         assert.equal(url.reviewPullRequest('user', 'repo', 1),
-                    'https://review.ninja/user/repo/pull/1');
+                    'http://localhost:5000/user/repo/pull/1');
         done();
     });
 });
 
 describe('url:pullRequestBadge', function(done) {
-    it('should by default be https://review.ninja/:repoId/pull/:number/badge', function(done) {
+    it('should by default be http://localhost:5000/:repoId/pull/:number/badge', function(done) {
         assert.equal(url.pullRequestBadge(123, 456),
-                    'https://review.ninja/123/pull/456/badge');
+                    'http://localhost:5000/123/pull/456/badge');
         done();
     });
 });

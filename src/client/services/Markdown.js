@@ -1,27 +1,26 @@
 'use strict';
+
 // *****************************************************
-// Pull Factory
+// Markdown Factory
 // *****************************************************
 
-module.factory('Comment', ['$HUB', '$stateParams', function($HUB, $stateParams) {
+module.factory('Markdown', ['$HUB', '$stateParams', function($HUB, $stateParams) {
 
     return {
-
-        render: function(comment) {
-
-            if(comment.body) {
+        render: function(obj) {
+            if(obj.body) {
                 $HUB.wrap('markdown', 'render', {
-                    text: comment.body,
+                    text: obj.body,
                     mode: 'gfm',
                     context: $stateParams.user + '/' + $stateParams.repo
                 }, function(err, markdown) {
                     if(!err) {
-                        comment.html = markdown.value.body;
+                        obj.html = markdown.value;
                     }
                 });
             }
 
-            return comment;
+            return obj;
         }
     };
 }]);

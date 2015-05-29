@@ -53,7 +53,10 @@ module.exports = {
                     }, {
                         id: mile.id,
                         number: mile.number
-                    }, {upsert: true}, done);
+                    }, {
+                        new: true,
+                        upsert: true
+                    }, done);
                 });
             });
         });
