@@ -8,6 +8,12 @@
  */
 
 var mongoURI = require('mongodb-uri');
+var env = require('node-env-file');
+
+env('.env', {
+    logger: console,
+    raise: true
+});
 
 module.exports = {
 
@@ -147,5 +153,4 @@ module.exports = {
     client: {
         gacode: process.env.GACODE
     }
-
 };
