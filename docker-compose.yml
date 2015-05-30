@@ -1,0 +1,17 @@
+App:
+  image: node:0.12.2
+  volumes:
+   - .:/app
+  command: sh -c "npm install -g nodemon; npm install --unsafe-perm; nodemon app.js;"
+  working_dir: /app/
+  ports:
+   - "5000:5000"
+  links:
+   - Mongo
+  environment:
+    MONGODB: mongodb://Mongo/reviewninja
+    GITHUB_CLIENT: fa0ea5e6c0a972fa5e3a
+    GITHUB_SECRET: 83f4f68e7af44c666f39e36ebfab219c4903f762
+
+Mongo:
+  image: mongo
