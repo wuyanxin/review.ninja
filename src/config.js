@@ -11,8 +11,7 @@ var mongoURI = require('mongodb-uri');
 var env = require('node-env-file');
 
 env('.env', {
-    logger: console,
-    raise: true
+    logger: console
 });
 
 module.exports = {
