@@ -63,7 +63,7 @@ router.all('/*', function(req, res) {
 
                     req.session.next = req.path;
                     var template = fs.readFileSync('src/server/templates/terms.ejs', 'utf-8');
-                    res.send(ejs.render(template, {termsHtml: renderedHtml.body}));
+                    res.send(ejs.render(template, {termsHtml: renderedHtml}));
                 });
             });
         });
