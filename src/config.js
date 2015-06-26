@@ -8,11 +8,8 @@
  */
 
 var mongoURI = require('mongodb-uri');
-var env = require('node-env-file');
 
-env('.env', {
-    logger: console
-});
+require('node-env-file')('.env', {logger: console, raise: false});
 
 module.exports = {
 
