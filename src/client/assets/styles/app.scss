@@ -149,9 +149,11 @@ $code-font-size: 12px;
 
   > .pull {
     background: $body-bg;
-    min-height: 100vh;
-    min-height: calc(100vh - 52px);
+    height: 100vh;
+    height: calc(100vh - 52px);
     padding: 0 30px 40px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
     img {
       max-width: 100%;
@@ -160,25 +162,11 @@ $code-font-size: 12px;
 
   > .sidebar {
     background: $gray-lighter;
-    max-height: 100vh;
-    max-height: calc(100vh - 52px);
+    height: 100vh;
+    height: calc(100vh - 52px);
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: scroll;
     padding: 0;
-
-    .ui-scrollfix {
-      position: fixed;
-      top: 0;
-      width: inherit;
-    }
-
-    .issues {
-      height: 100vh;
-      height: calc(100vh - 100px);
-      overflow-x: hidden;
-      overflow-y: scroll;
-      width: 100%;
-    }
   }
 }
 
