@@ -1,10 +1,71 @@
 'use strict';
+
 var url = require('./url');
 var github = require('./github');
 
 var Repo = require('mongoose').model('Repo');
+var Star = require('mongoose').model('Star');
+
+var reference = function(sha, path, position) {
+    return sha + '/' + path + '#L' + position;
+};
 
 module.exports = {
+
+    status: function(args, done) {
+
+        var negative = /(!fix)|(!resolve)/i;
+        var positive = /(!fixed)|(!resolved)|(!completed)/i;
+
+        Star.count({repo: args.repo_uuid, sha: args.sha}, function(err, stars) {
+
+            stars = stars || 0;
+
+            github.call({
+                obj: 'pullRequests',
+                fun: 'getComments',
+                arg: {
+                    user: args.user,
+                    repo: args.repo,
+                    number: args.number,
+                    per_page: 100
+                },
+                token: args.token,
+                basicAuth: args.basicAuth
+            }, function(err, comments) {
+                
+                comments = comments || [];
+
+                var status = {};
+                var issues = {open: 0, closed: 0};
+
+                comments.forEach(function(comment) {
+
+                    var ref = reference(comment.original_commit_id, comment.path, comment.original_position);
+
+                    if(comment.body.match(negative)) {
+                        status[ref] = 1;
+                    }
+
+                    if(comment.body.match(positive)) {
+                        status[ref] = 0;
+                    }
+
+                });
+
+                for(var ref in status) {
+                    issues.open = issues.open + status[ref];
+                    issues.closed = issues.closed + !status[ref] ? 1 : 0;
+                }
+
+                done(null, {
+                    stars: stars,
+                    issues: issues
+                });
+            });
+        });
+
+    },
 
     badgeComment: function(user, repo, repo_uuid, number) {
 
