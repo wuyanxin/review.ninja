@@ -33,7 +33,7 @@ module.exports = {
                 token: args.token,
                 basicAuth: args.basicAuth
             }, function(err, comments) {
-                
+
                 comments = comments || [];
 
                 var status = {};

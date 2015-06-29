@@ -65,7 +65,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                 user: githubRepo.owner.login,
                 repo: githubRepo.name,
                 number: req.params.number,
-                repo_uuid: req.params.repoId,
+                repo_uuid: req.params.repoId
             };
             addAuth(args);
 
