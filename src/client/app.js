@@ -1,4 +1,5 @@
 'use strict';
+
 var module = angular.module('app',
     ['ninja.config',
      'ninja.filters',
@@ -100,7 +101,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
                     }],
                     pull: ['$stateParams', '$HUBService',
                         function($stateParams, $HUBService) {
-                            return $HUBService.wrap('pullRequests', 'get', {
+                            return $HUBService.call('pullRequests', 'get', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 number: $stateParams.number
@@ -111,43 +112,11 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             })
 
             //
-            // Pull request issues state (abstract)
+            // Pull request reference comments state
             //
-            .state('repo.pull.issue', {
-                abstract: true,
-                templateUrl: '/templates/sidebar.html'
-            })
-
-            //
-            // Pull request issues state (list of issues)
-            //
-            .state('repo.pull.issue.master', {
+            .state('repo.pull.reference', {
                 url: '',
-                templateUrl: '/templates/issue/list.html',
-                controller: 'IssueListCtrl'
-            })
-
-            //
-            // Pull request issue state
-            //
-            .state('repo.pull.issue.detail', {
-                url: '/:issue',
-                templateUrl: '/templates/issue/detail.html',
-                controller: 'IssueDetailCtrl',
-                resolve: {
-                    repo: ['repo', function(repo) {
-                        return repo; // inherited from parent state
-                    }],
-                    issue: ['$HUBService', '$stateParams',
-                        function($HUBService, $stateParams) {
-                            return $HUBService.call('issues', 'getRepoIssue', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                number: $stateParams.issue
-                            });
-                        }
-                    ]
-                }
+                templateUrl: '/templates/reference.html'
             })
 
             //
