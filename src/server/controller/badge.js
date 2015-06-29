@@ -6,10 +6,10 @@ var router = express.Router();
 
 // services
 var github = require('../services/github');
+var pullRequest = require('../services/pullRequest');
 
 // models
 var Star = require('mongoose').model('Star');
-var Milestone = require('mongoose').model('Milestone');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Badge controller
@@ -30,72 +30,61 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
         }
     }
 
-    Milestone.findOne({
-        pull: req.params.number,
-        repo: req.params.repoId
-    }, function(err, mile) {
+    var options = {
+        obj: 'repos',
+        fun: 'one',
+        arg: {
+            id: req.params.repoId
+        }
+    };
+    addAuth(options);
+
+    github.call(options, function(err, githubRepo) {
+        if(err) {
+            return res.status(304).send();
+        }
 
         var options = {
-            obj: 'repos',
-            fun: 'one',
+            obj: 'pullRequests',
+            fun: 'get',
             arg: {
-                id: req.params.repoId
+                user: githubRepo.owner.login,
+                repo: githubRepo.name,
+                number: req.params.number
             }
         };
         addAuth(options);
 
-        github.call(options, function(err, githubRepo) {
+        github.call(options, function(err, githubPullRequest) {
             if(err) {
                 return res.status(304).send();
             }
 
-            var options = {
-                obj: 'issues',
-                fun: 'getMilestone',
-                arg: {
-                    user: githubRepo.owner.login,
-                    repo: githubRepo.name,
-                    number: mile ? mile.number : null
-                }
+            var args = {
+                sha: githubPullRequest.head.sha,
+                user: githubRepo.owner.login,
+                repo: githubRepo.name,
+                number: req.params.number,
+                repo_uuid: req.params.repoId,
             };
-            addAuth(options);
+            addAuth(args);
 
-            github.call(options, function(err, githubMile) {
+            pullRequest.status(args, function(err, status) {
 
-                var issues = githubMile && mile.id === githubMile.id ? githubMile.open_issues : 0;
+                var hash = require('crypto').createHash('md5').update(status.stars + ':' + status.issues.open, 'utf8').digest('hex');
 
-                var options = {
-                    obj: 'pullRequests',
-                    fun: 'get',
-                    arg: {
-                        user: githubRepo.owner.login,
-                        repo: githubRepo.name,
-                        number: req.params.number
-                    }
-                };
-                addAuth(options);
+                if(req.get('If-None-Match') === hash) {
+                    return res.status(304).send();
+                }
 
-                github.call(options, function(err, githubPullRequest) {
-                    Star.find({sha: githubPullRequest ? githubPullRequest.head.sha : null, repo: githubRepo.id}, function(err, stars) {
-                        if(err) {
-                            return res.status(304).send();
-                        }
+                res.set('Content-Type', 'image/svg+xml');
+                res.set('Cache-Control', 'no-cache');
+                res.set('Etag', hash);
 
-                        var hash = require('crypto').createHash('md5').update(stars.length + ':' + issues, 'utf8').digest('hex');
+                var tmp = fs.readFileSync('src/server/templates/badge.svg', 'utf-8');
+                var svg = ejs.render(tmp, {stars: status.stars, openIssues: status.issues.open});
+                res.send(svg);
 
-                        if(req.get('If-None-Match') === hash) {
-                            return res.status(304).send();
-                        }
-
-                        res.set('Content-Type', 'image/svg+xml');
-                        res.set('Cache-Control', 'no-cache');
-                        res.set('Etag', hash);
-
-                        var tmp = fs.readFileSync('src/server/templates/badge.svg', 'utf-8');
-                        var svg = ejs.render(tmp, {stars: stars.length, openIssues: issues});
-                        res.send(svg);
-                    });
-                });
             });
         });
     });
