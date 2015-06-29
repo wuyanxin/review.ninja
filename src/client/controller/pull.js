@@ -1,4 +1,5 @@
 'use strict';
+
 // *****************************************************
 // Pull Request Controller
 //
@@ -18,7 +19,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.sha = null;
 
         // get the pull request
-        $scope.pull = Pull.milestone(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
+        $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
 
         // set the line selection
         $scope.reference = {selection: {}, issues: null};
@@ -61,35 +62,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
-        // get the open issues
-        // $scope.open = $scope.pull.milestone ? $HUB.call('issues', 'repoIssues', {
-        //     user: $stateParams.user,
-        //     repo: $stateParams.repo,
-        //     state: 'open',
-        //     milestone: $scope.pull.milestone.number
-        // }, function(err, issues) {
-        //     issues.value = issues.value || [];
-        //     if(!err) {
-        //         issues.affix.forEach(function(issue) {
-        //             issue = Issue.parse(issue);
-        //         });
-        //     }
-        // }) : {value: []};
-
-        // get the closed issues
-        // $scope.closed = $scope.pull.milestone ? $HUB.call('issues', 'repoIssues', {
-        //     user: $stateParams.user,
-        //     repo: $stateParams.repo,
-        //     state: 'closed',
-        //     milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
-        // }, function(err, issues) {
-        //     issues.value = issues.value || [];
-        //     if(!err) {
-        //         issues.affix.forEach(function(issue) {
-        //             issue = Issue.parse(issue);
-        //         });
-        //     }
-        // }) : {value: []};
 
         //
         // UI text
@@ -159,7 +131,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         $scope.compComm($scope.base || $scope.pull.base.sha, pull.value.head.sha);
                     }
 
-                    $scope.pull = Pull.milestone(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
+                    $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
                 }
             });
         };
@@ -271,51 +243,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                         $scope.comments.value.push(Markdown.render(comment.value));
                     }
                 });
-            }
-        });
-
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issues', function(args) {
-            var i, issue;
-            if(args.action === 'opened' && $scope.pull.number === args.pull) {
-                $HUB.call('issues', 'getRepoIssue', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    number: args.number
-                }, function(err, issue) {
-                    if(!err) {
-                        $scope.open.value.unshift(Issue.parse(issue.value));
-                        $scope.pull.milestone = issue.value.milestone;
-                        $scope.pull = Pull.milestone($scope.pull);
-                    }
-                });
-            }
-            if(args.action === 'closed' && $scope.pull.number === args.pull) {
-                for(i = 0; i < $scope.open.value.length; i++) {
-                    if($scope.open.value[i].number === args.number) {
-                        issue = $scope.open.value[i];
-                        issue.state = 'closed';
-                        $scope.open.value.splice(i, 1);
-                        $scope.closed.value.unshift(issue);
-                    }
-                    if($scope.pull.milestone) {
-                        $scope.pull.milestone.open_issues--;
-                        $scope.pull.milestone.closed_issues++;
-                    }
-                }
-            }
-            if(args.action === 'reopened' && $scope.pull.number === args.pull) {
-                for(i = 0; i < $scope.closed.value.length; i++) {
-                    if($scope.closed.value[i].number === args.number) {
-                        issue = $scope.closed.value[i];
-                        issue.state = 'open';
-                        $scope.closed.value.splice(i, 1);
-                        $scope.open.value.unshift(issue);
-                    }
-                    if($scope.pull.milestone) {
-                        $scope.pull.milestone.open_issues++;
-                        $scope.pull.milestone.closed_issues--;
-                    }
-                }
             }
         });
     }
