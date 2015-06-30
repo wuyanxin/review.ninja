@@ -114,9 +114,17 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             //
             // Pull request reference comments state
             //
-            .state('repo.pull.reference', {
+            .state('repo.pull.reviewList', {
                 url: '',
-                templateUrl: '/templates/reference.html'
+                templateUrl: '/templates/reviewList.html'
+            })
+
+            //
+            // Pull request reference comment detail state
+            //
+            .state('repo.pull.reviewItem', {
+                url: '/:reference',
+                templateUrl: '/templates/reviewItem.html'
             })
 
             //
