@@ -8,8 +8,8 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Issue', 'Markdown', 'File', 'repo', 'pull', 'socket', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Issue, Markdown, File, repo, pull, socket, $timeout) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Markdown', 'File', 'Comment', 'repo', 'pull', 'socket', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Markdown, File, Comment, repo, pull, socket, $timeout) {
 
         // set the states
         $scope.state = 'open';
@@ -59,6 +59,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 comments.affix.forEach(function(comment) {
                     comment = Markdown.render(comment);
                 });
+
+                // transpose the comments
+                $scope.review = Comment.review(comments);
             }
         });
 
