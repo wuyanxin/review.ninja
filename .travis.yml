@@ -3,7 +3,7 @@ before_script:
 - gem install scss-lint
 after_script:
 - gulp coverage
-- if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'master' ]]; then ./.cf.sh review-ninja-staging || exit $?; fi
+- if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'master' ]]; then ./.blue-green.sh || exit $?; fi
 - if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'release' ]]; then ./.cf.sh review-ninja || exit $?; fi
 notifications:
   webhooks: http://api.codepipes.io/exec/5440169d92758e200017513a
