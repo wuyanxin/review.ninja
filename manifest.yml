@@ -1,3 +1,4 @@
 applications:
 - name: review-ninja-staging
+  domain: review.ninja
   command: node app.js
