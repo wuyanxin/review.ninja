@@ -1,0 +1,47 @@
+<a ui-sref="repo.pull.reviewList()"><i class="fa fa-lg fa-arrow-left"></i></a>
+
+<table style="width:100%;">
+  <tr ng-repeat="(thread, comment) in review.thread[$stateParams.thread]" ng-show="comment.html">
+    <td style="width:42px; padding-right:10px; vertical-align:top;">
+      <img ng-show="comment.user" ng-src="{{ comment.user ? comment.user.avatar_url + '&s=42' : '/assets/images/user_deleted.jpg'}}" width="42px" />
+    </td>
+    <td>
+      <div class="panel panel-default comment">
+        <div class="panel-heading">
+          <div class="panel-arrow"></div>
+          <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
+        </div>
+        <div class="panel-body" ng-bind-html="comment.html"></div>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
+
+<form role="form" ng-submit="addReviewComment()">
+  <table style="width:100%" ng-show="!review.loading && !review.hasMore">
+    <tr>
+      <td style="width:42px; padding-right:10px; vertical-align:top;">
+        <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
+      </td>
+      <td>
+        <div class="panel panel-default comment">
+          <div class="panel-heading">
+            <div class="panel-arrow"></div>
+            <strong>{{ user.value.login }}</strong>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <textarea class="form-control" ng-model="$parent.$parent.$parent.reviewComment" rows="4" placeholder="Leave a pull request review comment"></textarea>
+          </div>
+        </div>
+
+        <div class="pull-right">
+          <i class="fa fa-lg fa-spinner fa-spin" ng-show="reviewing.loading" style="margin-right:10px;"></i>
+          <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.$parent.$parent.reviewComment">Review</button>
+        </div>
+        <div style="clear:both;"></div>
+      </td>
+    </tr>
+  </table>
+</form>

@@ -34,14 +34,14 @@
             <table class="margin">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
                     <td class="select">
-                        <span class="octicon octicon-issue-opened text-warning" 
-                              ng-show="refStarts(line)"
-                              ng-click="go(line)">
-                        </span>
+                        <a ui-sref="repo.pull.reviewItem({thread: ref.get(headSha, file.filename, line.head)})">
+                            <span class="octicon octicon-issue-opened text-warning" 
+                                  ng-show="thread[ref.get(headSha, file.filename, line.head)]">
+                            </span>
+                        </a>
                         <span class="octicon octicon-issue-opened" 
                               style="color: #dbcc91;"
-                              ng-click="clear()" 
-                              ng-show="selStarts(line)">
+                              ng-show="$stateParams.thread === ref.get(headSha, file.filename, line.head)">
                         </span>
                     </td>
                 </tr>
@@ -51,11 +51,18 @@
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
-                                selected: isSelected(line),
-                                referenced: isReferenced(line) }">
+                                selected: $stateParams.thread === ref.get(headSha, file.filename, line.head),
+                                referenced: thread[ref.get(headSha, file.filename, line.head)] }">
 
-                    <td id="{{ anchor(baseSha, file.filename, line.base) }}" class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
-                    <td id="{{ anchor(headSha, file.filename, line.head) }}" class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
+                    <td id="{{ anchor(baseSha, file.filename, line.base) }}" 
+                        class="number">
+                        <pre>{{ line.base }}</pre>
+                    </td>
+
+                    <td id="{{ anchor(headSha, file.filename, line.head) }}" 
+                        class="number">
+                        <pre>{{ line.head }}</pre>
+                    </td>
 
                     <td class="code"><pre>{{ line.content }}</pre></td>
 
