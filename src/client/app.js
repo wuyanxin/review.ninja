@@ -10,7 +10,7 @@ var module = angular.module('app',
      'ngSanitize',
      'angulartics',
      'angulartics.google.analytics',
-        'angular.filter']);
+     'angular.filter']);
 
 var filters = angular.module('ninja.filters', []);
 
@@ -123,7 +123,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             // Pull request reference comment detail state
             //
             .state('repo.pull.reviewItem', {
-                url: '/:reference',
+                url: '/*thread',
                 templateUrl: '/templates/reviewItem.html'
             })
 
