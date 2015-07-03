@@ -105,25 +105,19 @@
               </div>
             </div>
 
-            <diff ng-repeat="file in files"
+            <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="comp.loading"></i>
+
+            <diff ng-repeat="file in comp.value.files"
                   file="file"
-                  base-sha="base"
-                  head-sha="head"
-                  thread="review.thread"
-                  selection="reference.selection"
-                  ref-issues="reference.issues"
-                  repo="repo">
+                  repo="repo"
+                  thread="review.thread">
             </diff>
 
           </tab>
 
           <tab>
             <tab-heading><span class="octicon octicon-file-code"></span> Files</tab-heading>
-            <browser sha="pull.head.sha"
-                     selection="reference.selection"
-                     ref-issues="reference.issues"
-                     issues="state==='open' ? open.value : closed.value">
-            </browser>
+            <browser sha="pull.head.sha"></browser>
           </tab>
 
           <tab>

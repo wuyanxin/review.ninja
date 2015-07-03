@@ -112,18 +112,28 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             })
 
             //
-            // Pull request reference comments state
+            // Pull request review comments parent
             //
-            .state('repo.pull.reviewList', {
+            .state('repo.pull.review', {
+                abstract: true,
+                url: '/{base:[0-9a-fA-F]{40}}...{head:[0-9a-fA-F]{40}}',
+                template: '<section ui-view></section>',
+                controller: 'ReviewCtrl',
+            })
+
+            //
+            // Pull request review comments state
+            //
+            .state('repo.pull.review.reviewList', {
                 url: '',
                 templateUrl: '/templates/reviewList.html'
             })
 
             //
-            // Pull request reference comment detail state
+            // Pull request review comment detail state
             //
-            .state('repo.pull.reviewItem', {
-                url: '/*thread',
+            .state('repo.pull.review.reviewItem', {
+                url: '/{sha:[0-9a-fA-F]{40}}/*path',
                 templateUrl: '/templates/reviewItem.html'
             })
 

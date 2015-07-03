@@ -21,9 +21,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // get the pull request
         $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
 
-        // set the line selection
-        $scope.reference = {selection: {}, issues: null};
-
         // get the combined statuses
         $scope.status = $HUB.call('statuses', 'getCombined', {
             user: $stateParams.user,
@@ -56,57 +53,26 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             number: $stateParams.number
         }, function(err, comments) {
             if(!err) {
+                comments.thread = comments.thread || {};
                 comments.affix.forEach(function(comment) {
-                    comment = Markdown.render(comment);
+                    comment = Comment.review(comment, comments.thread) && Markdown.render(comment);
                 });
-
-                // transpose the comments
-                $scope.review = Comment.review(comments);
             }
         });
 
 
         //
-        // UI text
+        // Messages
         //
 
-        // get star text
-        $scope.getStarText = function() {
-            if($scope.pull.stars && $scope.reposettings.value) {
-                var stars = $scope.pull.stars.length;
-                var threshold = $scope.reposettings.value.threshold;
-                if(stars < threshold) {
-                    return 'Pull Request needs ' + $filter('pluralize')(threshold - stars, 'more ninja star');
-                }
-                return 'No more ninja stars needed';
-            }
-        };
+        $scope.$on('compareCommits', function(event, comp) {
+            $scope.comp = comp;
+        });
+
 
         //
         // Actions
         //
-
-        $scope.compComm = function(base, head) {
-            head = head || $scope.pull.head.sha;
-            base = base !== head ? base : $scope.pull.base.sha;
-            if($scope.base !== base || $scope.head !== head) {
-                $HUB.wrap('repos', 'compareCommits', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    base: base,
-                    head: head
-                }, function(err, comp) {
-                    if(!err) {
-                        $scope.base = base;
-                        $scope.head = head;
-                        $scope.files = File.getFileTypes(comp.value.files);
-                    }
-                });
-            }
-        };
-
-        // temporary
-        $scope.compComm($scope.pull.base.sha, $scope.pull.head.sha);
 
         $scope.setStar = function() {
 
@@ -121,47 +87,37 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             });
         };
 
-        $scope.getPullRequest = function() {
-            $HUB.wrap('pullRequests', 'get', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: $stateParams.number
-            }, function(err, pull) {
-                if(!err) {
+        // need a better way to handle this
+        // alt: prompt user to refresh 
+        //      with a status bar message
+        // $scope.getPullRequest = function() {
+        //     $HUB.wrap('pullRequests', 'get', {
+        //         user: $stateParams.user,
+        //         repo: $stateParams.repo,
+        //         number: $stateParams.number
+        //     }, function(err, pull) {
+        //         if(!err) {
 
-                    // update the comparison
-                    if($scope.pull.head.sha !== pull.value.head.sha) {
-                        $scope.compComm($scope.base || $scope.pull.base.sha, pull.value.head.sha);
-                    }
+        //             // update the comparison
+        //             if($scope.pull.head.sha !== pull.value.head.sha) {
+        //                 $scope.compComm($scope.base || $scope.pull.base.sha, pull.value.head.sha);
+        //             }
 
-                    $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
-                }
-            });
-        };
+        //             $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
+        //         }
+        //     });
+        // };
 
         $scope.addReviewComment = function() {
-
-            if($scope.reviewComment && $scope.reference.selection) {
+            if($scope.reviewComment) {
                 $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
                     commit_id: $scope.pull.head.sha,
-                    body: $scope.reviewComment || '',
-                    path: $scope.reference.selection.path,
-                    position: $scope.reference.selection.start
-                }, function(err, issue) {
-                    // if(err) {
-                    //     $scope.creatingIssue = false;
-                    // } else {
-                    //     $state.go('repo.pull.issue.detail', {issue: issue.value.number}).then(function() {
-                    //         $scope.show = null;
-                    //         $scope.title = null;
-                    //         $scope.description = null;
-                    //         $scope.reference.selection = {};
-                    //         $scope.creatingIssue = false;
-                    //     });
-                    // }
+                    body: $scope.reviewComment || ''
+                    // path: $scope.reference.selection.path,
+                    // position: $scope.reference.selection.start
                 });
             }
         };
@@ -186,14 +142,32 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         // Watches
         //
 
-        $scope.$watch('reference.selection', function(newSelection, oldSelection) {
-            if(newSelection.ref && !oldSelection.ref && !$scope.show) {
-                $scope.highlight = true;
-                $timeout(function() {
-                    $scope.highlight = false;
-                }, 1000);
+        // $scope.$watch('reference.selection', function(newSelection, oldSelection) {
+        //     if(newSelection.ref && !oldSelection.ref && !$scope.show) {
+        //         $scope.highlight = true;
+        //         $timeout(function() {
+        //             $scope.highlight = false;
+        //         }, 1000);
+        //     }
+        // });
+
+
+        //
+        // UI text
+        //
+
+        // get star text
+        $scope.getStarText = function() {
+            if($scope.pull.stars && $scope.reposettings.value) {
+                var stars = $scope.pull.stars.length;
+                var threshold = $scope.reposettings.value.threshold;
+                if(stars < threshold) {
+                    return 'Pull Request needs ' + $filter('pluralize')(threshold - stars, 'more ninja star');
+                }
+                return 'No more ninja stars needed';
             }
-        });
+        };
+
 
         //
         // Modals

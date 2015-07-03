@@ -9,10 +9,7 @@ module.directive('browser', ['$stateParams', '$HUB', '$RPC', 'File',
             restrict: 'E',
             templateUrl: '/directives/templates/browser.html',
             scope: {
-                sha: '=',
-                issues: '=',
-                selection: '=',
-                refIssues: '='
+                sha: '='
             },
             link: function(scope, elem, attrs) {
 

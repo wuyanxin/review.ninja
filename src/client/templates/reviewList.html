@@ -2,11 +2,11 @@
   <tab>
     <tab-heading>Review</tab-heading>
 
-    <ul>
-      <li ng-repeat="(key, val) in review.thread">
-        <a ui-sref="repo.pull.reviewItem({thread: key})">{{ key }}</a>
-      </li>
-    </ul>
+    <div ng-repeat="(key, val) in review.thread">
+      <div ng-repeat="(key, val) in val">
+        <a ui-sref="repo.pull.review.reviewItem({sha: $parent.key, path: key})">{{ $parent.key }} / {{ key }}</a>
+      </div>
+    </div>
 
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
 

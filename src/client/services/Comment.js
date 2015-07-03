@@ -6,23 +6,31 @@
 
 module.factory('Comment', function() {
 
-    var reference = function(sha, path, position) {
-        return sha + '/' + path + '#L' + position;
+    var reference = function(path, position) {
+        return path + '#L' + position;
     };
 
     return {
-        review: function(comments) {
 
-            comments.thread = comments.thread || {};
+        review: function(comment, thread) {
 
-            comments.affix.forEach(function(comment) {
-                var ref = reference(comment.commit_id, comment.path, comment.position);
+            var add = function(sha, path, position) {
+                var ref = reference(path, position);
 
-                comments.thread[ref] = comments.thread[ref] || [];
-                comments.thread[ref].push(comment);
-            });
+                thread[sha] = thread[sha] || {};
+                thread[sha][ref] = thread[sha][ref] || [];
+                thread[sha][ref].push(comment);
+            };
 
-            return comments;
+            if(comment.commit_id && comment.position) {
+                add(comment.commit_id, comment.path, comment.position);
+            }
+
+            if(comment.commit_id !== comment.original_commit_id) {
+                add(comment.original_commit_id, comment.path, comment.original_position);
+            }
+
+            return comment;
         }
     };
 });
