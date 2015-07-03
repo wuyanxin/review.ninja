@@ -25,19 +25,14 @@ module.exports = {
 
         for (var ref in threads) {
             if (threads.hasOwnProperty(ref)) {
-                var i = threads[ref].length - 1;
-                var matched = false;
-                while (!matched || i !== -1) {
+                for (var i = threads[ref].length - 1; i >= 0; i--) {
                     if (threads[ref][i].body.match(makeThreadRegex)) {
                         openTotal += 1;
-                        matched = true;
+                        i = -1;
                     }
                     else if (threads[ref][i].body.match(resolveThreadRegex) && !threads[ref][i].body.match(makeThreadRegex)) {
                         closedTotal += 1;
-                        matched = true;
-                    }
-                    else {
-                        i -= 1;
+                        i = -1;
                     }
                 }
             }
