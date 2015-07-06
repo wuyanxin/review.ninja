@@ -23,17 +23,15 @@ module.exports = {
             threads[ref].push(comment);
         });
 
-        for (var ref in threads) {
-            if (threads.hasOwnProperty(ref)) {
-                for (var i = threads[ref].length - 1; i >= 0; i--) {
-                    if (threads[ref][i].body.match(makeThreadRegex)) {
-                        openTotal += 1;
-                        i = -1;
-                    }
-                    else if (threads[ref][i].body.match(resolveThreadRegex) && !threads[ref][i].body.match(makeThreadRegex)) {
-                        closedTotal += 1;
-                        i = -1;
-                    }
+        for(var ref in threads) {
+            for(var i = 0; i < threads[ref].length; i++) {
+                if(threads[ref][i].body.match(makeThreadRegex)) {
+                    openTotal += 1;
+                    break;
+                }
+                else if(threads[ref][i].body.match(resolveThreadRegex) && !threads[ref][i].body.match(makeThreadRegex)) {
+                    closedTotal += 1;
+                    break;
                 }
             }
         }
