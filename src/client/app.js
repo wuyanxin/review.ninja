@@ -118,7 +118,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
                 abstract: true,
                 url: '/{base:[0-9a-fA-F]{40}}...{head:[0-9a-fA-F]{40}}',
                 template: '<section ui-view></section>',
-                controller: 'ReviewCtrl',
+                controller: 'ReviewCtrl'
             })
 
             //
@@ -133,7 +133,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             // Pull request review comment detail state
             //
             .state('repo.pull.review.reviewItem', {
-                url: '/{sha:[0-9a-fA-F]{40}}/*path',
+                url: '/{sha:[0-9a-fA-F]{40}}/*ref',
                 templateUrl: '/templates/reviewItem.html'
             })
 

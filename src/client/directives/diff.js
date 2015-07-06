@@ -10,18 +10,39 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
             templateUrl: '/directives/templates/diff.html',
             scope: {
                 file: '=',
+                pull: '=',
                 repo: '=',
                 thread: '='
             },
             link: function(scope, elem, attrs) {
 
-                scope.ref = Reference;
-
                 scope.expanded = false;
 
                 scope.open = !scope.file.ignored;
 
-                scope.$stateParams = $stateParams;
+                //
+                // Helper funtions
+                //
+
+                scope.referenced = function(path, positionBase, positionHead) {
+
+                    var sha = $stateParams.base !== scope.pull.base.sha ? $stateParams.base : $stateParams.head;
+                    var position = $stateParams.base !== scope.pull.base.sha ? positionBase : positionHead;
+
+                    var ref = Reference.get(path, position);
+
+                    return !!scope.thread[sha][ref];
+                };
+
+                scope.go = function(path, positionBase, positionHead) {
+
+                    var sha = $stateParams.base !== scope.pull.base.sha ? $stateParams.base : $stateParams.head;
+                    var position = $stateParams.base !== scope.pull.base.sha ? positionBase : positionHead;
+
+                    var ref = Reference.get(path, position);
+
+                    $state.go('repo.pull.review.reviewItem', {sha: sha, ref: ref});
+                };
 
                 //
                 // Expand the diff
