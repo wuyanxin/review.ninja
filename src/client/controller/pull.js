@@ -16,8 +16,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         $scope.repo = repo.value;
 
-        $scope.sha = null;
-
         // get the pull request
         $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
 
@@ -50,12 +48,18 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.review = $HUB.call('pullRequests', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            number: $stateParams.number
+            number: $stateParams.number,
+            per_page: 100
         }, function(err, comments) {
             if(!err) {
-                comments.thread = comments.thread || {};
+                comments = Comment.thread(comments);
                 comments.affix.forEach(function(comment) {
-                    comment = Comment.review(comment, comments.thread) && Markdown.render(comment);
+                    comment = Comment.review(comment) && Markdown.render(comment);
+                });
+                angular.forEach(comments.thread, function(refs) {
+                    angular.forEach(refs, function(ref) {
+                        ref.status = Comment.status(ref);
+                    });
                 });
             }
         });
