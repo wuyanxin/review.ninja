@@ -35,22 +35,24 @@
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
                     <td class="select">
                         <span class="octicon octicon-issue-opened text-warning" 
-                              ng-show="referenced(file.filename, line.base, line.head)"
+                              ng-show="referenced(file.filename, line.base, line.head) &&
+                                        !selected(file.filename, line.base, line.head)"
                               ng-click="go(file.filename, line.base, line.head)">
                         </span>
-                        <!-- <span class="octicon octicon-issue-opened" 
+                        <span class="octicon octicon-issue-opened" 
                               style="color: #dbcc91;"
-                              ng-show="$stateParams.thread === ref.get(headSha, file.filename, line.head)">
-                        </span> -->
+                              ng-show="selected(file.filename, line.base, line.head)">
+                        </span>
                     </td>
                 </tr>
             </table>
             <table class="code">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index"
+                    ng-click="go(file.filename, line.base, line.head)"
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
-                                selected: false,
+                                selected: selected(file.filename, line.base, line.head),
                                 referenced: referenced(file.filename, line.base, line.head) }">
 
                     <td id="{{ anchor(baseSha, file.filename, line.base) }}" 

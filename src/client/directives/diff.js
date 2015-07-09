@@ -1,4 +1,5 @@
 'use strict';
+
 // *****************************************************
 // Diff File Directive
 // *****************************************************
@@ -26,22 +27,41 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
 
                 scope.referenced = function(path, positionBase, positionHead) {
 
-                    var sha = $stateParams.base !== scope.pull.base.sha ? $stateParams.base : $stateParams.head;
-                    var position = $stateParams.base !== scope.pull.base.sha ? positionBase : positionHead;
+                    var baseRef = Reference.get(path, positionBase);
+                    var headRef = Reference.get(path, positionHead);
 
-                    var ref = Reference.get(path, position);
+                    return (scope.thread[$stateParams.base] && scope.thread[$stateParams.base][baseRef]) ||
+                           (scope.thread[$stateParams.head] && scope.thread[$stateParams.head][headRef]);
+                };
 
-                    return !!scope.thread[sha][ref];
+                scope.selected = function(path, positionBase, positionHead) {
+
+                    var baseRef = Reference.get(path, positionBase);
+                    var headRef = Reference.get(path, positionHead);
+
+                    return ($stateParams.sha === $stateParams.base && $stateParams.ref === baseRef) ||
+                           ($stateParams.sha === $stateParams.head && $stateParams.ref === headRef);
                 };
 
                 scope.go = function(path, positionBase, positionHead) {
 
-                    var sha = $stateParams.base !== scope.pull.base.sha ? $stateParams.base : $stateParams.head;
-                    var position = $stateParams.base !== scope.pull.base.sha ? positionBase : positionHead;
+                    var baseRef = Reference.get(path, positionBase);
+                    var headRef = Reference.get(path, positionHead);
 
-                    var ref = Reference.get(path, position);
-
-                    $state.go('repo.pull.review.reviewItem', {sha: sha, ref: ref});
+                    if(scope.thread[$stateParams.base] && scope.thread[$stateParams.base][baseRef]) {
+                        $state.go('repo.pull.review.reviewItem', {
+                            sha: $stateParams.base,
+                            ref: baseRef
+                        });
+                    }
+                    else if(positionHead) {
+                        $state.go('repo.pull.review.reviewItem', {
+                            base: scope.pull.base.sha,
+                            head: scope.pull.head.sha,
+                            sha: scope.pull.head.sha,
+                            ref: headRef
+                        });
+                    }
                 };
 
                 //
