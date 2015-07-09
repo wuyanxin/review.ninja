@@ -9,14 +9,14 @@ global.config = require('../../../config');
 // io
 global.io = {emit: function() {}};
 
+// models
+var Repo = require('../../../server/documents/repo').Repo;
+
 // services
 var github = require('../../../server/services/github');
 
 // api
 var repo = require('../../../server/api/repo');
-
-// models
-var Repo = require('../../../server/documents/repo').Repo;
 
 describe('repo:get', function() {
     it('should find one repo', function(done) {

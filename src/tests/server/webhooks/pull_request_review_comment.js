@@ -12,7 +12,7 @@ global.io = {emit: function() {}};
 // webhooks
 var pull_request = require('../../../server/webhooks/pull_request_review_comment');
 
-describe('pull_request_review_comment', function(done) {
+describe('pull_request_review_comment', function() {
   it('should send message to frontend and update status', function(done) {
     var req = {
       args: require('../../fixtures/webhooks/pull_request_review_comment/created.json')
@@ -40,9 +40,7 @@ describe('pull_request_review_comment', function(done) {
         done();
       }
     });
-
     done();
   });
-  done();
 });
 

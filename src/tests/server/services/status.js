@@ -6,14 +6,13 @@ var sinon = require('sinon');
 // config
 global.config = require('../../../config');
 
-// services
-var url = require('../../../server/services/url');
-var github = require('../../../server/services/github');
-
 // models
 var Star = require('../../../server/documents/star').Star;
 var Repo = require('../../../server/documents/repo').Repo;
-var Milestone = require('../../../server/documents/milestone').Milestone;
+
+// services
+var url = require('../../../server/services/url');
+var github = require('../../../server/services/github');
 
 // service
 var status = require('../../../server/services/status');
