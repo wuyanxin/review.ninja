@@ -15,7 +15,7 @@ module.exports = {
         var openTotal = 0;
         var closedTotal = 0;
         var makeThreadRegex = /\!fix|\!resolve/g;
-        var resolveThreadRegex = /\!fixed|\!resolved\!completed/g;
+        var resolveThreadRegex = /\!fixed|\!resolved|\!completed/g;
 
         comments.forEach(function(comment) {
             var ref = reference(comment.original_commit_id, comment.path, comment.original_position);
