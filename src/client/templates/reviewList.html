@@ -4,7 +4,13 @@
 
     <div ng-repeat="(key, val) in review.thread">
       <div ng-repeat="(key, val) in val">
-        <a ui-sref="repo.pull.review.reviewItem({sha: $parent.key, path: key})">{{ $parent.key }} / {{ key }}</a>
+        <a ui-sref="repo.pull.review.reviewItem({
+            base: pull.head.sha !== $parent.key ? $parent.key : pull.base.sha, 
+            sha: $parent.key, 
+            ref: key
+          })">
+          {{ $parent.key }} / {{ key }}
+        </a>
       </div>
     </div>
 

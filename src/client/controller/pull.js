@@ -88,7 +88,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         };
 
         // need a better way to handle this
-        // alt: prompt user to refresh 
+        // alt: prompt user to refresh
         //      with a status bar message
         // $scope.getPullRequest = function() {
         //     $HUB.wrap('pullRequests', 'get', {

@@ -34,15 +34,14 @@
             <table class="margin">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
                     <td class="select">
-                        <a ui-sref="repo.pull.reviewItem({thread: ref.get(headSha, file.filename, line.head)})">
-                            <span class="octicon octicon-issue-opened text-warning" 
-                                  ng-show="thread[ref.get(headSha, file.filename, line.head)]">
-                            </span>
-                        </a>
-                        <span class="octicon octicon-issue-opened" 
+                        <span class="octicon octicon-issue-opened text-warning" 
+                              ng-show="referenced(file.filename, line.base, line.head)"
+                              ng-click="go(file.filename, line.base, line.head)">
+                        </span>
+                        <!-- <span class="octicon octicon-issue-opened" 
                               style="color: #dbcc91;"
                               ng-show="$stateParams.thread === ref.get(headSha, file.filename, line.head)">
-                        </span>
+                        </span> -->
                     </td>
                 </tr>
             </table>
@@ -51,8 +50,8 @@
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
-                                selected: $stateParams.thread === ref.get(headSha, file.filename, line.head),
-                                referenced: thread[ref.get(headSha, file.filename, line.head)] }">
+                                selected: false,
+                                referenced: referenced(file.filename, line.base, line.head) }">
 
                     <td id="{{ anchor(baseSha, file.filename, line.base) }}" 
                         class="number">
