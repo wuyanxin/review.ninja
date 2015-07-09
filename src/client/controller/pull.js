@@ -112,16 +112,23 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         //     });
         // };
 
-        $scope.addReviewComment = function() {
+        $scope.addReviewComment = function(params) {
             if($scope.reviewComment) {
+                var path = params.ref.split('#L')[0];
+                var position = params.ref.split('#L')[1];
+                var sha = (params.base === $scope.pull.base.sha) ? $scope.pull.head.sha : params.base;
                 $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
-                    commit_id: $scope.pull.head.sha,
-                    body: $scope.reviewComment || ''
-                    // path: $scope.reference.selection.path,
-                    // position: $scope.reference.selection.start
+                    commit_id: sha,
+                    body: $scope.reviewComment || '',
+                    path: path,
+                    position: position
+                }, function(err, comment) {
+                    if (!err) {
+                        $scope.reviewComment = null;
+                    }
                 });
             }
         };

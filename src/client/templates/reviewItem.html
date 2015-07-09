@@ -19,7 +19,7 @@
 
 <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
 
-<form role="form" ng-submit="addReviewComment()">
+<form role="form" ng-submit="addReviewComment($stateParams)">
   <table style="width:100%" ng-show="!review.loading && !review.hasMore">
     <tr>
       <td style="width:42px; padding-right:10px; vertical-align:top;">

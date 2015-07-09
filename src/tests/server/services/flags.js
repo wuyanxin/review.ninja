@@ -25,7 +25,7 @@ describe('flags:review', function() {
     ];
 
     var result = flags.review(comments);
-    assert.deepEqual(result, {open: 1, closed: 2});
+    assert.deepEqual(result, {open: 2, closed: 1});
     done();
   });
 });
