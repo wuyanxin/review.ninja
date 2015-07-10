@@ -12,6 +12,10 @@ module.exports = {
                 data.number = args.pull_request.number;
                 done(room, data);
             },
+            pull_request_review_comment: function(done) {
+                data.id = args.comment.id;
+                done(room, data);
+            },
             issue_comment: function(done) {
                 data.id = args.comment.id;
                 data.number = args.issue.number;
