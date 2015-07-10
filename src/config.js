@@ -38,7 +38,7 @@ module.exports = {
             // review.ninja specific
             public_scope: ['user:email', 'public_repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org'],
             private_scope: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org'],
-            webhook_events: ['pull_request', 'issues', 'issue_comment', 'status']
+            webhook_events: ['pull_request', 'pull_request_review_comment', 'issues', 'issue_comment', 'status']
         },
 
         slack: {
