@@ -45,50 +45,9 @@ describe('Pull Factory', function() {
             head: {
                 sha: 'magic'
             },
-            milestone: {
-                number: '1.3.0',
-                id: 1234
-            },
             number: 1
         };
     }));
-
-    // should change pull.milestone when calling api
-    it('should change pull milestone when posting to api', function(){
-        var pullMilestone = {
-            base: {
-                repo: {
-                    owner: {
-                        login: 'gabe'
-                    },
-                    name: 'repo1',
-                    id: 11111
-                }
-            },
-            head: {
-                sha: 'magic'
-            },
-            milestone: {
-                number: '1.4.0',
-                id: 1234
-            },
-            number: 1
-        };
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getMilestone","arg":' + JSON.stringify({
-            user: 'gabe',
-            repo: 'repo1',
-            number: '1.3.0'
-        }) + '}').respond(200, {
-            data: {
-                number: '1.4.0',
-                id: 1234
-            }
-        });
-        var result = Pull.milestone(pull);
-        httpBackend.flush();
-        (result.milestone).should.eql({number: '1.4.0', id: 1234});
-        (result).should.eql(pullMilestone);
-    });
 
     // should get star count
     it('should get star count', function(){
@@ -121,10 +80,6 @@ describe('Pull Factory', function() {
             },
             head: {
                 sha: 'magic'
-            },
-            milestone: {
-                number: '1.3.0',
-                id: 1234
             },
             number: 1,
             commentsCount: 5

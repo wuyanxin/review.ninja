@@ -214,9 +214,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 if(args.action === 'starred' || args.action === 'unstarred') {
                     $scope.pull = Pull.stars($scope.pull, true);
                 }
-                if(args.action === 'closed' || args.action === 'reopened' || args.action === 'synchronize') {
-                    $scope.getPullRequest();
-                }
             }
         });
 

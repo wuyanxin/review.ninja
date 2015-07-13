@@ -101,13 +101,14 @@ describe('Repo Controller', function() {
     // UI Text
 
     it('should return single status text', function() {
-        var fakePull = {status: {value: {statuses: [{description: 'hi'}], total_count: 1}}};
+        var fakePull = {statuses: {value: {statuses: [{description: 'hi'}], total_count: 1}}};
         var ctrl = createCtrl();
+        console.log('lmao ', scope.statusTooltip(fakePull));
         (scope.statusTooltip(fakePull)).should.be.exactly('hi');
     });
 
     it('should return multiple status text', function() {
-        var fakePull = {status: {value: {
+        var fakePull = {statuses: {value: {
             total_count: 2,
             statuses: [{description: 'hi', state: 'success'}, {description: 'yo', state: 'success'}]
         }}};
