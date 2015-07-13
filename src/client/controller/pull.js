@@ -224,7 +224,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             $HUB.call('pullRequests', 'getComment', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
-                number: args.id,
+                number: args.id
             }, function(err, comment) {
                 if(!err) {
                     var sha = comment.value.commit_id;

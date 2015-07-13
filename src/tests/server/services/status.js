@@ -36,18 +36,7 @@ describe('status:update', function() {
             done(null, null);
         });
 
-        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
-            assert.deepEqual(args, {
-                pull: 1,
-                repo: 1234
-            });
-            done(null, null);
-        });
-
         var githubStub = sinon.stub(github, 'call', function(args, done) {
-            if(args.obj === 'issues' && args.fun === 'getMilestone') {
-                done(null, null);
-            }
             if(args.obj === 'statuses' && args.fun === 'create') {
                 assert.deepEqual(args, {
                     obj: 'statuses',
@@ -79,15 +68,13 @@ describe('status:update', function() {
         status.update(args, function(err, status) {
             sinon.assert.called(repoStub);
             sinon.assert.called(starStub);
-            sinon.assert.called(milestoneStub);
             sinon.assert.called(githubStub);
-
-            repoStub.restore();
-            starStub.restore();
-            milestoneStub.restore();
-            githubStub.restore();
-            done();
         });
+
+        repoStub.restore();
+        starStub.restore();
+        githubStub.restore();
+        done();
     });
 
     it('should be a successful review if stars > 0 and no issues', function(done) {
@@ -108,22 +95,7 @@ describe('status:update', function() {
             done(null, [{user: 'user', repo: 'repo'}]);
         });
 
-        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
-            assert.deepEqual(args, {
-                pull: 1,
-                repo: 1234
-            });
-            done(null, {
-                pull: 1,
-                repo: 123,
-                number: 2
-            });
-        });
-
         var githubStub = sinon.stub(github, 'call', function(args, done) {
-            if(args.obj === 'issues' && args.fun === 'getMilestone') {
-                done(null, null);
-            }
             if(args.obj === 'statuses' && args.fun === 'create') {
                 assert.deepEqual(args, {
                     obj: 'statuses',
@@ -155,15 +127,12 @@ describe('status:update', function() {
         status.update(args, function(err, status) {
             sinon.assert.called(repoStub);
             sinon.assert.called(starStub);
-            sinon.assert.called(milestoneStub);
             sinon.assert.called(githubStub);
-
-            repoStub.restore();
-            starStub.restore();
-            milestoneStub.restore();
-            githubStub.restore();
-            done();
         });
+        repoStub.restore();
+        starStub.restore();
+        githubStub.restore();
+        done();
     });
 
     it('should be a failed review if stars > 0 and issues exist', function(done) {
@@ -184,22 +153,7 @@ describe('status:update', function() {
             done(null, [{user: 'user', repo: 'repo'}]);
         });
 
-        var milestoneStub = sinon.stub(Milestone, 'findOne', function(args, done) {
-            assert.deepEqual(args, {
-                pull: 1,
-                repo: 1234
-            });
-            done(null, {
-                pull: 1,
-                repo: 123,
-                number: 2
-            });
-        });
-
         var githubStub = sinon.stub(github, 'call', function(args, done) {
-            if(args.obj === 'issues' && args.fun === 'getMilestone') {
-                done(null, {open_issues: 3});
-            }
             if(args.obj === 'statuses' && args.fun === 'create') {
                 assert.deepEqual(args, {
                     obj: 'statuses',
@@ -231,14 +185,11 @@ describe('status:update', function() {
         status.update(args, function(err, status) {
             sinon.assert.called(repoStub);
             sinon.assert.called(starStub);
-            sinon.assert.called(milestoneStub);
             sinon.assert.called(githubStub);
-
-            repoStub.restore();
-            starStub.restore();
-            milestoneStub.restore();
-            githubStub.restore();
-            done();
         });
+        repoStub.restore();
+        starStub.restore();
+        githubStub.restore();
+        done();
     });
 });

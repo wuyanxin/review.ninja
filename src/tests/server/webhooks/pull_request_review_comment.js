@@ -10,7 +10,7 @@ var status = require('../../../server/services/status');
 global.io = {emit: function() {}};
 
 // webhooks
-var pull_request = require('../../../server/webhooks/pull_request_review_comment');
+var pull_request_review_comment = require('../../../server/webhooks/pull_request_review_comment');
 
 describe('pull_request_review_comment', function() {
   it('should send message to frontend and update status', function(done) {
@@ -29,7 +29,7 @@ describe('pull_request_review_comment', function() {
     });
 
     var ioStub = sinon.stub(io, 'emit', function(event, id) {
-      assert.equal('reviewninja:foo:pull-request-review-comment-35846545', event);
+      assert.equal('reviewninja:foo:pull-request-review-comment-33873474', event);
       assert.equal('33873474', id);
     });
 
@@ -37,7 +37,6 @@ describe('pull_request_review_comment', function() {
       end: function() {
         statusStub.restore();
         ioStub.restore();
-        done();
       }
     });
     done();

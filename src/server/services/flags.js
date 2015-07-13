@@ -21,6 +21,7 @@ module.exports = {
             var ref = reference(comment.original_commit_id, comment.path, comment.original_position);
             threads[ref] = threads[ref] || [];
             threads[ref].push(comment);
+            console.log(ref);
         });
 
         for (var ref in threads) {
@@ -43,9 +44,8 @@ module.exports = {
 
         // input: single conversation comment
         // output: true or false (true to create a ninja star)
-
         var starRegex = /\!star|\!ninjastar|\+1|\:thumbsup\:|\:star\:/g;
-        return !!comment.body.match(starRegex);
+        return !!comment.match(starRegex);
     }
 
 };
