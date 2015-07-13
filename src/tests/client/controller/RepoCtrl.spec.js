@@ -103,7 +103,6 @@ describe('Repo Controller', function() {
     it('should return single status text', function() {
         var fakePull = {statuses: {value: {statuses: [{description: 'hi'}], total_count: 1}}};
         var ctrl = createCtrl();
-        console.log('lmao ', scope.statusTooltip(fakePull));
         (scope.statusTooltip(fakePull)).should.be.exactly('hi');
     });
 

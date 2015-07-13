@@ -37,7 +37,6 @@ module.factory('Comment', ['Reference', function(Reference) {
         review: function(comment) {
 
             var add = function(sha, path, position) {
-                console.log('this thread is', thread);
                 var ref = Reference.get(path, position);
 
                 thread[sha] = thread[sha] || {};
