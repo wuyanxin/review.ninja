@@ -35,3 +35,7 @@ tasks (such as updating the PR status) when the webhook is activated.
 ### Issue comment
 
 - created: send websocket to clients
+
+### Pull request review comment
+
+- created: update the status, send websocket to clients
