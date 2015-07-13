@@ -229,10 +229,8 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 if(!err) {
                     var sha = comment.value.commit_id;
                     var ref = comment.value.path + '#L' + comment.value.position;
-                    $scope.review.thread[sha] = $scope.review.thread[sha] || {};
-                    $scope.review.thread[sha][ref] = $scope.review.thread[sha][ref] || {};
-                    $scope.review.thread[sha][ref].comments = $scope.review.thread[sha][ref].comments || [];
-                    $scope.review.thread[sha][ref].comments.push(Markdown.render(comment.value));
+
+                    comment.value = Comment.review(comment.value) && Markdown.render(comment.value);
                     $scope.review.thread[sha][ref].status = Comment.status($scope.review.thread[sha][ref]);
                 }
             });
