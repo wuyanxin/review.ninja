@@ -11,13 +11,22 @@ module.exports = function(req, res) {
     var repo_uuid = req.args.repository.id;
     var sha = req.args.pull_request.head.sha;
 
-    var event = user + ':' + repo + ':' + 'pull-request-review-comment-' + req.args.pull_request.id;
-    io.emit(event, req.args.comment.id);
-    status.update({
-        sha: sha,
-        user: user,
-        repo: repo,
-        repo_uuid: repo_uuid
-    });
+    var actions = {
+        created: function() {
+            status.update({
+                sha: sha,
+                user: user,
+                repo: repo,
+                repo_uuid: repo_uuid
+            });            
+            var event = user + ':' + repo + ':' + 'pull-request-review-comment-' + req.args.comment.id;
+            io.emit(event, req.args.comment.id);
+        }
+    };
+
+    if (actions[req.args.action]) {
+        actions[req.args.action]();
+    }
+
     res.end();
 };

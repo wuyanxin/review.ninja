@@ -221,17 +221,17 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request_review_comment', function(args) {
-            if($scope.pull.number === args.number && args.action === 'created') {
-                $HUB.call('pullRequests', 'getComments', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    id: args.id
-                }, function(err, comment) {
-                    if(!err) {
-                        $scope.comments.value.push(Markdown.render(comment.value));
-                    }
-                });
-            }
+            $HUB.call('pullRequests', 'getComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: args.id,
+            }, function(err, comment) {
+                if(!err) {
+                    var sha = comment.value.commit_id;
+                    var ref = comment.value.path + '#L' + comment.value.position;
+                    $scope.review.thread[sha][ref].comments.push(Markdown.render(comment.value));
+                }
+            });
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issue_comment', function(args) {
