@@ -21,7 +21,6 @@ module.exports = {
             var ref = reference(comment.original_commit_id, comment.path, comment.original_position);
             threads[ref] = threads[ref] || [];
             threads[ref].push(comment);
-            console.log(ref);
         });
 
         for (var ref in threads) {
