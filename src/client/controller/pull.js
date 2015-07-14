@@ -11,6 +11,14 @@
 module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Markdown', 'File', 'Comment', 'repo', 'pull', 'socket', '$timeout',
     function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Markdown, File, Comment, repo, pull, socket, $timeout) {
 
+        //
+        // HACK?
+        //
+
+        if($state.current.name === 'repo.pull') {
+            $state.go('.review.reviewList', {base: pull.value.base.sha, head: pull.value.head.sha});
+        }
+
         // set the states
         $scope.state = 'open';
 
