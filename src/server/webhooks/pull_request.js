@@ -1,14 +1,13 @@
 'use strict';
+
 // models
 var User = require('mongoose').model('User');
-var Milestone = require('mongoose').model('Milestone');
 
 //services
 var url = require('../services/url');
 var slack = require('../services/slack');
 var github = require('../services/github');
 var status = require('../services/status');
-var milestone = require('../services/milestone');
 var pullRequest = require('../services/pullRequest');
 var notification = require('../services/notification');
 
@@ -100,8 +99,6 @@ module.exports = function(req, res) {
                         token: ninja.token
                     });
                 }
-
-                milestone.close(user, repo, repo_uuid, number, ninja.token);
             },
             reopened: function() {
                 // a pull request you have reviewed has a been reopened

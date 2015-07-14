@@ -7,6 +7,7 @@ var User = require('mongoose').model('User');
 var github = require('../services/github');
 var status = require('../services/status');
 var star = require('../services/star');
+var flags = require('../services/flags');
 var notification = require('../services/notification');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,10 +33,10 @@ module.exports = function(req, res) {
             created: function() {
 
                     //
-                    // Add ninja star if comment is +1 or thumbs up (:+1:)
+                    // Add ninja star
                     //
 
-                    if(comment.match(/(\+1)|(:\+1:)/)) {
+                    if(flags.conversation(comment)) {
                         github.call({
                             obj: 'pullRequests',
                             fun: 'get',

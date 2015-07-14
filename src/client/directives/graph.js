@@ -3,29 +3,35 @@
 // Graph Directive
 // *****************************************************
 
-module.directive('graph', function() {
+module.directive('graph', ['$state', '$stateParams', function($state, $stateParams) {
     return {
         restrict: 'E',
         templateUrl: '/directives/templates/graph.html',
         scope: {
             baseSha: '=',
-            issueSha: '=',
             headSha: '=',
-            activeSha: '=',
-            openIssues: '=',
-            compare: '&'
+            thread: '='
         },
         link: function(scope, elem, attrs) {
-            scope.headCommitIssues = function() {
-                if(scope.openIssues) {
-                    for (var i = 0; i < scope.openIssues.length; i++) {
-                        if(scope.openIssues[i].sha === scope.headSha) {
-                            return true;
+            scope.$state = $state;
+            scope.$stateParams = $stateParams;
+
+            //
+            // Watches
+            //
+
+            scope.$watch('thread', function(thread) {
+
+                scope.open = false;
+
+                if(thread) {
+                    angular.forEach(thread, function(ref) {
+                        if(ref.status === 'open') {
+                            scope.open = true;
                         }
-                    }
+                    });
                 }
-                return false;
-            };
+            });
         }
     };
-});
+}]);

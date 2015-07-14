@@ -35,27 +35,35 @@
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
                     <td class="select">
                         <span class="octicon octicon-issue-opened text-warning" 
-                              ng-show="refStarts(line)"
-                              ng-click="go(line)">
+                              ng-show="referenced(file.filename, line.base, line.head) &&
+                                        !selected(file.filename, line.base, line.head)"
+                              ng-click="go(file.filename, line.base, line.head)">
                         </span>
                         <span class="octicon octicon-issue-opened" 
                               style="color: #dbcc91;"
-                              ng-click="clear()" 
-                              ng-show="selStarts(line)">
+                              ng-show="selected(file.filename, line.base, line.head)">
                         </span>
                     </td>
                 </tr>
             </table>
             <table class="code">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index"
+                    ng-click="go(file.filename, line.base, line.head)"
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
-                                selected: isSelected(line),
-                                referenced: isReferenced(line) }">
+                                selected: selected(file.filename, line.base, line.head),
+                                referenced: referenced(file.filename, line.base, line.head) }">
 
-                    <td id="{{ anchor(baseSha, file.filename, line.base) }}" class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
-                    <td id="{{ anchor(headSha, file.filename, line.head) }}" class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
+                    <td id="{{ anchor(baseSha, file.filename, line.base) }}" 
+                        class="number">
+                        <pre>{{ line.base }}</pre>
+                    </td>
+
+                    <td id="{{ anchor(headSha, file.filename, line.head) }}" 
+                        class="number">
+                        <pre>{{ line.head }}</pre>
+                    </td>
 
                     <td class="code"><pre>{{ line.content }}</pre></td>
 

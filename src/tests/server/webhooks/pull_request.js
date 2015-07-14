@@ -19,7 +19,6 @@ var pull_request = require('../../../server/webhooks/pull_request');
 // services
 var url = require('../../../server/services/url');
 var slack = require('../../../server/services/slack');
-var milestone = require('../../../server/services/milestone');
 var notification = require('../../../server/services/notification');
 var status = require('../../../server/services/status');
 var pullRequest = require('../../../server/services/pullRequest');
@@ -192,37 +191,6 @@ describe('pull_request:closed', function() {
             end: function() {
                 userStub.restore();
                 emitStub.restore();
-                done();
-            }
-        });
-    });
-
-    it('should close milestone', function(done) {
-        var req = {
-            params: {id: 123456},
-            args: require('../../fixtures/webhooks/pull_request/closed.json')
-        };
-
-        var userStub = sinon.stub(User, 'findOne', function(args, done) {
-            assert.equal(args._id, 123456);
-            done(null, {
-                token: 'token'
-            });
-        });
-
-        var milestoneStub = sinon.stub(milestone, 'close',
-            function(user, repo, repo_uuid, number, token) {
-                assert.equal(user, 'reviewninja');
-                assert.equal(repo, 'foo');
-                assert.equal(repo_uuid, 23588185);
-                assert.equal(number, 42);
-                assert.equal(token, 'token');
-            });
-
-        pull_request(req, {
-            end: function() {
-                userStub.restore();
-                milestoneStub.restore();
                 done();
             }
         });

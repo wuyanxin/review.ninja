@@ -1,4 +1,5 @@
 'use strict';
+
 // *****************************************************
 // Diff File Directive
 // *****************************************************
@@ -10,15 +11,58 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
             templateUrl: '/directives/templates/diff.html',
             scope: {
                 file: '=',
-                issues: '=',
-                baseSha: '=',
-                headSha: '=',
-                selection: '=',
-                refIssues: '='
+                pull: '=',
+                repo: '=',
+                thread: '='
             },
             link: function(scope, elem, attrs) {
-                scope.open = !scope.file.ignored;
+
                 scope.expanded = false;
+
+                scope.open = !scope.file.ignored;
+
+                //
+                // Helper funtions
+                //
+
+                scope.referenced = function(path, positionBase, positionHead) {
+
+                    var baseRef = Reference.get(path, positionBase);
+                    var headRef = Reference.get(path, positionHead);
+
+                    return (scope.thread[$stateParams.base] && scope.thread[$stateParams.base][baseRef]) ||
+                           (scope.thread[$stateParams.head] && scope.thread[$stateParams.head][headRef]);
+                };
+
+                scope.selected = function(path, positionBase, positionHead) {
+
+                    var baseRef = Reference.get(path, positionBase);
+                    var headRef = Reference.get(path, positionHead);
+
+                    return ($stateParams.sha === $stateParams.base && $stateParams.ref === baseRef) ||
+                           ($stateParams.sha === $stateParams.head && $stateParams.ref === headRef);
+                };
+
+                scope.go = function(path, positionBase, positionHead) {
+
+                    var baseRef = Reference.get(path, positionBase);
+                    var headRef = Reference.get(path, positionHead);
+
+                    if(scope.thread[$stateParams.base] && scope.thread[$stateParams.base][baseRef]) {
+                        $state.go('repo.pull.review.reviewItem', {
+                            sha: $stateParams.base,
+                            ref: baseRef
+                        });
+                    }
+                    else if(positionHead) {
+                        $state.go('repo.pull.review.reviewItem', {
+                            base: scope.pull.base.sha,
+                            head: scope.pull.head.sha,
+                            sha: scope.pull.head.sha,
+                            ref: headRef
+                        });
+                    }
+                };
 
                 //
                 // Expand the diff
@@ -75,71 +119,6 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     }
 
                 });
-
-                //
-                // Actions
-                //
-
-                scope.clear = function() {
-                    scope.selection = {};
-                };
-
-                scope.selStarts = function(line) {
-                    return Reference.starts(scope.headSha, scope.file.filename, line.head, scope.selection);
-                };
-
-                scope.isSelected = function(line) {
-                    return Reference.includes(scope.headSha, scope.file.filename, line.head, scope.selection);
-                };
-
-                scope.refStarts = function(line) {
-                    var match = false;
-                    if(scope.issues) {
-                        $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.starts(scope.baseSha, scope.file.filename, line.base, issue) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue);
-                        });
-                    }
-                    return match;
-                };
-
-                scope.anchor = function(sha, path, line) {
-                    return Reference.anchor(sha, path, line);
-                };
-
-                scope.isReferenced = function(line) {
-                    var match = false;
-                    if(scope.issues) {
-                        $filter('filter')(scope.issues, {number: $stateParams.issue}).forEach(function(issue) {
-                            match = match || Reference.includes(scope.baseSha, scope.file.filename, line.base, issue) || Reference.includes(scope.headSha, scope.file.filename, line.head, issue);
-                        });
-                    }
-                    return match;
-                };
-
-                scope.select = function(line, event) {
-                    if(line.head) {
-                        var shift = scope.selection.start && event.shiftKey && scope.file.filename === scope.selection.path;
-                        var start = !shift ? line.head : scope.selection.start;
-                        var end = shift ? line.head : null;
-                        scope.selection = Reference.select(scope.headSha, scope.file.filename, start, end);
-                    }
-                };
-
-                scope.go = function(line) {
-                    var issues = [];
-
-                    scope.issues.forEach(function(issue) {
-                        if(Reference.starts(scope.baseSha, scope.file.filename, line.base, issue) || Reference.starts(scope.headSha, scope.file.filename, line.head, issue)) {
-                            issues.push(issue.number);
-                        }
-                    });
-
-                    if(issues.length === 1) {
-                        return $state.go('repo.pull.issue.detail', { issue: issues[0] });
-                    }
-
-                    scope.refIssues = issues;
-                };
             }
         };
     }

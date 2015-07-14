@@ -1,4 +1,5 @@
 'use strict';
+
 // *****************************************************
 // Pull Factory
 // *****************************************************
@@ -6,21 +7,6 @@
 module.factory('Pull', ['$HUB', '$RPC', '$stateParams', '$rootScope', function($HUB, $RPC, $stateParams, $rootScope) {
 
     return {
-
-        milestone: function(pull) {
-            if(pull.milestone) {
-                $HUB.call('issues', 'getMilestone', {
-                    user: pull.base.repo.owner.login,
-                    repo: pull.base.repo.name,
-                    number: pull.milestone.number
-                }, function(err, milestone) {
-                    if(!err && pull.milestone.id === milestone.value.id) {
-                        pull.milestone = milestone.value;
-                    }
-                });
-            }
-            return pull;
-        },
 
         stars: function(pull, avatar) {
             $RPC.call('star', 'all', {
@@ -43,6 +29,21 @@ module.factory('Pull', ['$HUB', '$RPC', '$stateParams', '$rootScope', function($
                             });
                         }
                     });
+                }
+            });
+            return pull;
+        },
+
+        status: function(pull) {
+            $RPC.call('status', 'get', {
+                sha: pull.head.sha,
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: pull.number,
+                repo_uuid: pull.base.repo.id
+            }, function(err, status) {
+                if(!err) {
+                    pull.status = status.value;
                 }
             });
             return pull;
