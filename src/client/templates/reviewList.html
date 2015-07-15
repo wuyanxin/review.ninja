@@ -1,25 +1,40 @@
 <tabset>
   <tab>
-    <tab-heading>Review</tab-heading>
+    <tab-heading>Review Status</tab-heading>
 
-    <div ng-repeat="(key, val) in review.thread">
-      <div ng-repeat="(key, val) in val">
-        <a ui-sref="repo.pull.review.reviewItem({
-            base: pull.head.sha !== $parent.key ? $parent.key : pull.base.sha, 
-            sha: $parent.key, 
-            ref: key
-          })">
-          {{ $parent.key }} / {{ key }} : {{ val.status }}
-        </a>
-      </div>
-    </div>
+    <!-- <table class="table table-hover"> -->
+      <table class="table"
+             ng-repeat="(key, val) in review.thread">
+        <tr ng-repeat="(key, val) in val">
+          <td style="width:40px; padding-right:0;">
+            <img ng-src="{{ val.comments[0].user.avatar_url }}&s=42" width="42px" />
+          </td>
+          <td>
+            <div>
+              <strong>{{ val.comments[0].user.login }}</strong> started a review thread on commit <a ui-sref="repo.pull.review.reviewItem({
+                base: pull.head.sha !== $parent.key ? $parent.key : pull.base.sha, 
+                sha: $parent.key, 
+                ref: key
+              })"> {{ $parent.key.substring(0,8) }} : {{ key }} </a>
+            </div>
+            <div>
+              {{ val.status }}
+            </div>
+          </td>
+          <td class="text-center text-primary" style="width:50px; padding-left:0;">
+            <i class="octicon octicon-comment"></i>
+            {{ val.comments.length }}
+          </td>
+        </tr>
+      </table>
+    <!-- </table> -->
 
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
 
   </tab>
   
   <tab>
-    <tab-heading>Conversation</tab-heading>
+    <tab-heading>Pull Request Conversation</tab-heading>
 
     <table style="width:100%;">
       <tr ng-repeat="comment in conversation.value" ng-show="comment.html">
