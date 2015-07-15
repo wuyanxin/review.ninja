@@ -178,7 +178,7 @@ describe('star:set', function() {
         });
 
         var emitStub = sinon.stub(io, 'emit', function(channel, args) {
-            assert.equal(channel, 'user:repo:pull_request');
+            assert.equal(channel, 'user:repo:pull_request_star');
             assert.deepEqual(args, {
                 action: 'starred',
                 number: 2

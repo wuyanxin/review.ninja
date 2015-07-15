@@ -1,9 +1,10 @@
 'use strict';
+
 // models
 var Star = require('mongoose').model('Star');
 var User = require('mongoose').model('User');
 
-//services
+// services
 var github = require('../services/github');
 var status = require('../services/status');
 var star = require('../services/star');
@@ -32,29 +33,26 @@ module.exports = function(req, res) {
         var actions = {
             created: function() {
 
-                    //
-                    // Add ninja star
-                    //
+                //
+                // Add ninja star
+                //
 
-                    if(flags.conversation(comment)) {
-                        github.call({
-                            obj: 'pullRequests',
-                            fun: 'get',
-                            arg: {
-                                user: user,
-                                repo: repo,
-                                number: number
-                            },
-                            token: ninja.token
-                        }, function(err, pull) {
-                            if(!err) {
-                                star.create(pull.head.sha, user, repo, repo_uuid, number, sender, ninja.token);
-                            }
-                        });
-                    }
-
-                    var event = user + ':' + repo + ':' + 'issue-comment-' + req.args.issue.id;
-                    io.emit(event, req.args.comment.id);
+                if(flags.conversation(comment)) {
+                    github.call({
+                        obj: 'pullRequests',
+                        fun: 'get',
+                        arg: {
+                            user: user,
+                            repo: repo,
+                            number: number
+                        },
+                        token: ninja.token
+                    }, function(err, pull) {
+                        if(!err) {
+                            star.create(pull.head.sha, user, repo, repo_uuid, number, sender, ninja.token);
+                        }
+                    });
+                }
             }
         };
 

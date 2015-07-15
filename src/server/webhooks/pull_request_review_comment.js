@@ -1,5 +1,9 @@
 'use strict';
 
+// models
+var User = require('mongoose').model('User');
+
+// services
 var github = require('../services/github');
 var status = require('../services/status');
 
@@ -10,22 +14,28 @@ module.exports = function(req, res) {
     var repo_uuid = req.args.repository.id;
     var sha = req.args.pull_request.head.sha;
 
-    var actions = {
-        created: function() {
-            status.update({
-                sha: sha,
-                user: user,
-                repo: repo,
-                repo_uuid: repo_uuid
-            });
-            var event = user + ':' + repo + ':' + 'pull-request-review-comment-' + req.args.comment.id;
-            io.emit(event, req.args.comment.id);
+    User.findOne({ _id: req.params.id }, function(err, ninja) {
+
+        if(err || !ninja) {
+            return res.status(404).send('User not found');
         }
-    };
 
-    if (actions[req.args.action]) {
-        actions[req.args.action]();
-    }
+        var actions = {
+            created: function() {
+                status.update({
+                    sha: sha,
+                    user: user,
+                    repo: repo,
+                    repo_uuid: repo_uuid,
+                    token: ninja.token
+                });
+            }
+        };
 
-    res.end();
+        if (actions[req.args.action]) {
+            actions[req.args.action]();
+        }
+
+        res.end();
+    });
 };
