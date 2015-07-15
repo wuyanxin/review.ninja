@@ -269,7 +269,7 @@ describe('Pull Controller', function() {
     // create comment event
     it('should push new comment with websocket event', function() {
         var PullCtrl = createCtrl();
-        scope.comments = {value: []};
+        scope.conversation = {value: []};
         httpBackend.expect('POST', '/api/github/call', '{"obj":"issues","fun":"getComment","arg":' + JSON.stringify({
           user: 'gabe',
           repo: 'test',
@@ -279,6 +279,6 @@ describe('Pull Controller', function() {
         });
         SocketMock.receive('gabe:test:issue_comment', {number: 1, action: 'created', id: 1234});
         httpBackend.flush();
-        (scope.comments.value).should.be.eql([{body: 'comment'}]);
+        (scope.conversation.value).should.be.eql([{body: 'comment'}]);
     });
 });
