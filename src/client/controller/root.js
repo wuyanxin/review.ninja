@@ -20,6 +20,10 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                 return;
             }
 
+            if(toParams.number !== fromParams.number) {
+                $rootScope.refresh = null;
+            }
+
             if(toParams.user !== fromParams.user || toParams.repo !== fromParams.repo) {
                 $HUB.call('repos', 'get', {
                     user: $stateParams.user,

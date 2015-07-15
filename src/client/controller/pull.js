@@ -211,26 +211,32 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
             if($scope.pull.number === args.number) {
-                if(args.action === 'starred' || args.action === 'unstarred') {
-                    $scope.pull = Pull.stars($scope.pull, true);
-                }
+                $rootScope.refresh = args;
+            }
+        });
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request_star', function(args) {
+            if($scope.pull.number === args.number) {
+                $scope.pull = Pull.stars($scope.pull, true);
             }
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request_review_comment', function(args) {
-            $HUB.call('pullRequests', 'getComment', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: args.id
-            }, function(err, comment) {
-                if(!err) {
-                    var sha = comment.value.commit_id;
-                    var ref = comment.value.path + '#L' + comment.value.position;
+            if($scope.pull.number === args.number) {
+                $HUB.call('pullRequests', 'getComment', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: args.id
+                }, function(err, comment) {
+                    if(!err) {
+                        var sha = comment.value.commit_id;
+                        var ref = comment.value.path + '#L' + comment.value.position;
 
-                    comment.value = Comment.review(comment.value) && Markdown.render(comment.value);
-                    $scope.review.thread[sha][ref].status = Comment.status($scope.review.thread[sha][ref]);
-                }
-            });
+                        comment.value = Comment.review(comment.value) && Markdown.render(comment.value);
+                        $scope.review.thread[sha][ref].status = Comment.status($scope.review.thread[sha][ref]);
+                    }
+                });
+            }
         });
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issue_comment', function(args) {
@@ -241,7 +247,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     id: args.id
                 }, function(err, comment) {
                     if(!err) {
-                        $scope.comments.value.push(Markdown.render(comment.value));
+                        $scope.conversation.value.push(Markdown.render(comment.value));
                     }
                 });
             }

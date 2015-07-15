@@ -1,5 +1,18 @@
 <div class="row">
   <onboard class="col-sm-12" style="padding:0; margin-bottom:-5px;"></onboard>
-</div>
+
+  <!-- the webhook notification -->
+  <div class="container-fluid">
+    <div class="row" ng-show="refresh">
+      <div class="col-md-12 alert alert-warning" style="margin:0;">
+        <strong>Pull request is out of date!</strong> Refresh to see the latest.
+        <button type="button" 
+                class="btn btn-default btn-xs pull-right" 
+                ng-click="$state.go('.', {base: refresh.base, head: refresh.head}); refresh = null;">
+            Refresh
+        </button>
+      </div>
+    </div>
+  </div>
 
 <section ui-view></section>

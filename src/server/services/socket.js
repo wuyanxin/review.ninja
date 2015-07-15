@@ -9,11 +9,14 @@ module.exports = {
         var events = {
             // add review comments
             pull_request: function(done) {
+                data.base = args.pull_request.base.sha;
+                data.head = args.pull_request.head.sha;
                 data.number = args.pull_request.number;
                 done(room, data);
             },
             pull_request_review_comment: function(done) {
                 data.id = args.comment.id;
+                data.number = args.pull_request.number;
                 done(room, data);
             },
             issue_comment: function(done) {

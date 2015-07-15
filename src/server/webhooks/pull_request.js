@@ -80,15 +80,9 @@ module.exports = function(req, res) {
                     settings: url.reviewSettings(user, repo),
                     url: url.reviewPullRequest(user, repo, number)
                 });
-
-                var event = user + ':' + repo + ':' + 'pull-request-' + number + ':synchronize';
-                io.emit(event, sha);
             },
             closed: function() {
                 if(req.args.pull_request.merged) {
-                    var event = user + ':' + repo + ':' + 'pull-request-' + number + ':merged';
-                    io.emit(event, number);
-
                     slack.notify('merge', {
                         sha: sha,
                         user: user,
