@@ -19,6 +19,8 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             $state.go('.review.reviewList', {base: pull.value.base.sha, head: pull.value.head.sha});
         }
 
+        $scope.lmao = $stateParams;
+
         // set the states
         $scope.state = 'open';
 
@@ -119,6 +121,26 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         //         }
         //     });
         // };
+
+        $scope.addCommentFromDropdown = function(status, data) {
+            var path = data.ref.split('#L')[0];
+            var position = data.ref.split('#L')[1];
+            $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.number,
+                commit_id: data.sha,
+                body: status,
+                path: path,
+                position: position
+            }, function(err, comment) {
+                if (!err) {
+                    $scope.reviewComment = null;
+                } else {
+                    console.log(err);
+                }
+            });
+        }
 
         $scope.addReviewComment = function(params) {
             if($scope.reviewComment) {
