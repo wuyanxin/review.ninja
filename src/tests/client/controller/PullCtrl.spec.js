@@ -107,7 +107,8 @@ describe('Pull Controller', function() {
     }));
 
 
-    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $stateParams, $q) {
+    beforeEach(angular.mock.inject(function($injector, $rootScope, $controller, $state, $stateParams, $q) {
+
         $stateParams.user = 'gabe';
         $stateParams.repo = 'test';
         $stateParams.number = 1;
@@ -118,17 +119,6 @@ describe('Pull Controller', function() {
         q = $q;
 
         SocketMock = new SocketMockFunc($rootScope);
-
-        var mockState = {
-            go: function(fakestate, fakeparams) {
-                var deferred = $q.defer();
-                deferred.resolve({
-                    value: true
-                });
-                var promise = deferred.promise;
-                return promise;
-            }
-        };
 
         var fakePull = {
             base: {
@@ -156,7 +146,6 @@ describe('Pull Controller', function() {
             var ctrl = $controller('PullCtrl', {
                 $scope: scope,
                 $rootScope: rootScope,
-                $state: mockState,
                 $modal: ModalMock,
                 Pull: PullMock,
                 Issue: IssueMock,

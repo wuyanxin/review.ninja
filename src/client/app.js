@@ -91,7 +91,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             // Pull request state (abstract)
             //
             .state('repo.pull', {
-                abstract: true,
                 url: '/pull/:number',
                 templateUrl: '/templates/pull.html',
                 controller: 'PullCtrl',
