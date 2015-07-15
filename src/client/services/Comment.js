@@ -17,7 +17,7 @@ module.factory('Comment', ['Reference', function(Reference) {
 
         status: function(ref) {
 
-            var status = 'none';
+            var status = 'add status';
 
             var negative = /\!\bfix\b|\!\bresolve\b/g;
             var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
