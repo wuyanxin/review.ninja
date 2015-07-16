@@ -1,5 +1,5 @@
 <div class="row scaffold">
-  <div class="col-sm-9 pull">
+  <div class="col-sm-9 main">
     <div class="row">
       <div class="col-sm-12">
         <ol class="breadcrumb">
@@ -34,7 +34,7 @@
 
     <div class="row">
       <div class="col-sm-12">
-        <tabset>
+        <tabset class="pull-tabs">
           <tab>
             <tab-heading><span class="octicon octicon-diff"></span> Diffs</tab-heading>
 
@@ -149,9 +149,7 @@
   </div>
 
   <div class="col-sm-3 hidden-xs sidebar">
-    <div ui-scrollfix="{{ (!hook.value && !user.value.history.taskbar) ? '+156' : (!hook.value || !user.value.history.taskbar) ? '+104' : '+52' }}">
-      <section ui-view></section>
-    </div>
+    <section ui-view></section>
   </div>
 
 </div>

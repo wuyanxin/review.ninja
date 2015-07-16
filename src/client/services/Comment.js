@@ -8,6 +8,27 @@ module.factory('Comment', ['Reference', function(Reference) {
 
     var thread = {};
 
+    var status = function(comment) {
+
+        var state, label;
+
+        var negative = /\!\bfix\b|\!\bresolve\b/g;
+        var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
+
+        negative = comment.body.match(negative);
+        positive = comment.body.match(positive);
+
+        if(negative) {
+            state = 'open';
+            label = negative[0];
+        } else if(positive && !negative) {
+            state = 'closed';
+            label = positive[0];
+        }
+
+        return {state: state, label: label};
+    };
+
     return {
 
         thread: function(comments) {
@@ -15,34 +36,21 @@ module.factory('Comment', ['Reference', function(Reference) {
             return comments;
         },
 
-        status: function(ref) {
-
-            var status = 'closed';
-
-            var negative = /\!\bfix\b|\!\bresolve\b/g;
-            var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
-
-            ref.comments.forEach(function(comment) {
-                if(comment.body.match(negative)) {
-                    status = 'open';
-                }
-                else if(comment.body.match(positive) && !comment.body.match(negative)) {
-                    status = 'closed';
-                }
-            });
-
-            return status;
-        },
-
         review: function(comment) {
 
             var add = function(sha, path, position) {
+
                 var ref = Reference.get(path, position);
 
                 thread[sha] = thread[sha] || {};
-                thread[sha][ref] = thread[sha][ref] || {};
+                thread[sha][ref] = thread[sha][ref] || {state: 'none', label: 'none'};
+
                 thread[sha][ref].comments = thread[sha][ref].comments || [];
                 thread[sha][ref].comments.push(comment);
+
+                var data = status(comment);
+                thread[sha][ref].state = data.state || thread[sha][ref].state;
+                thread[sha][ref].label = data.label || thread[sha][ref].label;
             };
 
             if(comment.commit_id && comment.position) {

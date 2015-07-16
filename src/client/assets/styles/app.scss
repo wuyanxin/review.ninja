@@ -100,7 +100,6 @@ $breadcrumb-separator: " ";
 
 // label
 $label-default-bg: $brand-info;
-$label-color: $brand-primary;
 
 // code
 $pre-color: #333;
@@ -124,6 +123,7 @@ $code-font-size: 12px;
 @import "git";
 @import "git-merge";
 @import "icon";
+@import "label";
 @import "list-group";
 @import "merge";
 @import "onboard";
@@ -137,20 +137,16 @@ $code-font-size: 12px;
 @import "well";
 
 
-//
-// Heights used in calculations below:
-// 52px: navbar height
-// 48px: issues panel header
-//
+// global styles
 
 .scaffold {
   background: $gray-lighter;
   margin-bottom: -40px;
 
-  > .pull {
+  > .main {
     background: $body-bg;
     height: 100vh;
-    height: calc(100vh - 52px);
+    height: calc(100vh - #{$navbar-height} - 2px);
     overflow-x: hidden;
     overflow-y: scroll;
     padding: 0 30px 40px;
@@ -163,7 +159,7 @@ $code-font-size: 12px;
   > .sidebar {
     background: $gray-lighter;
     height: 100vh;
-    height: calc(100vh - 52px);
+    height: calc(100vh - #{$navbar-height} - 2px);
     overflow-x: hidden;
     overflow-y: scroll;
     padding: 0;

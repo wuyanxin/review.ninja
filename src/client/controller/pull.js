@@ -64,11 +64,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 comments.affix.forEach(function(comment) {
                     comment = Comment.review(comment) && Markdown.render(comment);
                 });
-                angular.forEach(comments.thread, function(refs) {
-                    angular.forEach(refs, function(ref) {
-                        ref.status = Comment.status(ref);
-                    });
-                });
             }
         });
 
@@ -99,59 +94,48 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             });
         };
 
-        // need a better way to handle this
-        // alt: prompt user to refresh
-        //      with a status bar message
-        // $scope.getPullRequest = function() {
-        //     $HUB.wrap('pullRequests', 'get', {
-        //         user: $stateParams.user,
-        //         repo: $stateParams.repo,
-        //         number: $stateParams.number
-        //     }, function(err, pull) {
-        //         if(!err) {
+        $scope.addCommentFromDropdown = function(status, data) {
+            var path = data.ref.split('#L')[0];
+            var position = data.ref.split('#L')[1];
+            $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.number,
+                commit_id: data.sha,
+                body: status,
+                path: path,
+                position: position
+            }, function(err, comment) {
+                if (!err) {
+                    $scope.reviewComment = null;
+                }
+            });
+        };
 
-        //             // update the comparison
-        //             if($scope.pull.head.sha !== pull.value.head.sha) {
-        //                 $scope.compComm($scope.base || $scope.pull.base.sha, pull.value.head.sha);
-        //             }
-
-        //             $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
-        //         }
-        //     });
-        // };
-
-        $scope.addReviewComment = function(params) {
-            if($scope.reviewComment) {
+        $scope.addReviewComment = function(reviewComment, params) {
+            if(reviewComment) {
                 var path = params.ref.split('#L')[0];
-                var position = params.ref.split('#L')[1];
-                var sha = (params.base === $scope.pull.base.sha) ? $scope.pull.head.sha : params.base;
+                var position = parseInt(params.ref.split('#L')[1], 10);
+                var sha = params.sha;
                 $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
                     commit_id: sha,
-                    body: $scope.reviewComment || '',
+                    body: reviewComment,
                     path: path,
                     position: position
-                }, function(err, comment) {
-                    if (!err) {
-                        $scope.reviewComment = null;
-                    }
                 });
             }
         };
 
-        $scope.addComment = function() {
-            if($scope.comment) {
+        $scope.addComment = function(comment) {
+            if(comment) {
                 $scope.commenting = $HUB.wrap('issues', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
-                    body: $scope.comment
-                }, function(err, comment) {
-                    if(!err) {
-                        $scope.comment = null;
-                    }
+                    body: comment
                 });
             }
         };
@@ -247,11 +231,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     number: args.id
                 }, function(err, comment) {
                     if(!err) {
-                        var sha = comment.value.commit_id;
-                        var ref = comment.value.path + '#L' + comment.value.position;
-
-                        comment.value = Comment.review(comment.value) && Markdown.render(comment.value);
-                        $scope.review.thread[sha][ref].status = Comment.status($scope.review.thread[sha][ref]);
+                        $scope.review.value.push(Comment.review(comment.value) && Markdown.render(comment.value));
                     }
                 });
             }
