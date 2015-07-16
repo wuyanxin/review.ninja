@@ -80,13 +80,13 @@
                   <strong>{{ user.value.login }}</strong>
                 </div>
                 <div class="panel-body" style="padding:0;">
-                  <textarea class="form-control" ng-model="$parent.$parent.$parent.comment" rows="4" placeholder="Leave a pull request comment"></textarea>
+                  <textarea class="form-control" ng-model="$parent.$parent.$parent.$parent.comment" rows="4" placeholder="Leave a pull request comment"></textarea>
                 </div>
               </div>
 
               <div class="pull-right">
                 <i class="fa fa-lg fa-spinner fa-spin" ng-show="commenting.loading" style="margin-right:10px;"></i>
-                <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.$parent.$parent.comment">Comment</button>
+                <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.$parent.$parent.$parent.comment">Comment</button>
               </div>
               <div style="clear:both;"></div>
             </td>
