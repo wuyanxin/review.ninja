@@ -15,8 +15,8 @@ module.factory('Comment', ['Reference', function(Reference) {
         var negative = /\!\bfix\b|\!\bresolve\b/g;
         var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
 
-        var negative = comment.body.match(negative);
-        var positive = comment.body.match(positive);
+        negative = comment.body.match(negative);
+        positive = comment.body.match(positive);
 
         if(negative) {
             state = 'open';

@@ -83,7 +83,7 @@
 
       <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="conversation.loading"></i>
 
-      <form role="form" ng-submit="addComment()">
+      <form role="form" ng-submit="addComment(comment); comment=null;">
         <table style="width:100%" ng-show="!conversation.loading && !conversation.hasMore">
           <tr>
             <td style="width:42px; padding-right:10px; vertical-align:top;">
@@ -96,13 +96,13 @@
                   <strong>{{ user.value.login }}</strong>
                 </div>
                 <div class="panel-body" style="padding:0;">
-                  <textarea class="form-control" ng-model="$parent.$parent.$parent.$parent.comment" rows="4" placeholder="Leave pull request comment"></textarea>
+                  <textarea class="form-control" ng-model="comment" rows="4" placeholder="Leave pull request comment"></textarea>
                 </div>
               </div>
 
               <div class="pull-right">
                 <i class="fa fa-lg fa-spinner fa-spin" ng-show="commenting.loading" style="margin-right:10px;"></i>
-                <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.$parent.$parent.$parent.comment">Comment</button>
+                <button type="submit" class="btn btn-primary"  ng-disabled="!comment">Comment</button>
               </div>
               <div style="clear:both;"></div>
             </td>

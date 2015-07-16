@@ -1,18 +1,12 @@
 <table class="table" style="table-layout:fixed; margin-bottom:0px;">
   <tr class="no-select">
-    <td style="padding-right:0px; width:35px;">
-        <a class="text-primary" ui-sref="repo.pull.review.reviewList()"><i class="fa fa-lg fa-angle-left"></i></a>
+    <td style="padding-right:0px;">
+        <a class="text-primary" ui-sref="repo.pull.review.reviewList()">
+          <i class="fa fa-lg fa-angle-left"></i> All reviews
+        </a>
     </td>
-    <td>
-        <h4 class="panel-title">
-            <strong>{{ $stateParams.sha.substring(0,8) }} / {{ $stateParams.ref }}</strong> 
-        </h4>
-        <p ng-if="!(review.thread[$stateParams.sha][$stateParams.ref].comments.length > 0)" style="padding-top:15px">Starting a new thread to review {{ $stateParams.sha.substring(0,8) }} / {{ $stateParams.ref }}</p>
-        <p ng-if="review.thread[$stateParams.sha][$stateParams.ref].comments.length > 0" style="padding-top:15px">{{ review.thread[$stateParams.sha][$stateParams.ref].comments[review.thread[$stateParams.sha][$stateParams.ref].comments.length-1].user.login }} last commented on this thread <span moment="review.thread[$stateParams.sha][$stateParams.ref].comments[review.thread[$stateParams.sha][$stateParams.ref].comments.length-1].created_at"></span></p>
-    </td>
-    <td class="text-center text-primary" style="width:50px; padding-left:0;">
-      <i class="octicon octicon-comment"></i>
-      {{ review.thread[$stateParams.sha][$stateParams.ref].comments.length }}
+    <td class="text-right text-primary" style="width:80px; padding-left:0;">
+      <i class="octicon octicon-comment"></i> {{ review.thread[$stateParams.sha][$stateParams.ref].comments.length }}
     </td>
   </tr>
 </table>
@@ -37,7 +31,7 @@
 
   <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
 
-  <form role="form" ng-submit="addReviewComment($stateParams)">
+  <form role="form" ng-submit="addReviewComment(reviewComment, $stateParams); reviewComment=null;">
     <table style="width:100%" ng-show="!review.loading && !review.hasMore">
       <tr>
         <td style="width:42px; padding-right:10px; vertical-align:top;">
@@ -50,7 +44,7 @@
               <strong>{{ user.value.login }}</strong>
             </div>
             <div class="panel-body" style="padding:0;">
-              <textarea class="form-control" ng-model="$parent.$parent.$parent.reviewComment" rows="4" placeholder="Leave line note comment"></textarea>
+              <textarea class="form-control" ng-model="reviewComment" rows="4" placeholder="Leave line note comment"></textarea>
             </div>
           </div>
 
@@ -65,23 +59,23 @@
               </button>
               <ul class="dropdown-menu" role="menu">
                 <li>
-                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!fix')">!fix</a>
+                  <a href="" ng-click="reviewComment = reviewComment + '!fix'">!fix</a>
                 </li>
                 <li>
-                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!resolve')">!resolve</a>
+                  <a href="" ng-click="reviewComment = reviewComment + '!resolve'">!resolve</a>
                 </li>
                 <li>
-                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!fixed')">!fixed</a>
+                  <a href="" ng-click="reviewComment = reviewComment + '!fixed'">!fixed</a>
                 </li>
                 <li>
-                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!resolved')">!resolved</a>
+                  <a href="" ng-click="reviewComment = reviewComment + '!resolved'">!resolved</a>
                 </li>
                 <li>
-                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!completed')">!completed</a>
+                  <a href="" ng-click="reviewComment = reviewComment + '!completed'">!completed</a>
                 </li>
               </ul>
             </div>
-            <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.$parent.$parent.reviewComment">Comment</button>
+            <button type="submit" class="btn btn-primary"  ng-disabled="!reviewComment">Comment</button>
           </div>
 
           <div style="clear:both;"></div>

@@ -194,7 +194,6 @@ describe('Pull Controller', function() {
 
     // add comment
     it('should add comment', function() {
-        scope.comment = 'lol';
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"issues","fun":"createComment","arg":' + JSON.stringify({
           user: 'gabe',
           repo: 'test',
@@ -204,7 +203,7 @@ describe('Pull Controller', function() {
             value: true
         });
         var PullCtrl = createCtrl();
-        scope.addComment();
+        scope.addComment('lol');
         httpBackend.flush();
         ([scope.comment]).should.be.eql([null]);
     });

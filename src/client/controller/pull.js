@@ -108,44 +108,34 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }, function(err, comment) {
                 if (!err) {
                     $scope.reviewComment = null;
-                } else {
-                    console.log(err);
                 }
             });
         };
 
-        $scope.addReviewComment = function(params) {
-            if($scope.reviewComment) {
+        $scope.addReviewComment = function(reviewComment, params) {
+            if(reviewComment) {
                 var path = params.ref.split('#L')[0];
                 var position = parseInt(params.ref.split('#L')[1], 10);
-                var sha = (params.base === $scope.pull.base.sha) ? $scope.pull.head.sha : params.base;
+                var sha = params.sha;
                 $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
                     commit_id: sha,
-                    body: $scope.reviewComment || '',
+                    body: reviewComment,
                     path: path,
                     position: position
-                }, function(err, comment) {
-                    if (!err) {
-                        $scope.reviewComment = null;
-                    }
                 });
             }
         };
 
-        $scope.addComment = function() {
-            if($scope.comment) {
+        $scope.addComment = function(comment) {
+            if(comment) {
                 $scope.commenting = $HUB.wrap('issues', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
-                    body: $scope.comment
-                }, function(err, comment) {
-                    if(!err) {
-                        $scope.comment = null;
-                    }
+                    body: comment
                 });
             }
         };
