@@ -94,27 +94,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             });
         };
 
-        // need a better way to handle this
-        // alt: prompt user to refresh
-        //      with a status bar message
-        // $scope.getPullRequest = function() {
-        //     $HUB.wrap('pullRequests', 'get', {
-        //         user: $stateParams.user,
-        //         repo: $stateParams.repo,
-        //         number: $stateParams.number
-        //     }, function(err, pull) {
-        //         if(!err) {
-
-        //             // update the comparison
-        //             if($scope.pull.head.sha !== pull.value.head.sha) {
-        //                 $scope.compComm($scope.base || $scope.pull.base.sha, pull.value.head.sha);
-        //             }
-
-        //             $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
-        //         }
-        //     });
-        // };
-
         $scope.addCommentFromDropdown = function(status, data) {
             var path = data.ref.split('#L')[0];
             var position = data.ref.split('#L')[1];

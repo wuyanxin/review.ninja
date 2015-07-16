@@ -10,19 +10,23 @@ module.factory('Comment', ['Reference', function(Reference) {
 
     var status = function(comment) {
 
-        var status;
+        var state, label;
 
         var negative = /\!\bfix\b|\!\bresolve\b/g;
         var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
 
-        if(comment.body.match(negative)) {
-            status = 'open';
-        }
-        else if(comment.body.match(positive) && !comment.body.match(negative)) {
-            status = 'closed';
+        var negative = comment.body.match(negative);
+        var positive = comment.body.match(positive);
+
+        if(negative) {
+            state = 'open';
+            label = negative[0];
+        } else if(positive && !negative) {
+            state = 'closed';
+            label = positive[0];
         }
 
-        return status;
+        return {state: state, label: label};
     };
 
     return {
@@ -35,13 +39,18 @@ module.factory('Comment', ['Reference', function(Reference) {
         review: function(comment) {
 
             var add = function(sha, path, position) {
+
                 var ref = Reference.get(path, position);
 
                 thread[sha] = thread[sha] || {};
-                thread[sha][ref] = thread[sha][ref] || {status: 'none'};
+                thread[sha][ref] = thread[sha][ref] || {state: 'none', label: 'none'};
+
                 thread[sha][ref].comments = thread[sha][ref].comments || [];
                 thread[sha][ref].comments.push(comment);
-                thread[sha][ref].status = status(comment) || thread[sha][ref].status;
+
+                var data = status(comment);
+                thread[sha][ref].state = data.state || thread[sha][ref].state;
+                thread[sha][ref].label = data.label || thread[sha][ref].label;
             };
 
             if(comment.commit_id && comment.position) {

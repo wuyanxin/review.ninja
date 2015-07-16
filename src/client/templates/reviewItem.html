@@ -50,16 +50,40 @@
               <strong>{{ user.value.login }}</strong>
             </div>
             <div class="panel-body" style="padding:0;">
-              <textarea class="form-control" ng-model="$parent.$parent.$parent.reviewComment" rows="4" placeholder="Leave a pull request review comment"></textarea>
+              <textarea class="form-control" ng-model="$parent.$parent.$parent.reviewComment" rows="4" placeholder="Leave line note comment"></textarea>
             </div>
           </div>
 
           <div class="pull-right">
-            <button ng-click="addReviewText(true)" type="button" class="btn btn-primary">addFix</button>
-            <button ng-click="addReviewText(false)" type="button" class="btn btn-primary">addFixed</button>
-            <i class="fa fa-lg fa-spinner fa-spin" ng-show="reviewing.loading" style="margin-right:10px;"></i>
-            <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.$parent.$parent.reviewComment">Review</button>
+            <div class="btn-group dropup">
+              <button class="btn btn-default dropdown-toggle"
+                      type="button" 
+                      data-toggle="dropdown" 
+                      aria-haspopup="true" 
+                      aria-expanded="true">
+                Add status <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!fix')">!fix</a>
+                </li>
+                <li>
+                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!resolve')">!resolve</a>
+                </li>
+                <li>
+                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!fixed')">!fixed</a>
+                </li>
+                <li>
+                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!resolved')">!resolved</a>
+                </li>
+                <li>
+                  <a href="" ng-click="$parent.$parent.$parent.reviewComment.concat('!completed')">!completed</a>
+                </li>
+              </ul>
+            </div>
+            <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.$parent.$parent.reviewComment">Comment</button>
           </div>
+
           <div style="clear:both;"></div>
         </td>
       </tr>

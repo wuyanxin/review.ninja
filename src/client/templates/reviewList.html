@@ -21,20 +21,32 @@
             {{ val.comments[0].body | limitTo:100 }}<span ng-show="val.comments[0].body.length > 100">...</span><br />
             <small moment="val.comments[val.comments.length-1].created_at"></small>
           </p>
-          <div dropdown class="btn-group">
-            <button dropdown-toggle
-                    class="btn btn-sm dropdown-toggle" 
-                    ng-click="$event.preventDefault()"
-                    ng-class="{'btn-warning': val.status === 'open', 'btn-success': val.status === 'closed'}" 
+          <div dropdown class="btn-group" ng-click="$event.stopPropagation()">
+            <button dropdown-toggle 
+                    class="btn btn-sm btn-default dropdown-toggle" 
+                    ng-class="{'btn-danger': val.state === 'open', 'btn-success': val.state === 'closed'}" 
                     type="button" 
                     data-toggle="dropdown" 
                     aria-haspopup="true" 
                     aria-expanded="true">
-              {{ val.status }} <span class="caret"></span>
+              {{ val.label }} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="" ng-click="addCommentFromDropdown('!fix', {sha: $parent.key, ref: key})">open</a></li>
-              <li><a href="" ng-click="addCommentFromDropdown('!fixed', {sha: $parent.key, ref: key})">closed</a></li>
+              <li ng-hide="val.state === 'open'">
+                <a href="" ng-click="addCommentFromDropdown('!fix', {sha: $parent.key, ref: key})">!fix</a>
+              </li>
+              <li ng-hide="val.state === 'open'">
+                <a href="" ng-click="addCommentFromDropdown('!resolve', {sha: $parent.key, ref: key})">!resolve</a>
+              </li>
+              <li ng-hide="val.state === 'closed'">
+                <a href="" ng-click="addCommentFromDropdown('!fixed', {sha: $parent.key, ref: key})">!fixed</a>
+              </li>
+              <li ng-hide="val.state === 'closed'">
+                <a href="" ng-click="addCommentFromDropdown('!resolved', {sha: $parent.key, ref: key})">!resolved</a>
+              </li>
+              <li ng-hide="val.state === 'closed'">
+                <a href="" ng-click="addCommentFromDropdown('!completed', {sha: $parent.key, ref: key})">!completed</a>
+              </li>
             </ul>
           </div>
         </td>
@@ -45,7 +57,7 @@
       </tr>
     </table>
 
-    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
+    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading" style="margin-top: 10px;"></i>
 
   </tab>
   
@@ -84,7 +96,7 @@
                   <strong>{{ user.value.login }}</strong>
                 </div>
                 <div class="panel-body" style="padding:0;">
-                  <textarea class="form-control" ng-model="$parent.$parent.$parent.$parent.comment" rows="4" placeholder="Leave a pull request comment"></textarea>
+                  <textarea class="form-control" ng-model="$parent.$parent.$parent.$parent.comment" rows="4" placeholder="Leave pull request comment"></textarea>
                 </div>
               </div>
 
