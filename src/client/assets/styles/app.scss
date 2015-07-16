@@ -100,7 +100,6 @@ $breadcrumb-separator: " ";
 
 // label
 $label-default-bg: $brand-info;
-$label-color: $brand-primary;
 
 // code
 $pre-color: #333;
@@ -124,6 +123,7 @@ $code-font-size: 12px;
 @import "git";
 @import "git-merge";
 @import "icon";
+@import "label";
 @import "list-group";
 @import "merge";
 @import "onboard";
