@@ -7,7 +7,8 @@
         <h4 class="panel-title">
             <strong>{{ $stateParams.sha.substring(0,8) }} / {{ $stateParams.ref }}</strong> 
         </h4>
-        <p style="padding-top:15px">{{ review.thread[$stateParams.sha][$stateParams.ref].comments[review.thread[$stateParams.sha][$stateParams.ref].comments.length-1].user.login }} last commented on this thread <span moment="review.thread[$stateParams.sha][$stateParams.ref].comments[review.thread[$stateParams.sha][$stateParams.ref].comments.length-1].created_at"></span></p>
+        <p ng-if="!(review.thread[$stateParams.sha][$stateParams.ref].comments.length > 0)" style="padding-top:15px">Starting a new thread to review {{ $stateParams.sha.substring(0,8) }} / {{ $stateParams.ref }}</p>
+        <p ng-if="review.thread[$stateParams.sha][$stateParams.ref].comments.length > 0" style="padding-top:15px">{{ review.thread[$stateParams.sha][$stateParams.ref].comments[review.thread[$stateParams.sha][$stateParams.ref].comments.length-1].user.login }} last commented on this thread <span moment="review.thread[$stateParams.sha][$stateParams.ref].comments[review.thread[$stateParams.sha][$stateParams.ref].comments.length-1].created_at"></span></p>
     </td>
     <td class="text-center text-primary" style="width:50px; padding-left:0;">
       <i class="octicon octicon-comment"></i>

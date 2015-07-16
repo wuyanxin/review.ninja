@@ -138,7 +138,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         $scope.addReviewComment = function(params) {
             if($scope.reviewComment) {
                 var path = params.ref.split('#L')[0];
-                var position = params.ref.split('#L')[1];
+                var position = parseInt(params.ref.split('#L')[1], 10);
                 var sha = (params.base === $scope.pull.base.sha) ? $scope.pull.head.sha : params.base;
                 $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
                     user: $stateParams.user,
