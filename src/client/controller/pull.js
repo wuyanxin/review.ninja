@@ -64,11 +64,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 comments.affix.forEach(function(comment) {
                     comment = Comment.review(comment) && Markdown.render(comment);
                 });
-                angular.forEach(comments.thread, function(refs) {
-                    angular.forEach(refs, function(ref) {
-                        ref.status = Comment.status(ref);
-                    });
-                });
             }
         });
 
@@ -267,11 +262,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     number: args.id
                 }, function(err, comment) {
                     if(!err) {
-                        var sha = comment.value.commit_id;
-                        var ref = comment.value.path + '#L' + comment.value.position;
-
-                        comment.value = Comment.review(comment.value) && Markdown.render(comment.value);
-                        $scope.review.thread[sha][ref].status = Comment.status($scope.review.thread[sha][ref]);
+                        $scope.review.value.push(Comment.review(comment.value) && Markdown.render(comment.value));
                     }
                 });
             }
