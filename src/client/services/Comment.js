@@ -40,23 +40,30 @@ module.factory('Comment', ['Reference', function(Reference) {
 
             var add = function(sha, path, position) {
 
-                var ref = Reference.get(path, position);
+                var ref = Reference.get(sha, path, position);
 
-                thread[sha] = thread[sha] || {};
-                thread[sha][ref] = thread[sha][ref] || {state: 'none', label: 'none'};
+                thread[ref] = thread[ref] || {
+                    sha: sha,
+                    file: path.split('/').pop(),
+                    body: comment.body,
+                    author: comment.user.login,
+                    avatar: comment.user.avatar_url,
+                    state: 'none',
+                    label: 'none',
+                    comments: []
+                };
 
-                thread[sha][ref].comments = thread[sha][ref].comments || [];
-                thread[sha][ref].comments.push(comment);
+                thread[ref].comments.push(comment);
+                thread[ref].last_updated = comment.created_at;
 
                 var data = status(comment);
-                thread[sha][ref].state = data.state || thread[sha][ref].state;
-                thread[sha][ref].label = data.label || thread[sha][ref].label;
+                thread[ref].state = data.state || thread[ref].state;
+                thread[ref].label = data.label || thread[ref].label;
             };
 
             if(comment.commit_id && comment.position) {
                 add(comment.commit_id, comment.path, comment.position);
-            }
-            else if(comment.commit_id !== comment.original_commit_id) {
+            } else {
                 add(comment.original_commit_id, comment.path, comment.original_position);
             }
 

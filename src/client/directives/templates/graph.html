@@ -27,36 +27,30 @@
 
   <!-- the base commit -->
   <g class="select"
-     ng-click="$state.go('.', {base: baseSha})"
      tooltip="Commit base"
      tooltip-append-to-body="true"
      tooltip-placement="bottom">
-    <circle ng-show="baseSha===$stateParams.base"
-            class="active"
+    <circle class="active"
             stroke="#126862"
             stroke-width="3.6"
             stroke-miterlimit="3.6"
-            cx="4" cy="9" r="9" />
-    <circle ng-show="baseSha!==$stateParams.base"
-            class="active"
-            fill="#ffffff"
             cx="4" cy="9" r="9" />
   </g>
 
   <!-- the review commit -->
   <g class="select"
-     ng-show="$stateParams.sha && $stateParams.sha!==headSha"
-     ng-click="$state.go('.', {base: $stateParams.sha})"
+     ng-show="$stateParams.ref && headSha!==parse($stateParams.ref).sha"
+     ng-click="$state.go('.', {base: $stateParams.base, head: parse($stateParams.ref).sha})"
      tooltip="When review thread was created"
      tooltip-append-to-body="true"
      tooltip-placement="bottom" >
-    <circle ng-show="$stateParams.base===$stateParams.sha"
+    <circle ng-show="$stateParams.head===parse($stateParams.ref).sha"
             class="active"
             stroke="#126862"
             stroke-width="3.6"
             stroke-miterlimit="3.6"
             cx="31" cy="37" r="9" />
-    <circle ng-show="$stateParams.base!==$stateParams.sha"
+    <circle ng-show="$stateParams.head!==parse($stateParams.ref).sha"
             class="active"
             fill="#ffffff"
             cx="31" cy="37" r="9" />
@@ -68,14 +62,18 @@
 
   <!-- the head commit -->
   <g class="select"
-     ng-click="$state.go('.', {head: headSha})"
+     ng-click="$state.go('.', {base: baseSha, head: headSha})"
      tooltip="Latest commit"
      tooltip-append-to-body="true"
      tooltip-placement="bottom">
-    <circle fill="#d0eaea"
+    <circle ng-show="$stateParams.head===headSha"
+            fill="#d0eaea"
             stroke="#126862"
             stroke-width="3.6"
             stroke-miterlimit="3.6"
+            cx="70" cy="37" r="9" />
+    <circle ng-show="$stateParams.head!==headSha"
+            fill="#d0eaea"
             cx="70" cy="37" r="9" />
     <g ng-show="open">
       <rect x="68.5" y="31.5" fill="#3E9A94" width="3" height="7"/>

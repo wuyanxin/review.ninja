@@ -24,8 +24,8 @@ describe('Reference Factory', function() {
 
     // should get reference successfully
     it('should successfully get reference', function() {
-        var result = Reference.get(path, line);
-        (result).should.be.exactly('path#L0');
+        var result = Reference.get(sha, path, line);
+        (result).should.be.exactly('sha/pathR0');
     });
 
     // should return anchor
