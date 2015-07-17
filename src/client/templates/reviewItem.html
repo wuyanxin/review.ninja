@@ -59,20 +59,8 @@
                 Add status <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="" ng-click="reviewComment = reviewComment + '!fix'">!fix</a>
-                </li>
-                <li>
-                  <a href="" ng-click="reviewComment = reviewComment + '!resolve'">!resolve</a>
-                </li>
-                <li>
-                  <a href="" ng-click="reviewComment = reviewComment + '!fixed'">!fixed</a>
-                </li>
-                <li>
-                  <a href="" ng-click="reviewComment = reviewComment + '!resolved'">!resolved</a>
-                </li>
-                <li>
-                  <a href="" ng-click="reviewComment = reviewComment + '!completed'">!completed</a>
+                <li ng-repeat="flag in ['!fix', '!resolve', '!fixed', '!resolved', '!completed']">
+                  <a href="" ng-click="$parent.reviewComment = ($parent.reviewComment[$parent.reviewComment.length-1] === ' ') ? ($parent.reviewComment + flag) : ($parent.reviewComment + ' ' + flag)">{{ flag }}</a>
                 </li>
               </ul>
             </div>
