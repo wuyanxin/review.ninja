@@ -59,7 +59,8 @@ module.exports = {
                 repo: req.args.repo_uuid
             }, {
                 threshold: req.args.threshold
-            }, {new: true}, done).exec().then(function() {
+            }, {new: true}, function(err, repo) {
+                done(err, repo);
                 github.call({
                     obj: 'pullRequests',
                     fun: 'getAll',
