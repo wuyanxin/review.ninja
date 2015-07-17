@@ -60,9 +60,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             per_page: 100
         }, function(err, comments) {
             if(!err) {
-                if (comments.affix.length === 0) {
-                    $scope.noComments = true;
-                }
+                $scope.noComments = !comments.value.length;
                 comments = Comment.thread(comments);
                 comments.affix.forEach(function(comment) {
                     comment = Comment.review(comment) && Markdown.render(comment);
