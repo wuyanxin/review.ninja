@@ -31,7 +31,7 @@
             {{ thread.body | limitTo:100 }}<span ng-show="thread.body.length > 100">...</span><br />
             <small moment="thread.last_updated"></small>
           </p>
-          <div dropdown class="btn-group" ng-click="$event.stopPropagation()">
+          <div dropdown class="btn-group" ng-click="$event.stopPropagation()" is-open="dropdownOpen">
             <button dropdown-toggle 
                     class="btn btn-sm btn-default dropdown-toggle" 
                     ng-class="{'btn-danger': thread.state === 'open', 'btn-success': thread.state === 'closed'}" 
@@ -43,16 +43,16 @@
             </button>
             <ul class="dropdown-menu" role="menu">
               <li ng-hide="thread.state === 'open'">
-                <a href="" ng-click="addReviewComment('!fix', ref)">!fix</a>
+                <a href="" ng-click="addReviewComment('!fix', ref); dropdownOpen = false;">!fix</a>
               </li>
               <li ng-hide="thread.state === 'open'">
-                <a href="" ng-click="addReviewComment('!resolve', ref)">!resolve</a>
+                <a href="" ng-click="addReviewComment('!resolve', ref); dropdownOpen = false;">!resolve</a>
               </li>
               <li ng-hide="thread.state === 'closed'">
-                <a href="" ng-click="addReviewComment('!fixed', ref)">!fixed</a>
+                <a href="" ng-click="addReviewComment('!fixed', ref); dropdownOpen = false;">!fixed</a>
               </li>
               <li ng-hide="thread.state === 'closed'">
-                <a href="" ng-click="addReviewComment('!resolved', ref)">!resolved</a>
+                <a href="" ng-click="addReviewComment('!resolved', ref); dropdownOpen = false;">!resolved</a>
               </li>
               <li ng-hide="thread.state === 'closed'">
                 <a href="" ng-click="addReviewComment('!completed', ref)">!completed</a>
