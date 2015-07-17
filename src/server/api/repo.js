@@ -1,6 +1,7 @@
 'use strict';
 // services
 var github = require('../services/github');
+var status = require('../services/status');
 // models
 var Repo = require('mongoose').model('Repo');
 var merge = require('merge');
@@ -50,6 +51,7 @@ module.exports = {
             if(err) {
                 return done(err);
             }
+
             if(!repo.permissions.admin) {
                 return done({msg: 'Insufficient permissions'});
             }
@@ -57,7 +59,30 @@ module.exports = {
                 repo: req.args.repo_uuid
             }, {
                 threshold: req.args.threshold
-            }, {new: true}, done);
+            }, {new: true}, done).exec().then(function() {
+                github.call({
+                    obj: 'pullRequests',
+                    fun: 'getAll',
+                    arg: {
+                        user: req.args.user,
+                        repo: req.args.repo
+                    },
+                    token: req.user.token
+                }, function(err, pulls) {
+                    if (!err) {
+                        pulls.forEach(function(pull) {
+                            status.update({
+                                user: req.args.user,
+                                repo: req.args.repo,
+                                sha: pull.head.sha,
+                                repo_uuid: req.args.repo_uuid,
+                                number: pull.number,
+                                token: req.user.token
+                            });
+                        });
+                    }
+                });
+            });
         });
     },
 
