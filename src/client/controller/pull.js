@@ -8,8 +8,8 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Markdown', 'File', 'Comment', 'repo', 'pull', 'socket', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Markdown, File, Comment, repo, pull, socket, $timeout) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Markdown', 'Reference', 'Comment', 'repo', 'pull', 'socket', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Markdown, Reference, Comment, repo, pull, socket, $timeout) {
 
         //
         // HACK?
@@ -97,38 +97,19 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             });
         };
 
-        $scope.addCommentFromDropdown = function(status, data) {
-            var path = data.ref.split('#L')[0];
-            var position = data.ref.split('#L')[1];
-            $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: $stateParams.number,
-                commit_id: data.sha,
-                body: status,
-                path: path,
-                position: position
-            }, function(err, comment) {
-                if (!err) {
-                    $scope.reviewComment = null;
-                }
-            });
-        };
+        $scope.addReviewComment = function(comment, ref) {
 
-        $scope.addReviewComment = function(reviewComment, params) {
-            if(reviewComment) {
-                $scope.noComments = false;
-                var path = params.ref.split('#L')[0];
-                var position = parseInt(params.ref.split('#L')[1], 10);
-                var sha = params.sha;
+            ref = Reference.parse(ref);
+
+            if(comment && ref) {
                 $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
-                    commit_id: sha,
-                    body: reviewComment,
-                    path: path,
-                    position: position
+                    body: comment,
+                    commit_id: ref.sha,
+                    path: ref.path,
+                    position: ref.position
                 });
             }
         };

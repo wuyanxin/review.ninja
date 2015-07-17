@@ -132,7 +132,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             // Pull request review comment detail state
             //
             .state('repo.pull.review.reviewItem', {
-                url: '/{sha:[0-9a-fA-F]{40}}/*ref',
+                url: '/*ref',
                 templateUrl: '/templates/reviewItem.html'
             })
 

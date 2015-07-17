@@ -2,7 +2,7 @@
 // settings test
 describe('Pull Controller', function() {
 
-    var scope, rootScope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock, MarkdownMock, FileMock, SocketMockFunc, SocketMock, ModalMock, q;
+    var scope, rootScope, repo, httpBackend, createCtrl, PullCtrl, PullMock, IssueMock, MarkdownMock, CommentMock, SocketMockFunc, SocketMock, ModalMock, q;
 
     beforeEach(angular.mock.module('app'));
     beforeEach(angular.mock.module('templates'));
@@ -32,9 +32,12 @@ describe('Pull Controller', function() {
             }
         };
 
-        FileMock = {
-            getFileTypes: function(files) {
-                return files.map(function(x) { return x + '.test'; });
+        CommentMock = {
+            thread: function(comments) {
+                return comments;
+            },
+            review: function(comment) {
+                return comment;
             }
         };
 
@@ -149,8 +152,8 @@ describe('Pull Controller', function() {
                 $modal: ModalMock,
                 Pull: PullMock,
                 Issue: IssueMock,
+                Comment: CommentMock,
                 Markdown: MarkdownMock,
-                File: FileMock,
                 repo: {value: {id: 1}},
                 pull: {value: fakePull},
                 socket: SocketMock
