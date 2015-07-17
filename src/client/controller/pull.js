@@ -60,6 +60,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             per_page: 100
         }, function(err, comments) {
             if(!err) {
+                if (comments.affix.length === 0) {
+                    $scope.noComments = true;
+                }
                 comments = Comment.thread(comments);
                 comments.affix.forEach(function(comment) {
                     comment = Comment.review(comment) && Markdown.render(comment);
@@ -114,6 +117,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         $scope.addReviewComment = function(reviewComment, params) {
             if(reviewComment) {
+                $scope.noComments = false;
                 var path = params.ref.split('#L')[0];
                 var position = parseInt(params.ref.split('#L')[1], 10);
                 var sha = params.sha;

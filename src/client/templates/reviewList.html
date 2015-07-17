@@ -1,7 +1,19 @@
 <tabset class="review-tabs">
   <tab>
     <tab-heading><span class="octicon octicon-code"></span> Review Status</tab-heading>
-
+    <table class="table"
+           ng-if="noComments">
+      <tr>
+        <td>
+          <div>
+            <strong>No review comments yet!</strong>
+          </div>
+          <div>
+            <p>Click a line in a file to add one.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
     <table class="table table-hover"
            ng-repeat="(key, val) in review.thread">
       <tr class="select"
