@@ -1,7 +1,7 @@
 'use strict';
 
 var reference = function(sha, path, position) {
-    return sha + '/' + path + '#L' + position;
+    return sha + '/' + path + 'R' + position;
 };
 
 module.exports = {
@@ -12,10 +12,12 @@ module.exports = {
         // output: number of open/closed issues
 
         var threads = {};
-        var openTotal = 0;
-        var closedTotal = 0;
-        var makeThreadRegex = /\!\bfix\b|\!\bresolve\b/g;
-        var resolveThreadRegex = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
+
+        var open = 0;
+        var closed = 0;
+
+        var negative = /\!\bfix\b|\!\bresolve\b/g;
+        var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
 
         comments.forEach(function(comment) {
             var ref = reference(comment.original_commit_id, comment.path, comment.original_position);
@@ -23,20 +25,27 @@ module.exports = {
             threads[ref].push(comment);
         });
 
-        for (var ref in threads) {
-            for (var i = threads[ref].length - 1; i >= 0; i--) {
-                if (threads[ref][i].body.match(makeThreadRegex)) {
-                    openTotal += 1;
-                    break;
-                }
-                else if (threads[ref][i].body.match(resolveThreadRegex) && !threads[ref][i].body.match(makeThreadRegex)) {
-                    closedTotal += 1;
-                    break;
+        for(var ref in threads) {
+
+            var state = null;
+
+            for(var i = 0; i < threads[ref].length; i++) {
+
+                var neg = threads[ref][i].body.match(negative);
+                var pos = threads[ref][i].body.match(positive);
+
+                if(neg) {
+                    state = 'open';
+                } else if(pos && !neg) {
+                    state = 'closed';
                 }
             }
+
+            open = state === 'open' ? open + 1 : open;
+            closed = state === 'closed' ? closed + 1 : closed;
         }
 
-        return {open: openTotal, closed: closedTotal};
+        return {open: open, closed: closed};
     },
 
     conversation: function(comment) {

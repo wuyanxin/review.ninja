@@ -189,6 +189,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 }, function(err, status) {
                     if(!err) {
                         $scope.status.value = status.value;
+                        $scope.pull = Pull.status(pull.value);
                     }
                 });
             }

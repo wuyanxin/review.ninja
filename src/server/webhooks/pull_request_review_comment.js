@@ -13,6 +13,7 @@ module.exports = function(req, res) {
     var sender = req.args.sender;
     var repo_uuid = req.args.repository.id;
     var sha = req.args.pull_request.head.sha;
+    var number = req.args.pull_request.number;
 
     User.findOne({ _id: req.params.id }, function(err, ninja) {
 
@@ -26,6 +27,7 @@ module.exports = function(req, res) {
                     sha: sha,
                     user: user,
                     repo: repo,
+                    number: number,
                     repo_uuid: repo_uuid,
                     token: ninja.token
                 });
