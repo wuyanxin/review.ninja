@@ -64,6 +64,8 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         $scope.changeThreshold = function() {
             $RPC.call('repo', 'setThreshold', {
                 repo_uuid: repo.value.id,
+                user: $stateParams.user,
+                repo: $stateParams.repo,
                 threshold: $scope.reposettings.value.threshold
             }, function(err, settings) {
                 if(!err) {
