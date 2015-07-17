@@ -1,7 +1,9 @@
 <tabset class="review-tabs">
   <tab>
     <tab-heading><span class="octicon octicon-code"></span> Review Status</tab-heading>
-
+    <div ng-if="noComments">
+      no threads! click a line to start a new thread.
+    </div>
     <table class="table table-hover"
            ng-repeat="(key, val) in review.thread">
       <tr class="select"
