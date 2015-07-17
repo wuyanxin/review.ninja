@@ -26,7 +26,8 @@
         <strong>Pull request is out of date!</strong> Refresh to see the latest.
         <a role="button" 
            class="btn btn-default btn-xs pull-right" 
-           ui-sref="repo.pull.review.reviewList({base: refresh.base, head: refresh.head}); refresh = null;">
+           ng-click="refresh=null"
+           ui-sref="repo.pull.review.reviewList({base: refresh.base, head: refresh.head})">
           Refresh
         </a>
       </div>
