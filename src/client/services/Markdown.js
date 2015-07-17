@@ -10,6 +10,7 @@ module.factory('Markdown', ['$HUB', '$stateParams', function($HUB, $stateParams)
 
         var negative = /\!\bfix\b|\!\bresolve\b/g;
         var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
+        var star = /\!\bstar\b|\!\bninjastar\b/g;
 
         markdown = markdown.replace(negative, function(flag) {
             return '<span class="label label-danger">' + flag + '</span>';
@@ -17,6 +18,10 @@ module.factory('Markdown', ['$HUB', '$stateParams', function($HUB, $stateParams)
 
         markdown = markdown.replace(positive, function(flag) {
             return '<span class="label label-success">' + flag + '</span>';
+        });
+
+        markdown = markdown.replace(star, function(flag) {
+            return '<span class="label label-primary">' + flag + '</span>';
         });
 
         return markdown;
