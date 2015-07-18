@@ -49,7 +49,7 @@ module.factory('Comment', ['Reference', function(Reference) {
                     author: comment.user.login,
                     avatar: comment.user.avatar_url,
                     state: 'none',
-                    label: 'none',
+                    label: 'Add status',
                     comments: []
                 };
 
