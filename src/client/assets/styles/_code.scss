@@ -53,7 +53,7 @@
     width: 30px;
   }
 
-  tr:not(.chunk):not(.deletion) .number {
+  tr:not(.chunk) .number {
     cursor: pointer;
   }
 

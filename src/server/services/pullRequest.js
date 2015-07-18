@@ -1,10 +1,44 @@
 'use strict';
+
 var url = require('./url');
+var flags = require('./flags');
 var github = require('./github');
 
 var Repo = require('mongoose').model('Repo');
+var Star = require('mongoose').model('Star');
+
 
 module.exports = {
+
+    status: function(args, done) {
+
+        Star.count({repo: args.repo_uuid, sha: args.sha}, function(err, stars) {
+
+            stars = stars || 0;
+
+            github.call({
+                obj: 'pullRequests',
+                fun: 'getComments',
+                arg: {
+                    user: args.user,
+                    repo: args.repo,
+                    number: args.number,
+                    per_page: 100
+                },
+                token: args.token,
+                basicAuth: args.basicAuth
+            }, function(err, comments) {
+
+                comments = comments || [];
+
+                done(null, {
+                    stars: stars,
+                    issues: flags.review(comments)
+                });
+            });
+        });
+
+    },
 
     badgeComment: function(user, repo, repo_uuid, number) {
 

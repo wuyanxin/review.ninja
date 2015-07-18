@@ -16,7 +16,7 @@
                     <i class="fa fa-info fa-stack-1x text-primary"></i>
                 </span>
             </a>
-            <span ng-click="expanded=!expanded; $event.stopPropagation();">
+            <!-- <span ng-click="expanded=!expanded; $event.stopPropagation();">
                 <i class="fa pull-right"
                     ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"
                     ng-disabled="!open"
@@ -25,7 +25,7 @@
                     tooltip-placement="bottom"
                     tooltip-append-to-body="true">
                 </i>
-            </span>
+            </span> -->
         </accordion-heading>
         <div ng-show="file.status==='renamed' && !file.patch.length" style="padding:5px 10px;">
             This file was renamed.
@@ -35,27 +35,35 @@
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
                     <td class="select">
                         <span class="octicon octicon-issue-opened text-warning" 
-                              ng-show="refStarts(line)"
-                              ng-click="go(line)">
+                              ng-show="referenced(file.filename, line.position) &&
+                                        !selected(file.filename, line.position)"
+                              ng-click="go(file.filename, line.position)">
                         </span>
                         <span class="octicon octicon-issue-opened" 
                               style="color: #dbcc91;"
-                              ng-click="clear()" 
-                              ng-show="selStarts(line)">
+                              ng-show="selected(file.filename, line.position)">
                         </span>
                     </td>
                 </tr>
             </table>
             <table class="code">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index"
+                    ng-click="go(file.filename, line.position)"
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
-                                selected: isSelected(line),
-                                referenced: isReferenced(line) }">
+                                selected: selected(file.filename, line.position),
+                                referenced: referenced(file.filename, line.position) }">
 
-                    <td id="{{ anchor(baseSha, file.filename, line.base) }}" class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
-                    <td id="{{ anchor(headSha, file.filename, line.head) }}" class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
+                    <td id="{{ anchor(baseSha, file.filename, line.base) }}" 
+                        class="number">
+                        <pre>{{ line.base }}</pre>
+                    </td>
+
+                    <td id="{{ anchor(headSha, file.filename, line.head) }}" 
+                        class="number">
+                        <pre>{{ line.head }}</pre>
+                    </td>
 
                     <td class="code"><pre>{{ line.content }}</pre></td>
 

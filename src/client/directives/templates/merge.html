@@ -28,7 +28,7 @@
   <div class="text-body" ng-show="!pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
     <p ng-show="status.state==='failure'">
-      {{ (pull.milestone.open_issues || 0) | pluralize:'open issue' }}
+      {{ pull.status.issues.open | pluralize:'open issue' }}
     </p>
     <p ng-show="status.state==='success' || status.state==='pending'">
       {{ getStarText() }} <a ui-sref="repo.settings()" style="float:right;" ng-show="permissions.push"><i class="fa fa-pencil-square-o"></i></a>
@@ -61,8 +61,8 @@
 
   <div class="text-body" ng-show="pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
-    <p>{{ (pull.milestone.closed_issues || 0) | pluralize:'closed issue' }}</p>
-    <p>{{ (pull.milestone.open_issues || 0) | pluralize:'open issue' }}</p>
+    <p>{{ pull.status.issues.closed | pluralize:'closed issue' }}</p>
+    <p>{{ pull.status.issues.open | pluralize:'open issue' }}</p>
     <p>{{ getStarText() }} <a ui-sref="repo.settings()" ng-show="permissions.push" style="float:right;"><i class="fa fa-pencil-square-o"></i></a></p>
   </div>
 </div>

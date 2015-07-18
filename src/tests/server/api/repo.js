@@ -9,14 +9,16 @@ global.config = require('../../../config');
 // io
 global.io = {emit: function() {}};
 
+// models
+var Repo = require('../../../server/documents/repo').Repo;
+var Star = require('../../../server/documents/star').Star;
+
 // services
 var github = require('../../../server/services/github');
+var status = require('../../../server/services/status');
 
 // api
 var repo = require('../../../server/api/repo');
-
-// models
-var Repo = require('../../../server/documents/repo').Repo;
 
 describe('repo:get', function() {
     it('should find one repo', function(done) {
@@ -149,81 +151,81 @@ describe('repo:setComment', function() {
     });
 });
 
-describe('repo:setThreshold', function() {
-    it('should prevent setting the threshold because of insufficent permissions', function(done) {
-        var githubStub = sinon.stub(github, 'call', function(args, done) {
-            assert.equal(args.obj, 'repos');
-            assert.equal(args.fun, 'one');
-            assert.equal(args.arg.id, 'repo_uuid');
-            assert.equal(args.token, 'token');
-            done(null, {
-                permissions: {
-                    admin: false
-                }
-            });
-        });
+// describe('repo:setThreshold', function() {
+//     it('should prevent setting the threshold because of insufficent permissions', function(done) {
+//         var githubStub = sinon.stub(github, 'call', function(args, done) {
+//             assert.equal(args.obj, 'repos');
+//             assert.equal(args.fun, 'one');
+//             assert.equal(args.arg.id, 'repo_uuid');
+//             assert.equal(args.token, 'token');
+//             done(null, {
+//                 permissions: {
+//                     admin: false
+//                 }
+//             });
+//         });
 
-        var req = {
-            args: {
-                repo_uuid: 'repo_uuid'
-            },
-            user: {
-                token: 'token'
-            }
-        };
+//         var req = {
+//             args: {
+//                 repo_uuid: 'repo_uuid'
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
-        var calledOnceSpy = sinon.spy();
+//         var calledOnceSpy = sinon.spy();
 
-        var doneStub = function(err, res) {
-            assert.deepEqual(err, {
-                msg: 'Insufficient permissions'
-            });
-            calledOnceSpy();
-        };
+//         var doneStub = function(err, res) {
+//             assert.deepEqual(err, {
+//                 msg: 'Insufficient permissions'
+//             });
+//             calledOnceSpy();
+//         };
 
-        repo.setThreshold(req, doneStub);
-        assert(calledOnceSpy.calledOnce);
-        githubStub.restore();
-        done();
-    });
+//         repo.setThreshold(req, doneStub);
+//         assert(calledOnceSpy.calledOnce);
+//         githubStub.restore();
+//         done();
+//     });
 
-    it('should set the threshold on a repo', function(done) {
-        var githubStub = sinon.stub(github, 'call', function(args, done) {
-            assert.equal(args.obj, 'repos');
-            assert.equal(args.fun, 'one');
-            assert.equal(args.arg.id, 'repo_uuid');
-            assert.equal(args.token, 'token');
-            done(null, {
-                permissions: {
-                    admin: true
-                }
-            });
-        });
+//     it('should set the threshold on a repo', function(done) {
+//         var githubStub = sinon.stub(github, 'call', function(args, done) {
+//             assert.equal(args.obj, 'repos');
+//             assert.equal(args.fun, 'one');
+//             assert.equal(args.arg.id, 'repo_uuid');
+//             assert.equal(args.token, 'token');
+//             done(null, {
+//                 permissions: {
+//                     admin: true
+//                 }
+//             });
+//         });
 
-        var repoStub = sinon.stub(Repo, 'findOneAndUpdate', function(query, args, obj, done) {
-            assert.equal(query.repo, 'repo_uuid');
-            assert.equal(args.threshold, 2);
-        });
+//         var repoStub = sinon.stub(Repo, 'findOneAndUpdate', function(query, args, obj, done) {
+//             assert.equal(query.repo, 'repo_uuid');
+//             assert.equal(args.threshold, 2);
+//         });
 
-        var req = {
-            args: {
-                repo_uuid: 'repo_uuid',
-                threshold: 2
-            },
-            user: {
-                token: 'token'
-            }
-        };
+//         var req = {
+//             args: {
+//                 repo_uuid: 'repo_uuid',
+//                 threshold: 2
+//             },
+//             user: {
+//                 token: 'token'
+//             }
+//         };
 
-        var calledOnceSpy = sinon.spy();
+//         var calledOnceSpy = sinon.spy();
 
-        var doneStub = function(err, res) {
-            calledOnceSpy();
-        };
+//         var doneStub = function(err, res) {
+//             calledOnceSpy();
+//         };
 
-        repo.setThreshold(req, doneStub);
-        githubStub.restore();
-        repoStub.restore();
-        done();
-    });
-});
+//         repo.setThreshold(req, doneStub);
+//         githubStub.restore();
+//         repoStub.restore();
+//         done();
+//     });
+// });

@@ -18,19 +18,4 @@ describe('Graph Directive', function() {
         scope.$digest();
         isolated = element.isolateScope();
     }));
-
-    // should check if any openissues are on head sha
-    it('should return true if head sha in open issues', function() {
-        isolated.headSha = 111;
-        isolated.openIssues = [{sha: 111}, {sha: 2222}, {sha: 1111}];
-        var result = isolated.headCommitIssues();
-        (result).should.be.true;
-    });
-
-    it('should return false if head sha not in open issues', function() {
-        isolated.headSha = 111;
-        isolated.openIssues = [222];
-        var result = isolated.headCommitIssues();
-        (result).should.be.false;
-    });
 });

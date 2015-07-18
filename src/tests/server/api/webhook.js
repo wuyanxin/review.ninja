@@ -151,7 +151,7 @@ describe('webhook:create', function() {
                     repo: 'repo',
                     name: 'web',
                     config: {url: 'http://localhost:5000/github/webhook/mongooseId', content_type: 'json'},
-                    events: ['pull_request', 'issues', 'issue_comment', 'status'],
+                    events: ['pull_request', 'pull_request_review_comment', 'issues', 'issue_comment', 'status'],
                     active: true
                 },
                 token: 'token'

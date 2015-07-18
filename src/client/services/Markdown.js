@@ -6,6 +6,27 @@
 
 module.factory('Markdown', ['$HUB', '$stateParams', function($HUB, $stateParams) {
 
+    var label = function(markdown) {
+
+        var negative = /\!\bfix\b|\!\bresolve\b/g;
+        var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
+        var star = /\!\bstar\b|\!\bninjastar\b/g;
+
+        markdown = markdown.replace(negative, function(flag) {
+            return '<span class="label label-danger">' + flag + '</span>';
+        });
+
+        markdown = markdown.replace(positive, function(flag) {
+            return '<span class="label label-success">' + flag + '</span>';
+        });
+
+        markdown = markdown.replace(star, function(flag) {
+            return '<span class="label label-primary">' + flag + '</span>';
+        });
+
+        return markdown;
+    };
+
     return {
         render: function(obj) {
             if(obj.body) {
@@ -15,7 +36,7 @@ module.factory('Markdown', ['$HUB', '$stateParams', function($HUB, $stateParams)
                     context: $stateParams.user + '/' + $stateParams.repo
                 }, function(err, markdown) {
                     if(!err) {
-                        obj.html = markdown.value;
+                        obj.html = label(markdown.value);
                     }
                 });
             }

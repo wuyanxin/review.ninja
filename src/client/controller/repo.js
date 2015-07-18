@@ -1,4 +1,5 @@
 'use strict';
+
 // *****************************************************
 // Repo Controller
 //
@@ -22,7 +23,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         //
 
         var setStatus = function(pull) {
-            pull.status = $HUB.call('statuses', 'getCombined', {
+            pull.statuses = $HUB.call('statuses', 'getCombined', {
                 user: $stateParams.user,
                 repo: $stateParams.repo,
                 sha: pull.head.sha
@@ -38,7 +39,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
+                    pull = Pull.status(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setStatus(pull);
                 });
             }
@@ -53,7 +54,7 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         }, function(err, res) {
             if(!err) {
                 res.affix.forEach(function(pull) {
-                    pull = Pull.milestone(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
+                    pull = Pull.status(pull) && Pull.stars(pull) && Pull.commentsCount(pull);
                     setStatus(pull);
                 });
             }
@@ -77,8 +78,9 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
                     number: args.number
                 }, function(err, pull) {
                     if(!err) {
-                        pull = Pull.milestone(pull.value) && Pull.stars(pull.value) && Pull.commentsCount(pull.value);
+                        pull = Pull.status(pull.value) && Pull.stars(pull.value) && Pull.commentsCount(pull.value);
                         $scope.open.value.unshift(pull);
+                        setStatus(pull);
                     }
                 });
             }
@@ -109,25 +111,25 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         //
 
          var singleStatusText = function(pull) {
-             return pull.status.value.statuses[0].description;
+             return pull.statuses.value.statuses[0].description;
          };
 
          var multipleStatusText = function(pull) {
              var successCount = 0;
-             pull.status.value.statuses.forEach(function(status) {
+             pull.statuses.value.statuses.forEach(function(status) {
                  if(status.state === 'success') {
                      successCount++;
                  }
              });
-             return successCount + ' / ' + pull.status.value.total_count + ' checks OK';
+             return successCount + ' / ' + pull.statuses.value.total_count + ' checks OK';
          };
 
          $scope.statusTooltip = function(pull) {
-             if(pull.status && pull.status.value) {
-                 if(pull.status.value.total_count === 1) {
+             if(pull.statuses && pull.statuses.value) {
+                 if(pull.statuses.value.total_count === 1) {
                      return singleStatusText(pull);
                  }
-                 if(pull.status.value.total_count > 1) {
+                 if(pull.statuses.value.total_count > 1) {
                      return multipleStatusText(pull);
                  }
              }
