@@ -24,7 +24,7 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 //
 
                 scope.referenced = function(path, position) {
-                    return scope.thread[Reference.get($stateParams.head, path, position)];
+                    return scope.thread && scope.thread[Reference.get($stateParams.head, path, position)];
                 };
 
                 scope.selected = function(path, position) {
