@@ -31,11 +31,20 @@ describe('flags:review', function() {
 describe('flags:conversation', function() {
   it('should return true if a conversation has a ninja star flag', function(done) {
     var fakeFalseComment = 'this has no flag';
-    var fakeTrueComment = 'this has a !star';
+    var fakeStarComment = 'this has a !star';
+    var fakeUnstarComment = 'this is !unstar';
+    var fakeUnstarComment2 = 'this is -1';
+    var bothFlagsComment = '!star and !unstar';
     var falseResult = flags.conversation(fakeFalseComment);
-    var trueResult = flags.conversation(fakeTrueComment);
+    var trueResult = flags.conversation(fakeStarComment);
+    var removeResult1 = flags.conversation(fakeUnstarComment);
+    var removeResult2 = flags.conversation(fakeUnstarComment2);
+    var removeResult3 = flags.conversation(bothFlagsComment);
     assert.equal(falseResult, false);
-    assert.equal(trueResult, true);
+    assert.equal(trueResult, 'create');
+    assert.equal(removeResult1, 'remove');
+    assert.equal(removeResult2, 'remove');
+    assert.equal(removeResult3, 'remove');
     done();
   });
 });

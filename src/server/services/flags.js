@@ -53,7 +53,16 @@ module.exports = {
         // input: single conversation comment
         // output: true or false (true to create a ninja star)
         var starRegex = /\!star|\!ninjastar|\+1|\:thumbsup\:|\:star\:/g;
-        return !!comment.match(starRegex);
+        var unstarRegex = /\!unstar|\-1|\:thumbsdown\:/g;
+        if (comment.match(unstarRegex)) {
+            return 'remove';
+        }
+        else if (comment.match(starRegex) && !comment.match(unstarRegex)) {
+            return 'create'
+        }
+        else {
+            return false;
+        }
     }
 
 };

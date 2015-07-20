@@ -49,7 +49,7 @@ module.exports = function(req, res) {
                         token: ninja.token
                     }, function(err, pull) {
                         if(!err) {
-                            star.create(pull.head.sha, user, repo, repo_uuid, number, sender, ninja.token);
+                            star[flags.conversation(comment)](pull.head.sha, user, repo, repo_uuid, number, sender, ninja.token);
                         }
                     });
                 }
