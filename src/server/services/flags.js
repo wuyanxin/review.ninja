@@ -48,12 +48,18 @@ module.exports = {
         return {open: open, closed: closed};
     },
 
-    conversation: function(comment) {
+    star: function(comment) {
 
         // input: single conversation comment
         // output: true or false (true to create a ninja star)
         var starRegex = /\!star|\!ninjastar|\+1|\:thumbsup\:|\:star\:/g;
-        return !!comment.match(starRegex);
+        var unstarRegex = /\!unstar|\-1|\:thumbsdown\:/g;
+        return !!comment.match(starRegex) && !comment.match(unstarRegex);
+    },
+
+    unstar: function(comment) {
+        var unstarRegex = /\!unstar|\-1|\:thumbsdown\:/g;
+        return !!comment.match(unstarRegex);
     }
 
 };

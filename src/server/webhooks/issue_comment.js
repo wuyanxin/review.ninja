@@ -36,8 +36,8 @@ module.exports = function(req, res) {
                 //
                 // Add ninja star
                 //
-
-                if(flags.conversation(comment)) {
+                var func = flags.unstar(comment) ? 'remove' : flags.star(comment) ? 'create' : null;
+                if(func) {
                     github.call({
                         obj: 'pullRequests',
                         fun: 'get',
@@ -49,7 +49,7 @@ module.exports = function(req, res) {
                         token: ninja.token
                     }, function(err, pull) {
                         if(!err) {
-                            star.create(pull.head.sha, user, repo, repo_uuid, number, sender, ninja.token);
+                            star[func](pull.head.sha, user, repo, repo_uuid, number, sender, ninja.token);
                         }
                     });
                 }
