@@ -63,4 +63,50 @@ describe('issue_comment', function(done) {
             }
         });
     });
+
+    it('should remove a ninja star on a thumbs-down or minus-one', function(done) {
+        var req = {
+            params: {id: 123456},
+            args: require('../../fixtures/webhooks/issue_comment/created.json')
+        };
+
+        req.args.comment.body = ':-1:';
+
+        var userStub = sinon.stub(User, 'findOne', function(args, done) {
+            assert.equal(args._id, 123456);
+            done(null, {
+                token: 'token'
+            });
+        });
+
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            assert.equal('pullRequests', args.obj);
+            assert.equal('get', args.fun);
+            assert.equal('reviewninja', args.arg.user);
+            assert.equal('foo', args.arg.repo);
+            assert.equal('43', args.arg.number);
+            done(null, {
+                head: {
+                    sha: 'sha'
+                }
+            });
+        });
+
+        var starStub = sinon.spy(star, 'remove');
+
+        var ioStub = sinon.stub(io, 'emit', function(event, id) {
+            assert.equal('reviewninja:foo:issue-comment-46434016', event);
+            assert.equal('61271314', id);
+        });
+
+        issue_comment(req, {
+            end: function() {
+                sinon.assert.called(starStub);
+                userStub.restore();
+                githubStub.restore();
+                ioStub.restore();
+                done();
+            }
+        });
+    });
 });
