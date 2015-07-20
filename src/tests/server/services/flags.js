@@ -28,23 +28,52 @@ describe('flags:review', function() {
   });
 });
 
-describe('flags:conversation', function() {
+describe('flags:star', function() {
   it('should return true if a conversation has a ninja star flag', function(done) {
-    var fakeFalseComment = 'this has no flag';
-    var fakeStarComment = 'this has a !star';
-    var fakeUnstarComment = 'this is !unstar';
-    var fakeUnstarComment2 = 'this is -1';
-    var bothFlagsComment = '!star and !unstar';
-    var falseResult = flags.conversation(fakeFalseComment);
-    var trueResult = flags.conversation(fakeStarComment);
-    var removeResult1 = flags.conversation(fakeUnstarComment);
-    var removeResult2 = flags.conversation(fakeUnstarComment2);
-    var removeResult3 = flags.conversation(bothFlagsComment);
-    assert.equal(falseResult, undefined);
-    assert.equal(trueResult, 'create');
-    assert.equal(removeResult1, 'remove');
-    assert.equal(removeResult2, 'remove');
-    assert.equal(removeResult3, 'remove');
+    var fakeStarComment1 = 'this has a !star';
+    var fakeStarComment2 = 'this is :+1:';
+    var fakeStarComment3 = 'this is :thumbsup:';
+    var trueResult1 = flags.star(fakeStarComment1);
+    var trueResult2 = flags.star(fakeStarComment2);
+    var trueResult3 = flags.star(fakeStarComment3);
+    assert.equal(trueResult1, true);
+    assert.equal(trueResult2, true);
+    assert.equal(trueResult3, true);
+    done();
+  });
+
+  it('should return false if no ninja star flag', function(done) {
+    var fakeFalseComment1 = 'this has no flag';
+    var fakeFalseComment2 = 'this is !star and !unstar';
+    var falseResult1 = flags.star(fakeFalseComment1);
+    var falseResult2 = flags.star(fakeFalseComment2);
+    assert.equal(falseResult1, false);
+    assert.equal(falseResult2, false);
+    done();
+  });
+});
+
+describe('flags:unstar', function() {
+  it('should return true if a conversation has an unstar flag', function(done) {
+    var fakeUnstarComment1 = 'this is !unstar';
+    var fakeUnstarComment2 = 'this is :thumbsdown:';
+    var fakeUnstarComment3 = 'this is !star and !unstar';
+    var trueResult1 = flags.unstar(fakeUnstarComment1);
+    var trueResult2 = flags.unstar(fakeUnstarComment2);
+    var trueResult3 = flags.unstar(fakeUnstarComment3);
+    assert.equal(trueResult1, true);
+    assert.equal(trueResult2, true);
+    assert.equal(trueResult3, true);
+    done();
+  });
+
+  it('should return false if no unstar flag', function(done) {
+    var fakeFalseComment1 = 'this has no flag';
+    var fakeFalseComment2 = 'this is !star';
+    var falseResult1 = flags.unstar(fakeFalseComment1);
+    var falseResult2 = flags.unstar(fakeFalseComment2);
+    assert.equal(falseResult1, false);
+    assert.equal(falseResult2, false);
     done();
   });
 });

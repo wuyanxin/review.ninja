@@ -48,18 +48,18 @@ module.exports = {
         return {open: open, closed: closed};
     },
 
-    conversation: function(comment) {
+    star: function(comment) {
 
         // input: single conversation comment
         // output: true or false (true to create a ninja star)
         var starRegex = /\!star|\!ninjastar|\+1|\:thumbsup\:|\:star\:/g;
         var unstarRegex = /\!unstar|\-1|\:thumbsdown\:/g;
-        if (comment.match(unstarRegex)) {
-            return 'remove';
-        }
-        else if (comment.match(starRegex) && !comment.match(unstarRegex)) {
-            return 'create';
-        }
+        return !!comment.match(starRegex) && !comment.match(unstarRegex);
+    },
+
+    unstar: function(comment) {
+        var unstarRegex = /\!unstar|\-1|\:thumbsdown\:/g;
+        return !!comment.match(unstarRegex);
     }
 
 };
