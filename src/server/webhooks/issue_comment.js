@@ -37,7 +37,7 @@ module.exports = function(req, res) {
                 // Add ninja star
                 //
 
-                if(flags.conversation(comment)) {
+                if(typeof flags.conversation(comment) !== 'undefined') {
                     github.call({
                         obj: 'pullRequests',
                         fun: 'get',

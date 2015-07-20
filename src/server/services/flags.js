@@ -58,10 +58,7 @@ module.exports = {
             return 'remove';
         }
         else if (comment.match(starRegex) && !comment.match(unstarRegex)) {
-            return 'create'
-        }
-        else {
-            return false;
+            return 'create';
         }
     }
 

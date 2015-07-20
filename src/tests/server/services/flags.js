@@ -40,7 +40,7 @@ describe('flags:conversation', function() {
     var removeResult1 = flags.conversation(fakeUnstarComment);
     var removeResult2 = flags.conversation(fakeUnstarComment2);
     var removeResult3 = flags.conversation(bothFlagsComment);
-    assert.equal(falseResult, false);
+    assert.equal(falseResult, undefined);
     assert.equal(trueResult, 'create');
     assert.equal(removeResult1, 'remove');
     assert.equal(removeResult2, 'remove');

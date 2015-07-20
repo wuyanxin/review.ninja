@@ -70,7 +70,7 @@ describe('issue_comment', function(done) {
             args: require('../../fixtures/webhooks/issue_comment/created.json')
         };
 
-        req.args.comment.body = ":-1:";
+        req.args.comment.body = ':-1:';
 
         var userStub = sinon.stub(User, 'findOne', function(args, done) {
             assert.equal(args._id, 123456);
