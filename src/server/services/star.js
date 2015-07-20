@@ -59,12 +59,8 @@ module.exports = {
             user: sender.id,
             repo: repo_uuid
         }, function(err, star) {
-            if(err || !star){
-                return done(err, star);
-            }
-
-            star.remove(function(err, star) {
-                if(!err && star) {
+            if (!err && star) {
+                star.remove(function(err, star) {
                     io.emit(user + ':' + repo + ':' + 'pull_request_star', {action: 'unstarred', number: number});
                     status.update({
                         user: user,
@@ -91,10 +87,12 @@ module.exports = {
                         repo_uuid: repo_uuid,
                         token: token
                     });
-                }
 
-                done(err, star);
-            });
+                    if(typeof done === 'function') {
+                        done(err, star);
+                    }
+                });
+            }
         });
     }
 };
