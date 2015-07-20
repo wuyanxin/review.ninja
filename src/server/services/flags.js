@@ -8,9 +8,6 @@ module.exports = {
 
     review: function(comments) {
 
-        // input: all review comments
-        // output: number of open/closed issues
-
         var threads = {};
 
         var open = 0;
@@ -49,12 +46,8 @@ module.exports = {
     },
 
     star: function(comment) {
-
-        // input: single conversation comment
-        // output: true or false (true to create a ninja star)
         var starRegex = /\!star|\!ninjastar|\+1|\:thumbsup\:|\:star\:/g;
-        var unstarRegex = /\!unstar|\-1|\:thumbsdown\:/g;
-        return !!comment.match(starRegex) && !comment.match(unstarRegex);
+        return !!comment.match(starRegex);
     },
 
     unstar: function(comment) {

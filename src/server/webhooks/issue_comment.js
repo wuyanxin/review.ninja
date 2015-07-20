@@ -36,7 +36,9 @@ module.exports = function(req, res) {
                 //
                 // Add ninja star
                 //
+
                 var func = flags.unstar(comment) ? 'remove' : flags.star(comment) ? 'create' : null;
+
                 if(func) {
                     github.call({
                         obj: 'pullRequests',

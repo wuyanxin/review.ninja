@@ -44,7 +44,7 @@ describe('flags:star', function() {
 
   it('should return false if no ninja star flag', function(done) {
     var fakeFalseComment1 = 'this has no flag';
-    var fakeFalseComment2 = 'this is !star and !unstar';
+    var fakeFalseComment2 = 'this is an !unstar';
     var falseResult1 = flags.star(fakeFalseComment1);
     var falseResult2 = flags.star(fakeFalseComment2);
     assert.equal(falseResult1, false);
