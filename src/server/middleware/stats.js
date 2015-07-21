@@ -16,8 +16,7 @@ module.exports = function(req, res, next) {
     var githubMap = {
         'pullRequests:merge': 'pullRequests:merge',
         'issues:createComment': 'issues:createComment',
-        'pullRequests:get': 'pullRequests:get',
-        'pullRequests:createComment': 'pullRequests:createComment'
+        'pullRequests:get': 'pullRequests:get'
     };
 
     // checks if the api call is github or not

@@ -31,13 +31,13 @@ module.exports = (function () {
                 });
             }
         },
-        createReviewComment: {
+        createReviewThread: {
             q: function(uuid, user, repo) {
                 return Action.where({
                     uuid: uuid,
                     user: user,
                     repo: repo,
-                    type: 'pullRequests:createComment'
+                    type: 'pullRequests:createReviewThread'
                 });
             }
         },
