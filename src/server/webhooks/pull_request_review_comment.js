@@ -49,7 +49,7 @@ module.exports = function(req, res) {
                 }, function(err, comments) {
                     if (!err && comments) {
                         if (comments.filter(function(comment) {
-                            return (comment_sha === comment.original_commit_id) && (path === comment.path) && (position == comment.original_position);
+                            return (comment_sha === comment.original_commit_id) && (path === comment.path) && (position === comment.original_position);
                         }).length === 1) {
                             Action.create({
                                 uuid: req.args.sender.id,
