@@ -15,7 +15,7 @@ var stats = require('../../../server/services/stats');
 var statsMiddleware = require('../../../server/middleware/stats');
 
 describe('stats:queries', function() {
-    it('Should have stats for each type: Add Star, Remove Star, Create Review Comment, Create Comment, Merge.', function(done) {
+    it('Should have stats for each type: Add Star, Remove Star, Create Review Thread, Create Comment, Merge.', function(done) {
         var actionStub = sinon.stub(Action, 'where', function() {
             return {
                 count: function(done) {
