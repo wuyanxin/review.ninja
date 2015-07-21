@@ -27,7 +27,7 @@ describe('stats:queries', function() {
         stats.statsForUserAndRepo(1234, 'casche', 'AwesomeRepo', function(stats) {
             assert.equal(stats.addStar, 3);
             assert.equal(stats.removeStar, 3);
-            assert.equal(stats.createReviewComment, 3);
+            assert.equal(stats.createReviewThread, 3);
             assert.equal(stats.createComment, 3);
             assert.equal(stats.merge, 3);
         });
