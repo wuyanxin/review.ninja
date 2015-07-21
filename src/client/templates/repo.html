@@ -167,11 +167,11 @@
                   </span>
                   <span class="text-center text-success pull-right" style="width:50px; padding-left:10px; padding-right:10px">
                     <span class="octicon octicon-large octicon-issue-opened"
-                        tooltip="{{ collaborator.stats.addIssue | pluralize:'added issue'}}"
+                        tooltip="{{ collaborator.stats.createReviewComment | pluralize:'created thread'}}"
                         tooltip-placement="bottom"
                         tooltip-append-to-body="true">
                     </span>
-                    <br/> {{ collaborator.stats.addIssue }}
+                    <br/> {{ collaborator.stats.createReviewComment }}
                   </span>
                   <span class="text-center text-primary pull-right" style="width:50px; padding-left:10px; padding-right:10px">
                     <span class="fa-lg icon-ninja-star"
