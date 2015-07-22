@@ -101,6 +101,12 @@ module.exports = function() {
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
+        review_thread: {
+            subject: 'A new review thread has been started on pull request',
+            template: 'src/server/templates/reviewThread.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
+        },
+
         star: {
             subject: 'Pull request has been starred',
             template: 'src/server/templates/starred.ejs',
