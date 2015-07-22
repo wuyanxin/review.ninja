@@ -84,8 +84,7 @@ module.exports = function() {
         pull_request_synchronized: 'pull_request',
         star: 'star',
         unstar: 'star',
-        new_issue: 'issue',
-        closed_issue: 'issue'
+        review_thread: 'review_thread'
     };
 
     var notificationArgs = {
