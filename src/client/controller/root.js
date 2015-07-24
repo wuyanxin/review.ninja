@@ -20,10 +20,8 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
                 return;
             }
 
-            if ($rootScope.refresh) {
-                if(toParams.number !== fromParams.number || toParams.head === $rootScope.refresh.head) {
-                    $rootScope.refresh = null;
-                }
+            if($rootScope.refresh && (toParams.number !== fromParams.number || toParams.head === $rootScope.refresh.head)) {
+                $rootScope.refresh = null;
             }
 
             if(toParams.user !== fromParams.user || toParams.repo !== fromParams.repo) {
