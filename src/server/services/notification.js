@@ -84,7 +84,8 @@ module.exports = function() {
         pull_request_synchronized: 'pull_request',
         star: 'star',
         unstar: 'star',
-        review_thread: 'review_thread'
+        review_thread_opened: 'review_thread',
+        review_threads_closed: 'review_thread'
     };
 
     var notificationArgs = {
@@ -100,9 +101,15 @@ module.exports = function() {
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
-        review_thread: {
+        review_thread_opened: {
             subject: 'A new review thread has been started on pull request',
             template: 'src/server/templates/reviewThread.ejs',
+            imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
+        },
+
+        review_threads_closed: {
+            subject: 'All review threads have been closed on pull request',
+            template: 'src/server/templates/reviewThreadsClosed.ejs',
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
@@ -116,18 +123,6 @@ module.exports = function() {
             subject: 'Pull request has been unstarred',
             template: 'src/server/templates/unstarred.ejs',
             imageurl: url.baseUrl + '/assets/images/email_unstarr.png'
-        },
-
-        new_issue: {
-            subject: 'A new issue has been opened',
-            template: 'src/server/templates/new_issue.ejs',
-            imageurl: url.baseUrl + '/assets/images/email_issue_opened.png'
-        },
-
-        closed_issue: {
-            subject: 'All issues have been closed',
-            template: 'src/server/templates/issue_closed.ejs',
-            imageurl: url.baseUrl + '/assets/images/email_issue_closed.png'
         }
     };
 

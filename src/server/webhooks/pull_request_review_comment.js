@@ -8,6 +8,7 @@ var Action = require('mongoose').model('Action');
 var url = require('../services/url');
 var github = require('../services/github');
 var status = require('../services/status');
+var flags = require('../services/flags');
 var notification = require('../services/notification');
 
 module.exports = function(req, res) {
