@@ -33,6 +33,10 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
 
                 scope.go = function(path, position) {
                     if(position) {
+                        $RPC.call('onboarding', 'createLineNote', {
+                            user: $stateParams.user,
+                            repo: $stateParams.repo
+                        });
                         $state.go('repo.pull.review.reviewItem', {
                             head: $stateParams.head,
                             ref: Reference.get($stateParams.head, path, position)
