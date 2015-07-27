@@ -60,7 +60,7 @@
               </button>
               <ul class="dropdown-menu" role="menu">
                 <li ng-repeat="flag in ['!fix', '!resolve', '!fixed', '!resolved', '!completed']">
-                  <a href="" ng-click="$parent.reviewComment = ($parent.reviewComment[$parent.reviewComment.length-1] === ' ') ? ($parent.reviewComment + flag) : ($parent.reviewComment + ' ' + flag); addOnboarding('addReviewStatus')">{{ flag }}</a>
+                  <a href="" ng-click="$parent.reviewComment = ($parent.reviewComment[$parent.reviewComment.length-1] === ' ') ? ($parent.reviewComment + flag) : ($parent.reviewComment + ' ' + flag)">{{ flag }}</a>
                 </li>
               </ul>
             </div>
