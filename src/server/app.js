@@ -292,6 +292,15 @@ async.series([
     }
 
 ], function(err, res) {
+
+    if(err) {
+        console.log('✖ '.bold.red + 'failed to bootstrap app');
+        console.log(err);
+
+        // kill app
+        process.exit(1);
+    }
+
     console.log('\n✓ '.bold.green + 'bootstrapped, '.bold + 'app listening on localhost:' + config.server.localport);
 });
 
