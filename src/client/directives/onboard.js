@@ -13,8 +13,8 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     {key: 'user:addRepo', text: 'Add repo'},
                     {key: 'pullRequests:get', text: 'View pull request', elementclass: 'ob-pull', transition: 'wobble-vertical'},
                     {key: 'pullRequests:createLineNote', text: 'Create line note', elementclass: 'ob-create', transition: 'wobble-vertical'},
-                    {key: 'pullRequests:addReviewStatus', text: 'Add "!fixed status', elementclass: 'ob-close', transition: 'wobble-vertical'},
-                    {key: 'pullRequests:createReviewThread', text: 'Leave comment', elementclass: 'ob-create', transition: 'wobble-vertical'},
+                    {key: 'pullRequests:addReviewStatus', text: 'Add "!fixed status', elementclass: 'ob-addstatus', transition: 'wobble-vertical'},
+                    {key: 'pullRequests:createReviewThread', text: 'Leave comment', elementclass: 'ob-leavecomment', transition: 'wobble-vertical'},
                     {key: 'star:add', text: 'Add ninja star', elementclass: 'ob-star', transition: 'rotate'},
                     {key: 'pullRequests:merge', text: 'Merge pull request', elementclass: 'ob-merge', transition: 'wobble-vertical'}
                 ];

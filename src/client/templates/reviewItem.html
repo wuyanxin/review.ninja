@@ -51,7 +51,7 @@
           <div class="pull-right">
             <i class="fa fa-lg fa-spinner fa-spin" ng-show="reviewing.loading"></i>
             <div class="btn-group dropup">
-              <button class="btn btn-default dropdown-toggle"
+              <button class="btn btn-default dropdown-toggle ob-addstatus"
                       type="button" 
                       data-toggle="dropdown" 
                       aria-haspopup="true" 
@@ -60,11 +60,11 @@
               </button>
               <ul class="dropdown-menu" role="menu">
                 <li ng-repeat="flag in ['!fix', '!resolve', '!fixed', '!resolved', '!completed']">
-                  <a href="" ng-click="$parent.reviewComment = ($parent.reviewComment[$parent.reviewComment.length-1] === ' ') ? ($parent.reviewComment + flag) : ($parent.reviewComment + ' ' + flag)">{{ flag }}</a>
+                  <a href="" ng-click="$parent.reviewComment = ($parent.reviewComment[$parent.reviewComment.length-1] === ' ') ? ($parent.reviewComment + flag) : ($parent.reviewComment + ' ' + flag); addOnboarding('addReviewStatus')">{{ flag }}</a>
                 </li>
               </ul>
             </div>
-            <button type="submit" class="btn btn-primary"  ng-disabled="!reviewComment">Comment</button>
+            <button type="submit" class="btn btn-primary ob-leavecomment"  ng-disabled="!reviewComment">Comment</button>
           </div>
 
           <div style="clear:both;"></div>

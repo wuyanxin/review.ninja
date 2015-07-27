@@ -9,8 +9,12 @@ module.exports = {
       user: req.args.user,
       repo: req.args.repo,
       type: 'pullRequests:createLineNote'
+    }, function(err) {
+      if (err) {
+        return done(err);
+      }
+      done(null, {});
     });
-    done(null);
   },
 
   addReviewStatus: function(req, done) {
@@ -19,8 +23,12 @@ module.exports = {
       user: req.args.user,
       repo: req.args.repo,
       type: 'pullRequests:addReviewStatus'
+    }, function(err) {
+      if (err) {
+        return done(err);
+      }
+      done(null, {});
     });
-    done(null);
   },
 
   getactions: function(req, done) {

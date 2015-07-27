@@ -48,7 +48,7 @@
             </table>
             <table class="code">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index"
-                    ng-click="go(file.filename, line.position)"
+                    ng-click="go(file.filename, line.base); addOnboarding('createLineNote');"
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 

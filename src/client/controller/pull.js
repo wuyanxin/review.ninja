@@ -155,17 +155,11 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         };
 
         // add '!fix' and '!fixed' to review comments
-        $scope.addReviewText = function(tofix) {
-            $RPC.call('onboarding', 'addReviewStatus', {
+        $scope.addOnboarding = function(func) {
+            $RPC.call('onboard', func, {
                 user: $stateParams.user,
                 repo: $stateParams.repo
             });
-            if(tofix) {
-                $scope.reviewComment = ($scope.reviewComment) ? $scope.reviewComment + ' !fix' : '!fix';
-            }
-            else {
-                $scope.reviewComment = ($scope.reviewComment) ? $scope.reviewComment + ' !fixed' : '!fixed';
-            }
         };
 
 
