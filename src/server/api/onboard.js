@@ -3,34 +3,6 @@ var Action = require('mongoose').model('Action');
 var onboard = require('../services/onboard');
 
 module.exports = {
-  createLineNote: function(req, done) {
-    Action.create({
-      uuid: req.user.id,
-      user: req.args.user,
-      repo: req.args.repo,
-      type: 'pullRequests:createLineNote'
-    }, function(err) {
-      if (err) {
-        return done(err);
-      }
-      done(null, {});
-    });
-  },
-
-  addReviewStatus: function(req, done) {
-    Action.create({
-      uuid: req.user.id,
-      user: req.args.user,
-      repo: req.args.repo,
-      type: 'pullRequests:addReviewStatus'
-    }, function(err) {
-      if (err) {
-        return done(err);
-      }
-      done(null, {});
-    });
-  },
-
   getactions: function(req, done) {
     Action.find({uuid: req.user.id, user: req.args.user, repo: req.args.repo}).distinct('type', function(err, actions) {
       if (err) {

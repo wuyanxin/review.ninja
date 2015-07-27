@@ -154,15 +154,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         };
 
-        // add '!fix' and '!fixed' to review comments
-        $scope.addOnboarding = function(func) {
-            $RPC.call('onboard', func, {
-                user: $stateParams.user,
-                repo: $stateParams.repo
-            });
-        };
-
-
         //
         // Modals
         //
