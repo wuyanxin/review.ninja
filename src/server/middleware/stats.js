@@ -24,7 +24,7 @@ module.exports = function(req, res, next) {
                     path: req.args.arg.path,
                     original_position: req.args.arg.position,
                     body: req.args.arg.body
-                }
+                };
                 if (flags.review([comment]).open > 0) {
                     return 'pullRequests:createFixComment';
                 }
