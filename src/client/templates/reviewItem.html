@@ -51,7 +51,8 @@
           <div class="pull-right">
             <i class="fa fa-lg fa-spinner fa-spin" ng-show="reviewing.loading"></i>
             <div class="btn-group dropup">
-              <button class="btn btn-default dropdown-toggle ob-addstatus"
+              <button class="btn btn-default dropdown-toggle"
+                      ng-class="{'wobble-vertical': $root.ob === 'ob-addstatus'}"
                       type="button" 
                       data-toggle="dropdown" 
                       aria-haspopup="true" 

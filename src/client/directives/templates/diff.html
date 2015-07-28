@@ -41,8 +41,8 @@
                         </span>
                         <span class="octicon octicon-issue-opened" 
                               style="color: #dbcc91;"
-                              ng-show="selected(file.filename, line.position)"
-                              ng-class="{'ob-create': ($index === 1)}">
+                              ng-show="selected(file.filename, line.position) || ($root.ob === 'ob-create' && $index === 1)"
+                              ng-class="{'wobble-vertical': $root.ob === 'ob-create' && $index === 1}">
                         </span>
                     </td>
                 </tr>
@@ -53,9 +53,8 @@
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
-                                selected: selected(file.filename, line.position),
-                                referenced: referenced(file.filename, line.position), 
-                                'ob-create': ($index === 1) }">
+                                selected: selected(file.filename, line.position) || ($root.ob === 'ob-create' && $index === 1),
+                                referenced: referenced(file.filename, line.position) }">
 
                     <td id="{{ anchor(baseSha, file.filename, line.base) }}" 
                         class="number">
