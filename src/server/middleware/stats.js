@@ -25,10 +25,10 @@ module.exports = function(req, res, next) {
                     original_position: req.args.arg.position,
                     body: req.args.arg.body
                 }
-                if (flags.review([comment]).open === 1) {
+                if (flags.review([comment]).open > 0) {
                     return 'pullRequests:createFixComment';
                 }
-                else if (flags.review([comment]).closed === 1) {
+                else if (flags.review([comment]).closed > 0) {
                     return 'pullRequests:createFixedComment';
                 }
             }
