@@ -18,7 +18,6 @@ module.exports = function(req, res, next) {
         'pullRequests:get': 'pullRequests:get',
         'pullRequests:createComment': (function() {
             if (req.args.obj === 'pullRequests' && req.args.fun === 'createComment') {
-                // var status = flag.review([req.args.arg.comment])
                 var comment = {
                     original_commit_id: req.args.arg.commit_id,
                     path: req.args.arg.path,
