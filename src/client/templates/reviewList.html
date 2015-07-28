@@ -31,7 +31,7 @@
             {{ thread.body | limitTo:100 }}<span ng-show="thread.body.length > 100">...</span><br />
             <small moment="thread.last_updated"></small>
           </p>
-          <div dropdown class="btn-group" ng-click="$event.stopPropagation()" is-open="dropdownOpen">
+          <div dropdown class="btn-group" ng-class="{'wobble-vertical': $root.ob === 'ob-addstatus' && $index === 0}" ng-click="$event.stopPropagation()" is-open="dropdownOpen">
             <button dropdown-toggle 
                     class="btn btn-sm btn-default dropdown-toggle" 
                     ng-class="{'btn-danger': thread.state === 'open', 'btn-success': thread.state === 'closed'}" 

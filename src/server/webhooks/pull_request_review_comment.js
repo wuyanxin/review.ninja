@@ -37,6 +37,7 @@ module.exports = function(req, res) {
                     repo_uuid: repo_uuid,
                     token: ninja.token
                 });
+
                 github.call({
                     obj: 'pullRequests',
                     fun: 'getComments',
@@ -48,9 +49,12 @@ module.exports = function(req, res) {
                     token: ninja.token
                 }, function(err, comments) {
                     if (!err && comments) {
-                        if (comments.filter(function(comment) {
+                        var thread = comments.filter(function(comment) {
                             return (comment_sha === comment.original_commit_id) && (path === comment.path) && (position === comment.original_position);
-                        }).length === 1) {
+                        });
+                        var negative = /\!\bfix\b|\!\bresolve\b/g;
+                        var positive = /\!\bfixed\b|\!\bresolved\b|\!\bcompleted\b/g;
+                        if (thread.length === 1) {
                             Action.create({
                                 uuid: req.args.sender.id,
                                 user: user,

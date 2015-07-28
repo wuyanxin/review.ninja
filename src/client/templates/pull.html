@@ -66,7 +66,7 @@
                             tooltip="{{ pull.star ? 'Remove' : 'Add' }} ninja star"
                             tooltip-placement="bottom"
                             tooltip-append-to-body="true">
-                        <span class="fa-lg icon-ninja-star text-primary ob ob-star" ng-class="{muted: !pull.star}"></span>
+                        <span class="fa-lg icon-ninja-star text-primary" ng-class="{'ob': $root.ob === 'ob-star', 'rotate': $root.ob === 'ob-star', muted: !pull.star}"></span>
                     </button>
                     <div class="btn-group btn-group-lg">
                       <button type="button"
