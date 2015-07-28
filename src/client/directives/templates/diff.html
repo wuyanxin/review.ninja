@@ -38,12 +38,12 @@
                               ng-show="referenced(file.filename, line.position) &&
                                         !selected(file.filename, line.position)"
                               ng-click="go(file.filename, line.position)"
-                              ng-class="{'ob-create':$first}">
+                              ng-class="{'ob-create': ($index === 1)}">
                         </span>
                         <span class="octicon octicon-issue-opened" 
                               style="color: #dbcc91;"
-                              ng-show="selected(file.filename, line.position)"
-                              ng-class="{'ob-create':$first}">
+                              ng-show="selected(file.filename, line.position) || ($rootScope.hovering && $index === 1)"
+                              ng-class="{'ob-create': ($index === 1)}">
                         </span>
                     </td>
                 </tr>
@@ -54,8 +54,9 @@
                     ng-class="{ addition: line.add, 
                                 deletion: line.del, 
                                 chunk: line.chunk, 
-                                selected: selected(file.filename, line.position),
-                                referenced: referenced(file.filename, line.position) }">
+                                selected: selected(file.filename, line.position) || ($rootScope.hovering && $index === 1),
+                                referenced: referenced(file.filename, line.position), 
+                                'ob-create': ($index === 1) }">
 
                     <td id="{{ anchor(baseSha, file.filename, line.base) }}" 
                         class="number">

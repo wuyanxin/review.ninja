@@ -100,3 +100,14 @@
   -webkit-animation-timing-function: ease-out;
   animation-timing-function: ease-out;
 }
+
+.show-and-zoom {
+  -webkit-transition-duration: 0.75s;
+  transition-duration: 0.75s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}

@@ -7,8 +7,8 @@
     <li ng-repeat="action in actions" ng-class="{complete: action.val}">
       <span class="octicon octicon-check"></span> 
       <span class="text" 
-            ng-mouseover="addClass(action.elementclass, action.transition)" 
-            ng-mouseleave="removeClass(action.elementclass, action.transition)">
+            ng-mouseover="$rootScope.hovering = true; addClass(action.elementclass, action.transition)" 
+            ng-mouseleave="$rootScope.hovering = false; removeClass(action.elementclass, action.transition)">
         {{ action.text }}
       </span>
     </li>
