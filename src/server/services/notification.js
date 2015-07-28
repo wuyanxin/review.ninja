@@ -108,7 +108,7 @@ module.exports = function() {
         },
 
         review_threads_closed: {
-            subject: 'All review threads have been closed on pull request',
+            subject: 'A review thread has been closed on pull request',
             template: 'src/server/templates/reviewThreadsClosed.ejs',
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
