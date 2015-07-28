@@ -37,12 +37,24 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     });
                 };
 
+                scope.hidden = false;
+
                 scope.addClass = function(name, transition) {
                     $('.' + name).first().addClass(transition);
+                    if ($('.' + name).first().hasClass('ng-hide')) {
+                        $('.' + name).first().removeClass('ng-hide');
+                        $('.' + name).last().trigger('mouseover');
+                        scope.hidden = true;
+                    }
                 };
 
                 scope.removeClass = function(name, transition) {
                     $('.' + name).first().removeClass(transition);
+                    if (scope.hidden) {
+                        $('.' + name).first().addClass('ng-hide');
+                        $('.' + name).last().trigger('mouseleave');
+                        scope.hidden = false;
+                    }
                 };
 
                 getActions();
