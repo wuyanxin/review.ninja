@@ -43,7 +43,7 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     $('.' + name).first().addClass(transition);
                     if ($('.' + name).first().hasClass('ng-hide')) {
                         $('.' + name).first().removeClass('ng-hide');
-                        $('.' + name).last().trigger('mouseover');
+                        $('.' + name).last().addClass('selected');
                         scope.hidden = true;
                     }
                 };
@@ -52,7 +52,7 @@ module.directive('onboard', ['$rootScope', '$stateParams', '$RPC', '$timeout', '
                     $('.' + name).first().removeClass(transition);
                     if (scope.hidden) {
                         $('.' + name).first().addClass('ng-hide');
-                        $('.' + name).last().trigger('mouseleave');
+                        $('.' + name).last().removeClass('selected');
                         scope.hidden = false;
                     }
                 };
