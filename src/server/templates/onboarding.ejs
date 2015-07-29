@@ -6,19 +6,22 @@ What you’re seeing here is a GitHub pull request with the code diffs
 showing by default. Feel free to look around.
 
 Over on the right is a panel for line notes that you can connect to a
-line of code in the diff. Line notes are threads of pull request review
-comments on a single line.
+line of code in the diff. You can also switch to the conversation
+to see comments on the whole pull request.
 
-Line notes have flags such that you can mark issues in the code either
-**open** or **closed**. Flags are as follows:
+Line notes have flags to indicate what is going on in the code,
+either. Flags are as follows:
 
-* **open** - !fix, !resolve
-* **closed** - !fixed, !resolved, !completed
+`['!fix', '!resolve']`
+- Something in the code needs to be reviewed and fixed before
+  the pull request is merged.
 
-To add a flag to a line note, you have two options:
+`['!fixed', '!resolved', '!completed']`
+- The issue has been resolved.
 
-* You can simply leave a comment with the flag relevant to the state you think the code is in.
-* On the list view, click on the dropdown of the line note you wish to change the status of and change it.
+To add a flag simply leave a comment with your desired flag. For
+convenience we also have a dropdown menu to add these comments
+automatically.
 
 Another key feature you need to know about is ninja stars. Ninja 
 stars are how you communicate that a pull request is okay to merge. 
