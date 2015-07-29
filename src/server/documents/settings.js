@@ -5,7 +5,7 @@ var SettingsSchema = mongoose.Schema({
     repo: Number,
     notifications: {
         pull_request: {type: Boolean, default: false},
-        issue: {type: Boolean, default: false},
+        review_thread: {type: Boolean, default: false},
         star: {type: Boolean, default: false}
     },
     watched: [String]
