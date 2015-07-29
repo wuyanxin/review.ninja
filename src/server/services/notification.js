@@ -103,7 +103,7 @@ module.exports = function() {
 
         review_thread_opened: {
             subject: 'A new review thread has been started on pull request',
-            template: 'src/server/templates/reviewThread.ejs',
+            template: 'src/server/templates/reviewThreadOpened.ejs',
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
