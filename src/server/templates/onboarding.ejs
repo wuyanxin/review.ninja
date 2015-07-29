@@ -8,21 +8,19 @@ showing by default. Feel free to look around.
 Over on the right is a panel for issues (GitHub issues) that you can 
 connect to a line of code, a few lines of code, or a whole pull request. 
 
-**To open an issue about a line of code**
-1. Click on a line number.
-2. Enter a Title and Description and click **Submit**.
+Over on the right is a panel for line notes that you can connect to a
+line of code in the diff. Line notes are threads of pull request review
+comments on a single line.
 
-Note: you can also shift-click to select multiple lines, or click the 
-plus icon (**+**) next to the Issues title to create a general issue.
+Line notes have flags such that you can mark issues in the code either
+'open' or 'closed'. Flags are as follows:
 
-Once you're satisfied that the issue has been addressed, you can go 
-ahead and close it. 
+* **open** - !fix, !resolve
+* **closed** - !fixed, !resolved, !completed
 
-**To close an issue**, click **Close issue**. If we’ve 
-over-complicated that, let us know.
+To add a flag to a line note, simply leave a comment with the flag relevant to the state you think the code is in.
 
-
-Another key feature, you need to know about, is ninja stars. Ninja 
+Another key feature you need to know about is ninja stars. Ninja 
 stars are how you communicate that a pull request is okay to merge. 
 You can set, by repository, how many ninja stars you think pull 
 requests should have before merging.
