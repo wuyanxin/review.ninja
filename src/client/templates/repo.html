@@ -27,7 +27,7 @@
               </div>
             </div>
           <table class="table table-hover pull-list" infinite-scroll="type==='open' ? open.getMore() : closed.getMore()" infinite-scroll-disabled="type==='open' ? !(!open.loading && !search) : !(!closed.loading && !search)" ng-show="matched.length" style="margin-bottom:10px;">
-            <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value)) | filter:search)" ui-sref="repo.pull.review.reviewList({ number: pull.number, base: pull.base.sha, head: pull.head.sha })" class="select ob ob-pull">
+            <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value)) | filter:search)" ui-sref="repo.pull.review.reviewList({ number: pull.number, base: pull.base.sha, head: pull.head.sha })" class="select" ng-class="{'wobble-vertical': $root.ob === 'ob-pull' && $index === 0}">
               <td class="watched" ng-class="{active: pull.watched}"></td>
               <td style="width:50px; padding-right:0;">
                 <img ng-show="pull.user.avatar_url" ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
@@ -167,11 +167,11 @@
                   </span>
                   <span class="text-center text-success pull-right" style="width:50px; padding-left:10px; padding-right:10px">
                     <span class="octicon octicon-large octicon-issue-opened"
-                        tooltip="{{ collaborator.stats.addIssue | pluralize:'added issue'}}"
+                        tooltip="{{ collaborator.stats.createReviewThread | pluralize:'created review thread'}}"
                         tooltip-placement="bottom"
                         tooltip-append-to-body="true">
                     </span>
-                    <br/> {{ collaborator.stats.addIssue }}
+                    <br/> {{ collaborator.stats.createReviewThread }}
                   </span>
                   <span class="text-center text-primary pull-right" style="width:50px; padding-left:10px; padding-right:10px">
                     <span class="fa-lg icon-ninja-star"

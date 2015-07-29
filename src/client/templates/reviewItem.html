@@ -31,7 +31,7 @@
 
   <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
 
-  <form role="form" ng-submit="addReviewComment(reviewComment, $stateParams.ref); reviewComment=null;">
+  <form role="form" ng-submit="addReviewComment(reviewComment, $stateParams.ref); reviewComment='';">
     <table style="width:100%" ng-show="!review.loading && !review.hasMore">
       <tr>
         <td style="width:42px; padding-right:10px; vertical-align:top;">
@@ -52,6 +52,7 @@
             <i class="fa fa-lg fa-spinner fa-spin" ng-show="reviewing.loading"></i>
             <div class="btn-group dropup">
               <button class="btn btn-default dropdown-toggle"
+                      ng-class="{'wobble-vertical': $root.ob === 'ob-addstatus'}"
                       type="button" 
                       data-toggle="dropdown" 
                       aria-haspopup="true" 
@@ -64,7 +65,7 @@
                 </li>
               </ul>
             </div>
-            <button type="submit" class="btn btn-primary"  ng-disabled="!reviewComment">Comment</button>
+            <button type="submit" class="btn btn-primary ob-leavecomment"  ng-disabled="!reviewComment">Comment</button>
           </div>
 
           <div style="clear:both;"></div>

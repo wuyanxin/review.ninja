@@ -154,17 +154,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         };
 
-        // add '!fix' and '!fixed' to review comments
-        $scope.addReviewText = function(tofix) {
-            if(tofix) {
-                $scope.reviewComment = ($scope.reviewComment) ? $scope.reviewComment + ' !fix' : '!fix';
-            }
-            else {
-                $scope.reviewComment = ($scope.reviewComment) ? $scope.reviewComment + ' !fixed' : '!fixed';
-            }
-        };
-
-
         //
         // Modals
         //

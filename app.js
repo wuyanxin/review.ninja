@@ -1,4 +1,5 @@
 'use strict';
+
 var http = require('http');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -7,14 +8,16 @@ var http = require('http');
 
 var app = require('./src/server/app.js');
 
-var server = http.createServer(app).listen(config.server.localport).on('listening', function() {
-});
+console.log('Now lets create the server');
+
+var server = http.createServer(app).listen(config.server.localport);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Initialize websockets
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 global.io = require('socket.io').listen(server).sockets;
+
 io.on('connection', function(socket) {
     socket.emit('init', {
         message: 'Welcome!'
