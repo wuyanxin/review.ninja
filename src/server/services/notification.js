@@ -102,13 +102,13 @@ module.exports = function() {
         },
 
         review_thread_opened: {
-            subject: 'A new review thread has been started on pull request',
+            subject: 'A line note has been created',
             template: 'src/server/templates/reviewThreadOpened.ejs',
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
 
         review_threads_closed: {
-            subject: 'A review thread has been closed on pull request',
+            subject: 'A line note has been resolved',
             template: 'src/server/templates/reviewThreadsClosed.ejs',
             imageurl: url.baseUrl + '/assets/images/email_pullrequest.png'
         },
