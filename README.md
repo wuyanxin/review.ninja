@@ -36,19 +36,6 @@ Try ReviewNinja
 ReviewNinja is provided by SAP as a free hosted offering under: http://review.ninja/.
 Please leave us a GitHub issue if you have feedback.
 
-Contribute
-----------
-
-To contribute, take a look at our
-[vagrant.review.ninja](https://github.com/reviewninja/vagrant.review.ninja)
-repo, it explains how to get setup and running easily through a combination of
-[Vagrant](https://www.vagrantup.com/) and [Salt](http://www.saltstack.com/)
-:wink:
-
-Contributions to this project are very welcome, but can only be accepted if the
-contributions themselves are given to the project under the Apache License 2.0.
-Contributions other than those given under Apache License 2.0 will be rejected.
-
 License
 =======
 

@@ -13,3 +13,4 @@ src/client/assets/styles/app.css.map
 .sass-cache
 npm-shrinkwrap.json
 .idea/
+docker-compose.yml
