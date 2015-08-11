@@ -1,4 +1,5 @@
 'use strict';
+
 // *****************************************************
 // Pull Request Controller
 //
@@ -7,21 +8,24 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Issue', 'Markdown', 'File', 'repo', 'pull', 'socket', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Issue, Markdown, File, repo, pull, socket, $timeout) {
+module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Markdown', 'Reference', 'Comment', 'repo', 'pull', 'socket', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Markdown, Reference, Comment, repo, pull, socket, $timeout) {
+
+        //
+        // HACK?
+        //
+
+        if($state.current.name === 'repo.pull') {
+            $state.go('.review.reviewList', {base: pull.value.base.sha, head: pull.value.head.sha});
+        }
 
         // set the states
         $scope.state = 'open';
 
         $scope.repo = repo.value;
 
-        $scope.sha = null;
-
         // get the pull request
-        $scope.pull = Pull.milestone(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
-
-        // set the line selection
-        $scope.reference = {selection: {}, issues: null};
+        $scope.pull = Pull.status(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
 
         // get the combined statuses
         $scope.status = $HUB.call('statuses', 'getCombined', {
@@ -36,7 +40,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
         });
 
         // get the pull req comments
-        $scope.comments = $HUB.call('issues', 'getComments', {
+        $scope.conversation = $HUB.call('issues', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             number: $stateParams.number
@@ -48,35 +52,91 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
-        // get the open issues
-        $scope.open = $scope.pull.milestone ? $HUB.call('issues', 'repoIssues', {
+        // get review comments
+        $scope.review = $HUB.call('pullRequests', 'getComments', {
             user: $stateParams.user,
             repo: $stateParams.repo,
-            state: 'open',
-            milestone: $scope.pull.milestone.number
-        }, function(err, issues) {
-            issues.value = issues.value || [];
+            number: $stateParams.number,
+            per_page: 100
+        }, function(err, comments) {
             if(!err) {
-                issues.affix.forEach(function(issue) {
-                    issue = Issue.parse(issue);
+                $scope.noComments = !comments.value.length;
+                comments = Comment.thread(comments);
+                comments.affix.forEach(function(comment) {
+                    comment = Comment.review(comment) && Markdown.render(comment);
                 });
             }
-        }) : {value: []};
+        });
 
-        // get the closed issues
-        $scope.closed = $scope.pull.milestone ? $HUB.call('issues', 'repoIssues', {
-            user: $stateParams.user,
-            repo: $stateParams.repo,
-            state: 'closed',
-            milestone: $scope.pull.milestone ? $scope.pull.milestone.number : null
-        }, function(err, issues) {
-            issues.value = issues.value || [];
-            if(!err) {
-                issues.affix.forEach(function(issue) {
-                    issue = Issue.parse(issue);
+
+        //
+        // Messages
+        //
+
+        $scope.$on('compareCommits', function(event, comp) {
+            $scope.comp = comp;
+        });
+
+
+        //
+        // Actions
+        //
+
+        $scope.setStar = function() {
+
+            var fn = $scope.pull.star ? 'rmv' : 'set';
+
+            $RPC.call('star', fn, {
+                repo: $stateParams.repo,
+                user: $stateParams.user,
+                sha: $scope.pull.head.sha,
+                number: $scope.pull.number,
+                repo_uuid: $scope.pull.base.repo.id
+            });
+        };
+
+        $scope.addReviewComment = function(comment, ref) {
+
+            ref = Reference.parse(ref);
+
+            if(comment && ref) {
+                $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number,
+                    body: comment,
+                    commit_id: ref.sha,
+                    path: ref.path,
+                    position: ref.position
                 });
             }
-        }) : {value: []};
+        };
+
+        $scope.addComment = function(comment) {
+            if(comment) {
+                $scope.commenting = $HUB.wrap('issues', 'createComment', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number,
+                    body: comment
+                });
+            }
+        };
+
+
+        //
+        // Watches
+        //
+
+        // $scope.$watch('reference.selection', function(newSelection, oldSelection) {
+        //     if(newSelection.ref && !oldSelection.ref && !$scope.show) {
+        //         $scope.highlight = true;
+        //         $timeout(function() {
+        //             $scope.highlight = false;
+        //         }, 1000);
+        //     }
+        // });
+
 
         //
         // UI text
@@ -93,117 +153,6 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 return 'No more ninja stars needed';
             }
         };
-
-        //
-        // Actions
-        //
-
-        $scope.compComm = function(base, head) {
-            head = head || $scope.pull.head.sha;
-            base = base !== head ? base : $scope.pull.base.sha;
-            if($scope.base !== base || $scope.head !== head) {
-                $HUB.wrap('repos', 'compareCommits', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    base: base,
-                    head: head
-                }, function(err, comp) {
-                    if(!err) {
-                        $scope.base = base;
-                        $scope.head = head;
-                        $scope.files = File.getFileTypes(comp.value.files);
-                    }
-                });
-            }
-        };
-
-        $scope.setStar = function() {
-
-            var fn = $scope.pull.star ? 'rmv' : 'set';
-
-            $RPC.call('star', fn, {
-                repo: $stateParams.repo,
-                user: $stateParams.user,
-                sha: $scope.pull.head.sha,
-                number: $scope.pull.number,
-                repo_uuid: $scope.pull.base.repo.id
-            });
-        };
-
-        $scope.getPullRequest = function() {
-            $HUB.wrap('pullRequests', 'get', {
-                user: $stateParams.user,
-                repo: $stateParams.repo,
-                number: $stateParams.number
-            }, function(err, pull) {
-                if(!err) {
-
-                    // update the comparison
-                    if($scope.pull.head.sha !== pull.value.head.sha) {
-                        $scope.compComm($scope.base || $scope.pull.base.sha, pull.value.head.sha);
-                    }
-
-                    $scope.pull = Pull.milestone(pull.value) && Pull.stars(pull.value, true) && Markdown.render(pull.value);
-                }
-            });
-        };
-
-        $scope.createIssue = function() {
-            if($scope.title) {
-                $scope.creatingIssue = true;
-                $RPC.call('issue', 'add', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    sha: $scope.pull.head.sha,
-                    number: $stateParams.number,
-                    repo_uuid: $scope.pull.base.repo.id,
-                    title: $scope.title,
-                    body: $scope.description || '',
-                    reference: $scope.reference.selection.ref
-                }, function(err, issue) {
-                    if(err) {
-                        $scope.creatingIssue = false;
-                    } else {
-                        $state.go('repo.pull.issue.detail', {issue: issue.value.number}).then(function() {
-                            $scope.show = null;
-                            $scope.title = null;
-                            $scope.description = null;
-                            $scope.reference.selection = {};
-                            $scope.creatingIssue = false;
-                        });
-                    }
-                });
-            }
-        };
-
-        $scope.addComment = function() {
-            if($scope.comment) {
-                $scope.commenting = $HUB.wrap('issues', 'createComment', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    number: $stateParams.number,
-                    body: $scope.comment
-                }, function(err, comment) {
-                    if(!err) {
-                        $scope.comment = null;
-                    }
-                });
-            }
-        };
-
-
-        //
-        // Watches
-        //
-
-        $scope.$watch('reference.selection', function(newSelection, oldSelection) {
-            if(newSelection.ref && !oldSelection.ref && !$scope.show) {
-                $scope.highlight = true;
-                $timeout(function() {
-                    $scope.highlight = false;
-                }, 1000);
-            }
-        });
 
         //
         // Modals
@@ -229,6 +178,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 }, function(err, status) {
                     if(!err) {
                         $scope.status.value = status.value;
+                        $scope.pull = Pull.status(pull.value);
                     }
                 });
             }
@@ -236,12 +186,27 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
             if($scope.pull.number === args.number) {
-                if(args.action === 'starred' || args.action === 'unstarred') {
-                    $scope.pull = Pull.stars($scope.pull, true);
-                }
-                if(args.action === 'closed' || args.action === 'reopened' || args.action === 'synchronize') {
-                    $scope.getPullRequest();
-                }
+                $rootScope.refresh = args;
+            }
+        });
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request_star', function(args) {
+            if($scope.pull.number === args.number) {
+                $scope.pull = Pull.stars($scope.pull, true);
+            }
+        });
+
+        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request_review_comment', function(args) {
+            if($scope.pull.number === args.number) {
+                $HUB.call('pullRequests', 'getComment', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: args.id
+                }, function(err, comment) {
+                    if(!err) {
+                        $scope.review.value.push(Comment.review(comment.value) && Markdown.render(comment.value));
+                    }
+                });
             }
         });
 
@@ -253,54 +218,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     id: args.id
                 }, function(err, comment) {
                     if(!err) {
-                        $scope.comments.value.push(Markdown.render(comment.value));
+                        $scope.conversation.value.push(Markdown.render(comment.value));
                     }
                 });
-            }
-        });
-
-        socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'issues', function(args) {
-            var i, issue;
-            if(args.action === 'opened' && $scope.pull.number === args.pull) {
-                $HUB.call('issues', 'getRepoIssue', {
-                    user: $stateParams.user,
-                    repo: $stateParams.repo,
-                    number: args.number
-                }, function(err, issue) {
-                    if(!err) {
-                        $scope.open.value.unshift(Issue.parse(issue.value));
-                        $scope.pull.milestone = issue.value.milestone;
-                        $scope.pull = Pull.milestone($scope.pull);
-                    }
-                });
-            }
-            if(args.action === 'closed' && $scope.pull.number === args.pull) {
-                for(i = 0; i < $scope.open.value.length; i++) {
-                    if($scope.open.value[i].number === args.number) {
-                        issue = $scope.open.value[i];
-                        issue.state = 'closed';
-                        $scope.open.value.splice(i, 1);
-                        $scope.closed.value.unshift(issue);
-                    }
-                    if($scope.pull.milestone) {
-                        $scope.pull.milestone.open_issues--;
-                        $scope.pull.milestone.closed_issues++;
-                    }
-                }
-            }
-            if(args.action === 'reopened' && $scope.pull.number === args.pull) {
-                for(i = 0; i < $scope.closed.value.length; i++) {
-                    if($scope.closed.value[i].number === args.number) {
-                        issue = $scope.closed.value[i];
-                        issue.state = 'open';
-                        $scope.closed.value.splice(i, 1);
-                        $scope.open.value.unshift(issue);
-                    }
-                    if($scope.pull.milestone) {
-                        $scope.pull.milestone.open_issues++;
-                        $scope.pull.milestone.closed_issues--;
-                    }
-                }
             }
         });
     }

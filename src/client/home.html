@@ -26,7 +26,7 @@
 
 <body ng-controller="RootCtrl" ng-class="{error: $state.current.name === 'error'}">
 
-<!-- the navbar -->
+  <!-- the navbar -->
   <div class="navbar navbar-default navbar-static-top no-select" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -56,25 +56,6 @@
             <a class="action" href="/logout" target="_self">Sign out <i class="fa fa-lg fa-sign-out pull-right"></i></a>
           </li>
         </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- the webhook notification -->
-  <div class="container-fluid" ng-cloak>
-    <div class="row" ng-show="hook.loaded && !hook.error && !hook.value">
-      <div class="col-md-12 alert alert-warning" style="margin:0;">
-        <strong>Warning!</strong> A webhook is missing for this repository. 
-        <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="creating.loading"></i>
-        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="createWebhook()" ng-show="!creating.loading">Add Webhook</button>
-      </div>
-    </div>
-    <div class="row" ng-show="created">
-      <div class="col-md-12 alert alert-success" style="margin:0;">
-        <button type="button" class="close" data-dismiss="alert">
-          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-        </button>
-        <strong>Success!</strong> The webhook was created successfully.
       </div>
     </div>
   </div>
@@ -118,8 +99,8 @@
   <script src="/filters/pluralize.js"></script>
 
   <!-- SERVICES -->
+  <script src="/services/Comment.js"></script>
   <script src="/services/File.js"></script>
-  <script src="/services/Issue.js"></script>
   <script src="/services/Pull.js"></script>
   <script src="/services/Markdown.js"></script>
   <script src="/services/Reference.js"></script>
@@ -146,9 +127,8 @@
   <script src="/controller/home.js"></script>
   <script src="/controller/repo.js"></script>
   <script src="/controller/pull.js"></script>
+  <script src="/controller/review.js"></script>
   <script src="/controller/settings.js"></script>
-  <script src="/controller/issue/list.js"></script>
-  <script src="/controller/issue/detail.js"></script>
 
   <!-- INTERCEPTORS -->
   <script src="/interceptors/401.js"></script>

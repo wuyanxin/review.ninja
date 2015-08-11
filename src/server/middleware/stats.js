@@ -1,5 +1,5 @@
 'use strict';
-
+var flags = require('../services/flags');
 module.exports = function(req, res, next) {
 
     // models
@@ -9,17 +9,29 @@ module.exports = function(req, res, next) {
     var map = {
         '/api/star/rmv': 'star:rmv',
         '/api/star/set': 'star:add',
-        '/api/issue/add': 'issues:add',
-        '/api/user/addRepo': 'user:addRepo',
-        '/api/onboard/dismiss': 'onboard:dismiss'
+        '/api/user/addRepo': 'user:addRepo'
     };
 
     var githubMap = {
         'pullRequests:merge': 'pullRequests:merge',
         'issues:createComment': 'issues:createComment',
         'pullRequests:get': 'pullRequests:get',
-        'issues:edit': (function(args) {
-            return req.args.arg ? 'issues:' + req.args.arg.state : 'issues:edit';
+        'pullRequests:createComment': (function() {
+            if (req.args.obj === 'pullRequests' && req.args.fun === 'createComment') {
+                var comment = {
+                    original_commit_id: req.args.arg.commit_id,
+                    path: req.args.arg.path,
+                    original_position: req.args.arg.position,
+                    body: req.args.arg.body
+                };
+                if (flags.review([comment]).open > 0) {
+                    return 'pullRequests:createFixComment';
+                }
+                else if (flags.review([comment]).closed > 0) {
+                    return 'pullRequests:createFixedComment';
+                }
+            }
+            return 'pullRequests:createComment';
         })()
     };
 

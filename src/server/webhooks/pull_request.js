@@ -1,14 +1,13 @@
 'use strict';
+
 // models
 var User = require('mongoose').model('User');
-var Milestone = require('mongoose').model('Milestone');
 
 //services
 var url = require('../services/url');
 var slack = require('../services/slack');
 var github = require('../services/github');
 var status = require('../services/status');
-var milestone = require('../services/milestone');
 var pullRequest = require('../services/pullRequest');
 var notification = require('../services/notification');
 
@@ -81,15 +80,9 @@ module.exports = function(req, res) {
                     settings: url.reviewSettings(user, repo),
                     url: url.reviewPullRequest(user, repo, number)
                 });
-
-                var event = user + ':' + repo + ':' + 'pull-request-' + number + ':synchronize';
-                io.emit(event, sha);
             },
             closed: function() {
                 if(req.args.pull_request.merged) {
-                    var event = user + ':' + repo + ':' + 'pull-request-' + number + ':merged';
-                    io.emit(event, number);
-
                     slack.notify('merge', {
                         sha: sha,
                         user: user,
@@ -100,8 +93,6 @@ module.exports = function(req, res) {
                         token: ninja.token
                     });
                 }
-
-                milestone.close(user, repo, repo_uuid, number, ninja.token);
             },
             reopened: function() {
                 // a pull request you have reviewed has a been reopened

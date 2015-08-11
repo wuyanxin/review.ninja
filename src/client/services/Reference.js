@@ -6,42 +6,22 @@
 
 module.factory('Reference', ['$stateParams', function($stateParams) {
 
-    var reference = function(sha, path, start, end) {
-        return sha + '/' + path + '#L' + start + ((end && end !== start) ? '-L' + end : '');
-    };
-
-    var between = function(number, min, max) {
-        return number >= min && number <= max;
-    };
+    var regex = /([0-9a-fA-F]{40})\/(.*)R([0-9]+)/i;
 
     return {
-        get: function(sha, path, start, end) {
-            return reference(sha, path, start, end);
+
+        get: function(sha, path, position) {
+            return sha + '/' + path + 'R' + position;
         },
 
-        select: function(sha, path, start, end) {
-            if(end && end < start) {
-                end = [start, start = end][0];
-            }
-            return {
-                sha: sha,
-                path: path,
-                start: start,
-                end: end,
-                ref: reference(sha, path, start, end)
-            };
+        parse: function(ref) {
+            ref = regex.exec(ref);
+            return ref ? {sha: ref[1], path: ref[2], position: ref[3]} : null;
         },
 
-        starts: function(sha, path, line, ref) {
-            return ref && sha === ref.sha && path === ref.path && line === ref.start;
-        },
-
-        includes: function(sha, path, line, ref) {
-            return ref && sha === ref.sha && path === ref.path && (line === ref.start || between(line, ref.start, ref.end));
-        },
-
-        anchor: function(sha, path, line) {
-            return sha + ':' + path + ':' + line;
+        anchor: function(sha, path, position) {
+            return sha + ':' + path + ':' + position;
         }
     };
 }]);
+

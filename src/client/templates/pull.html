@@ -1,5 +1,5 @@
 <div class="row scaffold">
-  <div class="col-sm-9 pull">
+  <div class="col-sm-9 main">
     <div class="row">
       <div class="col-sm-12">
         <ol class="breadcrumb">
@@ -20,10 +20,10 @@
             </p>
             <p ng-bind-html="pull.html"></p>
           </div>
-          <merge-button permissions="repo.permissions"
-                        pull="pull"
-                        reposettings="reposettings"
+          <merge-button pull="pull"
                         status="status.value"
+                        permissions="repo.permissions"
+                        reposettings="reposettings"
                         get-long-star-text="getLongStarText()"
                         ng-show="status.loaded">
           </merge-button>
@@ -34,7 +34,7 @@
 
     <div class="row">
       <div class="col-sm-12">
-        <tabset>
+        <tabset class="pull-tabs">
           <tab>
             <tab-heading><span class="octicon octicon-diff"></span> Diffs</tab-heading>
 
@@ -52,11 +52,7 @@
                   <div class="clearfix"></div>
                   <graph class="git"
                          base-sha="pull.base.sha"
-                         issue-sha="sha"
-                         head-sha="head"
-                         active-sha="base"
-                         open-issues="open.value"
-                         compare="compComm(base, head)">
+                         head-sha="pull.head.sha">
                   </graph>
                   <div class="clearfix"></div>
                 </div>
@@ -70,7 +66,7 @@
                             tooltip="{{ pull.star ? 'Remove' : 'Add' }} ninja star"
                             tooltip-placement="bottom"
                             tooltip-append-to-body="true">
-                        <span class="fa-lg icon-ninja-star text-primary ob ob-star" ng-class="{muted: !pull.star}"></span>
+                        <span class="fa-lg icon-ninja-star text-primary" ng-class="{'ob': $root.ob === 'ob-star', 'rotate': $root.ob === 'ob-star', muted: !pull.star}"></span>
                     </button>
                     <div class="btn-group btn-group-lg">
                       <button type="button"
@@ -105,96 +101,18 @@
               </div>
             </div>
 
-            <diff ng-repeat="file in files"
+            <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="comp.loading"></i>
+
+            <diff ng-repeat="file in comp.value.files"
                   file="file"
-                  base-sha="base"
-                  head-sha="head"
-                  selection="reference.selection"
-                  ref-issues="reference.issues"
-                  issues="state==='open' ? open.value : closed.value"
-                  repo="repo">
+                  thread="review.thread">
             </diff>
 
           </tab>
 
           <tab>
             <tab-heading><span class="octicon octicon-file-code"></span> Files</tab-heading>
-            <browser sha="pull.head.sha"
-                     selection="reference.selection"
-                     ref-issues="reference.issues"
-                     issues="state==='open' ? open.value : closed.value">
-            </browser>
-          </tab>
-
-          <tab>
-            <tab-heading><span class="octicon octicon-comment-discussion"></span> Conversation</tab-heading>
-            <div infinite-scroll="comments.getMore()"
-                 infinite-scroll-disabled="comments.loading"
-                 style="margin:20px 0;">
-
-              <table style="width:100%;" ng-show="pull.html">
-                  <tr>
-                      <td style="width:42px; padding-right:10px; vertical-align:top;">
-                          <img ng-show="pull.user" ng-src="{{ pull.user ? pull.user.avatar_url + '&s=42' : '/assets/images/user_deleted.jpg' }}" width="42px" />
-                      </td>
-                      <td>
-                          <div class="panel panel-default comment">
-                              <div class="panel-heading">
-                                  <div class="panel-arrow"></div>
-                                  <strong>{{ pull.user.login }}</strong> commented <span moment="pull.created_at"></span>
-                              </div>
-                              <div class="panel-body" ng-bind-html="pull.html"></div>
-                          </div>
-                      </td>
-                  </tr>
-              </table>
-
-              <table style="width:100%;">
-                  <tr ng-repeat="comment in comments.value" ng-show="comment.html">
-                      <td style="width:42px; padding-right:10px; vertical-align:top;">
-                          <img ng-show="comment.user" ng-src="{{ comment.user ? comment.user.avatar_url + '&s=42' : '/assets/images/user_deleted.jpg'}}" width="42px" />
-                      </td>
-                      <td>
-                          <div class="panel panel-default comment">
-                              <div class="panel-heading">
-                                  <div class="panel-arrow"></div>
-                                  <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
-                              </div>
-                              <div class="panel-body" ng-bind-html="comment.html"></div>
-                          </div>
-                      </td>
-                  </tr>
-              </table>
-
-              <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="comments.loading"></i>
-
-              <form role="form" ng-submit="addComment()">
-                <table style="width:100%" ng-show="!comments.loading && !comments.hasMore">
-                    <tr>
-                        <td style="width:42px; padding-right:10px; vertical-align:top;">
-                            <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
-                        </td>
-                        <td>
-                            <div class="panel panel-default comment">
-                                <div class="panel-heading">
-                                  <div class="panel-arrow"></div>
-                                  <strong>{{ user.value.login }}</strong>
-                                </div>
-                                <div class="panel-body" style="padding:0;">
-                                    <textarea class="form-control" ng-model="$parent.$parent.comment" rows="4" placeholder="Leave a pull request comment"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="pull-right">
-                              <i class="fa fa-lg fa-spinner fa-spin" ng-show="commenting.loading" style="margin-right:10px;"></i>
-                              <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.$parent.comment">Comment</button>
-                            </div>
-                            <div style="clear:both;"></div>
-                        </td>
-                    </tr>
-                </table>
-              </form>
-            </div>
+            <browser sha="pull.head.sha"></browser>
           </tab>
 
           <tab>
@@ -228,9 +146,7 @@
   </div>
 
   <div class="col-sm-3 hidden-xs sidebar">
-    <div ui-scrollfix="{{ (!hook.value && !user.value.history.taskbar) ? '+156' : (!hook.value || !user.value.history.taskbar) ? '+104' : '+52' }}">
-      <section ui-view></section>
-    </div>
+    <section ui-view></section>
   </div>
 
 </div>

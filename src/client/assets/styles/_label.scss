@@ -1,0 +1,12 @@
+.label {
+  &.label-default {
+    color: $brand-primary;
+  }
+
+  &.label-danger,
+  &.label-success,
+  &.label-primary {
+    font-size: 80%;
+    font-weight: normal;
+  }
+}

@@ -15,7 +15,7 @@ var stats = require('../../../server/services/stats');
 var statsMiddleware = require('../../../server/middleware/stats');
 
 describe('stats:queries', function() {
-    it('Should have stats for each type: Add Star, Remove Star, Add Issue, Remove Issue, Create Comment, Merge.', function(done) {
+    it('Should have stats for each type: Add Star, Remove Star, Create Review Thread, Create Comment, Merge.', function(done) {
         var actionStub = sinon.stub(Action, 'where', function() {
             return {
                 count: function(done) {
@@ -27,7 +27,7 @@ describe('stats:queries', function() {
         stats.statsForUserAndRepo(1234, 'casche', 'AwesomeRepo', function(stats) {
             assert.equal(stats.addStar, 3);
             assert.equal(stats.removeStar, 3);
-            assert.equal(stats.addIssue, 3);
+            assert.equal(stats.createReviewThread, 3);
             assert.equal(stats.createComment, 3);
             assert.equal(stats.merge, 3);
         });
@@ -65,27 +65,6 @@ describe('stats:queries', function() {
 
         statsMiddleware({
             originalUrl: '/api/star/set',
-            user: {
-                id: 1234
-            },
-            args: {
-                user: 'batman',
-                repo: 'batarang'
-            }
-        }, null, function foo() {});
-
-        actionStub.restore();
-
-        done();
-    });
-
-    it('It should have middleware to capture adding an issue.', function(done) {
-        var actionStub = sinon.stub(Action, 'create', function(obj) {
-            assert.equal(obj.type, 'issues:add');
-        });
-
-        statsMiddleware({
-            originalUrl: '/api/issue/add',
             user: {
                 id: 1234
             },

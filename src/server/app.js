@@ -48,6 +48,8 @@ app.use('/github/webhook', require('./middleware/papertrail'));
 // karma middleware
 app.use('/api', require('./middleware/stats'));
 
+console.log('In server/app.js');
+
 async.series([
 
     function(callback) {
@@ -292,6 +294,12 @@ async.series([
     }
 
 ], function(err, res) {
+
+    if(err) {
+        console.log('✖ '.bold.red + 'failed to bootstrap app');
+        console.log(err);
+    }
+
     console.log('\n✓ '.bold.green + 'bootstrapped, '.bold + 'app listening on localhost:' + config.server.localport);
 });
 

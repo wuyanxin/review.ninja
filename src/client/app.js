@@ -1,4 +1,5 @@
 'use strict';
+
 var module = angular.module('app',
     ['ninja.config',
      'ninja.filters',
@@ -9,7 +10,7 @@ var module = angular.module('app',
      'ngSanitize',
      'angulartics',
      'angulartics.google.analytics',
-        'angular.filter']);
+     'angular.filter']);
 
 var filters = angular.module('ninja.filters', []);
 
@@ -90,7 +91,6 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             // Pull request state (abstract)
             //
             .state('repo.pull', {
-                abstract: true,
                 url: '/pull/:number',
                 templateUrl: '/templates/pull.html',
                 controller: 'PullCtrl',
@@ -100,7 +100,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
                     }],
                     pull: ['$stateParams', '$HUBService',
                         function($stateParams, $HUBService) {
-                            return $HUBService.wrap('pullRequests', 'get', {
+                            return $HUBService.call('pullRequests', 'get', {
                                 user: $stateParams.user,
                                 repo: $stateParams.repo,
                                 number: $stateParams.number
@@ -111,43 +111,29 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             })
 
             //
-            // Pull request issues state (abstract)
+            // Pull request review comments parent
             //
-            .state('repo.pull.issue', {
+            .state('repo.pull.review', {
                 abstract: true,
-                templateUrl: '/templates/sidebar.html'
+                url: '/{base:[0-9a-fA-F]{40}}...{head:[0-9a-fA-F]{40}}',
+                template: '<section ui-view></section>',
+                controller: 'ReviewCtrl'
             })
 
             //
-            // Pull request issues state (list of issues)
+            // Pull request review comments state
             //
-            .state('repo.pull.issue.master', {
+            .state('repo.pull.review.reviewList', {
                 url: '',
-                templateUrl: '/templates/issue/list.html',
-                controller: 'IssueListCtrl'
+                templateUrl: '/templates/reviewList.html'
             })
 
             //
-            // Pull request issue state
+            // Pull request review comment detail state
             //
-            .state('repo.pull.issue.detail', {
-                url: '/:issue',
-                templateUrl: '/templates/issue/detail.html',
-                controller: 'IssueDetailCtrl',
-                resolve: {
-                    repo: ['repo', function(repo) {
-                        return repo; // inherited from parent state
-                    }],
-                    issue: ['$HUBService', '$stateParams',
-                        function($HUBService, $stateParams) {
-                            return $HUBService.call('issues', 'getRepoIssue', {
-                                user: $stateParams.user,
-                                repo: $stateParams.repo,
-                                number: $stateParams.issue
-                            });
-                        }
-                    ]
-                }
+            .state('repo.pull.review.reviewItem', {
+                url: '/*ref',
+                templateUrl: '/templates/reviewItem.html'
             })
 
             //

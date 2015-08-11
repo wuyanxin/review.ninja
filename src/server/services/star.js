@@ -19,7 +19,7 @@ module.exports = {
             created_at: Date.now()
         }, function(err, star) {
             if(!err && star) {
-                io.emit(user + ':' + repo + ':' + 'pull_request', {action: 'starred', number: number});
+                io.emit(user + ':' + repo + ':' + 'pull_request_star', {action: 'starred', number: number});
                 status.update({
                     user: user,
                     repo: repo,
@@ -59,13 +59,9 @@ module.exports = {
             user: sender.id,
             repo: repo_uuid
         }, function(err, star) {
-            if(err || !star){
-                return done(err, star);
-            }
-
-            star.remove(function(err, star) {
-                if(!err && star) {
-                    io.emit(user + ':' + repo + ':' + 'pull_request', {action: 'unstarred', number: number});
+            if (!err && star) {
+                star.remove(function(err, star) {
+                    io.emit(user + ':' + repo + ':' + 'pull_request_star', {action: 'unstarred', number: number});
                     status.update({
                         user: user,
                         repo: repo,
@@ -91,10 +87,12 @@ module.exports = {
                         repo_uuid: repo_uuid,
                         token: token
                     });
-                }
 
-                done(err, star);
-            });
+                    if(typeof done === 'function') {
+                        done(err, star);
+                    }
+                });
+            }
         });
     }
 };
