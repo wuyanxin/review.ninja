@@ -51,11 +51,15 @@ webhook. We need to change this URL to ngrok instead of the default localhost.
 
 In GitHub go to your repo, then settings, then 'Webhooks & Services'. Find
 a URL that looks like this:
-```http://localhost:5000/github/webhook/8y7582c037e3f5fs0dpa48f2```
+```
+http://localhost:5000/github/webhook/8y7582c037e3f5fs0dpa48f2
+```
 
 And change it to your ngrok URL. This can be found in the logs of your ngrok 
 container. Be sure to keep "/github/webhook/..."
-```http://8795536b.ngrok.com/github/webhook/8y7582c037e3f5fs0dpa48f2```
+```
+http://8795536b.ngrok.com/github/webhook/8y7582c037e3f5fs0dpa48f2
+```
 
 
 ## License
