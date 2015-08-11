@@ -16,7 +16,9 @@ To setup your local environment:
 > For now, since we do not know what our application URL will be just enter
 > any URL for the homepage and callback URL.
 
-3) Copy and paste your client id/secret into `docker-compose.yml`
+3) Rename `docker-compose.example.yml` to `docker-compose.yml`
+
+4) Copy and paste your client id/secret into `docker-compose.yml`
 
 ```yml
 environment:
@@ -25,12 +27,12 @@ environment:
   GITHUB_SECRET: *Your generated client secret*
 ```
 
-4) Run `docker-compose up -d`
+5) Run `docker-compose up -d`
 
 > This will take a long time the very first time your run it since docker will
 > need to grab all images and dependancies.
 
-5) Set the application URL's
+6) Set the application URL's
 
 Now that our application is up and running we need to set the callback URL's
 so that we can authenticate with GitHub. For example, if your app container
@@ -41,7 +43,7 @@ Homepage URL: http://192.168.99.100:5000
 Authorization callback URL: http://192.168.99.100:5000/auth/github/callback
 ```
 
-6) Use ngrok to get GitHub webhooks (optional)
+7) Use ngrok to get GitHub webhooks (optional)
 
 For convienence we have included an ngrok container, we can use this service
 to forward webhook requests from GitHub to our local machine.
