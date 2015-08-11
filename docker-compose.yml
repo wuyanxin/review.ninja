@@ -1,5 +1,5 @@
 App:
-  image: node:0.12.2
+  image: node:0.12
   volumes:
    - .:/app
   command: sh -c "npm install -g nodemon; npm install -g bower; npm install; bower install --allow-root; nodemon app.js;"
@@ -10,8 +10,15 @@ App:
    - Mongo
   environment:
     MONGODB: mongodb://Mongo/reviewninja
-    GITHUB_CLIENT: fa0ea5e6c0a972fa5e3a
-    GITHUB_SECRET: 83f4f68e7af44c666f39e36ebfab219c4903f762
+    GITHUB_CLIENT: ### Please see: github.com/reviewninja/review.ninja/blob/master/CONTRIBUTING.md
+    GITHUB_SECRET: ### Please see: github.com/reviewninja/review.ninja/blob/master/CONTRIBUTING.md
 
 Mongo:
   image: mongo
+
+Ngrok:
+  image: centurylink/ngrok
+  links:
+   - App
+  environment:
+    HTTP_PORT: 5000
