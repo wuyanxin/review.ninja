@@ -1,22 +1,23 @@
 .btn {
   
   &.btn-link {
-    @mixin graybutton($hovercolor) {
-      color: $gray;
+
+    .graybutton(@hovercolor) {
+      color: @gray;
       padding: 0;
 
       &:hover,
       &.active,
       &:hover i,
       &.active i {
-        color: $hovercolor;
+        color: @hovercolor;
       }
     }
 
-    color: $brand-primary-muted;
+    color: @brand-primary-muted;
 
     &:hover {
-      color: $brand-primary;
+      color: @brand-primary;
       text-decoration: none;
     }
 
@@ -27,40 +28,40 @@
     &.active {
       background: none;
       box-shadow: none;
-      color: $brand-primary;
+      color: @brand-primary;
     }
 
     &.gray {
-      @include graybutton($gray-darker);
+      .graybutton(@gray-darker);
     }
 
     &.inverse {
-      @include graybutton(#fff);
+      .graybutton(#fff);
     }
   }
 
   &.btn-merged {
     background-color: #fff;
     border: 1px solid;
-    color: $brand-merged;
+    color: @brand-merged;
     opacity: 1;
   }
 
   &.btn-success {
-    background-color: $brand-success;
+    background-color: @brand-success;
 
     &:hover {
-      background-color: darken($brand-success, 5%);
+      background-color: darken(@brand-success, 5%);
     }
   }
 
   &.btn-simple {
     background-color: #fff;
     border-color: #ececec;
-    color: $brand-warning;
+    color: @brand-warning;
 
     &:hover {
-      color: $brand-warning;
+      color: @brand-warning;
       cursor: default;
     }
 
@@ -73,24 +74,24 @@
 
   &.btn-ninja {
     background-color: #fff;
-    border: 1px solid $gray-light;
+    border: 1px solid @gray-light;
     height: 50px;
     width: 50px;
 
     &:hover {
-      background-color: $gray-lighter;
+      background-color: @gray-lighter;
 
       .icon-ninja-star.muted {
-        color: $brand-primary;
+        color: @brand-primary;
       }
     }
 
     &.btn-threshold-reached {
-      color: $brand-success;
+      color: @brand-success;
     }
 
     &.btn-threshold-missing {
-      color: $brand-warning;
+      color: @brand-warning;
     }
   }
 }
