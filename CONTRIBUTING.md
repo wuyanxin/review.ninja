@@ -70,6 +70,19 @@ http://8795536b.ngrok.com/github/webhook/8y7582c037e3f5fs0dpa48f2
 ```
 
 
+## Running the test suites
+
+To run all tests: `npm test`.
+
+For convenience we have following gulp tasks:
+- gulp lint (eslinting)
+- gulp mocha (server side testing)
+- gulp karma (client side testing)
+
+You can run these tasks when developing using docker-compose by attaching to 
+the App container and running: `npm run lint`, `npm run mocha`, `npm run karma`.
+
+
 ## License
 
 Contributions to this project are very welcome, but can only be accepted if 
