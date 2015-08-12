@@ -1,7 +1,6 @@
 'use strict';
 var gulp = require('gulp'),
     eslint = require('gulp-eslint'),
-    scsslint = require('gulp-scss-lint'),
     config = require('../config').lint,
     runSequence = require('run-sequence');
 
@@ -13,12 +12,8 @@ gulp.task('eslint', function() {
     .pipe(eslint.failAfterError());
   });
 
-// scss lint task
-gulp.task('scsslint', function() {
-  return gulp.src(config.scssSrc)
-    .pipe(scsslint());
-});
+// TODO: find a good gulp less linter
 
 gulp.task('lint', function(callback) {
-  runSequence('eslint', 'scsslint', callback);
+  runSequence('eslint', callback);
 });

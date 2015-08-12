@@ -7,7 +7,6 @@ var glob = require('glob');
 var merge = require('merge');
 var passport = require('passport');
 var path = require('path');
-var sassMiddleware = require('node-sass-middleware');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Load configuration
@@ -114,22 +113,20 @@ async.series([
 
         console.log('bootstrap static files'.bold);
 
-        var publish = function(p, path) {
-            app.use(sassMiddleware({
-                src: p,
-                dest: p,
-                outputStyle: 'compressed',
-                force: config.server.always_recompile_sass
-            }));
-            app.use(path, express.static(p));
-        };
+        var lessMiddleware = require('less-middleware', {
+            force: config.server.always_recompile_less,
+            debug: config.server.always_recompile_less
+        });
 
         config.server.static.app.forEach(function(p) {
-            publish(p, '/');
+            app.use('/', lessMiddleware(p));
+            app.use('/', express.static(p));
         });
+
         config.server.static.lib.forEach(function(p) {
-            publish(p, '/lib');
+            app.use('/lib', express.static(p));
         });
+
         callback();
     },
 
