@@ -1,5 +1,15 @@
 # Contributing to ReviewNinja
 
+
+## Issues
+
+If you found a bug, or have a feature request, feel free to submit an issue letting
+us know about it. Even better, send us a pull request, see below for development
+instructions.
+
+
+## Pull Requests
+
 We provide a `docker-compose.yml` to make local development fun and simple.
 
 Prerequisites:
@@ -13,8 +23,7 @@ To setup your local environment:
 
 2) Create a GitHub [developer application](https://github.com/settings/applications/new)
 
-> For now, since we do not know what our application URL will be just enter
-> any URL for the homepage and callback URL.
+Just set the homepage and callback URL to anything for now (we will update this later).
 
 3) Rename `docker-compose.example.yml` to `docker-compose.yml`
 
@@ -28,9 +37,6 @@ environment:
 ```
 
 5) Run `docker-compose up -d`
-
-> This will take a long time the very first time your run it since docker will
-> need to grab all images and dependancies.
 
 6) Set the application URL's
 
