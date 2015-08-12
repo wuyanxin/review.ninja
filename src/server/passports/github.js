@@ -9,7 +9,6 @@ var sugar = require('array-sugar');
 passport.use(new Strategy({
         clientID: config.server.github.client,
         clientSecret: config.server.github.secret,
-        callbackURL: url.githubCallback,
         authorizationURL: url.githubAuthorization,
         tokenURL: url.githubToken,
         userProfileURL: url.githubProfile()
