@@ -12,12 +12,12 @@ var app = require('./src/server/app.js');
 
 console.log('Now lets create the server');
 
-var privateKey = fs.readFileSync('someprivatekey.pem').toString();
-var certificate = fs.readFileSync('somecertificate.pem').toString();
+var options = {
+  key: fs.readFileSync('someprivatekey.pem'),
+  cert: fs.readFileSync('somecert.pem')
+};
 
-var credentials = crypto.createCredentials({key: privateKey, cert: certificate});
-
-var server = https.createServer(app).setSecure(credentials).listen(config.server.localport);
+var server = https.createServer(options, app).listen(config.server.localport);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Initialize websockets
