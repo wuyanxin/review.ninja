@@ -51,8 +51,8 @@ router.all('/stats/release', function(req, res) {
         res.set('Access-Control-Allow-Origin', '*');
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify({
-            stat: 'v' + release.name,
-            text: 'The current release is v' + release.name
+            stat: release.name,
+            text: 'The current release is ' + release.name
         }));
     });
 });
