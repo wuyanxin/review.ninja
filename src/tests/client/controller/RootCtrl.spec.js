@@ -45,7 +45,8 @@ describe('Root Controller', function() {
             var ctrl = $controller('RootCtrl', {
                 $scope: scope,
                 $rootScope: rootScope,
-                $stateParams: $stateParams
+                $stateParams: $stateParams,
+                socket: {connect: function(){}}
             });
             return ctrl;
         };

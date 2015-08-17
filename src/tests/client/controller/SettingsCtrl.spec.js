@@ -11,9 +11,7 @@ describe('Settings Controller', function() {
 
         httpBackend = $injector.get('$httpBackend');
 
-        httpBackend.when('GET', '/config').respond({
-
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         callSlack = function() {
             httpBackend.expect('POST', '/api/repo/getSlack').respond({

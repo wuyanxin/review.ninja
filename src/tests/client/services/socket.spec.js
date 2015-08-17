@@ -16,6 +16,8 @@ describe('Socket Factory', function() {
 
         });
 
+        $rootScope.$config = {};
+
         scope = $rootScope.$new();
 
         socket = $injector.get('socket');

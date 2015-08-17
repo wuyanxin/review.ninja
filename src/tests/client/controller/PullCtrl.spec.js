@@ -71,9 +71,7 @@ describe('Pull Controller', function() {
     beforeEach(angular.mock.inject(function($injector) {
         // http requests
         httpBackend = $injector.get('$httpBackend');
-        httpBackend.when('GET', '/config').respond({
-
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"statuses","fun":"getCombined","arg":' + JSON.stringify({
           user: 'gabe',

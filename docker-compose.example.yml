@@ -1,0 +1,24 @@
+App:
+  image: node:0.12
+  volumes:
+   - .:/app
+  command: sh -c "npm install -g nodemon; npm install -g bower; npm install; bower install --allow-root; nodemon app.js;"
+  working_dir: /app/
+  ports:
+   - "5000:5000"
+  links:
+   - Mongo
+  environment:
+    MONGODB: mongodb://Mongo/reviewninja
+    GITHUB_CLIENT: ### Please see: github.com/reviewninja/review.ninja/blob/master/CONTRIBUTING.md
+    GITHUB_SECRET: ### Please see: github.com/reviewninja/review.ninja/blob/master/CONTRIBUTING.md
+
+Mongo:
+  image: mongo
+
+Ngrok:
+  image: centurylink/ngrok
+  links:
+   - App
+  environment:
+    HTTP_PORT: 5000

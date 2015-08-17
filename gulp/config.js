@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   browserSync: {
     client: 'src/client/*'
@@ -9,8 +11,7 @@ module.exports = {
   },
 
   lint: {
-    esSrc: ['*.js', 'src/**/*.js', 'gulp/**/*.js'],
-    scssSrc: 'src/client/assets/styles/*.scss'
+    esSrc: ['*.js', 'src/**/*.js', 'gulp/**/*.js']
   },
 
   tests: {

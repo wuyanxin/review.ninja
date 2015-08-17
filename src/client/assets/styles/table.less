@@ -3,7 +3,7 @@ table {
 }
 
 .table:not(.table-plain) {
-  background: $gray-lighter;
+  background: @gray-lighter;
 
   > tbody > tr > td {
     border-bottom: 10px solid #fff;
@@ -11,15 +11,15 @@ table {
 }
 
 .table.table-plain {
-  border: 1px solid $gray-light;
+  border: 1px solid @gray-light;
 
   th {
-    background: $gray-lighter;
+    background: @gray-lighter;
     padding: 10px 15px;
   }
   
   td {
-    border-top: 1px solid $gray-light;
+    border-top: 1px solid @gray-light;
     padding: 10px 15px;
   }
 }

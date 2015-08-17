@@ -8,8 +8,6 @@ var http = require('http');
 
 var app = require('./src/server/app.js');
 
-console.log('Now lets create the server');
-
 var server = http.createServer(app).listen(config.server.localport);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
