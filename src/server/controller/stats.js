@@ -36,7 +36,7 @@ router.all('/stats/star', function(req, res) {
 
 router.all('/stats/release', function(req, res) {
     github.call({
-        obj: 'releases', 
+        obj: 'releases',
         fun: 'latestRelease',
         arg: {
             owner: 'reviewninja',

@@ -1,6 +1,7 @@
 'use strict';
 
 var http = require('http');
+var https = require('https');
 
 var url = require('./url');
 var github = require('./github');
@@ -38,7 +39,7 @@ module.exports = {
                                     pull.stars = count;
                                     pull.threshold = repo.threshold;
 
-                                    var req = http.request({
+                                    var req = (config.server.slack.port === '443' ? https : http).request({
                                         host: config.server.slack.host,
                                         port: config.server.slack.port,
                                         path: config.server.slack.path,
