@@ -13,9 +13,7 @@ describe('Repo Controller', function() {
         $stateParams.repo = 'test';
         httpBackend = $injector.get('$httpBackend');
 
-        httpBackend.when('GET', '/config').respond({
-
-        });
+        httpBackend.when('GET', '/config').respond({});
 
         httpBackend.expect('POST', '/api/github/wrap', '{"obj":"pullRequests","fun":"getAll","arg":' + JSON.stringify({
           user: 'gabe',
@@ -60,7 +58,9 @@ describe('Repo Controller', function() {
             }
         };
 
+        $rootScope.$config = {};
         scope = $rootScope.$new();
+
         createCtrl = function() {
             var ctrl = $controller('RepoCtrl', {
                 $scope: scope,
