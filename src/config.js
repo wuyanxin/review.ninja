@@ -47,6 +47,8 @@ module.exports = {
             path: process.env.SLACK_PATH
         },
 
+        ws: process.env.WS,
+
         localport: process.env.PORT || 5000,
 
         always_recompile_less: process.env.NODE_ENV === 'production' ? false : true,
