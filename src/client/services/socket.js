@@ -17,7 +17,7 @@
 //
 
 module.factory('socket', ['$rootScope', function($rootScope) {
-    var socket = io.connect($rootScope.$config.ws || null);
+    var socket = io.connect();
     return {
         on: function(eventName, callback) {
             socket.on(eventName, function () {

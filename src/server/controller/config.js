@@ -10,7 +10,6 @@ router.all('/config', function(req, res) {
     res.send(JSON.stringify({
         terms: config.terms,
         gacode: config.client.gacode,
-        ws: config.server.ws,
         enterprise: config.server.github.enterprise,
         slack: !!config.server.slack.host
     }));
