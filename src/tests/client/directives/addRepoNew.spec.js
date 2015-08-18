@@ -17,7 +17,6 @@ describe('Add Repo (new) Directive', function() {
         });
 
         httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":' + JSON.stringify({
-           headers: {accept: 'application/vnd.github.moondragon+json'},
            per_page: 50
         }) + '}').respond({
             value: {

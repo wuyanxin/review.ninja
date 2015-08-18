@@ -17,10 +17,7 @@ module.directive('addRepoNew', ['$stateParams', '$HUB', '$RPC',
             },
             link: function(scope, elem, attrs) {
 
-                scope.allRepos = $HUB.call('repos', 'getAll', {
-                    headers: {accept: 'application/vnd.github.moondragon+json'},
-                    per_page: 50
-                });
+                scope.allRepos = $HUB.call('repos', 'getAll', {per_page: 50});
 
                 //
                 // Actions
