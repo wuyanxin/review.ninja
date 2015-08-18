@@ -90,4 +90,18 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
     });
 });
 
+router.all('/:repoId/badge', function(req, res) {
+
+    Star.count({
+        repo: req.params.repoId
+    }, function(err, count) {
+
+        count = count || 0;
+
+        res.redirect('https://img.shields.io/badge/Ninja stars-' + count + '-3e9a94.svg');
+
+    });
+
+});
+
 module.exports = router;

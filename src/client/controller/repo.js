@@ -93,7 +93,8 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$timeout', '
         $scope.badge = function() {
             var modal = $modal.open({
                 templateUrl: '/modals/templates/badge.html',
-                controller: 'BadgeCtrl'
+                controller: 'BadgeCtrl',
+                resolve: {repo: function() { return repo; }}
             });
         };
 
