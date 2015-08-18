@@ -5,7 +5,9 @@
         <ol class="breadcrumb" style="margin:30px 0;">
           <li><a ui-sref="repo.master()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
           <li class="pull-right settings-icon" ng-show="repo.value.permissions.push"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
-          <li class="pull-right" style="margin-top:-2px;"><a href="" ng-click="badge()"><img src="/assets/images/wereviewninja-24.png" /></a></li>
+          <li class="pull-right" style="margin-top:-1px;">
+            <a href="" ng-click="badge()"><img ng-src="/{{ repo.value.id }}/badge" /></a>
+          </li>
         </ol>
       </div>
     </div>
