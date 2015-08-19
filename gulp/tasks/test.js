@@ -1,16 +1,16 @@
 'use strict';
 var gulp = require('gulp'),
     mocha = require('gulp-mocha'),
-    karma = require('karma').server,
+    Server = require('karma').Server,
     config = require('../config').tests,
     runSequence = require('run-sequence');
 
 // client-side tests
-gulp.task('karma', function() {
-  return karma.start({
+gulp.task('karma', function(done) {
+  new Server({
     configFile: __dirname + '/../../' + config.karmaSrc,
     singleRun: true
-  });
+  }, done).start();
 });
 
 // server-side tests
