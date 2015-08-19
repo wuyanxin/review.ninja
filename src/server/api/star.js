@@ -1,10 +1,37 @@
 'use strict';
+
 // models
 var Star = require('mongoose').model('Star');
 
 // services
 var github = require('../services/github');
 var star = require('../services/star');
+
+// helper functions
+var exec = function(type, args, user, done) {
+
+    github.call({
+        obj: 'repos',
+        fun: 'one',
+        arg: { id: args.repo_uuid },
+        token: user.token
+    }, function(err, repo) {
+
+        if(err) {
+            return done(err, repo);
+        }
+
+        if(!repo.permissions.pull) {
+            return done({
+                code: 403,
+                text: 'Forbidden'
+            });
+        }
+
+        star[type](args.sha, args.user, args.repo, args.repo_uuid, args.number, user, user.token, done);
+
+    });
+};
 
 module.exports = {
 
@@ -47,27 +74,8 @@ module.exports = {
 
     set: function(req, done) {
 
-        github.call({
-            obj: 'repos',
-            fun: 'one',
-            arg: { id: req.args.repo_uuid },
-            token: req.user.token
-        }, function(err, repo) {
+        exec('create', req.args, req.user, done);
 
-            if(err) {
-                return done(err, repo);
-            }
-
-            if(!repo.permissions.pull) {
-                return done({
-                    code: 403,
-                    text: 'Forbidden'
-                });
-            }
-
-            star.create(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user, req.user.token, done);
-
-        });
     },
 
     /************************************************************************************************************
@@ -80,25 +88,7 @@ module.exports = {
 
     rmv: function(req, done) {
 
-        github.call({
-            obj: 'repos',
-            fun: 'one',
-            arg: { id: req.args.repo_uuid },
-            token: req.user.token
-        }, function(err, repo) {
+        exec('remove', req.args, req.user, done);
 
-            if(err) {
-                return done(err, repo);
-            }
-
-            if(!repo.permissions.pull) {
-                return done({
-                    code: 403,
-                    text: 'Forbidden'
-                });
-            }
-
-            star.remove(req.args.sha, req.args.user, req.args.repo, req.args.repo_uuid, req.args.number, req.user, req.user.token, done);
-        });
     }
 };
