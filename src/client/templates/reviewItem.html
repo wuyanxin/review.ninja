@@ -13,7 +13,7 @@
 
 <div style="padding:20px 10px; margin-bottom:20px;">
   <table style="width:100%;">
-    <tr ng-repeat="comment in review.thread[$stateParams.ref].comments" ng-show="comment.html">
+    <tr ng-repeat="comment in review.thread[$stateParams.ref].comments | unique:'id'" ng-show="comment.html">
       <td style="width:42px; padding-right:10px; vertical-align:top;">
         <img ng-show="comment.user" ng-src="{{ comment.user ? comment.user.avatar_url + '&s=42' : '/assets/images/user_deleted.jpg'}}" width="42px" />
       </td>
