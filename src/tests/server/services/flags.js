@@ -1,8 +1,7 @@
 'use strict';
+
 // unit test
-var rewire = require('rewire');
 var assert = require('assert');
-var sinon = require('sinon');
 
 // services
 var flags = require('../../../server/services/flags');

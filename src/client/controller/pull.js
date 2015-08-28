@@ -108,6 +108,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     commit_id: ref.sha,
                     path: ref.path,
                     position: ref.position
+                }, function(err, comment) {
+                    if(!err) {
+                        $scope.review.value.push(Comment.review(comment.value) && Markdown.render(comment.value));
+                    }
                 });
             }
         };
@@ -119,6 +123,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     repo: $stateParams.repo,
                     number: $stateParams.number,
                     body: comment
+                }, function(err, comment) {
+                    if(!err) {
+                        $scope.conversation.value.push(Markdown.render(comment.value));
+                    }
                 });
             }
         };
