@@ -60,6 +60,29 @@
     </div>
   </div>
 
+  <!-- the survey bar -->
+  <div class="container-fluid" ng-cloak ng-show="user.value && user.value.history.welcome && $config.survey && $config.survey !== user.value.history.survey">
+    <div class="row">
+      <div class="col-md-12 alert alert-info" style="margin:0;">
+        <strong>We could sure use your help!</strong> Would you be willing to give us some quick (5-10 mins) feedback?
+        <a role="button" 
+           class="btn btn-primary btn-xs pull-right"
+           ng-click="dismiss('survey', $config.survey)"
+           ng-href="{{ $config.survey }}"
+           target="_blank">
+          Sure!
+        </a>
+        <a role="button" 
+           class="btn btn-default btn-xs pull-right"
+           style="margin-right: 10px;"
+           ng-click="dismiss('survey', $config.survey)">
+          No, thanks
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- the application -->
   <div class="container-fluid" style="margin-bottom:40px;">
     <div class="row">
       <div class="col-md-12">
