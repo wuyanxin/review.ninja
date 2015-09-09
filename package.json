@@ -100,6 +100,7 @@
     "test": "gulp",
     "lint": "gulp lint",
     "mocha": "gulp mocha",
-    "karma": "gulp karma"
+    "karma": "gulp karma",
+    "postinstall": "bower install --allow-root"
   }
 }
