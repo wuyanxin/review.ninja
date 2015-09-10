@@ -55,10 +55,13 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state',
             });
         };
 
-        $rootScope.dismiss = function(todismiss) {
-            $RPC.call('user', 'dismiss', { dismiss: todismiss }, function(err, res) {
+        $rootScope.dismiss = function(key, val) {
+            $RPC.call('user', 'dismiss', {
+                key: key,
+                val: val
+            }, function(err, res) {
                 if(!err) {
-                    $rootScope.user.value.history[todismiss] = true;
+                    $rootScope.user.value.history[key] = val || true;
                 }
             });
         };

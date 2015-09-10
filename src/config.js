@@ -145,7 +145,8 @@ module.exports = {
     },
 
     client: {
-        gacode: process.env.GACODE
+        gacode: process.env.GACODE,
+        survey: process.env.SURVEY_URL
     }
 
 };

@@ -76,7 +76,7 @@ describe('Root Controller', function() {
 
     it('should send call to dismiss from history', function() {
         httpBackend.expect('POST', '/api/user/dismiss', JSON.stringify({
-            dismiss: 'create'
+            key: 'create'
         })).respond({
             value: true
         });

@@ -16,7 +16,7 @@
     },
     "PROTOCOL": {
       "description": "The protocol your application uses, can be either 'http' or 'https'.",
-      "value": "http"
+      "value": "https"
     },
     "SESSION_SECRET": {
       "description": "A secret key for verifying the integrity of signed cookies.",
@@ -50,6 +50,54 @@
     },
     "GITHUB_PASS": {
       "description": "Required if you wish for a 'ReviewNinja' user to comment on PRs. Generate a token here: https://github.com/settings/tokens/new. Only public_repo is necessary.",
+      "required": false
+    },
+    "SMTP_HOST": {
+      "description": "The hostname of your SMTP server, used for email notifications.",
+      "required": false
+    },
+    "SMTP_SSL": {
+      "description": "Set to 'true' if your SMTP server uses SSL.",
+      "required": false
+    },
+    "SMTP_PORT": {
+      "description": "Defaults to 25 or 465.",
+      "required": false
+    },
+    "SMTP_USER": {
+      "description": "SMTP auth user.",
+      "required": false
+    },
+    "SMTP_PASS": {
+      "description": "SMTP auth password.",
+      "required": false
+    },
+    "SMTP_FROM": {
+      "description": "Email address notifications are sent from. Defaults to 'ReviewNinja <noreply@review.ninja>'.",
+      "required": false
+    },
+    "TERMS_URL": {
+      "description": "A terms of use for your ReviewNinja application. GitHub Gists work well.",
+      "required": false
+    },
+    "GACODE": {
+      "description": "Google Analytics tracking code.",
+      "required": false
+    },
+    "SLACK_HOST": {
+      "description": "Slack hostname for ReviewNinja slack-hooks (https://github.com/reviewninja/slack-hooks).",
+      "required": false
+    },
+    "SLACK_PORT": {
+      "description": "Slack port. Defaults to 80 or 443.",
+      "required": false
+    },
+    "SLACK_PORT": {
+      "description": "Slack port.",
+      "required": false
+    },
+    "SLACK_PATH": {
+      "description": "Slack path, appended to HOST andm PORT to create <HOST>:<PORT><PATH>.",
       "required": false
     }
   },

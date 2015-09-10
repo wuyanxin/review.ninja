@@ -95,7 +95,7 @@ module.exports = {
                     history[h] = user.history[h];
                 }
 
-                history[req.args.dismiss] = true;
+                history[req.args.key] = req.args.val || true;
                 user.history = history;
 
                 user.save();
