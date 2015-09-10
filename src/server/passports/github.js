@@ -2,7 +2,7 @@
 var github = require('../services/github');
 var url = require('../services/url');
 var passport = require('passport');
-var Strategy = require('passport-github').Strategy;
+var Strategy = require('passport-github2').Strategy;
 var merge = require('merge');
 var sugar = require('array-sugar');
 
