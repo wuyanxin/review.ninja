@@ -44,7 +44,12 @@
               <strong>{{ user.value.login }}</strong>
             </div>
             <div class="panel-body" style="padding:0;">
-              <textarea class="form-control" ng-model="reviewComment" rows="4" placeholder="Leave line note comment"></textarea>
+              <textarea class="form-control" 
+                        ng-model="reviewComment" 
+                        rows="4" 
+                        placeholder="Leave line note comment" 
+                        text-complete="review">
+              </textarea>
             </div>
           </div>
 
