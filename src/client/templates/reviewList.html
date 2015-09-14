@@ -106,7 +106,12 @@
                   <strong>{{ user.value.login }}</strong>
                 </div>
                 <div class="panel-body" style="padding:0;">
-                  <textarea class="form-control" ng-model="comment" rows="4" placeholder="Leave pull request comment"></textarea>
+                  <textarea class="form-control" 
+                            ng-model="comment" 
+                            rows="4" 
+                            placeholder="Leave pull request comment"
+                            text-complete="star">
+                  </textarea>
                 </div>
               </div>
 
