@@ -49,7 +49,8 @@
                         ng-model="reviewComment" 
                         rows="4" 
                         placeholder="Leave line note comment" 
-                        text-complete="review">
+                        text-complete="review"
+                        ui-keypress="{'ctrl-13': 'addReviewComment(reviewComment, $stateParams.ref); $event.preventDefault(); reviewComment=\'\';'}">
               </textarea>
             </div>
           </div>
