@@ -21,7 +21,8 @@
         <div class="panel panel-default comment">
           <div class="panel-heading">
             <div class="panel-arrow"></div>
-            <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
+            <a ng-href="{{ comment.user.html_url }}"><strong>{{ comment.user.login }}</strong></a> 
+            commented <a moment="comment.created_at" ng-href="{{ comment.html_url }}"></a>
           </div>
           <div class="panel-body" ng-bind-html="comment.html"></div>
         </div>
@@ -44,7 +45,13 @@
               <strong>{{ user.value.login }}</strong>
             </div>
             <div class="panel-body" style="padding:0;">
-              <textarea class="form-control" ng-model="reviewComment" rows="4" placeholder="Leave line note comment"></textarea>
+              <textarea class="form-control" 
+                        ng-model="reviewComment" 
+                        rows="4" 
+                        placeholder="Leave line note comment" 
+                        text-complete="review"
+                        ui-keypress="{'ctrl-13': 'addReviewComment(reviewComment, $stateParams.ref); $event.preventDefault(); reviewComment=\'\';'}">
+              </textarea>
             </div>
           </div>
 

@@ -83,7 +83,8 @@
             <div class="panel panel-default comment">
               <div class="panel-heading">
                 <div class="panel-arrow"></div>
-                <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
+                <a ng-href="{{ comment.user.html_url }}"><strong>{{ comment.user.login }}</strong></a> 
+                commented <a moment="comment.created_at" ng-href="{{ comment.html_url }}"></a></span>
               </div>
               <div class="panel-body" ng-bind-html="comment.html"></div>
             </div>
@@ -93,7 +94,7 @@
 
       <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="conversation.loading"></i>
 
-      <form role="form" ng-submit="addComment(comment); comment=null;">
+      <form role="form" ng-submit="addComment(comment); comment='';">
         <table style="width:100%" ng-show="!conversation.loading && !conversation.hasMore">
           <tr>
             <td style="width:42px; padding-right:10px; vertical-align:top;">
@@ -106,7 +107,13 @@
                   <strong>{{ user.value.login }}</strong>
                 </div>
                 <div class="panel-body" style="padding:0;">
-                  <textarea class="form-control" ng-model="comment" rows="4" placeholder="Leave pull request comment"></textarea>
+                  <textarea class="form-control" 
+                            ng-model="comment" 
+                            rows="4" 
+                            placeholder="Leave pull request comment"
+                            text-complete="star"
+                            ui-keypress="{'ctrl-13': 'addComment(comment); $event.preventDefault(); comment=\'\';'}">
+                  </textarea>
                 </div>
               </div>
 
