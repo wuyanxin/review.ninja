@@ -17,7 +17,8 @@ module.factory('Extra', ['$HUB', function($HUB) {
         {label: 'resolved', icon: 'octicon octicon-issue-closed text-primary', type: 'review'},
         {label: 'completed', icon: 'octicon octicon-issue-closed text-primary', type: 'review'},
         {label: 'star', icon: 'icon-ninja-star text-primary', type: 'star'},
-        {label: 'ninjastar', icon: 'icon-ninja-star text-primary', type: 'star'}
+        {label: 'ninjastar', icon: 'icon-ninja-star text-primary', type: 'star'},
+        {label: 'unstar', icon: 'icon-ninja-star text-primary muted', type: 'star'}
     ];
 
     return {
