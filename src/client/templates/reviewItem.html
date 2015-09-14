@@ -21,7 +21,8 @@
         <div class="panel panel-default comment">
           <div class="panel-heading">
             <div class="panel-arrow"></div>
-            <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
+            <a ng-href="{{ comment.user.html_url }}"><strong>{{ comment.user.login }}</strong></a> 
+            commented <a moment="comment.created_at" ng-href="{{ comment.html_url }}"></a>
           </div>
           <div class="panel-body" ng-bind-html="comment.html"></div>
         </div>
