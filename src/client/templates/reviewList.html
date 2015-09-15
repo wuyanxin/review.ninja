@@ -112,7 +112,8 @@
                             rows="4" 
                             placeholder="Leave pull request comment"
                             text-complete="star"
-                            ui-keypress="{'ctrl-13': 'addComment(comment); $event.preventDefault(); comment=\'\';'}">
+                            ui-keypress="{'ctrl-13': 'addComment(comment); $event.preventDefault(); comment=\'\';'}"
+                            ui-keydown="{'meta-13': 'addComment(comment); $event.preventDefault(); comment=\'\';'}">
                   </textarea>
                 </div>
               </div>
