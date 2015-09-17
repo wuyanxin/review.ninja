@@ -114,6 +114,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 }, function(err, c) {
                     if(!err) {
                         comment.body = '';
+                        comment.html = '';
                         $scope.review.value.push(Comment.review(c.value) && Markdown.render(c.value));
                     }
                 });
@@ -130,6 +131,7 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 }, function(err, c) {
                     if(!err) {
                         comment.body = '';
+                        comment.html = '';
                         $scope.conversation.value.push(Markdown.render(c.value));
                     }
                 });
