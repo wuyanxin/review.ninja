@@ -204,9 +204,9 @@ describe('Pull Controller', function() {
             value: true
         });
         var PullCtrl = createCtrl();
-        scope.addComment('lol');
+        scope.addComment({body: 'lol'});
         httpBackend.flush();
-        ([scope.comment]).should.be.eql([null]);
+        ([scope.comment]).should.be.eql([{}]);
     });
 
     // watch

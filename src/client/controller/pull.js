@@ -68,6 +68,9 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             }
         });
 
+        $scope.comment = {};
+        $scope.reviewComment = {};
+
 
         //
         // Messages
@@ -99,36 +102,44 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
             ref = Reference.parse(ref);
 
-            if(comment && ref) {
+            if(comment && comment.body && ref) {
                 $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
-                    body: comment,
+                    body: comment.body,
                     commit_id: ref.sha,
                     path: ref.path,
                     position: ref.position
-                }, function(err, comment) {
+                }, function(err, c) {
                     if(!err) {
-                        $scope.review.value.push(Comment.review(comment.value) && Markdown.render(comment.value));
+                        comment.body = '';
+                        comment.html = '';
+                        $scope.review.value.push(Comment.review(c.value) && Markdown.render(c.value));
                     }
                 });
             }
         };
 
         $scope.addComment = function(comment) {
-            if(comment) {
+            if(comment && comment.body) {
                 $scope.commenting = $HUB.wrap('issues', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
                     number: $stateParams.number,
-                    body: comment
-                }, function(err, comment) {
+                    body: comment.body
+                }, function(err, c) {
                     if(!err) {
-                        $scope.conversation.value.push(Markdown.render(comment.value));
+                        comment.body = '';
+                        comment.html = '';
+                        $scope.conversation.value.push(Markdown.render(c.value));
                     }
                 });
             }
+        };
+
+        $scope.preview = function(comment) {
+            comment.html = comment.html ? null : Markdown.render(comment).html;
         };
 
 

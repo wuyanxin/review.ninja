@@ -105,16 +105,24 @@
                 <div class="panel-heading">
                   <div class="panel-arrow"></div>
                   <strong>{{ user.value.login }}</strong>
+                  <button ng-click="preview(comment)" 
+                          ng-show="comment.body"
+                          type="button"
+                          class="btn btn-xs btn-default pull-right">
+                    {{ comment.html ? 'Write' : 'Preview' }}
+                  </button>
                 </div>
                 <div class="panel-body" style="padding:0;">
-                  <textarea class="form-control" 
-                            ng-model="comment" 
+                  <textarea class="form-control"
+                            ng-show="!comment.html" 
+                            ng-model="comment.body" 
                             rows="4" 
                             placeholder="Leave pull request comment"
                             text-complete="star"
-                            ui-keypress="{'ctrl-13': 'addComment(comment); $event.preventDefault(); comment=\'\';'}"
-                            ui-keydown="{'meta-13': 'addComment(comment); $event.preventDefault(); comment=\'\';'}">
+                            ui-keypress="{'ctrl-13': 'addComment(comment); $event.preventDefault();'}"
+                            ui-keydown="{'meta-13': 'addComment(comment); $event.preventDefault();'}">
                   </textarea>
+                  <div ng-show="comment.html" ng-bind-html="comment.html" style="padding: 15px;"></div>
                 </div>
               </div>
 
