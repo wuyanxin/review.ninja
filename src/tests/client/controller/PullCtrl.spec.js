@@ -73,6 +73,10 @@ describe('Pull Controller', function() {
         httpBackend = $injector.get('$httpBackend');
         httpBackend.when('GET', '/config').respond({});
 
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"misc","fun":"emojis"}').respond({
+            value: 'success'
+        });
+
         httpBackend.expect('POST', '/api/github/call', '{"obj":"statuses","fun":"getCombined","arg":' + JSON.stringify({
           user: 'gabe',
           repo: 'test',
@@ -104,6 +108,17 @@ describe('Pull Controller', function() {
         }) + '}').respond({
             data: [{body: 'test'},
             {body: 'this'}]
+        });
+
+        httpBackend.expect('POST', '/api/github/call', JSON.stringify({
+          obj: 'repos',
+          fun: 'getCollaborators',
+          arg: {
+            user: 'gabe',
+            repo: 'test'
+          }
+        })).respond({
+            value: 'success'
         });
     }));
 
