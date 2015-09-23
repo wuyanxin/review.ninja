@@ -221,7 +221,20 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
             if($scope.pull.number === args.number) {
-                $rootScope.refresh = args;
+
+                if(args.action === 'synchronize' && args.head !== $scope.pull.head) {
+                    $state.go('.', {base: args.base, head: args.head}, {reload: true});
+                }
+
+                $HUB.call('pullRequests', 'get', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number
+                }, function(err, pull) {
+                    if(!err) {
+                        angular.extend($scope.pull, pull.value);
+                    }
+                });
             }
         });
 
