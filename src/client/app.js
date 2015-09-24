@@ -125,7 +125,8 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             //
             .state('repo.pull.review.reviewList', {
                 url: '?conversation',
-                templateUrl: '/templates/reviewList.html'
+                templateUrl: '/templates/reviewList.html',
+                reloadOnSearch: false
             })
 
             //

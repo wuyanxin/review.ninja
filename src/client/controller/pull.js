@@ -8,8 +8,26 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Markdown', 'Reference', 'Comment', 'Extra', 'repo', 'pull', 'socket', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Markdown, Reference, Comment, Extra, repo, pull, socket, $timeout) {
+module.controller('PullCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    '$stateParams',
+    '$modal',
+    '$filter',
+    '$location',
+    '$anchorScroll',
+    '$HUB',
+    '$RPC',
+    'Pull',
+    'Markdown',
+    'Reference',
+    'Comment',
+    'Extra',
+    'repo',
+    'pull',
+    'socket',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $location, $anchorScroll, $HUB, $RPC, Pull, Markdown, Reference, Comment, Extra, repo, pull, socket) {
 
         //
         // HACK?
@@ -159,6 +177,12 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                     $scope.pull.assignee = pull.value.assignee;
                 }
             });
+        };
+
+        $scope.scrollTo = function(anchor) {
+            $location.hash(anchor);
+            $anchorScroll();
+            $location.hash(null);
         };
 
 

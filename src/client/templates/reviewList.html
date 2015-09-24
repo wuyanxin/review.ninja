@@ -40,7 +40,9 @@
       </tr>
       <tr>
         <td colspan="3" style="background: #ececec; padding: 5px 25px;">
-          <span class="label label-default">{{ thread.sha | limitTo:7 }}: {{ thread.file }}</span>
+          <a ng-click="scrollTo(thread.anchor)" class="label label-default">
+            {{ thread.sha | limitTo:7 }}: {{ thread.file }}
+          </a>
           <div dropdown 
                class="btn-group pull-right" 
                ng-class="{'wobble-vertical': $root.ob === 'ob-addstatus' && $index === 0}" 
