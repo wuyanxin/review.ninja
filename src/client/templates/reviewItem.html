@@ -1,92 +1,99 @@
-<table class="table" style="table-layout:fixed; margin-bottom:0px;">
-  <tr class="no-select">
-    <td style="padding-right:0px;">
-        <a class="text-primary" ui-sref="repo.pull.review.reviewList({base: pull.base.sha, head: pull.head.sha})">
-          <i class="fa fa-lg fa-angle-left"></i> All reviews
-        </a>
-    </td>
-    <td class="text-right text-primary" style="width:80px; padding-left:0;">
-      <i class="octicon octicon-comment"></i> {{ review.thread[$stateParams.ref].comments.length }}
-    </td>
-  </tr>
-</table>
+<tabset class="review-tabs">
+  <tab ui-sref="repo.pull.review.reviewList({base: pull.base.sha, head: pull.head.sha})">
+    <tab-heading>
+      <span class="octicon octicon-code"></span> 
+      <span class="hidden-sm hidden-md">Review Status</span>
+    </tab-heading>
+  </tab>
+  <tab ui-sref="repo.pull.review.reviewList({base: pull.base.sha, head: pull.head.sha, conversation: true})">
+    <tab-heading>
+      <span class="octicon octicon-comment-discussion"></span> 
+      <span class="hidden-sm hidden-md">Conversation</span>
+    </tab-heading>
+  </tab>
+  <tab active="true" class="pull-right">
+    <tab-heading>
+      <i class="octicon octicon-comment"></i> {{ (review.thread[$stateParams.ref].comments | unique:'id').length }}
+    </tab-heading>
 
-<div style="padding:20px 10px; margin-bottom:20px;">
-  <table style="width:100%;">
-    <tr ng-repeat="comment in review.thread[$stateParams.ref].comments | unique:'id'" ng-show="comment.html">
-      <td style="width:42px; padding-right:10px; vertical-align:top;">
-        <img ng-show="comment.user" ng-src="{{ comment.user ? comment.user.avatar_url + '&s=42' : '/assets/images/user_deleted.jpg'}}" width="42px" />
-      </td>
-      <td>
-        <div class="panel panel-default comment">
-          <div class="panel-heading">
-            <div class="panel-arrow"></div>
-            <a ng-href="{{ comment.user.html_url }}"><strong>{{ comment.user.login }}</strong></a> 
-            commented <a moment="comment.created_at" ng-href="{{ comment.html_url }}"></a>
-          </div>
-          <div class="panel-body" ng-bind-html="comment.html"></div>
-        </div>
-      </td>
-    </tr>
-  </table>
-
-  <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
-
-  <form role="form" ng-submit="addReviewComment(reviewComment, $stateParams.ref)">
-    <table style="width:100%" ng-show="!review.loading && !review.hasMore">
-      <tr>
-        <td style="width:42px; padding-right:10px; vertical-align:top;">
-          <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
-        </td>
-        <td>
-          <div class="panel panel-default comment">
-            <div class="panel-heading">
-              <div class="panel-arrow"></div>
-              <strong>{{ user.value.login }}</strong>
-              <button ng-click="preview(reviewComment)" 
-                      ng-show="reviewComment.body"
-                      type="button"
-                      class="btn btn-xs btn-default pull-right">
-                {{ reviewComment.html ? 'Write' : 'Preview' }}
-              </button>
+    <div style="padding:20px 10px; margin-bottom:20px;">
+      <table style="width:100%;">
+        <tr ng-repeat="comment in review.thread[$stateParams.ref].comments | unique:'id'" ng-show="comment.html">
+          <td style="width:42px; padding-right:10px; vertical-align:top;">
+            <img ng-show="comment.user" ng-src="{{ comment.user ? comment.user.avatar_url + '&s=42' : '/assets/images/user_deleted.jpg'}}" width="42px" />
+          </td>
+          <td>
+            <div class="panel panel-default comment">
+              <div class="panel-heading">
+                <div class="panel-arrow"></div>
+                <a ng-href="{{ comment.user.html_url }}"><strong>{{ comment.user.login }}</strong></a> 
+                commented <a moment="comment.created_at" ng-href="{{ comment.html_url }}"></a>
+              </div>
+              <div class="panel-body" ng-bind-html="comment.html"></div>
             </div>
-            <div class="panel-body" style="padding:0;">
-              <textarea class="form-control" 
-                        ng-model="reviewComment.body" 
-                        ng-show="!reviewComment.html" 
-                        rows="4" 
-                        placeholder="Leave line note comment" 
-                        text-complete="review"
-                        ui-keypress="{'ctrl-13 meta-65': 'addReviewComment(reviewComment, $stateParams.ref); $event.preventDefault();'}"
-                        ui-keydown="{'meta-13': 'addReviewComment(reviewComment, $stateParams.ref); $event.preventDefault();'}">
-              </textarea>
-              <div ng-show="reviewComment.html" ng-bind-html="reviewComment.html" style="padding: 15px;"></div>
-            </div>
-          </div>
+          </td>
+        </tr>
+      </table>
 
-          <div class="pull-right">
-            <i class="fa fa-lg fa-spinner fa-spin" ng-show="reviewing.loading"></i>
-            <div class="btn-group dropup">
-              <button class="btn btn-default dropdown-toggle"
-                      ng-class="{'wobble-vertical': $root.ob === 'ob-addstatus'}"
-                      type="button" 
-                      data-toggle="dropdown" 
-                      aria-haspopup="true" 
-                      aria-expanded="true">
-                Add status <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="flag in ['!fix', '!resolve', '!fixed', '!resolved', '!completed']">
-                  <a href="" ng-click="$parent.reviewComment = ($parent.reviewComment[$parent.reviewComment.length-1] === ' ') ? ($parent.reviewComment + flag) : ($parent.reviewComment + ' ' + flag)">{{ flag }}</a>
-                </li>
-              </ul>
-            </div>
-            <button type="submit" class="btn btn-primary ob-leavecomment"  ng-disabled="!reviewComment">Comment</button>
-          </div>
+      <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading"></i>
 
-          <div style="clear:both;"></div>
-        </td>
-      </tr>
-    </table>
-  </form>
-</div>
+      <form role="form" ng-submit="addReviewComment(reviewComment, $stateParams.ref)">
+        <table style="width:100%" ng-show="!review.loading && !review.hasMore">
+          <tr>
+            <td style="width:42px; padding-right:10px; vertical-align:top;">
+              <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
+            </td>
+            <td>
+              <div class="panel panel-default comment">
+                <div class="panel-heading">
+                  <div class="panel-arrow"></div>
+                  <strong>{{ user.value.login }}</strong>
+                  <button ng-click="preview(reviewComment)" 
+                          ng-show="reviewComment.body"
+                          type="button"
+                          class="btn btn-xs btn-default pull-right">
+                    {{ reviewComment.html ? 'Write' : 'Preview' }}
+                  </button>
+                </div>
+                <div class="panel-body" style="padding:0;">
+                  <textarea class="form-control" 
+                            ng-model="reviewComment.body" 
+                            ng-show="!reviewComment.html" 
+                            rows="4" 
+                            placeholder="Leave line note comment" 
+                            text-complete="review"
+                            ui-keypress="{'ctrl-13 meta-65': 'addReviewComment(reviewComment, $stateParams.ref); $event.preventDefault();'}"
+                            ui-keydown="{'meta-13': 'addReviewComment(reviewComment, $stateParams.ref); $event.preventDefault();'}">
+                  </textarea>
+                  <div ng-show="reviewComment.html" ng-bind-html="reviewComment.html" style="padding: 15px;"></div>
+                </div>
+              </div>
+
+              <div class="pull-right">
+                <i class="fa fa-lg fa-spinner fa-spin" ng-show="reviewing.loading"></i>
+                <div class="btn-group dropup">
+                  <button class="btn btn-default dropdown-toggle"
+                          ng-class="{'wobble-vertical': $root.ob === 'ob-addstatus'}"
+                          type="button" 
+                          data-toggle="dropdown" 
+                          aria-haspopup="true" 
+                          aria-expanded="true">
+                    Add status <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="flag in ['!fix', '!resolve', '!fixed', '!resolved', '!completed']">
+                      <a href="" ng-click="$parent.reviewComment = ($parent.reviewComment[$parent.reviewComment.length-1] === ' ') ? ($parent.reviewComment + flag) : ($parent.reviewComment + ' ' + flag)">{{ flag }}</a>
+                    </li>
+                  </ul>
+                </div>
+                <button type="submit" class="btn btn-primary ob-leavecomment"  ng-disabled="!reviewComment">Comment</button>
+              </div>
+
+              <div style="clear:both;"></div>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </tab>
+</tabset>
