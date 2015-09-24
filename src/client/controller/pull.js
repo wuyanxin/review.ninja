@@ -65,6 +65,10 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
                 comments.affix.forEach(function(comment) {
                     comment = Comment.review(comment) && Markdown.render(comment);
                 });
+
+                if($state.params.ref && !comments.thread[$state.params.ref]) {
+                    $state.go('repo.pull.review.reviewList');
+                }
             }
         });
 
