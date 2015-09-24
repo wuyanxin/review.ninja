@@ -16,27 +16,39 @@
       </tr>
     </table>
     <table class="table table-hover">
+      <tbody ng-repeat="(ref, thread) in review.thread">
       <tr class="select"
-          ng-repeat="(ref, thread) in review.thread"
           ng-click="$state.go('repo.pull.review.reviewItem', {
               base: pull.base.sha,
               head: thread.sha,
               ref: ref
             })">
-        <td style="width:40px; padding-right:0;">
+        <td style="width:40px; padding-right:0; border-bottom: 0;">
           <img ng-src="{{ thread.avatar }}&s=42" width="42px" />
         </td>
-        <td>
+        <td style="border-bottom: 0;">
           <p>
-            <strong>{{ thread.author }}</strong> reviewed 
-            <span class="label label-default">{{ thread.sha | limitTo:7 }}: {{ thread.file }}</span><br />
+            <strong>{{ thread.author }}</strong> reviewed <br />
             {{ thread.body | limitTo:100 }}<span ng-show="thread.body.length > 100">...</span><br />
             <small moment="thread.last_updated"></small>
           </p>
-          <div dropdown class="btn-group" ng-class="{'wobble-vertical': $root.ob === 'ob-addstatus' && $index === 0}" ng-click="$event.stopPropagation()" is-open="dropdownOpen">
+        </td>
+        <td class="text-center text-primary" style="width:50px; padding-left:0; border-bottom: 0;">
+          <i class="octicon octicon-comment"></i>
+          {{ (thread.comments | unique:'id').length }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" style="background: #ececec; padding: 5px 25px;">
+          <span class="label label-default">{{ thread.sha | limitTo:7 }}: {{ thread.file }}</span>
+          <div dropdown 
+               class="btn-group pull-right" 
+               ng-class="{'wobble-vertical': $root.ob === 'ob-addstatus' && $index === 0}" 
+               ng-click="$event.stopPropagation()" 
+               is-open="dropdownOpen">
             <button dropdown-toggle 
-                    class="btn btn-sm btn-default dropdown-toggle" 
-                    ng-class="{'btn-danger': thread.state === 'open', 'btn-success': thread.state === 'closed'}" 
+                    class="btn btn-xs btn-default dropdown-toggle" 
+                    ng-class="{'btn-warning': thread.state === 'open', 'btn-primary': thread.state === 'closed'}" 
                     type="button" 
                     data-toggle="dropdown" 
                     aria-haspopup="true" 
@@ -45,28 +57,35 @@
             </button>
             <ul class="dropdown-menu" role="menu">
               <li ng-hide="thread.state === 'open'">
-                <a href="" ng-click="addReviewComment('!fix', ref); dropdownOpen = false;">!fix</a>
+                <a href="" ng-click="addReviewComment({body: '!fix'}, ref); dropdownOpen = false;">
+                  <span class="octicon octicon-issue-opened text-warning"></span> fix
+                </a>
               </li>
               <li ng-hide="thread.state === 'open'">
-                <a href="" ng-click="addReviewComment('!resolve', ref); dropdownOpen = false;">!resolve</a>
+                <a href="" ng-click="addReviewComment({body: '!resolve'}, ref); dropdownOpen = false;">
+                  <span class="octicon octicon-issue-opened text-warning"></span> resolve
+                </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
-                <a href="" ng-click="addReviewComment('!fixed', ref); dropdownOpen = false;">!fixed</a>
+                <a href="" ng-click="addReviewComment({body: '!fixed'}, ref); dropdownOpen = false;">
+                  <span class="octicon octicon-issue-closed text-primary"></span> fixed
+                </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
-                <a href="" ng-click="addReviewComment('!resolved', ref); dropdownOpen = false;">!resolved</a>
+                <a href="" ng-click="addReviewComment({body: '!resolved'}, ref); dropdownOpen = false;">
+                  <span class="octicon octicon-issue-closed text-primary"></span> resolved
+                </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
-                <a href="" ng-click="addReviewComment('!completed', ref)">!completed</a>
+                <a href="" ng-click="addReviewComment({body: '!completed'}, ref); dropdownOpen = false;">
+                  <span class="octicon octicon-issue-closed text-primary"></span> completed
+                </a>
               </li>
             </ul>
           </div>
         </td>
-        <td class="text-center text-primary" style="width:50px; padding-left:0;">
-          <i class="octicon octicon-comment"></i>
-          {{ (thread.comments | unique:'id').length }}
-        </td>
       </tr>
+      </tbody>
     </table>
 
     <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="review.loading" style="margin-top: 10px;"></i>
