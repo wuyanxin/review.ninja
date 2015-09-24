@@ -14,11 +14,11 @@ module.factory('Markdown', ['$HUB', '$stateParams', function($HUB, $stateParams)
         var unstar = /\!\bunstar\b/;
 
         markdown = markdown.replace(negative, function(flag) {
-            return '<span class="label label-danger">' + flag + '</span>';
+            return '<span class="label label-warning">' + flag + '</span>';
         });
 
         markdown = markdown.replace(positive, function(flag) {
-            return '<span class="label label-success">' + flag + '</span>';
+            return '<span class="label label-primary">' + flag + '</span>';
         });
 
         markdown = markdown.replace(star, function(flag) {

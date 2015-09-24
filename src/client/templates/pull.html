@@ -34,6 +34,34 @@
 
     <div class="row">
       <div class="col-sm-12">
+
+        <div class="btn-group pull-right" ng-show="repo.permissions.push">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span ng-show="!pull.assignee">No assignee <span class="caret"></span></span>
+            <span ng-show="pull.assignee"><img src="{{ pull.assignee.avatar_url }}" width="18px" /> {{ pull.assignee.login }} <span class="caret"></span></span>
+          </button>
+          <ul class="dropdown-menu" style="max-height: 250px; width: 200px; overflow-y: scroll;">
+            <li style="padding: 0 10px;">
+              <input type="text" class="form-control" ng-model="queryCollaborator" placeholder="Search">
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="" style="padding: 3px 10px;" ng-click="assign(null)" ng-show="pull.assignee">
+                &nbsp;<i class="fa fa-times"></i> &nbsp;&nbsp;Clear assignee
+              </a>
+            </li>
+            <li>
+              <a href="" 
+                 ng-repeat="collaborator in collaborators.value | filter: {login: queryCollaborator}" 
+                 ng-click="assign(collaborator.login)"
+                 style="padding: 3px 10px;">
+                <img src="{{ collaborator.avatar_url }}" width="18px" /> &nbsp;{{ collaborator.login }}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <i class="fa fa-lg fa-spinner fa-spin pull-right" style="margin: 10px;" ng-show="assigning.loading"></i>
+
         <tabset class="pull-tabs">
           <tab>
             <tab-heading><span class="octicon octicon-diff"></span> Diffs</tab-heading>

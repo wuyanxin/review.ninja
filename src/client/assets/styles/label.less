@@ -5,7 +5,8 @@
 
   &.label-danger,
   &.label-success,
-  &.label-primary {
+  &.label-primary,
+  &.label-warning {
     font-size: 80%;
     font-weight: normal;
   }
@@ -13,4 +14,8 @@
   &.label-primary.muted {
     background-color: @brand-primary-muted;
   }
+}
+
+a.label:hover {
+  color: darken(@brand-primary, 10%)
 }

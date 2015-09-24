@@ -124,8 +124,9 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$lo
             // Pull request review comments state
             //
             .state('repo.pull.review.reviewList', {
-                url: '',
-                templateUrl: '/templates/reviewList.html'
+                url: '?conversation',
+                templateUrl: '/templates/reviewList.html',
+                reloadOnSearch: false
             })
 
             //

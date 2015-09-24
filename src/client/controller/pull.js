@@ -8,8 +8,26 @@
 // resolve: repo, pull
 // *****************************************************
 
-module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', '$HUB', '$RPC', 'Pull', 'Markdown', 'Reference', 'Comment', 'repo', 'pull', 'socket', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $HUB, $RPC, Pull, Markdown, Reference, Comment, repo, pull, socket, $timeout) {
+module.controller('PullCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    '$stateParams',
+    '$modal',
+    '$filter',
+    '$location',
+    '$anchorScroll',
+    '$HUB',
+    '$RPC',
+    'Pull',
+    'Markdown',
+    'Reference',
+    'Comment',
+    'Extra',
+    'repo',
+    'pull',
+    'socket',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, $location, $anchorScroll, $HUB, $RPC, Pull, Markdown, Reference, Comment, Extra, repo, pull, socket) {
 
         //
         // HACK?
@@ -60,13 +78,19 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             per_page: 100
         }, function(err, comments) {
             if(!err) {
-                $scope.noComments = !comments.value.length;
                 comments = Comment.thread(comments);
                 comments.affix.forEach(function(comment) {
                     comment = Comment.review(comment) && Markdown.render(comment);
                 });
+
+                if($state.params.ref && !comments.thread[$state.params.ref]) {
+                    $state.go('repo.pull.review.reviewList');
+                }
             }
         });
+
+        // get the collaborators
+        $scope.collaborators = Extra.collaborators($stateParams.user, $stateParams.repo);
 
         $scope.comment = {};
         $scope.reviewComment = {};
@@ -142,6 +166,25 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
             comment.html = comment.html ? null : Markdown.render(comment).html;
         };
 
+        $scope.assign = function(collaborator) {
+            $scope.assigning = $HUB.call('issues', 'edit', {
+                user: $stateParams.user,
+                repo: $stateParams.repo,
+                number: $stateParams.number,
+                assignee: collaborator
+            }, function(err, pull) {
+                if(!err) {
+                    $scope.pull.assignee = pull.value.assignee;
+                }
+            });
+        };
+
+        $scope.scrollTo = function(anchor) {
+            $location.hash(anchor);
+            $anchorScroll();
+            $location.hash(null);
+        };
+
 
         //
         // Watches
@@ -205,7 +248,20 @@ module.controller('PullCtrl', ['$scope', '$rootScope', '$state', '$stateParams',
 
         socket.on($stateParams.user + ':' + $stateParams.repo + ':' + 'pull_request', function(args) {
             if($scope.pull.number === args.number) {
-                $rootScope.refresh = args;
+
+                if(args.action === 'synchronize' && args.head !== $scope.pull.head) {
+                    $state.go('.', {base: args.base, head: args.head}, {reload: true});
+                }
+
+                $HUB.call('pullRequests', 'get', {
+                    user: $stateParams.user,
+                    repo: $stateParams.repo,
+                    number: $stateParams.number
+                }, function(err, pull) {
+                    if(!err) {
+                        angular.extend($scope.pull, pull.value);
+                    }
+                });
             }
         });
 

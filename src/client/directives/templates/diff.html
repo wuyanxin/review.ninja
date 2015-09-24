@@ -56,12 +56,12 @@
                                 selected: selected(file.filename, line.position) || ($root.ob === 'ob-create' && $index === 1),
                                 referenced: referenced(file.filename, line.position) }">
 
-                    <td id="{{ anchor(baseSha, file.filename, line.base) }}" 
+                    <td id="{{ anchor($stateParams.base, file.filename, line.position) }}" 
                         class="number">
                         <pre>{{ line.base }}</pre>
                     </td>
 
-                    <td id="{{ anchor(headSha, file.filename, line.head) }}" 
+                    <td id="{{ anchor($stateParams.head, file.filename, line.position) }}" 
                         class="number">
                         <pre>{{ line.head }}</pre>
                     </td>

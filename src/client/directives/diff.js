@@ -19,6 +19,10 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
 
                 scope.open = !scope.file.ignored;
 
+                scope.anchor = Reference.anchor;
+
+                scope.$stateParams = $stateParams;
+
                 //
                 // Helper funtions
                 //

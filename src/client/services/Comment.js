@@ -50,6 +50,7 @@ module.factory('Comment', ['Reference', function(Reference) {
                     avatar: comment.user.avatar_url,
                     state: 'none',
                     label: 'Add status',
+                    anchor: Reference.anchor(sha, path, position),
                     comments: []
                 };
 
