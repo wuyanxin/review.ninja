@@ -38,35 +38,31 @@ module.factory('Comment', ['Reference', function(Reference) {
 
         review: function(comment) {
 
-            var add = function(sha, path, position) {
+            var curr = {sha: comment.commit_id, path: comment.path, position: comment.position};
+            var orig = {sha: comment.original_commit_id, path: comment.path, position: comment.original_position};
 
-                var ref = Reference.get(sha, path, position);
+            var ref = comment.commit_id && comment.position ? curr : orig;
+            var str = Reference.get(ref.sha, ref.path, ref.position);
 
-                thread[ref] = thread[ref] || {
-                    sha: sha,
-                    file: path.split('/').pop(),
-                    body: comment.body,
-                    author: comment.user.login,
-                    avatar: comment.user.avatar_url,
-                    state: 'none',
-                    label: 'Add status',
-                    anchor: Reference.anchor(sha, path, position),
-                    comments: []
-                };
-
-                thread[ref].comments.push(comment);
-                thread[ref].last_updated = comment.created_at;
-
-                var data = status(comment);
-                thread[ref].state = data.state || thread[ref].state;
-                thread[ref].label = data.label || thread[ref].label;
+            thread[str] = thread[str] || {
+                sha: ref.sha,
+                add: orig,
+                file: ref.path.split('/').pop(),
+                body: comment.body,
+                author: comment.user.login,
+                avatar: comment.user.avatar_url,
+                state: 'none',
+                label: 'Add status',
+                anchor: Reference.anchor(ref.sha, ref.path, ref.position),
+                comments: []
             };
 
-            if(comment.commit_id && comment.position) {
-                add(comment.commit_id, comment.path, comment.position);
-            } else {
-                add(comment.original_commit_id, comment.path, comment.original_position);
-            }
+            thread[str].comments.push(comment);
+            thread[str].last_updated = comment.created_at;
+
+            var data = status(comment);
+            thread[str].state = data.state || thread[str].state;
+            thread[str].label = data.label || thread[str].label;
 
             return comment;
         }
