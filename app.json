@@ -29,7 +29,8 @@
       "description": "Client Secret of your GitHub Application."
     },
     "GITHUB_HOST":{
-      "description": "The hostname of your target GitHub instance. Defaults tp 'github.com'"
+      "description": "The hostname of your target GitHub instance. Defaults tp 'github.com'.",
+      "required": false
     },
     "GITHUB_PROTOCOL": {
       "description": "The protocol of your target GitHub instance. Defaults to 'https'.",
