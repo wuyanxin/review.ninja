@@ -63,7 +63,7 @@ a URL that looks like this:
 http://localhost:5000/github/webhook/8y7582c037e3f5fs0dpa48f2
 ```
 
-And change it to your ngrok URL. This can be found in the logs of your ngrok 
+And change it to your ngrok URL. This can be found in the logs of your ngrok
 container. Be sure to keep "/github/webhook/..."
 ```
 http://8795536b.ngrok.com/github/webhook/8y7582c037e3f5fs0dpa48f2
@@ -79,19 +79,19 @@ For convenience we have following gulp tasks:
 - gulp mocha (server side testing)
 - gulp karma (client side testing)
 
-You can run these tasks when developing using docker-compose by attaching to 
+You can run these tasks when developing using docker-compose by attaching to
 the App container and running: `npm run lint`, `npm run mocha`, `npm run karma`.
 
 
 ## License
 
-Contributions to this project are very welcome, but can only be accepted if 
-the contributions themselves are given to the project under the Apache License 
-2.0. Contributions other than those given under Apache License 2.0 will be 
+Contributions to this project are very welcome, but can only be accepted if
+the contributions themselves are given to the project under the Apache License
+2.0. Contributions other than those given under Apache License 2.0 will be
 rejected.
 
 ## CLA
 
 When you create a pull request you will be asked to "digitally sign" a CLA
-over at [CLA Assistant](https://cla-assistant.io/). In order for us to merge
+over at [CLA Assistant](https://cla-assistant.io/reviewninja/review.ninja). In order for us to merge
 your pull request you must sign our CLA.
