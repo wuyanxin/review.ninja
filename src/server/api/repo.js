@@ -1,4 +1,7 @@
 'use strict';
+
+var extend = require('extend');
+
 // services
 var github = require('../services/github');
 var status = require('../services/status');
@@ -105,11 +108,21 @@ module.exports = {
                 req.args.slack.channel = '#' + req.args.slack.channel;
             }
 
-            Repo.findOneAndUpdate({
-                repo: req.args.repo_uuid
-            }, {
-                slack: req.args.slack
-            }, {new: true}, done);
+            Repo.findOne({repo: req.args.repo_uuid}).select('+slack.token').exec(function(err, repo) {
+
+                if(err || !repo) {
+                    return done(err, repo);
+                }
+
+                extend(repo.slack, req.args.slack);
+
+                repo.save(function(err, repo) {
+                    if(!err) {
+                        repo.slack.token = !!repo.slack.token;
+                    }
+                    done(err, repo);
+                });
+            });
         });
     },
 
@@ -117,8 +130,8 @@ module.exports = {
         Repo.findOneAndUpdate({
             repo: req.args.repo_uuid
         }, {}, {new: true, upsert: true}).select('+slack.token').exec(function(err, repo) {
-            if (err) {
-                return done(err, null);
+            if(err) {
+                return done(err);
             }
             repo.slack.token = !!repo.slack.token;
             done(err, repo.slack);

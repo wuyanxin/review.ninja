@@ -96,13 +96,6 @@ module.exports = {
 
         mongodb_uri: process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/reviewninja',
 
-        keen: {
-            pid: process.env.KEENIO_PID,
-            masterKey: process.env.KEENIO_MASTER_KEY,
-            writeKey: process.env.KEENIO_WRITE_KEY,
-            readKey: process.env.KEENIO_READ_KEY
-        },
-
         papertrail: {
             host: process.env.PAPERTRAIL_HOST,
             port: process.env.PAPERTRAIL_PORT,

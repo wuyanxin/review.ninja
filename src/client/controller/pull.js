@@ -123,10 +123,10 @@ module.controller('PullCtrl', [
         };
 
         $scope.addReviewComment = function(comment, ref) {
+            if(comment && comment.body) {
 
-            ref = Reference.parse(ref);
+                ref = $scope.review.thread[ref] ? $scope.review.thread[ref].add : Reference.parse(ref);
 
-            if(comment && comment.body && ref) {
                 $scope.reviewing = $HUB.call('pullRequests', 'createComment', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
