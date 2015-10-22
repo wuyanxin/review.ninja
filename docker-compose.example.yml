@@ -2,7 +2,7 @@ App:
   image: node:0.12
   volumes:
    - .:/app
-  command: sh -c "npm install -g nodemon; npm install -g bower; npm install; bower install --allow-root; nodemon app.js;"
+  command: sh -c "npm install -g nodemon; npm install -g bower; npm install; bower install --allow-root; nodemon -L app.js;"
   working_dir: /app/
   ports:
    - "5000:5000"
