@@ -3,9 +3,9 @@
   "version": "0.0.1-1",
   "dependencies": {
     "github-fork-ribbon-css": "~0.1.1",
-    "ngInfiniteScroll": "~1.1.2",
     "angular-filter": "~0.5.4",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "ngInfiniteScroll": "~1.2.1"
   },
   "devDependencies": {
     "should": "~3.3.1",

@@ -11,6 +11,8 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.repos = [];
 
+        $scope.allRepos = $HUB.call('repos', 'getAll', {per_page: 50});
+
         $rootScope.promise.then(function(user) {
             var count = 0;
             var repos = user ? user.value.repos : [];
@@ -35,12 +37,21 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
         // Actions
         //
 
-        $scope.add = function(repo, done) {
+        $scope.add = function(repo) {
             $RPC.call('user', 'addRepo', {
                 user: repo.owner.login,
                 repo: repo.name,
                 repo_uuid: repo.id
-            }, done);
+            }, function(err) {
+                $scope.active = null;
+                if(!err) {
+                    repo.adddate = -new Date();
+                    $scope.repos.push(repo);
+
+                    $scope.search = '';
+                    $scope.show = false;
+                }
+            });
         };
 
         $scope.rmv = function(repo) {
@@ -89,6 +100,19 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
                     $rootScope.dismiss('welcome');
                 }
             });
+        };
+
+        //
+        // Helper functions
+        //
+
+        $scope.contains = function(id) {
+            var contains = false;
+            $scope.repos.forEach(function(repo) {
+                contains = contains || repo.id === id;
+            });
+
+            return contains;
         };
     }
 ]);
