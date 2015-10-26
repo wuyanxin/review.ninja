@@ -45,8 +45,9 @@
         <ul class="nav navbar-nav navbar-right buttonstopbar" ng-show="user.loaded" style="font-size:12px;" ng-cloak>
           <li><a target="_blank" href="https://www.review.ninja">ABOUT</a></li>
           <li><a target="_blank" href="https://docs.review.ninja">DOCUMENTATION</a></li>
+          <li><a target="_blank" href="https://enterprise.review.ninja">ENTERPRISE</a></li>
           <li ng-show="$config.terms"><a target="_blank" ng-href="{{ $config.terms }}">TERMS</a></li>
-          <li class="hidden-xs"><a href="">Signed in as {{ user.value.login }}</a></li>
+          <li class="hidden-xs hidden-sm"><a href="">Signed in as {{ user.value.login }}</a></li>
           <li class="hidden-xs">
             <a class="action" href="/logout" target="_self" tooltip="Sign out" tooltip-append-to-body="true" tooltip-placement="bottom">
               <i class="fa fa-lg fa-sign-out"></i>
@@ -132,8 +133,6 @@
   <script src="/services/socket.js"></script>
 
   <!-- DIRECTIVES -->
-  <script src="/directives/addRepoOld.js"></script>
-  <script src="/directives/addRepoNew.js"></script>
   <script src="/directives/browser.js"></script>
   <script src="/directives/diff.js"></script>
   <script src="/directives/file.js"></script>

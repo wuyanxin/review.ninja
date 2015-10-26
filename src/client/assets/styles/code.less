@@ -53,7 +53,7 @@
     width: 30px;
   }
 
-  tr:not(.chunk) .number {
+  tr:not(.chunk):not(.disabled) .number {
     cursor: pointer;
   }
 
@@ -61,20 +61,19 @@
   // Highlighting
   //
 
-  .addition {
-    background-color: #eaffea;
-  }
-
-  .deletion {
-    background-color: #ffecec;
-  }
-
+  .addition,
   .addition:not(:hover) .code {
     background-color: #eaffea;
   }
 
+  .deletion,
   .deletion:not(:hover) .code {
     background-color: #ffecec;
+  }
+
+  .disabled,
+  .disabled .code {
+    background-color: @gray-lighter;
   }
 
   .referenced {
@@ -85,11 +84,11 @@
     background-color: #f8eec7;
   }
 
-  tr:not(.chunk):hover {
+  tr:not(.chunk):not(.disabled):hover {
     background-color: #f8eec7;
   }
 
-  tr:not(:hover):not(.addition):not(.deletion) .code {
+  tr:not(:hover):not(.addition):not(.deletion):not(.disabled) .code {
     background-color: #fff;
   }
 }

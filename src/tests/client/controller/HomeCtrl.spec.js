@@ -13,6 +13,15 @@ describe('Home Controller', function() {
         httpBackend = $injector.get('$httpBackend');
 
         httpBackend.when('GET', '/config').respond({});
+
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getAll","arg":' + JSON.stringify({
+           per_page: 50
+        }) + '}').respond({
+            value: {
+                repos: [123, 134, 123]
+            }
+        });
+
         scope = $rootScope.$new();
         rootScope = $rootScope;
 
