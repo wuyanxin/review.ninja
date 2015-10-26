@@ -40,52 +40,36 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     }, function(err, blob) {
                         if(!err) {
 
-                            var normal = {};
-                            var additions = {};
-                            var deletions = {};
+                            var lines = {add: {}, del: {}, normal: {}};
 
                             scope.file.patch.forEach(function(line) {
-                                if(line.type === 'normal') {
-                                    normal[line.head] = line;
-                                }
-                                if(line.type === 'add') {
-                                    additions[line.head] = line;
-                                }
-                                if(line.type === 'del') {
-                                    deletions[line.base] = line;
-                                }
+                                lines[line.type] = lines[line.type] || {};
+                                lines[line.type][line.head || line.base] = line;
                             });
 
-                            var max = 0;
-                            var _line = null;
                             var temp = {};
+                            var prev = {base: 0};
+
                             scope.file.file = [];
 
                             blob.value.content.forEach(function(line) {
 
-                                _line = normal[line.head] || additions[line.head] || {
+                                temp = lines.normal[line.head] || lines.add[line.head] || {
                                     type: 'disabled',
                                     head: line.head,
-                                    base: _line ? _line.base + 1 : null,
+                                    base: prev.base + 1,
                                     content: line.content,
                                     disabled: true
                                 };
 
-                                max = line.head + 1;
-                                temp[line.head] = _line;
-                            });
-
-                            for(var i = 1; i < max; i++) {
-
-                                var j = i;
-
-                                while(deletions[j]) {
-                                    scope.file.file.push(deletions[j]);
-                                    delete deletions[j++];
+                                for(var i = prev.base + 1; i < temp.base; i++) {
+                                    scope.file.file.push(lines.del[i]);
                                 }
 
-                                scope.file.file.push(temp[i]);
-                            }
+                                prev = temp.base ? temp : prev;
+
+                                scope.file.file.push(temp);
+                            });
                         }
                     });
                 };
