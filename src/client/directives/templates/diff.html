@@ -16,16 +16,17 @@
                     <i class="fa fa-info fa-stack-1x text-primary"></i>
                 </span>
             </a>
-            <!-- <span ng-click="expanded=!expanded; $event.stopPropagation();">
-                <i class="fa pull-right"
+            <span ng-click="expand(); $event.stopPropagation();" class="pull-right">
+                <i class="fa"
                     ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"
                     ng-disabled="!open"
-                    ng-show="!file.image"
+                    ng-show="!blob.loading && !file.image"
                     tooltip="{{ expanded ? 'Collapse' : 'Expand' }} code"
                     tooltip-placement="bottom"
                     tooltip-append-to-body="true">
                 </i>
-            </span> -->
+                <i class="fa fa-spinner fa-spin" ng-show="blob.loading"></i>
+            </span>
         </accordion-heading>
         <div ng-show="file.status==='renamed' && !file.patch.length" style="padding:5px 10px;">
             This file was renamed.
@@ -48,10 +49,11 @@
                 </tr>
             </table>
             <table class="code">
-                <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index"
+                <tr ng-repeat="line in (expanded && blob.loaded ? file.file : file.patch) track by $index"
                     ng-click="go(file.filename, line.position)"
                     ng-class="{ addition: line.add, 
-                                deletion: line.del, 
+                                deletion: line.del,
+                                disabled: line.disabled, 
                                 chunk: line.chunk, 
                                 selected: selected(file.filename, line.position) || ($root.ob === 'ob-create' && $index === 1),
                                 referenced: referenced(file.filename, line.position) }">
