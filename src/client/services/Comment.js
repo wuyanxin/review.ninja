@@ -47,6 +47,7 @@ module.factory('Comment', ['Reference', function(Reference) {
             thread[str] = thread[str] || {
                 sha: ref.sha,
                 add: orig,
+                path: ref.path,
                 file: ref.path.split('/').pop(),
                 body: comment.body,
                 author: comment.user.login,
@@ -54,6 +55,7 @@ module.factory('Comment', ['Reference', function(Reference) {
                 state: 'none',
                 label: 'Add status',
                 anchor: Reference.anchor(ref.sha, ref.path, ref.position),
+                position: ref.position,
                 comments: []
             };
 

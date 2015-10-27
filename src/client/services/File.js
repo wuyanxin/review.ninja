@@ -29,6 +29,17 @@ module.factory('File', ['$HUB', '$stateParams', function($HUB, $stateParams) {
                 }
             });
             return files;
+        },
+
+        getLineNumbs: function(files) {
+            var numbs = {};
+            files.forEach(function(file) {
+                numbs[file.filename] = {};
+                file.patch.forEach(function(line) {
+                    numbs[file.filename][line.position] = {head: line.head, base: line.base};
+                });
+            });
+            return numbs;
         }
     };
 }]);
