@@ -40,36 +40,39 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                     }, function(err, blob) {
                         if(!err) {
 
-                            var lines = {add: {}, del: {}, normal: {}};
-
-                            scope.file.patch.forEach(function(line) {
-                                lines[line.type] = lines[line.type] || {};
-                                lines[line.type][line.head || line.base] = line;
-                            });
-
-                            var temp = {};
-                            var prev = {base: 0};
-
                             scope.file.file = [];
 
-                            blob.value.content.forEach(function(line) {
+                            var base = 0, head = 0;
 
-                                temp = lines.normal[line.head] || lines.add[line.head] || {
-                                    type: 'disabled',
-                                    head: line.head,
-                                    base: prev.base + 1,
-                                    content: line.content,
-                                    disabled: true
-                                };
-
-                                for(var i = prev.base + 1; i < temp.base; i++) {
-                                    scope.file.file.push(lines.del[i]);
+                            var insert = function(a, b) {
+                                for(var i = a; i < b; i++) {
+                                    scope.file.file.push({
+                                        type: 'disabled',
+                                        head: i + 1,
+                                        base: ++base,
+                                        content: blob.value.content[i].content,
+                                        disabled: true
+                                    });
                                 }
+                            };
 
-                                prev = temp.base ? temp : prev;
-
-                                scope.file.file.push(temp);
+                            var patch = $.map(scope.file.patch, function(line) {
+                                return !line.chunk ? line : null;
                             });
+
+                            patch.forEach(function(line) {
+
+                                insert(head, line.head - 1);
+
+                                base = line.base || base;
+
+                                head = line.head || head;
+
+                                scope.file.file.push(line);
+
+                            });
+
+                            insert(head, blob.value.content.length);
                         }
                     });
                 };
