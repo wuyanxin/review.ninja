@@ -41,7 +41,7 @@
       <tr>
         <td colspan="3" style="background: #ececec; padding: 5px 25px;">
           <a ng-click="scrollTo(thread.anchor)" class="label label-default">
-            {{ thread.sha | limitTo:7 }}: {{ thread.file }}
+            {{ thread.sha | limitTo:7 }} {{ thread.file }}:{{ comp.value.numbs[thread.path][thread.position].head || comp.value.numbs[thread.path][thread.position].base }}
           </a>
           <div dropdown 
                class="btn-group pull-right" 

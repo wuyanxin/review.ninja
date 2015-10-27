@@ -11,6 +11,7 @@ module.controller('ReviewCtrl', ['$scope', '$state', '$stateParams', '$HUB', 'Fi
             head: $stateParams.head
         }, function(err, comp) {
             if(!err) {
+                comp.value.numbs = File.getLineNumbs(comp.value.files);
                 comp.value.files = File.getFileTypes(comp.value.files);
             }
         }));
