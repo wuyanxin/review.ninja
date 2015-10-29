@@ -88,6 +88,9 @@ export GITHUB_PROTOCOL=https
 export GITHUB_HOST=github.company.com
 export GITHUB_API_HOST=github.company.com
 export GITHUB_API_PATHPREFIX=/api/v3
+
+# Custom certificates
+CERTS=/certs/*
 ```
 
 You should ensure your GHE API is reachable at `https://github.company.com/api/v3`.
@@ -96,6 +99,10 @@ these options work you should contact the administrator of your GHE instance.
 
 For a complete list of supported configuration options see 
 [our .env.example](https://github.com/reviewninja/review.ninja/blob/master/.env.example).
+
+If you have any custom SSL certificates that are required to verify requests to your 
+GHE instance, make sure to upload them to the server and specify the location of these
+in your env file.
 
 5) Install forever
 ```
@@ -118,16 +125,20 @@ nginx server to do so. This guide assumes ReviewNinja is reachable over https at
 
 Create `reviewninja.company.com` and place in the correct nginx folder, make sure to 
 restart nginx.
-
 ```
 upstream app_server {
     server 127.0.0.1:5000 fail_timeout=0;
 }
 
 server {
-    listen 80;
-    server_name reviewninja.example.com;
+    listen 443 ssl;
+    server_name reviewninja.company.com;
     server_tokens off; # don't show the version number, a security best practice
+
+    ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers AES128-SHA:AES256-SHA:RC4-SHA:DES-CBC3-SHA:RC4-MD5;
+    ssl_certificate /etc/nginx/certs/reviewninja.crt;
+    ssl_certificate_key /etc/nginx/certs/reviewninja.key; 
 
     location / {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -140,3 +151,4 @@ server {
         }
     }
 }
+```
