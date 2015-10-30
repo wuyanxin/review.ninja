@@ -93,7 +93,7 @@ export GITHUB_API_HOST=github.company.com
 export GITHUB_API_PATHPREFIX=/api/v3
 
 # Custom certificates
-CERTS=/certs/*
+export CERTS=/certs/*
 ```
 
 Please ensure that your GHE API is reachable at `https://github.company.com/api/v3/`.
