@@ -3,29 +3,29 @@
 The intention of this guide is to walk you through the steps of installing ReviewNinja
 on your own server. The most common scenario for installing ReviewNinja is to have
 a local version available behind a corporate firewall, connected to your GitHub
-Enterprise Instance (GHE).
+Enterprise (GHE) instance.
 
 This guide assumes you are installing a ReviewNinja from scratch on a unix based
 machine. You may be able to skip some of the components described below if you
-already have such a service available to use.
+already have such a service available to you.
 
 ## Prerequisites
 
 ### MongoDB
 
-ReviewNinja uses [Mongo database](https://www.mongodb.org/) for data persistance. See
-the [installation guide](https://docs.mongodb.org/manual/installation/) to get MondoDB
-up and running locally.
+ReviewNinja uses a [Mongo database](https://www.mongodb.org/) for data persistance. See
+the [installation guide](https://docs.mongodb.org/manual/installation/) to isntall 
+MondoDB on your server.
 
 ### Node
 
 ReviewNinja is a [Node](https://nodejs.org/) application. 
 [Download and install](https://nodejs.org/en/download/) node on your machine, this will
-also install the package manager [NPM](https://www.npmjs.com/).
+also install the [NPM package manager](https://www.npmjs.com/).
 
 ### Nginx (optional)
 
-The suggested deployment strategy for Node applications is to install an
+The suggested deployment strategy for node applications is to install an
 [nginx](http://nginx.org/) server in front of the node server to reverse proxy to
 your node application. This is useful for enabling ReviewNinja over https.
 
@@ -33,22 +33,22 @@ your node application. This is useful for enabling ReviewNinja over https.
 
 Once these components are installed we are ready to install ReviewNinja.
 
-1) Clone this repository
+**1) Clone this repository**
 ```
-git clone git@github.com:reviewninja/review.ninja.git /app
+git clone https://github.com/reviewninja/review.ninja.git /app
 ```
 
-2) Execute npm install
+**2) Execute npm install**
 ```
 cd /app
 npm install
 ```
 Ensure that `bower install` has also been executed as part of the post-install script.
 
-3) Create a [developer application](https://github.com/settings/applications/new) 
+**3) Create a [developer application](https://github.com/settings/applications/new)**
 
-Make sure to create this **on your GHE instance** and not GitHub.com. You may create 
-this appliation under your personal username or under an organization.
+Be sure to create the application **on your GHE instance**. You may create 
+this under your personal username or under an organization.
 
 Assuming ReviewNinja will be hosted at `https://reviewninja.company.com`, you would set 
 the homepage and callback URL as such:
@@ -58,15 +58,18 @@ homepage: https://reviewninja.company.com
 callback: https://reviewninja.company.com/auth/github/callback
 ```
 
-Copy and paste the generated client ID and secret into the `.env` file described below.
+Copy and paste the generated client ID and secret into the `.env` file as described below.
 
-4) Configure your local environment
+**4) Configure your local environment**
 
 Create a file in the root of the ReviewNinja folder called `.env`.
 
-Assuming you are running mongo locally, your GHE domain is `https://github.company.com`,
-and you will enable ReviewNinja over https via nginx your `.env` file may look something 
-like this:
+Assuming the following:
+- you are running mongo locally,
+- your GHE domain is `https://github.company.com`, and
+- you will enable ReviewNinja over https via nginx
+
+Your `.env` file may look something like this:
 
 ```
 # MongoDB Settings
@@ -93,25 +96,25 @@ export GITHUB_API_PATHPREFIX=/api/v3
 CERTS=/certs/*
 ```
 
-You should ensure your GHE API is reachable at `https://github.company.com/api/v3`.
+Please ensure that your GHE API is reachable at `https://github.company.com/api/v3/`.
 Alternatively it *may* be located at `https://api.github.company.com`. If neither of 
 these options work you should contact the administrator of your GHE instance.
 
 For a complete list of supported configuration options see 
 [our .env.example](https://github.com/reviewninja/review.ninja/blob/master/.env.example).
 
-If you have any custom SSL certificates that are required to verify requests to your 
+If you have custom SSL certificates that are required to verify requests to your 
 GHE instance, make sure to upload them to the server and specify the location of these
 in your env file.
 
-5) Install forever
+**5) Install forever**
 ```
 npm install -g forever
 ```
 
 Forever manages node processes to ensure they are restarted on crashes.
 
-6) Start ReviewNinja
+**6) Start ReviewNinja**
 ```
 source .env
 forever start app.js
@@ -119,12 +122,13 @@ forever start app.js
 
 ## Define the Nginx Server
 
-If you want to reverse proxy to our ReviewNinja node server, we will need to define an
+If you want to reverse proxy to the application server, you will need to define an
 nginx server to do so. This guide assumes ReviewNinja is reachable over https at
-`https://reviewninja.company.com`.
+`https://reviewninja.company.com`, and you have generated ssl `crt` and `key`
+files.
 
-Create `reviewninja.company.com` and place in the correct nginx folder, make sure to 
-restart nginx.
+Create `reviewninja.company.com.conf` and place in the correct nginx folder
+(usually `/etc/nginx/sites-enabled`). Make sure to restart nginx.
 ```
 upstream app_server {
     server 127.0.0.1:5000 fail_timeout=0;
