@@ -8,10 +8,11 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', '$filter', 
         restrict: 'E',
         templateUrl: '/directives/templates/merge.html',
         scope: {
-            permissions: '=',
             pull: '=',
-            reposettings: '=',
-            status: '='
+            status: '=',
+            protection: '=',
+            permissions: '=',
+            reposettings: '='
         },
         link: function(scope, elem, attrs) {
 
@@ -54,6 +55,19 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', '$filter', 
                     state: 'pending',
                     statuses: []
                 };
+            });
+
+            scope.$watch('status + permissions + protection', function() {
+                if(scope.status && scope.permissions && scope.protection) {
+                    scope.required = {};
+                    scope.required.pass = true;
+                    scope.required.over = scope.protection.required_status_checks.enforcement_level === 'non_admins' && scope.permissions.admin;
+                    scope.status.statuses.forEach(function(status) {
+                        if(status.state !== 'success' && scope.protection.required_status_checks.contexts.indexOf(status.context) > -1) {
+                            scope.required.pass = false;
+                        }
+                    });
+                }
             });
 
 

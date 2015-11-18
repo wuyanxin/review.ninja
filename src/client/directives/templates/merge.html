@@ -3,8 +3,7 @@
             'text-success': status.state==='success' && !pull.merged,
             'text-warning': status.state==='pending' && !pull.merged,
             'text-danger':  status.state==='failure' && !pull.merged,
-            'text-merged':  pull.merged,
-            'disabled': !pull.mergeable
+            'text-merged':  pull.merged
           }">
 
   <div ng-show="pull.merged && branch">
@@ -36,6 +35,9 @@
     <small ng-show="!pull.mergeable">
       Pull Request <a ng-href="{{ pull.html_url }}" class="link-external" target="_blank">#{{ pull.number }}</a> can't be merged automatically.
     </small>
+    <small ng-show="required && !required.pass && !required.over">
+      All required services on this pull request must run successfully to enable automatic merging.
+    </small>
   </div>
 
   <button type="button"
@@ -48,7 +50,7 @@
             'wobble-vertical': $root.ob === 'ob-merge'
           }"
           ng-show="permissions.push || pull.merged"
-          ng-disabled="!pull.mergeable"
+          ng-disabled="!pull.mergeable || (required && !required.pass && !required.over)"
           ng-click="merge()">
 
     <span ng-show="!pull.merged">
