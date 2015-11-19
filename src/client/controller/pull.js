@@ -92,6 +92,14 @@ module.controller('PullCtrl', [
         // get the collaborators
         $scope.collaborators = Extra.collaborators($stateParams.user, $stateParams.repo);
 
+        // get the branch
+        $scope.branch = $HUB.call('repos', 'getBranch', {
+            user: $stateParams.user,
+            repo: $stateParams.repo,
+            branch: pull.value.base.ref,
+            headers: {'Accept': 'application/vnd.github.loki-preview+json'}
+        });
+
         $scope.comment = {};
         $scope.reviewComment = {};
 
