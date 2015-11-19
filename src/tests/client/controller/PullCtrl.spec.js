@@ -120,6 +120,19 @@ describe('Pull Controller', function() {
         })).respond({
             value: 'success'
         });
+
+        httpBackend.expect('POST', '/api/github/call', JSON.stringify({
+          obj: 'repos',
+          fun: 'getBranch',
+          arg: {
+            user: 'gabe',
+            repo: 'test',
+            branch: 'master',
+            headers: {'Accept': 'application/vnd.github.loki-preview+json'}
+          }
+        })).respond({
+            value: 'success'
+        });
     }));
 
 
@@ -144,7 +157,8 @@ describe('Pull Controller', function() {
                     },
                     name: 'repo1',
                     id: 11111
-                }
+                },
+                ref: 'master'
             },
             head: {
                 sha: 'abcd1234'

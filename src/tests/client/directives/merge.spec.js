@@ -46,10 +46,11 @@ describe('Merge Directive', function() {
     }));
 
     it('should get ref if base and head are equal', function() {
-        httpBackend.expect('POST', '/api/github/call', '{"obj":"gitdata","fun":"getReference","arg":' + JSON.stringify({
+        httpBackend.expect('POST', '/api/github/call', '{"obj":"repos","fun":"getBranch","arg":' + JSON.stringify({
            user: 'gabe',
            repo: 'test',
-           ref: 'heads/master'
+           branch: 'master',
+           headers: {'Accept': 'application/vnd.github.loki-preview+json'}
         }) + '}').respond({
             value: true
         });
@@ -83,7 +84,7 @@ describe('Merge Directive', function() {
         elScope.deleteBranch();
         (elScope.showConfirmation).should.be.false;
         httpBackend.flush();
-        (elScope.branch).should.be.false;
+        ([elScope.branch]).should.be.eql([null]);
         (elScope.branchRemoved).should.be.true;
     });
 

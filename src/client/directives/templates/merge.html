@@ -3,11 +3,10 @@
             'text-success': status.state==='success' && !pull.merged,
             'text-warning': status.state==='pending' && !pull.merged,
             'text-danger':  status.state==='failure' && !pull.merged,
-            'text-merged':  pull.merged,
-            'disabled': !pull.mergeable
+            'text-merged':  pull.merged
           }">
 
-  <div ng-show="pull.merged && branch">
+  <div ng-show="pull.merged && branch.value && !branch.value.protection.enabled">
     <span class="trashcan text-danger octicon octicon-trashcan no-select"
           ng-class="{confirm: showConfirmation}"
           ng-click="confirm()"
@@ -26,7 +25,7 @@
   </div>
 
   <div class="text-body" ng-show="!pull.merged">
-    <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
+    <p>{{ status.count | pluralize:'status check' }} <strong>{{ status.text }}</strong></p>
     <p ng-show="status.state==='failure'">
       {{ pull.status.issues.open | pluralize:'open issue' }}
     </p>
@@ -35,6 +34,9 @@
     </p>
     <small ng-show="!pull.mergeable">
       Pull Request <a ng-href="{{ pull.html_url }}" class="link-external" target="_blank">#{{ pull.number }}</a> can't be merged automatically.
+    </small>
+    <small ng-show="required && !required.pass && !required.over">
+      Required statuses must pass before merging.
     </small>
   </div>
 
@@ -47,21 +49,19 @@
             'btn-merged':  pull.merged,
             'wobble-vertical': $root.ob === 'ob-merge'
           }"
-          ng-show="permissions.push || pull.merged"
-          ng-disabled="!pull.mergeable"
+          ng-show="permissions.push && !pull.merged"
+          ng-disabled="!pull.mergeable || (required && !required.pass && !required.over)"
           ng-click="merge()">
-
-    <span ng-show="!pull.merged">
-      <span class="octicon octicon-git-merge"></span> {{ status.state==='failure' ? 'Merge with caution!' : 'Merge pull request'}}
-    </span>
-    <span ng-show="pull.merged">
-      <span class="octicon octicon-git-pull-request"></span> Merged
-    </span>
+    <span class="octicon octicon-git-merge"></span> {{ status.state==='failure' ? 'Merge with caution!' : 'Merge pull request'}}
     <i class="fa fa-spinner fa-spin" ng-show="merging.loading"></i>
   </button>
 
+  <span ng-show="pull.merged" style="font-size: 16px; font-weight: normal;">
+    <span class="octicon octicon-git-pull-request"></span> Merged
+  </span>
+
   <div class="text-body" ng-show="pull.merged">
-    <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
+    <p>{{ status.count | pluralize:'status check' }} <strong>{{ status.text }}</strong></p>
     <p>{{ pull.status.issues.closed | pluralize:'closed issue' }}</p>
     <p>{{ pull.status.issues.open | pluralize:'open issue' }}</p>
     <p>{{ getStarText() }} <a ui-sref="repo.settings()" ng-show="permissions.push" style="float:right;"><i class="fa fa-pencil-square-o"></i></a></p>

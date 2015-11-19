@@ -24,6 +24,7 @@
                         status="status.value"
                         permissions="repo.permissions"
                         reposettings="reposettings"
+                        protection="branch.value.protection"
                         get-long-star-text="getLongStarText()"
                         ng-show="status.loaded">
           </merge-button>
@@ -145,7 +146,7 @@
 
           <tab>
             <tab-heading>
-              <span class="octicon octicon-check"></span> Services
+              <span class="octicon octicon-check"></span> Statuses
             </tab-heading>
             <table class="table table-plain">
               <tr>
@@ -154,7 +155,10 @@
                 <th>Status</th>
               </tr>
               <tr ng-repeat="status in status.value.statuses">
-                <td>{{ status.context }}</td>
+                <td>
+                  {{ status.context }}
+                  <span ng-show="branch.value.protection.required_status_checks.enforcement_level !== 'off' && branch.value.protection.required_status_checks.contexts.indexOf(status.context) > -1" class="label label-default">Required</span>
+                </td>
                 <td><a class="link-external" ng-href="{{ status.target_url }}" target="_blank">{{ status.description }}</a></td>
                 <td ng-class="{'text-success': status.state==='success', 'text-warning': status.state==='pending', 'text-danger': status.state==='failure'}">
                   <span class="octicon" ng-class="{'octicon-check': status.state==='success', 'octicon-x': status.state!=='success'}"></span>
