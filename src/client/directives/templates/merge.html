@@ -6,7 +6,7 @@
             'text-merged':  pull.merged
           }">
 
-  <div ng-show="pull.merged && branch">
+  <div ng-show="pull.merged && branch.value && !branch.value.protection.enabled">
     <span class="trashcan text-danger octicon octicon-trashcan no-select"
           ng-class="{confirm: showConfirmation}"
           ng-click="confirm()"
@@ -49,18 +49,16 @@
             'btn-merged':  pull.merged,
             'wobble-vertical': $root.ob === 'ob-merge'
           }"
-          ng-show="permissions.push || pull.merged"
+          ng-show="permissions.push && !pull.merged"
           ng-disabled="!pull.mergeable || (required && !required.pass && !required.over)"
           ng-click="merge()">
-
-    <span ng-show="!pull.merged">
-      <span class="octicon octicon-git-merge"></span> {{ status.state==='failure' ? 'Merge with caution!' : 'Merge pull request'}}
-    </span>
-    <span ng-show="pull.merged">
-      <span class="octicon octicon-git-pull-request"></span> Merged
-    </span>
+    <span class="octicon octicon-git-merge"></span> {{ status.state==='failure' ? 'Merge with caution!' : 'Merge pull request'}}
     <i class="fa fa-spinner fa-spin" ng-show="merging.loading"></i>
   </button>
+
+  <span ng-show="pull.merged" style="font-size: 16px; font-weight: normal;">
+    <span class="octicon octicon-git-pull-request"></span> Merged
+  </span>
 
   <div class="text-body" ng-show="pull.merged">
     <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>

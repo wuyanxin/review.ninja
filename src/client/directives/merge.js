@@ -23,14 +23,11 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', '$filter', 
             };
 
             if(scope.permissions.push && scope.pull.base.repo.id === scope.pull.head.repo.id) {
-                $HUB.call('gitdata', 'getReference', {
+                scope.branch = $HUB.call('repos', 'getBranch', {
                     user: $stateParams.user,
                     repo: $stateParams.repo,
-                    ref: 'heads/' + scope.pull.head.ref
-                }, function(err, ref) {
-                    if(!err) {
-                        scope.branch = true;
-                    }
+                    branch: scope.pull.head.ref,
+                    headers: {'Accept': 'application/vnd.github.loki-preview+json'}
                 });
             }
 
@@ -90,7 +87,7 @@ module.directive('mergeButton', ['$HUB', '$stateParams', '$timeout', '$filter', 
                     ref: 'heads/' + scope.pull.head.ref
                 }, function(err, result) {
                     if(!err) {
-                        scope.branch = false;
+                        scope.branch = null;
                         scope.branchRemoved = true;
                     }
                 });
