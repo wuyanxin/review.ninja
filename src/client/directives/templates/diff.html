@@ -35,16 +35,22 @@
             <table class="margin">
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
                     <td class="select">
-                        <span class="octicon octicon-issue-opened text-warning" 
-                              ng-show="referenced(file.filename, line.position) &&
-                                        !selected(file.filename, line.position)"
-                              ng-click="go(file.filename, line.position)">
+
+                        <span ng-show="openRef(file.filename, line.position)"
+                              ng-click="go(file.filename, line.position)"
+                              ng-class="{'wobble-vertical': $root.ob === 'ob-create' && $index === 1}"
+                              class="fa fa-stack text-warning" style="margin: -6px 0 0 -5px;">
+                            <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                            <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>
                         </span>
-                        <span class="octicon octicon-issue-opened" 
-                              style="color: #dbcc91;"
-                              ng-show="selected(file.filename, line.position) || ($root.ob === 'ob-create' && $index === 1)"
-                              ng-class="{'wobble-vertical': $root.ob === 'ob-create' && $index === 1}">
+
+                        <span ng-show="closedRef(file.filename, line.position)"
+                              ng-click="go(file.filename, line.position)"
+                              class="fa fa-stack text-primary" style="margin: -6px 0 0 -5px;">
+                            <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                            <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>
                         </span>
+
                     </td>
                 </tr>
             </table>
@@ -54,16 +60,18 @@
                     ng-class="{ addition: line.add, 
                                 deletion: line.del,
                                 disabled: line.disabled, 
-                                chunk: line.chunk, 
-                                selected: selected(file.filename, line.position) || ($root.ob === 'ob-create' && $index === 1),
-                                referenced: referenced(file.filename, line.position) }">
+                                chunk: line.chunk }">
 
                     <td id="{{ anchor($stateParams.base, file.filename, line.position) }}" 
+                        ng-class="{ referenced: openRef(file.filename, line.position), 
+                                    selected: selected(file.filename, line.position) || ($root.ob === 'ob-create' && $index === 1) }"
                         class="number">
                         <pre>{{ line.base }}</pre>
                     </td>
 
                     <td id="{{ anchor($stateParams.head, file.filename, line.position) }}" 
+                        ng-class="{ referenced: openRef(file.filename, line.position), 
+                                    selected: selected(file.filename, line.position) || ($root.ob === 'ob-create' && $index === 1) }"
                         class="number">
                         <pre>{{ line.head }}</pre>
                     </td>
