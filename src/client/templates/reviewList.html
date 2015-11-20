@@ -60,27 +60,42 @@
             <ul class="dropdown-menu" role="menu">
               <li ng-hide="thread.state === 'open'">
                 <a href="" ng-click="addReviewComment({body: '!fix'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-opened text-warning"></span> fix
+                  <span class="fa fa-stack text-warning">
+                    <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                    <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>
+                  </span> fix
                 </a>
               </li>
               <li ng-hide="thread.state === 'open'">
                 <a href="" ng-click="addReviewComment({body: '!resolve'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-opened text-warning"></span> resolve
+                  <span class="fa fa-stack text-warning">
+                    <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                    <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>
+                  </span> resolve
                 </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
                 <a href="" ng-click="addReviewComment({body: '!fixed'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-closed text-primary"></span> fixed
+                  <span class="fa fa-stack text-primary">
+                    <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                    <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>
+                  </span> fixed
                 </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
                 <a href="" ng-click="addReviewComment({body: '!resolved'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-closed text-primary"></span> resolved
+                  <span class="fa fa-stack text-primary">
+                    <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                    <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>
+                  </span> resolved
                 </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
                 <a href="" ng-click="addReviewComment({body: '!completed'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-closed text-primary"></span> completed
+                  <span class="fa fa-stack text-primary">
+                    <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                    <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>
+                  </span> completed
                 </a>
               </li>
             </ul>

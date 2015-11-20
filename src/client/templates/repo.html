@@ -70,15 +70,6 @@
                 </table>
               </td>
               <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
-                <span class="text-primary" ng-class="{muted: !pull.commentsCount}">
-                <span class="octicon octicon-large octicon-comment-discussion"
-                      tooltip="{{ pull.commentsCount | pluralize:'conversation comment'}}"
-                      tooltip-placement="bottom"
-                      tooltip-append-to-body="true"></span>
-                  <br/> {{ pull.commentsCount }}
-                </span>
-              </td>
-              <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px" ng-show="pull.status.issues.open">
                 <span class="text-warning">
                     <span tooltip="{{ pull.status.issues.open | pluralize:'open issue'}}"
                           tooltip-placement="bottom"
@@ -90,7 +81,7 @@
                     <br/> {{ pull.status.issues.open }}
                   </span>
                 </td>
-                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px" ng-show="!pull.status.issues.open">
+                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
                   <span class="text-primary" ng-class="{muted: !pull.status.issues.closed}">
                     <span tooltip="{{ pull.status.issues.closed | pluralize:'closed issue'}}"
                           tooltip-placement="bottom"

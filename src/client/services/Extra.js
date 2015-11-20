@@ -11,14 +11,61 @@ module.factory('Extra', ['$HUB', function($HUB) {
     var emojis = $HUB.call('misc', 'emojis');
 
     var flags = [
-        {label: 'fix', icon: 'octicon octicon-issue-opened text-warning', type: 'review'},
-        {label: 'resolve', icon: 'octicon octicon-issue-opened text-warning', type: 'review'},
-        {label: 'fixed', icon: 'octicon octicon-issue-closed text-primary', type: 'review'},
-        {label: 'resolved', icon: 'octicon octicon-issue-closed text-primary', type: 'review'},
-        {label: 'completed', icon: 'octicon octicon-issue-closed text-primary', type: 'review'},
-        {label: 'star', icon: 'icon-ninja-star text-primary', type: 'star'},
-        {label: 'ninjastar', icon: 'icon-ninja-star text-primary', type: 'star'},
-        {label: 'unstar', icon: 'icon-ninja-star text-primary muted', type: 'star'}
+        {
+            label: 'fix',
+            type: 'review',
+            icon: '<span class="fa fa-stack text-warning">\
+                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
+                        <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>\
+                    </span>'
+        },
+        {
+            label: 'resolve',
+            type: 'review',
+            icon: '<span class="fa fa-stack text-warning">\
+                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
+                        <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>\
+                    </span>'
+        },
+        {
+            label: 'fixed',
+            type: 'review',
+            icon: '<span class="fa fa-stack text-primary">\
+                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
+                        <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>\
+                    </span>'
+        },
+        {
+            label: 'resolved',
+            type: 'review',
+            icon: '<span class="fa fa-stack text-primary">\
+                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
+                        <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>\
+                    </span>'
+        },
+        {
+            label: 'completed',
+            type: 'review',
+            icon: '<span class="fa fa-stack text-primary">\
+                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
+                        <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>\
+                    </span>'
+        },
+        {
+            label: 'star',
+            type: 'star',
+            icon: '<span class="icon-ninja-star text-primary"></i>'
+        },
+        {
+            label: 'ninjastar',
+            type: 'star',
+            icon: '<span class="icon-ninja-star text-primary"></i>'
+        },
+        {
+            label: 'unstar',
+            type: 'star',
+            icon: '<span class="icon-ninja-star text-primary muted"></i>'
+        }
     ];
 
     return {
