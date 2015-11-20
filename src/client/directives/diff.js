@@ -81,8 +81,12 @@ module.directive('diff', ['$stateParams', '$state', '$HUB', '$RPC', 'Reference',
                 // Helper funtions
                 //
 
-                scope.referenced = function(path, position) {
-                    return scope.thread && scope.thread[Reference.get($stateParams.head, path, position)];
+                scope.openRef = function(path, position) {
+                    return scope.thread && scope.thread[Reference.get($stateParams.head, path, position)] && scope.thread[Reference.get($stateParams.head, path, position)].state !== 'closed';
+                };
+
+                scope.closedRef = function(path, position) {
+                    return scope.thread && scope.thread[Reference.get($stateParams.head, path, position)] && scope.thread[Reference.get($stateParams.head, path, position)].state === 'closed';
                 };
 
                 scope.selected = function(path, position) {

@@ -80,24 +80,30 @@
               </td>
               <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px" ng-show="pull.status.issues.open">
                 <span class="text-warning">
-                  <span class="octicon octicon-large octicon-issue-opened"
-                        tooltip="{{ pull.status.issues.open | pluralize:'open issue'}}"
-                        tooltip-placement="bottom"
-                        tooltip-append-to-body="true"></span>
+                    <span tooltip="{{ pull.status.issues.open | pluralize:'open issue'}}"
+                          tooltip-placement="bottom"
+                          tooltip-append-to-body="true"
+                          class="fa fa-stack" style="margin-top: -10px; padding-top: 3px;">
+                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                        <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>
+                    </span>
                     <br/> {{ pull.status.issues.open }}
                   </span>
                 </td>
                 <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px" ng-show="!pull.status.issues.open">
                   <span class="text-primary" ng-class="{muted: !pull.status.issues.closed}">
-                    <span class="octicon octicon-large octicon-issue-closed"
-                          tooltip="{{ pull.status.issues.closed | pluralize:'closed issue'}}"
+                    <span tooltip="{{ pull.status.issues.closed | pluralize:'closed issue'}}"
                           tooltip-placement="bottom"
-                          tooltip-append-to-body="true"></span>
+                          tooltip-append-to-body="true"
+                          class="fa fa-stack" style="margin-top: -10px; padding-top: 3px;">
+                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
+                        <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>
+                    </span>
                     <br/> {{ pull.status.issues.closed }}
                   </span>
                 </td>
-                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
-                  <span class="text-primary" ng-class="{muted: !pull.stars.length}">
+                <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px; padding-top: 19px;">
+                  <span class="text-primary" ng-class="{muted: !pull.stars.length}" style="margin-top: -2px;">
                     <span class="fa-lg icon-ninja-star"
                           tooltip="{{ getStarUsers(pull) }}"
                           tooltip-placement="bottom"
