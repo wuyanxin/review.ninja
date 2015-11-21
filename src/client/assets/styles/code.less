@@ -25,6 +25,7 @@
 }
 
 .code {
+  border-collapse: separate;
   width: 100%;
 
   pre {
@@ -77,14 +78,19 @@
   }
 
   .referenced {
-    background-color: #ffc599;
+    background-color: @brand-warning;
+
+    pre {
+      color: @gray-darker;
+      opacity: 0.8;
+    }
   }
 
   .selected {
     background-color: #f8eec7;
   }
 
-  tr:not(.chunk):not(.disabled):hover {
+  tr:not(.chunk):not(.disabled):hover td:not(.referenced) {
     background-color: #f8eec7;
   }
 

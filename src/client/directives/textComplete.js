@@ -52,7 +52,7 @@ module.directive('textComplete', ['$state', '$stateParams', 'Extra', function($s
                     return '!' + value.label + ' ';
                 },
                 template: function(value) {
-                    return '<span class="' + value.icon + '"></span> ' + value.label;
+                    return value.icon + ' ' + value.label;
                 },
                 index: 1
             }]);

@@ -11,14 +11,46 @@ module.factory('Extra', ['$HUB', function($HUB) {
     var emojis = $HUB.call('misc', 'emojis');
 
     var flags = [
-        {label: 'fix', icon: 'octicon octicon-issue-opened text-warning', type: 'review'},
-        {label: 'resolve', icon: 'octicon octicon-issue-opened text-warning', type: 'review'},
-        {label: 'fixed', icon: 'octicon octicon-issue-closed text-primary', type: 'review'},
-        {label: 'resolved', icon: 'octicon octicon-issue-closed text-primary', type: 'review'},
-        {label: 'completed', icon: 'octicon octicon-issue-closed text-primary', type: 'review'},
-        {label: 'star', icon: 'icon-ninja-star text-primary', type: 'star'},
-        {label: 'ninjastar', icon: 'icon-ninja-star text-primary', type: 'star'},
-        {label: 'unstar', icon: 'icon-ninja-star text-primary muted', type: 'star'}
+        {
+            label: 'fix',
+            type: 'review',
+            icon: '<i class="fa fa-exclamation text-warning"></i>'
+        },
+        {
+            label: 'resolve',
+            type: 'review',
+            icon: '<i class="fa fa-exclamation text-warning"></i>'
+        },
+        {
+            label: 'fixed',
+            type: 'review',
+            icon: '<i class="fa fa-check text-primary"></i>'
+        },
+        {
+            label: 'resolved',
+            type: 'review',
+            icon: '<i class="fa fa-check text-primary"></i>'
+        },
+        {
+            label: 'completed',
+            type: 'review',
+            icon: '<i class="fa fa-check text-primary"></i>'
+        },
+        {
+            label: 'star',
+            type: 'star',
+            icon: '<span class="icon-ninja-star text-primary"></i>'
+        },
+        {
+            label: 'ninjastar',
+            type: 'star',
+            icon: '<span class="icon-ninja-star text-primary"></i>'
+        },
+        {
+            label: 'unstar',
+            type: 'star',
+            icon: '<span class="icon-ninja-star text-primary muted"></i>'
+        }
     ];
 
     return {

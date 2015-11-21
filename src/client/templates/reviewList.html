@@ -60,27 +60,27 @@
             <ul class="dropdown-menu" role="menu">
               <li ng-hide="thread.state === 'open'">
                 <a href="" ng-click="addReviewComment({body: '!fix'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-opened text-warning"></span> fix
+                  <i class="fa fa-exclamation text-warning"></i> fix
                 </a>
               </li>
               <li ng-hide="thread.state === 'open'">
                 <a href="" ng-click="addReviewComment({body: '!resolve'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-opened text-warning"></span> resolve
+                  <i class="fa fa-exclamation text-warning"></i> resolve
                 </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
                 <a href="" ng-click="addReviewComment({body: '!fixed'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-closed text-primary"></span> fixed
+                    <i class="fa fa-check text-primary"></i> fixed
                 </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
                 <a href="" ng-click="addReviewComment({body: '!resolved'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-closed text-primary"></span> resolved
+                  <i class="fa fa-check text-primary"></i> resolved
                 </a>
               </li>
               <li ng-hide="thread.state === 'closed'">
                 <a href="" ng-click="addReviewComment({body: '!completed'}, ref); dropdownOpen = false;">
-                  <span class="octicon octicon-issue-closed text-primary"></span> completed
+                  <i class="fa fa-check text-primary"></i> completed
                 </a>
               </li>
             </ul>
