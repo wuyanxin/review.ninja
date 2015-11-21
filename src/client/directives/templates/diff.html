@@ -36,20 +36,16 @@
                 <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
                     <td class="select">
 
-                        <span ng-show="openRef(file.filename, line.position)"
-                              ng-click="go(file.filename, line.position)"
-                              ng-class="{'wobble-vertical': $root.ob === 'ob-create' && $index === 1}"
-                              class="fa fa-stack text-warning" style="margin: -6px 0 0 -5px;">
-                            <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
-                            <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>
-                        </span>
+                        <i ng-show="openRef(file.filename, line.position)"
+                           ng-click="go(file.filename, line.position)"
+                           ng-class="{'wobble-vertical': $root.ob === 'ob-create' && $index === 1}"
+                           class="fa fa-exclamation text-warning" style="padding-left: 8px;">
+                        </i>
 
-                        <span ng-show="closedRef(file.filename, line.position)"
-                              ng-click="go(file.filename, line.position)"
-                              class="fa fa-stack text-primary" style="margin: -6px 0 0 -5px;">
-                            <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>
-                            <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>
-                        </span>
+                        <i ng-show="closedRef(file.filename, line.position)"
+                           ng-click="go(file.filename, line.position)"
+                           class="fa fa-check text-primary" style="padding-left: 4px;">
+                        </i>
 
                     </td>
                 </tr>

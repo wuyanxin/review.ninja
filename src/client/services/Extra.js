@@ -14,42 +14,27 @@ module.factory('Extra', ['$HUB', function($HUB) {
         {
             label: 'fix',
             type: 'review',
-            icon: '<span class="fa fa-stack text-warning">\
-                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
-                        <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>\
-                    </span>'
+            icon: '<i class="fa fa-exclamation text-warning"></i>'
         },
         {
             label: 'resolve',
             type: 'review',
-            icon: '<span class="fa fa-stack text-warning">\
-                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
-                        <i class="fa fa-exclamation fa-stack-1x" style="font-size: 12px;"></i>\
-                    </span>'
+            icon: '<i class="fa fa-exclamation text-warning"></i>'
         },
         {
             label: 'fixed',
             type: 'review',
-            icon: '<span class="fa fa-stack text-primary">\
-                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
-                        <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>\
-                    </span>'
+            icon: '<i class="fa fa-check text-primary"></i>'
         },
         {
             label: 'resolved',
             type: 'review',
-            icon: '<span class="fa fa-stack text-primary">\
-                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
-                        <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>\
-                    </span>'
+            icon: '<i class="fa fa-check text-primary"></i>'
         },
         {
             label: 'completed',
             type: 'review',
-            icon: '<span class="fa fa-stack text-primary">\
-                        <i class="fa fa-square-o fa-stack-1x" style="font-size: 20px;"></i>\
-                        <i class="fa fa-check fa-stack-1x" style="font-size: 12px;"></i>\
-                    </span>'
+            icon: '<i class="fa fa-check text-primary"></i>'
         },
         {
             label: 'star',
