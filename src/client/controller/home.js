@@ -33,6 +33,8 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
             });
         });
 
+        $scope.auth = $RPC.call('user', 'authorization');
+
         //
         // Actions
         //

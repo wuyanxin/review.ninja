@@ -22,6 +22,8 @@ describe('Home Controller', function() {
             }
         });
 
+        httpBackend.expect('POST', '/api/user/authorization').respond({value: true});
+
         scope = $rootScope.$new();
         rootScope = $rootScope;
 

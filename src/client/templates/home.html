@@ -50,9 +50,13 @@
           <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo" style="padding-top:3px;"></i>
         </a>
       </div>
-      <div ng-show="allRepos.hasMore">
+      <div ng-show="allRepos.hasMore" style="padding-bottom: 10px;">
         <strong class="text-primary" style="padding:0 10px;">Not finding your repo?</strong> 
         <button class="btn btn-xs btn-primary" ng-click="allRepos.getMore()">Load more</button>
+      </div>
+      <div ng-show="auth.value">
+        <strong class="text-primary" style="padding:0 10px;">Is an organization missing?</strong> 
+        <a ng-href="{{ auth.value.html_url }}" target="_blank" class="btn btn-xs btn-primary" role="button">Review and add</a>
       </div>
     </div>
 

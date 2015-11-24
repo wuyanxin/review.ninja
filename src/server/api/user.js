@@ -1,4 +1,9 @@
 'use strict';
+
+// modules
+var http = require('http');
+var https = require('https');
+
 // services
 var url = require('../services/url');
 var github = require('../services/github');
@@ -8,6 +13,45 @@ var webhook = require('../services/webhook');
 var User = require('mongoose').model('User');
 
 module.exports = {
+
+    authorization: function(req, done) {
+        var request = (config.server.github.protocol === 'https' ? https : http).request({
+            host: config.server.github.api,
+            port: config.server.github.port,
+            path: (config.server.github.pathprefix || '') + '/applications/' + config.server.github.client + '/tokens/' + req.user.token,
+            method: 'GET',
+            headers: {
+                'Authorization': 'Basic ' + new Buffer(config.server.github.client + ':' + config.server.github.secret).toString('base64'),
+                'User-Agent': 'ReviewNinja'
+            }
+        }, function(response) {
+            var str = '';
+
+            response.on('data', function(chunk) {
+                str += chunk;
+            });
+
+            response.on('end', function() {
+
+                var err = null, res = null;
+
+                try {
+                    var  id = JSON.parse(str).id;
+                    res = {
+                        id: id,
+                        html_url: url.githubBase + '/settings/connections/' + id
+                    };
+                } catch(ex) {
+                    err = true;
+                }
+
+                done(err, res);
+            });
+        });
+
+        request.end();
+    },
+
     addRepo: function(req, done) {
         github.call({
             obj: 'repos',
