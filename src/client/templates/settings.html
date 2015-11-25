@@ -29,6 +29,23 @@
           </form>
         </div>
       </div>
+      <div class="col-md-12" style="margin-top: 10px;" ng-show="repo.value.permissions.admin">
+        <p class="settingsheading">Reviewer Team</p>
+        <div style="margin-left: 15px;">
+          <p>Allow only the following team to set Ninja Stars</p>
+
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <span>No team <span class="caret"></span></span>
+            </button>
+            <ul class="dropdown-menu" style="max-height: 250px; width: 200px; overflow-y: scroll;">
+              <li ng-repeat="team in teams.value" style="padding: 0 10px;">
+                <span>{{team.name}}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
       <div class="col-md-12" style="margin-top: 20px;" ng-show="repo.value.permissions.admin">
         <p class="settingsheading">ReviewNinja content in GitHub</p>
         <div style="margin-left: 15px;">
@@ -104,10 +121,10 @@
           <div class="form-group" style="max-width:450px">
             <label>Token</label>
             <div ng-hide="!updatingSlackToken && slack.value.token === 'true'">
-              <input type="password" 
-                     class="form-control" 
+              <input type="password"
+                     class="form-control"
                      ng-model="reposettings.value.slack.token"
-                     ng-model-options="{updateOn: 'blur'}" 
+                     ng-model-options="{updateOn: 'blur'}"
                      ng-change="setSlack(); updatingSlackToken = false;">
             </div>
           </div>
@@ -118,11 +135,11 @@
           </div>
           <div class="form-group" style="max-width:450px">
             <label>Channel</label>
-            <input type="text" 
-                   class="form-control" 
-                   placeholder="#general" 
-                   ng-model="reposettings.value.slack.channel" 
-                   ng-model-options="{updateOn: 'blur'}" 
+            <input type="text"
+                   class="form-control"
+                   placeholder="#general"
+                   ng-model="reposettings.value.slack.channel"
+                   ng-model-options="{updateOn: 'blur'}"
                    ng-change="setSlack()">
           </div>
           <div class="form-group" ng-show="slack.value.token === 'true'">
