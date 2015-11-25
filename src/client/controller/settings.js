@@ -16,6 +16,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
         });
 
         $scope.threshold = 1;
+        $scope.teamThreshold = 0;
         $scope.comment = true;
 
         $scope.reposettings = $RPC.call('repo', 'get', {

@@ -30,9 +30,15 @@
         </div>
       </div>
       <div class="col-md-12" style="margin-top: 10px;" ng-show="repo.value.permissions.admin">
-        <p class="settingsheading">Reviewer Team</p>
+        <p class="settingsheading">Reviewer team</p>
         <div style="margin-left: 15px;">
-          <p>Require a minimum # of Ninja Stars from the following team</p>
+          <p>For <strong>{{ repo.value.owner.login }}/{{ repo.value.name }}</strong> require
+            <input id="threshold" type="number" min="0" max="99" required name="thresholdvalue"
+                 ng-model="teamThreshold"
+                 ng-pattern="/[0-9]+/"
+                 ng-class="{'text-warning': form.$invalid}"
+                 class="text-right" /> ninja stars from the following team to merge
+           <small class="text-danger" ng-show="form.$invalid && reposettings.loaded"><br />Threshold must be between 0 and 99.</small></p>
 
           <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
