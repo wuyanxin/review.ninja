@@ -97,7 +97,7 @@ module.controller('SettingsCtrl', ['$scope', '$stateParams', '$HUB', '$RPC', '$m
             });
         };
 
-        $scope.teams = $RPC.call('repo', 'getTeams', {
+        $scope.teams = $HUB.call('orgs', 'getTeams', {
             user: $stateParams.user,
             repo: $stateParams.repo,
             org: repo.value.organization.login

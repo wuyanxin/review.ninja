@@ -136,24 +136,6 @@ module.exports = {
             repo.slack.token = !!repo.slack.token;
             done(err, repo.slack);
         });
-    },
-
-    getTeams: function(req, done) {
-        github.call({
-            obj: 'orgs',
-            fun: 'getTeams',
-            arg: {
-                user: req.args.user,
-                repo: req.args.repo,
-                org: req.args.org
-            },
-            token: req.user.token
-        }, function(err, teams) {
-            if(!err) {
-              return done(err, teams);
-            }
-            done(err);
-        });
     }
 
 };
